@@ -1,6 +1,12 @@
 import React, { FC, useState } from 'react';
 //import { withStyles, createStyles } from '@material-ui/core/styles';
-import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
+import {
+  CircularProgress,
+  Grid,
+  Tooltip,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
 import { ScenarioMenu } from './ScenarioMenu';
 
@@ -16,41 +22,45 @@ interface IScenarioItemProps {
   isSelected: boolean;
   name: string;
   date: string;
-  description: any
+  description: any;
 }
 
 const ScenarioItem: FC<IScenarioItemProps> = (propData: IScenarioItemProps) => {
   const [hover, setHover] = useState(false);
+  const useStyles = makeStyles(propData.classes);
+  const classes = useStyles();
 
   const scenarioHour = propData.showHour && (
-    <Grid item style={propData.classes.scenarioHour}>
-      <Typography component="div" style={propData.classes.hourText}>
+    <Grid item className={classes.scenarioHour}>
+      <Typography component="div" className={classes.hourText}>
         {format(parseISO(propData.date), 'HH:mm')}
       </Typography>
     </Grid>
   );
 
   const scenarioStatus = propData.showStatus && (
-    <Grid item style={propData.classes.status}>
-      <div style={propData.classes.verticalLine} />
+    <Grid item className={classes.status}>
+      <div className={classes.verticalLine} />
       <div
-        className={propData.classes.scenarioStatus}
         style={{
           backgroundColor: propData.isSelected || hover ? '#e8e8e8' : 'white',
+          marginLeft: '-8px',
         }}
       >
         <div>
           <Tooltip title={propData.status.message}>
             <CircularProgress
-              style={{ color: propData.status.color }}
-              variant={propData.status.progress ? 'indeterminate' : 'determinate'}
+              style={{ color: propData.status.color, display: 'grid' }}
+              variant={
+                propData.status.progress ? 'indeterminate' : 'determinate'
+              }
               value={propData.status.progress ? propData.status.progress : 100}
               size={16}
               thickness={propData.status.progress ? 7 : 21}
             />
           </Tooltip>
         </div>
-        <Typography component="span" style={propData.classes.scenarioProgress}>
+        <Typography component="span" className={classes.scenarioProgress}>
           {propData.status.progress ? `${propData.status.progress}%` : null}
         </Typography>
       </div>
@@ -58,12 +68,20 @@ const ScenarioItem: FC<IScenarioItemProps> = (propData: IScenarioItemProps) => {
   );
 
   const scenarioDetails = (
-    <Grid item style={propData.classes.scenarioDetails}>
-      <Typography component="span" color="primary" style={propData.classes.scenarioTitle}>
+    <Grid item className={classes.scenarioDetails}>
+      <Typography
+        component="span"
+        color="primary"
+        className={classes.scenarioTitle}
+      >
         {propData.name}
       </Typography>
-      {propData.description.map((item: { name: string; value: any; }) => (
-        <Typography key={item.name} component="span" style={propData.classes.textFields}>
+      {propData.description.map((item: { name: string; value: any }) => (
+        <Typography
+          key={item.name}
+          component="span"
+          className={classes.textFields}
+        >
           {`${item.name}: ${item.value}`}
         </Typography>
       ))}
@@ -72,21 +90,21 @@ const ScenarioItem: FC<IScenarioItemProps> = (propData: IScenarioItemProps) => {
 
   return (
     <div
-      style={propData.classes.scenario}
+      className={classes.scenario}
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
-      onFocus={() => { }}
-      onBlur={() => { }}
+      onFocus={() => {}}
+      onBlur={() => {}}
     >
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}
-      {//propData.showMenu && <ScenarioMenu functions={functions} menu={menu} scenario={scenario} />
+      {
+        //propData.showMenu && <ScenarioMenu functions={functions} menu={menu} scenario={scenario} />
       }
       {propData.showMenu && <ScenarioMenu menu={propData.menu} />}
     </div>
   );
-}
-
+};
 
 export { IScenarioItemProps, ScenarioItem };
