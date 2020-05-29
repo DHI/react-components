@@ -1,67 +1,44 @@
 import React, { FC, useState } from 'react';
-//import { withStyles, createStyles } from '@material-ui/core/styles';
-import {
-  CircularProgress,
-  Grid,
-  Tooltip,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
-import { ScenarioMenu } from './ScenarioMenu';
+import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
+import useStyles from './useStyles';
+import IScenarioItemProps from './types';
 
-interface IScenarioItemProps {
-  classes: any;
-  menu: any;
-  scenario: any;
-  functions: any;
-  status: any;
-  showHour: boolean;
-  showMenu: boolean;
-  showStatus: boolean;
-  isSelected: boolean;
-  name: string;
-  date: string;
-  description: any;
-}
-
-const ScenarioItem: FC<IScenarioItemProps> = (propData: IScenarioItemProps) => {
+const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   const [hover, setHover] = useState(false);
-  const useStyles = makeStyles(propData.classes);
   const classes = useStyles();
 
-  const scenarioHour = propData.showHour && (
+  const scenarioHour = props.showHour && (
     <Grid item className={classes.scenarioHour}>
       <Typography component="div" className={classes.hourText}>
-        {format(parseISO(propData.date), 'HH:mm')}
+        {format(parseISO(props.date), 'HH:mm')}
       </Typography>
     </Grid>
   );
 
-  const scenarioStatus = propData.showStatus && (
+  const scenarioStatus = props.showStatus && (
     <Grid item className={classes.status}>
       <div className={classes.verticalLine} />
       <div
         style={{
-          backgroundColor: propData.isSelected || hover ? '#e8e8e8' : 'white',
+          backgroundColor: props.isSelected || hover ? '#e8e8e8' : 'white',
           marginLeft: '-8px',
         }}
       >
         <div>
-          <Tooltip title={propData.status.message}>
+          <Tooltip title={props.status.message}>
             <CircularProgress
-              style={{ color: propData.status.color, display: 'grid' }}
-              variant={
-                propData.status.progress ? 'indeterminate' : 'determinate'
-              }
-              value={propData.status.progress ? propData.status.progress : 100}
+              style={{ color: props.status.color, display: 'grid' }}
+              variant={props.status.progress ? 'indeterminate' : 'determinate'}
+              value={props.status.progress ? props.status.progress : 100}
               size={16}
-              thickness={propData.status.progress ? 7 : 21}
+              thickness={props.status.progress ? 7 : 21}
             />
           </Tooltip>
         </div>
         <Typography component="span" className={classes.scenarioProgress}>
-          {propData.status.progress ? `${propData.status.progress}%` : null}
+          {props.status.progress ? `${props.status.progress}%` : null}
         </Typography>
       </div>
     </Grid>
@@ -74,9 +51,9 @@ const ScenarioItem: FC<IScenarioItemProps> = (propData: IScenarioItemProps) => {
         color="primary"
         className={classes.scenarioTitle}
       >
-        {propData.name}
+        {props.name}
       </Typography>
-      {propData.description.map((item: { name: string; value: any }) => (
+      {props.description.map((item: { name: string; value: any }) => (
         <Typography
           key={item.name}
           component="span"
@@ -102,7 +79,13 @@ const ScenarioItem: FC<IScenarioItemProps> = (propData: IScenarioItemProps) => {
       {
         //propData.showMenu && <ScenarioMenu functions={functions} menu={menu} scenario={scenario} />
       }
-      {propData.showMenu && <ScenarioMenu menu={propData.menu} />}
+      {props.showMenu && (
+        <ScenarioMenu
+          onContextMenuClick={props.onContextMenuClick}
+          menu={props.menu}
+          scenario={props.scenario}
+        />
+      )}
     </div>
   );
 };
