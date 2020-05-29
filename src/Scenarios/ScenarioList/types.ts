@@ -1,6 +1,6 @@
 interface IScenarioListProps {
   classes?: any;
-  onContextMenuClick: any;
+  onContextMenuClick: Function;
   menuItems: {
     id: string;
     label: string;
@@ -31,12 +31,12 @@ interface IScenarioListProps {
   showHour: boolean;
   showMenu: boolean;
   showStatus: boolean;
-  onSelectScenario: any;
   selectedScenarioId: string;
   status: {
     name: string;
     color: string;
     message: string;
+    progress?: number;
   }[];
 }
 

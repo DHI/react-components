@@ -18,7 +18,7 @@ const styles = () => ({
     alignSelf: 'flex-start',
     flexDirection: 'column',
     marginTop: '-25px',
-    marginBottom: '-33px',
+    marginBottom: '-37px',
     fontFamily: ['Source Sans Pro', 'sans-serif'],
     fontSize: '16px',
     lineHeight: 1.6,

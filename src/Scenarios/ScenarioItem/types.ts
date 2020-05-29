@@ -1,8 +1,23 @@
 interface IScenarioItemProps {
   classes?: any;
-  menu: any;
-  scenario: any;
-  onContextMenuClick: any;
+  menu: {
+    id: string;
+    label: string;
+    condition?: {
+      field: string;
+      value: string;
+    };
+  }[];
+  scenario: {
+    id: string;
+    lastJobStatus: string;
+    lastJobId: string;
+    dateTime: string;
+    version: string;
+    data: string;
+    lastJobProgress?: number;
+  };
+  onContextMenuClick: Function;
   status: any;
   showHour: boolean;
   showMenu: boolean;

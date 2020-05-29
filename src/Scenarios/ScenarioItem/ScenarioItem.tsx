@@ -76,9 +76,6 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}
-      {
-        //propData.showMenu && <ScenarioMenu functions={functions} menu={menu} scenario={scenario} />
-      }
       {props.showMenu && (
         <ScenarioMenu
           onContextMenuClick={props.onContextMenuClick}

@@ -87,15 +87,11 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
     const progress = getObjectProperty(scenario, 'lastJobProgress');
 
-    let currentStatus = {};
-    props.status.map(obj => {
-      if (obj.name === scenarioStatus) {
-        currentStatus = {
-          ...obj,
-          progress,
-        };
-      }
-    });
+    let currentStatus = {
+      ...props.status.find(s => s.name === scenarioStatus),
+      progress,
+    };
+    currentStatus.progress = progress;
 
     let result;
     if (scenarioStatus === undefined) {

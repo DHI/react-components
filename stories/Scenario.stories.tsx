@@ -84,7 +84,6 @@ export const scenarioList = () => {
       showHour={true}
       showMenu={true}
       showStatus={true}
-      onSelectScenario="this.onSelectScenario"
       selectedScenarioId=""
       status={[
         {
