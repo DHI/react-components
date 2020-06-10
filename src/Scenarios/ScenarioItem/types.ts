@@ -18,14 +18,14 @@ interface IScenarioItemProps {
     lastJobProgress?: number;
   };
   onContextMenuClick: Function;
-  status: any;
+  status: { message?: string; color?: string; progress?: number };
   showHour: boolean;
   showMenu: boolean;
   showStatus: boolean;
   isSelected: boolean;
   name: string;
   date: string;
-  description: any;
+  description: { name: string; value: string }[];
 }
 
 export default IScenarioItemProps;

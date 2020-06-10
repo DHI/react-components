@@ -8,37 +8,50 @@ import IScenarioItemProps from './types';
 const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   const [hover, setHover] = useState(false);
   const classes = useStyles();
+  const {
+    showHour,
+    date,
+    showStatus,
+    isSelected,
+    status,
+    name,
+    description,
+    showMenu,
+    onContextMenuClick,
+    menu,
+    scenario,
+  } = props;
 
-  const scenarioHour = props.showHour && (
+  const scenarioHour = showHour && (
     <Grid item className={classes.scenarioHour}>
       <Typography component="div" className={classes.hourText}>
-        {format(parseISO(props.date), 'HH:mm')}
+        {format(parseISO(date), 'HH:mm')}
       </Typography>
     </Grid>
   );
 
-  const scenarioStatus = props.showStatus && (
+  const scenarioStatus = showStatus && (
     <Grid item className={classes.status}>
       <div className={classes.verticalLine} />
       <div
         style={{
-          backgroundColor: props.isSelected || hover ? '#e8e8e8' : 'white',
+          backgroundColor: isSelected || hover ? '#e8e8e8' : 'white',
           marginLeft: '-8px',
         }}
       >
         <div>
-          <Tooltip title={props.status.message}>
+          <Tooltip title={status.message ? status.message : ''}>
             <CircularProgress
-              style={{ color: props.status.color, display: 'grid' }}
-              variant={props.status.progress ? 'indeterminate' : 'determinate'}
-              value={props.status.progress ? props.status.progress : 100}
+              style={{ color: status.color, display: 'grid' }}
+              variant={status.progress ? 'indeterminate' : 'determinate'}
+              value={status.progress ? status.progress : 100}
               size={16}
-              thickness={props.status.progress ? 7 : 21}
+              thickness={status.progress ? 7 : 21}
             />
           </Tooltip>
         </div>
         <Typography component="span" className={classes.scenarioProgress}>
-          {props.status.progress ? `${props.status.progress}%` : null}
+          {status.progress ? `${status.progress}%` : null}
         </Typography>
       </div>
     </Grid>
@@ -51,9 +64,9 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
         color="primary"
         className={classes.scenarioTitle}
       >
-        {props.name}
+        {name}
       </Typography>
-      {props.description.map((item: { name: string; value: any }) => (
+      {description.map((item: { name: string; value: string }) => (
         <Typography
           key={item.name}
           component="span"
@@ -70,17 +83,15 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
       className={classes.scenario}
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
-      onFocus={() => {}}
-      onBlur={() => {}}
     >
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}
-      {props.showMenu && (
+      {showMenu && (
         <ScenarioMenu
-          onContextMenuClick={props.onContextMenuClick}
-          menu={props.menu}
-          scenario={props.scenario}
+          onContextMenuClick={onContextMenuClick}
+          menu={menu}
+          scenario={scenario}
         />
       )}
     </div>

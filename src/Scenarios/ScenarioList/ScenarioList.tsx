@@ -1,75 +1,66 @@
 import React, { FC, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { Divider } from '@material-ui/core';
-import { groupBy, sortBy, isEmpty, isObject } from 'lodash';
+import { groupBy, sortBy, isEmpty, Dictionary } from 'lodash';
 import { format, parseISO } from 'date-fns';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
 import useStyles from './useStyles';
-import IScenarioListProps, { ObjectProperties } from './types';
+import { getObjectProperty } from '@dhi/utils';
+import IScenarioListProps, {
+  Scenario,
+  Condition,
+  DescriptionFields,
+} from './types';
 
 const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
-  const [groupedScenarios, setGroupedScenarios] = useState(Object);
-  const [selectedId, setSelectedId] = useState(props.selectedScenarioId);
+  const {
+    selectedScenarioId,
+    scenarios,
+    showHour,
+    showDate,
+    menuItems,
+    status,
+    descriptionFields,
+    onContextMenuClick,
+    showStatus,
+    showMenu,
+    nameField,
+  } = props;
+  const [groupedScenarios, setGroupedScenarios] = useState<
+    Dictionary<Scenario[]>
+  >();
+  const [selectedId, setSelectedId] = useState(selectedScenarioId);
 
   const classes = useStyles();
 
   useEffect(() => {
-    groupScenarios(props.scenarios);
+    groupScenarios(scenarios);
   }, []);
 
-  const getObjectProperty = (
-    objectItem: ObjectProperties | string | number,
-    property: string,
-    compareValue?: any
-  ) => {
-    let valid = true;
-    const properties = property.split('.');
-    let value = objectItem;
-    for (let i = 0; i < properties.length; i++) {
-      if (properties[i].indexOf('!') >= 0) {
-        valid = !valid;
-        properties[i] = properties[i].replace('!', '');
-      }
-      value = isObject(value) ? value[properties[i]] : '';
-    }
-    if (compareValue) {
-      if (typeof compareValue === 'object') {
-        for (let i = 0; i < compareValue.length; i++) {
-          if (value === compareValue[i]) {
-            return valid;
-          }
-        }
-        return !valid;
-      }
-      return valid ? value === compareValue : !(value === compareValue);
-    }
-    return valid ? value : !value;
-  };
-
-  function groupScenarios(scenarios: any) {
-    const groupedScenarios =
-      props.showHour || props.showDate
+  const groupScenarios = (scenarios: Scenario[]) => {
+    setGroupedScenarios(
+      showHour || showDate
         ? groupBy(scenarios, scenario =>
             format(
               'dateTime'
                 ? parseISO(getObjectProperty(scenario, 'dateTime').toString())
-                : parseISO(scenario.DateTime),
+                : parseISO(scenario.dateTime),
               'yyyy-MM-dd'
             )
           )
         : groupBy(scenarios, scenario =>
             getObjectProperty(scenario, 'dateTime')
-          );
-    setGroupedScenarios(groupedScenarios);
-  }
+          )
+    );
+  };
 
   const buildMenu = (scenario: any) => {
-    return props.menuItems.filter(menuItem =>
+    return menuItems.filter(menuItem =>
       checkEnabled(scenario, menuItem.condition) ? menuItem : null
     );
   };
 
-  const checkEnabled = (scenario: any, condition: any) => {
+  const checkEnabled = (scenario: Scenario, condition?: Condition) => {
     if (!isEmpty(scenario)) {
       if (condition) {
         const check =
@@ -83,26 +74,20 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     return false;
   };
 
-  const checkStatus = (scenario: any) => {
+  const checkStatus = (scenario: Scenario) => {
     const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
-    const progress = getObjectProperty(scenario, 'lastJobProgress');
+    const progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
 
     let currentStatus = {
-      ...props.status.find(s => s.name === scenarioStatus),
+      ...status.find(s => s.name === scenarioStatus),
       progress,
     };
-    currentStatus.progress = progress;
 
     let result;
-    if (scenarioStatus === undefined) {
+    if (!scenarioStatus) {
       result = {
         color: 'red',
         message: 'Unknown Status Field',
-      };
-    } else if (currentStatus === null) {
-      result = {
-        color: 'red',
-        message: 'Unknown Status',
       };
     } else {
       result = currentStatus;
@@ -111,7 +96,10 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     return result;
   };
 
-  const createDescriptionObject = (scenario: any, descriptionFields: any) => {
+  const createDescriptionObject = (
+    scenario: Scenario,
+    descriptionFields: DescriptionFields[]
+  ) => {
     const descriptionArray = [];
     for (let i = 0; i < descriptionFields.length; i++) {
       if (descriptionFields[i].condition) {
@@ -124,7 +112,10 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
           if (condtion) {
             let descriptionObject = {
               name: descriptionFields[i].name,
-              value: getObjectProperty(scenario, descriptionFields[i].field),
+              value: getObjectProperty(
+                scenario,
+                descriptionFields[i].field
+              ).toString(),
             };
             descriptionArray.push(descriptionObject);
             continue;
@@ -139,7 +130,10 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
         ) {
           let descriptionObject = {
             name: descriptionFields[i].name,
-            value: getObjectProperty(scenario, descriptionFields[i].field),
+            value: getObjectProperty(
+              scenario,
+              descriptionFields[i].field
+            ).toString(),
           };
           descriptionArray.push(descriptionObject);
           continue;
@@ -147,7 +141,10 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
       } else {
         let descriptionObject = {
           name: descriptionFields[i].name,
-          value: getObjectProperty(scenario, descriptionFields[i].field),
+          value: getObjectProperty(
+            scenario,
+            descriptionFields[i].field
+          ).toString(),
         };
         descriptionArray.push(descriptionObject);
       }
@@ -155,7 +152,7 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     return descriptionArray;
   };
 
-  const buildScenariosList = (scenarios: any) => {
+  const buildScenariosList = (scenarios: Scenario[]) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map(scenario => (
@@ -172,24 +169,22 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
           <ScenarioItem
             name={getObjectProperty(
               JSON.parse(scenario.data),
-              'name'
+              nameField
             ).toString()}
             description={createDescriptionObject(
               JSON.parse(scenario.data),
-              props.descriptionFields
+              descriptionFields as any
             )}
             date={
-              props.showDate
-                ? getObjectProperty(scenario, 'dateTime').toString()
-                : ''
+              showDate ? getObjectProperty(scenario, 'dateTime').toString() : ''
             }
             key={scenario.id}
             isSelected={selectedId === getObjectProperty(scenario, 'id')}
-            onContextMenuClick={props.onContextMenuClick}
+            onContextMenuClick={onContextMenuClick}
             menu={buildMenu(scenario)}
-            showHour={props.showHour}
-            showMenu={props.showMenu}
-            showStatus={props.showStatus}
+            showHour={showHour}
+            showMenu={showMenu}
+            showStatus={showStatus}
             scenario={scenario}
             status={checkStatus(scenario)}
           />
@@ -203,7 +198,7 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
       dayName: format(parseISO(date), 'EEE'),
       monthName: format(parseISO(date), 'MMM'),
     };
-    const dateBlockwidth = props.showHour ? '97px' : '39px';
+    const dateBlockwidth = showHour ? '97px' : '39px';
     return (
       <div className={classes.dateBlock} style={{ width: dateBlockwidth }}>
         <div className={classes.dateArea}>
@@ -215,28 +210,30 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     );
   };
 
-  const onScenarioClick = (scenario: any) => {
+  const onScenarioClick = (scenario: Scenario) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id').toString());
     }
   };
 
-  return (
-    <div className={classes.root}>
-      {Object.keys(groupedScenarios)
-        .sort()
-        .reverse()
-        .map(key => (
-          <div key={key}>
-            {props.showDate && buildDateArea(key)}
-            <div>
-              {buildScenariosList(groupedScenarios[key])}
-              <Divider variant="inset" className={classes.divider} />
-            </div>
+  console.log(groupedScenarios);
+
+  let printedScenarios = null;
+  if (groupedScenarios) {
+    printedScenarios = Object.keys(groupedScenarios)
+      .sort()
+      .reverse()
+      .map(key => (
+        <div key={key}>
+          {showDate && buildDateArea(key)}
+          <div>
+            {buildScenariosList(groupedScenarios[key])}
+            <Divider variant="inset" className={classes.divider} />
           </div>
-        ))}
-    </div>
-  );
+        </div>
+      ));
+  }
+  return <div className={classes.root}>{printedScenarios}</div>;
 };
 
 export { IScenarioListProps, ScenarioList };

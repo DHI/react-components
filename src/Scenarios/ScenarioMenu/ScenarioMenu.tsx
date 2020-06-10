@@ -4,7 +4,7 @@ import { MoreVert as MoreVertIcon } from '@material-ui/icons';
 import IScenarioMenuProps from './types';
 
 const ScenarioMenu: FC<IScenarioMenuProps> = (props: IScenarioMenuProps) => {
-  const { onContextMenuClick, scenario } = props;
+  const { onContextMenuClick, scenario, menu } = props;
   const [showMenu, setShowMenuState] = useState(false);
   const [showElement, setshowElementState] = useState();
 
@@ -35,7 +35,7 @@ const ScenarioMenu: FC<IScenarioMenuProps> = (props: IScenarioMenuProps) => {
         open={showMenu}
         onClose={() => setShowMenuState(false)}
       >
-        {props.menu.map(menuItem => (
+        {menu.map(menuItem => (
           <MenuItem
             key={menuItem.id}
             id={menuItem.id}

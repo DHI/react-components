@@ -40,9 +40,29 @@ interface IScenarioListProps {
   }[];
 }
 
-interface ObjectProperties {
-  [key: string]: ObjectProperties | string;
+interface Scenario {
+  id: string;
+  lastJobStatus: string;
+  lastJobId: string;
+  dateTime: string;
+  version: string;
+  data: string;
+  lastJobProgress?: number;
+}
+
+interface Condition {
+  field: string;
+  value: string;
+}
+
+interface DescriptionFields {
+  field: string;
+  name: string;
+  condition: {
+    field: string;
+    value: string;
+  };
 }
 
 export default IScenarioListProps;
-export { ObjectProperties };
+export { Scenario, Condition, DescriptionFields };
