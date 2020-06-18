@@ -1,9 +1,9 @@
-import React, { FC, useState } from 'react';
 import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
+import React, { FC, useState } from 'react';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
-import useStyles from './useStyles';
 import IScenarioItemProps from './types';
+import useStyles from './useStyles';
 
 const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   const [hover, setHover] = useState(false);

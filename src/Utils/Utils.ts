@@ -1,21 +1,26 @@
-import { isObject } from 'lodash';
-import { ObjectProperties } from './types';
 import { format } from 'date-fns';
+import { isObject } from 'lodash';
 
-const getObjectProperty = (
-  objectItem: ObjectProperties | string | number,
+export const dataObjectToArray = (data: { [x: string]: any }) =>
+  Object.keys(data).map(key => ({
+    id: key,
+    data: data[key],
+  }));
+
+export const getObjectProperty = (
+  objectItem: any,
   property: string,
   compareValue?: any
 ) => {
   let valid = true;
-  const properties = property.split('.');
+  const properties = property != null ? property.split('.') : [];
   let value = objectItem;
   for (let i = 0; i < properties.length; i++) {
     if (properties[i].indexOf('!') >= 0) {
       valid = !valid;
       properties[i] = properties[i].replace('!', '');
     }
-    value = isObject(value) ? value[properties[i]] : '';
+    value = isObject(objectItem) ? (objectItem as any)[properties[i]] : '';
   }
   if (compareValue) {
     if (typeof compareValue === 'object') {
@@ -31,7 +36,7 @@ const getObjectProperty = (
   return valid ? value : !value;
 };
 
-const changeObjectProperty = (
+export const changeObjectProperty = (
   objectItem: any,
   property: string,
   intent: any
@@ -50,7 +55,11 @@ const changeObjectProperty = (
   return body[0];
 };
 
-const uniqueId = () =>
+export const queryProp = (query: any) => {
+  return typeof query == 'undefined' ? '' : query;
+};
+
+export const uniqueId = () =>
   `${format(
     new Date(),
     'yyyyMMddhhmmss'
@@ -60,5 +69,3 @@ const s4 = () =>
   Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
     .substring(1);
-
-export { getObjectProperty, changeObjectProperty, uniqueId };

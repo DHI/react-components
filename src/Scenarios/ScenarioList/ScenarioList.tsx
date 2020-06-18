@@ -1,16 +1,16 @@
-import React, { FC, useState, useEffect } from 'react';
-import classNames from 'classnames';
 import { Divider } from '@material-ui/core';
-import { groupBy, sortBy, isEmpty, Dictionary } from 'lodash';
+import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
+import { Dictionary, groupBy, isEmpty, sortBy } from 'lodash';
+import React, { FC, useEffect, useState } from 'react';
+import { getObjectProperty } from '../../Utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
-import useStyles from './useStyles';
-import { getObjectProperty } from '@dhi/utils';
 import IScenarioListProps, {
-  Scenario,
   Condition,
   DescriptionFields,
+  Scenario,
 } from './types';
+import useStyles from './useStyles';
 
 const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
   const {
@@ -25,6 +25,7 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     showStatus,
     showMenu,
     nameField,
+    dateField,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<
     Dictionary<Scenario[]>
@@ -40,21 +41,14 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
   const groupScenarios = (scenarios: Scenario[]) => {
     setGroupedScenarios(
       showHour || showDate
-        ? groupBy(scenarios, scenario =>
-            format(
-              'dateTime'
-                ? parseISO(getObjectProperty(scenario, 'dateTime').toString())
-                : parseISO(scenario.dateTime),
-              'yyyy-MM-dd'
-            )
-          )
-        : groupBy(scenarios, scenario =>
-            getObjectProperty(scenario, 'dateTime')
-          )
+        ? groupBy(scenarios, scenario => {
+            return format(parseISO(scenario.dateTime), 'yyyy-MM-dd');
+          })
+        : groupBy(scenarios, scenario => scenario.dateTime)
     );
   };
 
-  const buildMenu = (scenario: any) => {
+  const buildMenu = (scenario: Scenario) => {
     return menuItems.filter(menuItem =>
       checkEnabled(scenario, menuItem.condition) ? menuItem : null
     );
@@ -155,41 +149,42 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
   const buildScenariosList = (scenarios: Scenario[]) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
-      .map(scenario => (
-        <div
-          key={scenario.id}
-          onClick={() => onScenarioClick(scenario)}
-          onKeyPress={() => onScenarioClick(scenario)}
-          role="presentation"
-          className={classNames(classes.listItem, {
-            [classes.selectedItem]:
-              selectedId === getObjectProperty(scenario, 'id'),
-          })}
-        >
-          <ScenarioItem
-            name={getObjectProperty(
-              JSON.parse(scenario.data),
-              nameField
-            ).toString()}
-            description={createDescriptionObject(
-              JSON.parse(scenario.data),
-              descriptionFields as any
-            )}
-            date={
-              showDate ? getObjectProperty(scenario, 'dateTime').toString() : ''
-            }
+      .map(scenario => {
+        const date = showDate ? scenario.dateTime.toString() : '';
+        return (
+          <div
             key={scenario.id}
-            isSelected={selectedId === getObjectProperty(scenario, 'id')}
-            onContextMenuClick={onContextMenuClick}
-            menu={buildMenu(scenario)}
-            showHour={showHour}
-            showMenu={showMenu}
-            showStatus={showStatus}
-            scenario={scenario}
-            status={checkStatus(scenario)}
-          />
-        </div>
-      ));
+            onClick={() => onScenarioClick(scenario)}
+            onKeyPress={() => onScenarioClick(scenario)}
+            role="presentation"
+            className={classNames(classes.listItem, {
+              [classes.selectedItem]:
+                selectedId === getObjectProperty(scenario, 'id'),
+            })}
+          >
+            <ScenarioItem
+              name={getObjectProperty(
+                JSON.parse(scenario.data),
+                nameField
+              ).toString()}
+              description={createDescriptionObject(
+                JSON.parse(scenario.data),
+                descriptionFields as any
+              )}
+              date={date}
+              key={scenario.id}
+              isSelected={selectedId === getObjectProperty(scenario, 'id')}
+              onContextMenuClick={onContextMenuClick}
+              menu={buildMenu(scenario)}
+              showHour={showHour}
+              showMenu={showMenu}
+              showStatus={showStatus}
+              scenario={scenario}
+              status={checkStatus(scenario)}
+            />
+          </div>
+        );
+      });
   };
 
   const buildDateArea = (date: string) => {
@@ -215,8 +210,6 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
       setSelectedId(getObjectProperty(scenario, 'id').toString());
     }
   };
-
-  console.log(groupedScenarios);
 
   let printedScenarios = null;
   if (groupedScenarios) {

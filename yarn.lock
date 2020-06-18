@@ -988,25 +988,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@dhi/data-services@^0.0.77":
-  version "0.0.77"
-  resolved "https://npm.pkg.github.com/download/@dhi/data-services/0.0.77/c99f479a60b38533769f1786b3d18863a7f51b33e648b5e611e5d7c139ede220#407d47c35ccf1ec631ee44707a2c4f72afb6ab34"
-  integrity sha512-+2medjjpMfw7wY6waNWn3HG8GzXgtQId6MaMAkHifU2u9GmYLeMOpaqqypMh3zFaf0o9BIO1EKL0i6vKp9wXSg==
-  dependencies:
-    "@dhi/utils" "0"
-    lodash "^4.17.15"
-    rxjs "^6.5.2"
-
-"@dhi/utils@0", "@dhi/utils@^0.0.54":
-  version "0.0.54"
-  resolved "https://npm.pkg.github.com/download/@dhi/utils/0.0.54/5091193b022060af650ceeb7821ed48d0a586c1be08eaccb67837831981580b3#7ba2fcba33ab700aebc73282fb06d42166dc5d54"
-  integrity sha512-rkKmvi0de3YhUM8RcjmSQ45Mx9bM4AektX2SjabZnezorT5h4IY0PnoOEbadAW8lUeB5ZtlcLDb/e8zWSk/Npw==
-  dependencies:
-    date-fns "^2.0.1"
-    lodash "^4.17.15"
-    rimraf "^2.6.3"
-    rxjs "^6.5.2"
-
 "@egoist/vue-to-react@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@egoist/vue-to-react/-/vue-to-react-1.1.0.tgz#83c884b8608e8ee62e76c03e91ce9c26063a91ad"
@@ -4544,11 +4525,6 @@ data-urls@^1.0.0:
     abab "^2.0.0"
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
-
-date-fns@^2.0.1:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.14.0.tgz#359a87a265bb34ef2e38f93ecf63ac453f9bc7ba"
-  integrity sha512-1zD+68jhFgDIM0rF05rcwYO8cExdNqxjq4xP1QKM60Q45mnO6zaMWB4tOzrIr4M4GSLntsKeE4c9Bdl2jhL/yw==
 
 date-fns@^2.13.0:
   version "2.13.0"
@@ -10573,7 +10549,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs@^6.4.0, rxjs@^6.5.2, rxjs@^6.5.3, rxjs@^6.5.5:
+rxjs@^6.4.0, rxjs@^6.5.3, rxjs@^6.5.5:
   version "6.5.5"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.5.tgz#c5c884e3094c8cfee31bf27eb87e54ccfc87f9ec"
   integrity sha512-WfQI+1gohdf0Dai/Bbmk5L5ItH5tYqm3ki2c5GdWhKjalzjg93N3avFjVStyZZz+A2Em+ZxKH5bNghw9UeylGQ==

@@ -61,8 +61,6 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@dhi/data-services": "^0.0.77",
-    "@dhi/utils": "^0.0.54",
     "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
     "@types/classnames": "^2.2.10",

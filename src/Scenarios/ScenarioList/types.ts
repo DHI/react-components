@@ -19,6 +19,7 @@ interface IScenarioListProps {
     lastJobProgress?: number;
   }[];
   nameField: string;
+  dateField: string;
   descriptionFields: {
     field: string;
     name: string;
