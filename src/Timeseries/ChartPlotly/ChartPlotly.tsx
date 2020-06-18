@@ -1,12 +1,12 @@
 import React, { FC, useState, useEffect } from 'react';
+import Plot from 'react-plotly.js';
+import { Layout, PlotData, Shape } from 'plotly.js';
 import {
   ITimeseriesData,
   IChartPlotlyProps,
   IChartPlotlyConfig,
   IChartPlotlyPlotData,
 } from './types';
-import Plot from 'react-plotly.js';
-import { Layout, PlotData } from 'plotly.js';
 
 const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
   const defaultLayout = {
@@ -54,17 +54,15 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
   const defineSeriesFormat = (
     timeseries: ITimeseriesData,
     index: number
-  ): Partial<IChartPlotlyPlotData> => {
-    return {
-      customdata: props.customData,
+  ): Partial<IChartPlotlyPlotData> =>
+    ({
       mode: 'markers',
       type: 'scattergl',
       name: props.config?.useShortNames
         ? timeseries.id.substring(timeseries.id.lastIndexOf('/') + 1)
         : timeseries.id,
       ...(props.timeseries && props.timeseries[index]),
-    };
-  };
+    } as Partial<IChartPlotlyPlotData>);
 
   const getArrowValues = (timeseriesIndex: number): number[][] => {
     if (props.timeseries) {
@@ -72,68 +70,69 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
         timeseries => timeseries.arrowMaxCount
       );
 
-      console.log(baseIndex);
       if (baseIndex === timeseriesIndex) {
         const arrowMaxCount = props.timeseries[baseIndex]?.arrowMaxCount
           ? props.timeseries[baseIndex]?.arrowMaxCount!
           : 16;
-        return props.data[baseIndex].data.filter((_, valueIndex: number) => {
-          return (
+        return props.data[baseIndex].data.filter(
+          (_, valueIndex: number) =>
             valueIndex %
-              Math.floor(props.data[baseIndex].data.length / arrowMaxCount) ==
+              Math.floor(props.data[baseIndex].data.length / arrowMaxCount) ===
             0
-          );
-        });
-      } else {
-        const baseArrowValues = getArrowValues(baseIndex);
-        const points = props.data[timeseriesIndex].data;
-
-        const result: number[][] = [];
-        baseArrowValues.forEach((baseArrow: number[]) => {
-          for (var i = 1; i < points.length; i++) {
-            const x0: number = new Date(points[i - 1][0]).getTime();
-            const x1: number = new Date(points[i][0]).getTime();
-            var x = new Date(baseArrow[0]).getTime();
-
-            if (x0 <= x && x <= x1) {
-              var y0 = points[i - 1][1];
-              var y1 = points[i][1];
-
-              if (Math.abs(y1 - y0) > 180) {
-                if (y1 > y0) {
-                  y0 += 360;
-                } else {
-                  y1 += 360;
-                }
-              }
-
-              var value = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
-              result.push([points[i][0], value]);
-            }
-          }
-        });
-
-        return result;
+        );
       }
+
+      const baseArrowValues = getArrowValues(baseIndex);
+      const points = props.data[timeseriesIndex].data;
+
+      const result: number[][] = [];
+      baseArrowValues.forEach((baseArrow: number[]) => {
+        for (let i = 1; i < points.length; i++) {
+          const x0: number = new Date(points[i - 1][0]).getTime();
+          const x1: number = new Date(points[i][0]).getTime();
+          const x = new Date(baseArrow[0]).getTime();
+
+          if (x0 <= x && x <= x1) {
+            let y0 = points[i - 1][1];
+            let y1 = points[i][1];
+
+            if (Math.abs(y1 - y0) > 180) {
+              if (y1 > y0) {
+                y0 += 360;
+              } else {
+                y1 += 360;
+              }
+            }
+
+            const value = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
+            result.push([points[i][0], value]);
+          }
+        }
+      });
+
+      return result;
     }
     return [];
   };
 
   const formatData = () => {
-    let plotData: Partial<PlotData>[] = [];
-    let shapes: any = [];
+    let plotDataList: Partial<PlotData>[] = [];
+    const shapes: Partial<Shape>[] = [];
 
     if (props.data) {
       props.data.forEach((timeseriesData: ITimeseriesData, index: number) => {
-        const series = defineSeriesFormat(timeseriesData, index);
+        const series: Partial<IChartPlotlyPlotData> = defineSeriesFormat(
+          timeseriesData,
+          index
+        );
         if (!series.isArrow) {
-          series.x = timeseriesData.data.map((dateAndValue: number[]) => {
-            return dateAndValue[0];
-          });
-          series.y = timeseriesData.data.map((dateAndValue: number[]) => {
-            return dateAndValue[1];
-          });
-          plotData = [...plotData, series];
+          series.x = timeseriesData.data.map(
+            (dateAndValue: number[]) => dateAndValue[0]
+          );
+          series.y = timeseriesData.data.map(
+            (dateAndValue: number[]) => dateAndValue[1]
+          );
+          plotDataList = [...plotDataList, series];
         } else {
           getArrowValues(index).map((point: number[]) =>
             shapes.push({
@@ -144,7 +143,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
               ),
               xref: 'x',
               yref: 'y',
-              fillcolor: series.fillcolor,
+              fillcolor: series.fillcolor ? series.fillcolor : 'black',
               xsizemode: 'pixel',
               ysizemode: 'pixel',
               xanchor: point[0],
@@ -158,16 +157,16 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
       });
 
       if (shapes.length > 0) {
-        const layout = { ...defaultLayout, ...props.layout };
+        const layoutList = { ...defaultLayout, ...props.layout };
         if (layout.shapes) {
-          layout.shapes = [...layout.shapes, shapes];
+          layoutList.shapes = [...layout.shapes, ...shapes];
         } else {
-          layout.shapes = shapes;
+          layoutList.shapes = shapes;
         }
-        setLayout(layout);
+        setLayout(layoutList);
       }
 
-      setPlotData(plotData);
+      setPlotData(plotDataList);
     }
   };
 

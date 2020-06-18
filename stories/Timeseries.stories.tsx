@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { ChartPlotly, fetchToken, fetchTimeseriesValues } from '../src';
+import {
+  ChartPlotly,
+  TimeseriesExporter as TimeseriesExporterComponent,
+  fetchToken,
+  fetchTimeseriesValues,
+} from '../src';
 import { withKnobs } from '@storybook/addon-knobs';
 import { IChartPlotlyPlotData } from '../src/Timeseries/ChartPlotly/types';
 
 export default {
   title: 'Timeseries Components',
-  component: [ChartPlotly],
+  component: [ChartPlotly, TimeseriesExporterComponent],
   decorators: [withKnobs],
 };
 
@@ -14,8 +19,8 @@ export const ChartPlotlyTimeseries = () => {
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
-      id: 'demo',
-      password: 'demo',
+      id: process.env.USERUSER,
+      password: process.env.USERPASSWORD,
     }).subscribe(
       res => {
         fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
@@ -90,7 +95,7 @@ export const ChartPlotlyTimeseries = () => {
   const dataSources = [
     {
       connection: 'mclite-timeseries',
-      host: 'https://domainservices.dhigroup.com',
+      host: process.env.ENDPOINT_URL,
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
       ids: [
@@ -100,7 +105,7 @@ export const ChartPlotlyTimeseries = () => {
     },
     {
       connection: 'mclite-timeseries',
-      host: 'https://domainservices.dhigroup.com',
+      host: process.env.ENDPOINT_URL,
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
       ids: [
@@ -128,8 +133,8 @@ export const ChartPlotlyArrows = () => {
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
-      id: 'demo',
-      password: 'demo',
+      id: process.env.USERUSER,
+      password: process.env.USERPASSWORD,
     }).subscribe(
       res => {
         fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
@@ -181,10 +186,10 @@ export const ChartPlotlyArrows = () => {
   const timeseries = [
     {
       name: 'Name 1',
-      arrowMaxCount: 20,
-      arrowScale: 2,
+      arrowMaxCount: 10,
+      arrowScale: 1.3,
       isArrow: true,
-      fillcolor: 'blue',
+      fillcolor: '#1F77B4',
     },
     {
       name: 'Name 2',
@@ -194,7 +199,7 @@ export const ChartPlotlyArrows = () => {
     {
       name: 'Name 2',
       isArrow: true,
-      fillcolor: 'red',
+      fillcolor: '#C423AE',
     },
   ] as Partial<IChartPlotlyPlotData>[];
 
@@ -204,7 +209,7 @@ export const ChartPlotlyArrows = () => {
 
   const dataSources = [
     {
-      host: 'https://domainservices.dhigroup.com',
+      host: process.env.ENDPOINT_URL,
       connection: 'mclite-timeseries',
       from: '2020-01-05T00:00:00',
       to: '2020-02-10T00:00:00',
@@ -222,5 +227,81 @@ export const ChartPlotlyArrows = () => {
         style={{ width: '100%', height: '100%' }}
       />
     </div>
+  );
+};
+
+export const TimeseriesExporter = () => {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    fetchToken(dataSources[0].host, {
+      id: process.env.USERUSER,
+      password: process.env.USERPASSWORD,
+    }).subscribe(
+      res => {
+        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
+          data => {
+            setData(data);
+          }
+        );
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }, []);
+
+  const timeseries = [
+    {
+      name: 'Timeseries 1',
+      decimals: 2,
+    },
+    {
+      name: 'Timeseries 2',
+      decimals: 3,
+    },
+    {
+      name: 'Timeseries 3',
+      decimals: 3,
+    },
+    {
+      name: 'Timeseries 4',
+      decimals: 3,
+    },
+  ];
+
+  const dataSources = [
+    {
+      host: process.env.ENDPOINT_URL,
+      connection: 'mclite-timeseries',
+      from: '2012-10-30T00:00:00',
+      to: '2012-11-07T00:00:00',
+      ids: [
+        'Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]',
+        'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]',
+      ],
+    },
+    {
+      host: process.env.ENDPOINT_URL,
+      connection: 'mclite-timeseries',
+      from: '2012-10-30T00:00:00',
+      to: '2012-11-07T00:00:00',
+      ids: [
+        'Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]',
+        'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]',
+      ],
+    },
+  ];
+
+  return (
+    <TimeseriesExporterComponent
+      color="primary"
+      variant="contained"
+      dateTimeFormat="dd/MM-yyyy HH-mm-ss"
+      exportFileName="SomeExport"
+      data={data}
+      caption="This is a download button"
+      timeseries={timeseries}
+    ></TimeseriesExporterComponent>
   );
 };
