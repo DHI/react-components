@@ -11,7 +11,9 @@ const TimeseriesExporter: FC<ITimeseriesExporterProps> = (
       '',
       ...props.data.map(
         (timeseries, index) =>
-          (props.timeseries[index] && props.timeseries[index]?.name) ||
+          (props.timeseries &&
+            props.timeseries[index] &&
+            props.timeseries[index]?.name) ||
           timeseries.id
       ),
     ];
