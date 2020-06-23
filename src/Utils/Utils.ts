@@ -14,7 +14,7 @@ const getObjectProperty = (
   compareValue?: any
 ) => {
   let valid = true;
-  const properties = property.split('.');
+  const properties = property != null ? property.split('.') : [];
   let value = objectItem;
   for (let i = 0; i < properties.length; i++) {
     if (properties[i].indexOf('!') >= 0) {
@@ -77,5 +77,4 @@ export {
   changeObjectProperty,
   queryProp,
   uniqueId,
-  s4,
 };

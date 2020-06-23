@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
 import { Button } from '@material-ui/core';
-import { parseISO, format, differenceInSeconds } from 'date-fns';
-import { ITimeseriesExporterProps, ITimeseriesData } from './types';
+import { differenceInSeconds, format, parseISO } from 'date-fns';
+import React, { FC } from 'react';
+import { ITimeseriesData, ITimeseriesExporterProps } from './types';
 
 const TimeseriesExporter: FC<ITimeseriesExporterProps> = (
   props: ITimeseriesExporterProps
@@ -11,7 +11,9 @@ const TimeseriesExporter: FC<ITimeseriesExporterProps> = (
       '',
       ...props.data.map(
         (timeseries, index) =>
-          (props.timeseries[index] && props.timeseries[index]?.name) ||
+          (props.timeseries &&
+            props.timeseries[index] &&
+            props.timeseries[index]?.name) ||
           timeseries.id
       ),
     ];
@@ -57,7 +59,9 @@ const TimeseriesExporter: FC<ITimeseriesExporterProps> = (
 
         cells.push(
           found.length === 1
-            ? props.timeseries[index] && props.timeseries[index]?.decimals
+            ? props.timeseries &&
+              props.timeseries[index] &&
+              props.timeseries[index]?.decimals
               ? (found[0][1] as number).toFixed(
                   props.timeseries[index]!.decimals!
                 )

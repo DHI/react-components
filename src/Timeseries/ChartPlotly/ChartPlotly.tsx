@@ -1,11 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
-import Plot from 'react-plotly.js';
 import { Layout, PlotData, Shape } from 'plotly.js';
+import React, { FC, useEffect, useState } from 'react';
+import Plot from 'react-plotly.js';
 import {
-  ITimeseriesData,
-  IChartPlotlyProps,
   IChartPlotlyConfig,
   IChartPlotlyPlotData,
+  IChartPlotlyProps,
+  ITimeseriesData,
 } from './types';
 
 const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
@@ -106,6 +106,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
 
             const value = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
             result.push([points[i][0], value]);
+            break;
           }
         }
       });
@@ -117,7 +118,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
 
   const formatData = () => {
     let plotDataList: Partial<PlotData>[] = [];
-    const shapes: Partial<Shape>[] = [];
+    let shapes: Partial<Shape>[] = [];
 
     if (props.data) {
       props.data.forEach((timeseriesData: ITimeseriesData, index: number) => {
@@ -134,37 +135,37 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
           );
           plotDataList = [...plotDataList, series];
         } else {
-          getArrowValues(index).map((point: number[]) =>
-            shapes.push({
-              type: 'path',
-              path: drawArrow(
-                point[1] + (series.offset ? series.offset : 0),
-                series.arrowScale
-              ),
-              xref: 'x',
-              yref: 'y',
-              fillcolor: series.fillcolor ? series.fillcolor : 'black',
-              xsizemode: 'pixel',
-              ysizemode: 'pixel',
-              xanchor: point[0],
-              yanchor: series.arrowYValue ? series.arrowYValue : -1.5,
-              line: {
-                width: 0,
-              },
-            })
-          );
+          shapes = [
+            ...shapes,
+            ...getArrowValues(index).map(
+              (point: number[]) =>
+                ({
+                  type: 'path',
+                  path: drawArrow(
+                    point[1] + (series.offset ? series.offset : 0),
+                    series.arrowScale
+                  ),
+                  xref: 'x',
+                  yref: 'y',
+                  fillcolor: series.fillcolor ? series.fillcolor : 'black',
+                  xsizemode: 'pixel',
+                  ysizemode: 'pixel',
+                  xanchor: point[0],
+                  yanchor: series.arrowYValue ? series.arrowYValue : -1.5,
+                  line: {
+                    width: 0,
+                  },
+                } as Partial<Shape>)
+            ),
+          ];
         }
       });
 
+      const layoutList = { ...defaultLayout, ...props.layout };
       if (shapes.length > 0) {
-        const layoutList = { ...defaultLayout, ...props.layout };
-        if (layout.shapes) {
-          layoutList.shapes = [...layout.shapes, ...shapes];
-        } else {
-          layoutList.shapes = shapes;
-        }
-        setLayout(layoutList);
+        layoutList.shapes = shapes;
       }
+      setLayout(layoutList);
 
       setPlotData(plotDataList);
     }
