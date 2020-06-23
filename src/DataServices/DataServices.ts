@@ -1,5 +1,6 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
+import { dataObjectToArray, queryProp } from '../';
 import { DataSource, JobQuery, Options, User } from './types';
 
 const DEFAULT_OPTIONS = {
@@ -409,6 +410,7 @@ const executeJob = (
   taskId: any,
   parameters: any
 ) => {
+  console.log(`${dataSource.host}/api/jobs/${dataSource.connection}`);
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
     method: 'POST',
     additionalHeaders: {

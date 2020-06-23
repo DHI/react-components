@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
-import { Menu, MenuItem, IconButton } from '@material-ui/core';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { MoreVert as MoreVertIcon } from '@material-ui/icons';
-import IScenarioMenuProps from './types';
+import React, { FC, useState } from 'react';
+import IScenarioMenuProps, { IMenuItems, IScenario } from './types';
 
 const ScenarioMenu: FC<IScenarioMenuProps> = (props: IScenarioMenuProps) => {
   const { onContextMenuClick, scenario, menu } = props;
@@ -15,8 +15,8 @@ const ScenarioMenu: FC<IScenarioMenuProps> = (props: IScenarioMenuProps) => {
     }
   };
 
-  const setContextMenu = (elementId: string, scenario: any) => {
-    onContextMenuClick(elementId, scenario);
+  const setContextMenu = (menuItem: IMenuItems, scenario: IScenario) => {
+    onContextMenuClick(menuItem, scenario);
     setShowMenuState(false);
   };
 
@@ -39,7 +39,7 @@ const ScenarioMenu: FC<IScenarioMenuProps> = (props: IScenarioMenuProps) => {
           <MenuItem
             key={menuItem.id}
             id={menuItem.id}
-            onClick={() => setContextMenu(menuItem.id, scenario)}
+            onClick={() => setContextMenu(menuItem, scenario)}
           >
             {menuItem.label}
           </MenuItem>
