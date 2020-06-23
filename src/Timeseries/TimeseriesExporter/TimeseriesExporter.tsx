@@ -59,7 +59,9 @@ const TimeseriesExporter: FC<ITimeseriesExporterProps> = (
 
         cells.push(
           found.length === 1
-            ? props.timeseries[index] && props.timeseries[index]?.decimals
+            ? props.timeseries &&
+              props.timeseries[index] &&
+              props.timeseries[index]?.decimals
               ? (found[0][1] as number).toFixed(
                   props.timeseries[index]!.decimals!
                 )
