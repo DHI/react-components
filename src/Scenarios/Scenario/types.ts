@@ -71,6 +71,14 @@ interface IScenariosProps {
      * Scenario deletion confirmation dialog
      */
     deleteConfirmation?: string;
+    /**
+     * Value to be add as a cancel button text
+     */
+    cancelLabel?: string;
+    /**
+     * Value to be add as a confirm button text
+     */
+    confirmLabel?: string;
   };
   /**
    * Customising scenario status display
@@ -175,6 +183,14 @@ interface IDialog {
    * Value to be display as content of dialog
    */
   dialogMessage?: string;
+  /**
+   * Value to be add as a cancel button text
+   */
+  dialogCancelLabel?: string;
+  /**
+   * Value to be add as a confirm button text
+   */
+  dialogConfirmLabel?: string;
   /**
    * A function when dialog is confirmed
    */

@@ -162,6 +162,14 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
               scenario.data,
               nameField
             )} ?`,
+      dialogCancelLabel:
+        translations && translations.cancelLabel
+          ? translations.cancelLabel
+          : 'Cancel',
+      dialogConfirmLabel:
+        translations && translations.confirmLabel
+          ? translations.confirmLabel
+          : 'Confirm',
       dialogCommand: () => onExecuteScenario(scenario, menuItem),
     });
   };
@@ -197,6 +205,14 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
               scenario.data,
               nameField
             )} ?`,
+      dialogCancelLabel:
+        translations && translations.cancelLabel
+          ? translations.cancelLabel
+          : 'Cancel',
+      dialogConfirmLabel:
+        translations && translations.confirmLabel
+          ? translations.confirmLabel
+          : 'Confirm',
       dialogCommand: () => onTerminateScenario(scenario, menuItem),
     });
   };
@@ -236,6 +252,14 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
         translations && translations.cloneConfirmation
           ? `${translations.cloneConfirmation} ?`
           : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ?`,
+      dialogCancelLabel:
+        translations && translations.cancelLabel
+          ? translations.cancelLabel
+          : 'Cancel',
+      dialogConfirmLabel:
+        translations && translations.confirmLabel
+          ? translations.confirmLabel
+          : 'Confirm',
       dialogCommand: () => onCloneScenario(scenario),
     });
   };
@@ -274,6 +298,14 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
               scenario.data,
               nameField
             )} ?`,
+      dialogCancelLabel:
+        translations && translations.cancelLabel
+          ? translations.cancelLabel
+          : 'Cancel',
+      dialogConfirmLabel:
+        translations && translations.confirmLabel
+          ? translations.confirmLabel
+          : 'Confirm',
       dialogCommand: () => onDeleteScenario(scenario),
     });
   };
@@ -337,6 +369,8 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
       <ScenarioDialog
         title={dialog.dialogTitle}
         message={dialog.dialogMessage}
+        cancelLabel={dialog.dialogCancelLabel}
+        confirmLabel={dialog.dialogConfirmLabel}
         command={dialog.dialogCommand}
         showDialog={dialog.showDialog}
         closeDialog={closeDialog}
