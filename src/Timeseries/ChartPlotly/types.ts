@@ -4,7 +4,6 @@ interface IChartPlotlyProps {
   /**
    * A list of time series
    */
-
   data: ITimeseriesData[];
   /**  Customising config
    * @url: https://plot.ly/javascript/configuration-options/
@@ -34,7 +33,6 @@ interface ITimeseriesData {
   /**
    * The time series data
    */
-
   data: number[][];
 }
 
@@ -42,7 +40,6 @@ interface IChartPlotlyConfig extends Config {
   /**
    * Indicates if the time series should be presented as short names
    */
-
   useShortNames: boolean;
 }
 
@@ -54,22 +51,18 @@ interface IChartPlotlyPlotData extends PlotData {
   /**
    * Is this time series an arrow series
    */
-
   isArrow: boolean;
   /**
    * A value that the number will be offset with
    */
-
   offset?: number;
   /**
    * A value that the arrow will be scaled with
    */
-
   arrowScale?: number;
   /**
    * The value that the arrows are placed at on the y axis
    */
-
   arrowYValue?: number;
 }
 

@@ -14,6 +14,8 @@ const GeneralDialog: FC<IGeneralDialogProps> = (props: IGeneralDialogProps) => {
     mainSection,
     title,
     message,
+    cancelLabel,
+    confirmLabel,
     command,
     showDialog,
     closeDialog,
@@ -43,10 +45,10 @@ const GeneralDialog: FC<IGeneralDialogProps> = (props: IGeneralDialogProps) => {
       </DialogContent>
       <DialogActions style={{ padding: '24px', margin: '0px' }}>
         <Button onClick={setCloseDialog} variant="outlined">
-          {'Cancel'}
+          {cancelLabel}
         </Button>
         <Button onClick={setCommandDialog} color="primary" variant="contained">
-          {'Confirm'}
+          {confirmLabel}
         </Button>
       </DialogActions>
     </Dialog>

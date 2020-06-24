@@ -155,16 +155,6 @@ export const scenario = () => {
           ]}
           addScenario={newScenario}
           taskId={'workflow'}
-          translations={{
-            terminateConfirmation:
-              'Ini akan membatalkan pekerjaan yang sedang dieksekusi. Status akan berubah setelah pembatalan pekerjaan. Anda yakin ingin mengakhiri',
-            executeConfirmation:
-              'Ini akan memulai pekerjaan baru di latar belakang. Status akan berubah setelah penyelesaian pekerjaan. Anda yakin ingin mengeksekusi',
-            cloneConfirmation:
-              'Ini akan memulai pekerjaan baru di latar belakang. Anda dapat menghapus skenario kloning ini nanti. Anda yakin ingin mengkloning',
-            deleteConfirmation:
-              'Ini akan menghapus skenario yang dipilih dari daftar. Setelah dihapus, Anda tidak dapat mengambil data. Anda yakin ingin menghapus',
-          }}
         />
       </div>
     );
