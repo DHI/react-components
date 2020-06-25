@@ -127,7 +127,7 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
     }
   };
 
-  const toggleModal = (rowData?: any, editing?: any) => () => {
+  const toggleModal = (rowData?: any, editing = false) => () => {
     setState({
       ...state,
       editing,

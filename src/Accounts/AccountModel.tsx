@@ -14,7 +14,7 @@ const AccountModel = ({
   editing?: boolean;
   open?: boolean;
   onSubmit(details: any): void;
-  onToggle(a: any, b: any): void;
+  onToggle(data?: any, isEditing?: boolean): () => void;
 }) => {
   const [state, setState] = useState({
     passwordValid: true,
@@ -140,7 +140,7 @@ const AccountModel = ({
         <DialogTitle id="form-dialog-title">{editing ? 'Edit Account Details' : 'Create New Account'}</DialogTitle>
         {content}
         <DialogActions>
-          <Button variant="outlined" onClick={() => onToggle(null, false)}>
+          <Button variant="outlined" onClick={onToggle(null, false)}>
             Cancel
           </Button>
           <Button type="submit" variant="contained" color="primary">
