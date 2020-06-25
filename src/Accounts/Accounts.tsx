@@ -19,7 +19,7 @@ import {
 } from '@material-ui/icons';
 
 import AccountModel from './AccountModel';
-import { Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button } from '@material-ui/core';
 
 import { fetchAccounts, updateAccount, createAccount, deleteAccount } from '../DataServices/DataServices';
 
@@ -235,9 +235,20 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
   const accountModal = state.showModal && <AccountModel user={state.selectedUser} editing={state.editing} onSubmit={handleSubmit} open={state.showModal} onToggle={toggleModal} />;
 
   const deleteUserModal = state.showDialog && (
-    <Dialog open={true}>
+    <Dialog open={true} onClose={() => setState({ ...state, showDialog: false })}>
       <DialogTitle>{state.dialogTitle}</DialogTitle>
-      <DialogContent>{state.dialogMessage}</DialogContent>
+      <DialogContent></DialogContent>
+      <DialogContent>
+        <DialogContentText>{state.dialogMessage}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="outlined" onClick={() => {}}>
+          Cancel
+        </Button>
+        <Button variant="contained" color="secondary" onClick={() => {}}>
+          Delete
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 

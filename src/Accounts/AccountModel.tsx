@@ -152,6 +152,4 @@ const AccountModel = ({
   );
 };
 
-AccountModel.propTypes = {};
-
 export default AccountModel;
