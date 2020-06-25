@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
 import { fetchToken, Scenario } from '../src';
-import { IScenario } from '../src/Scenarios/Scenario/types';
+import { IScenario } from '../src/Scenarios/types';
 
 export default {
   title: 'Scenarios Components',

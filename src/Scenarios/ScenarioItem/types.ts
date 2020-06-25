@@ -1,63 +1,18 @@
+import { IMenuItem, IScenario, Istatus } from 'Scenarios/types';
+
 interface IScenarioItemProps {
   /**
    * Style of the scenario item
    */
   classes?: any;
-  menu: {
-    /**
-     * The id of scenario option menu
-     */
-    id: string;
-    /**
-     * The display name of scenario option menu
-     */
-    label: string;
-    condition?: {
-      field: string;
-      value: string;
-    };
-  }[];
-  scenario: {
-    /**
-     * The Id of the scenario
-     */
-    id: string;
-    /**
-     * Last status of scenario
-     */
-    lastJobStatus: string;
-    lastJobId: string;
-    /**
-     * Date and time when scenario is created
-     */
-    dateTime: string;
-    version: string;
-    /**
-     * Value containing description of scenario
-     */
-    data: string;
-    lastJobProgress?: number;
-  };
+  menu: IMenuItem[];
+  scenario: IScenario;
   /**
    * The scenario menu function handlers
    */
   onContextMenuClick: Function;
 
-  status: {
-    /**
-     * Scenario status hand over message
-     */
-    message?: string;
-    /**
-     * Scenario status color
-     */
-
-    color?: string;
-    /**
-     * Scenario status progress percentage
-     */
-    progress?: number;
-  };
+  status: Istatus;
   /**
    * Indicates if the hour of the scenario should be shown
    */

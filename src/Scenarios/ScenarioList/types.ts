@@ -1,3 +1,10 @@
+import {
+  IDescriptionField,
+  IMenuItem,
+  IScenario,
+  Istatus,
+} from 'Scenarios/types';
+
 interface IScenarioListProps {
   /**
    * Style of the list
@@ -7,20 +14,7 @@ interface IScenarioListProps {
    * The scenario menu function handlers
    */
   onContextMenuClick: Function;
-  menuItems: {
-    /**
-     * The id of scenario option menu
-     */
-    id: string;
-    /**
-     * The display name of scenario option menu
-     */
-    label: string;
-    condition?: {
-      field: string;
-      value: string;
-    };
-  }[];
+  menuItems: IMenuItem[];
   /**
    * The list of scenario
    */
@@ -53,76 +47,7 @@ interface IScenarioListProps {
    * The id of selected scenario when it clicked
    */
   selectedScenarioId?: string;
-  status: {
-    /**
-     * Scenario status name
-     */
-    name: string;
-    /**
-     * Scenario status color
-     */
-    color: string;
-    /**
-     * Scenario status hand over message
-     */
-    message: string;
-    /**
-     * Scenario status progress percentage
-     */
-    progress?: number;
-  }[];
-}
-
-interface IScenario {
-  /**
-   * The Id of the scenario
-   */
-  id: string;
-  /**
-   * Last status of scenario
-   */
-  lastJobStatus: string;
-  lastJobId: string;
-  /**
-   * Date and time when scenario is created
-   */
-  dateTime: string;
-  version: string;
-  /**
-   * Value containing description of scenario
-   */
-  data: string;
-  lastJobProgress?: number;
-}
-
-interface ICondition {
-  /**
-   * Additional condition of description field
-   */
-  field: string;
-  /**
-   * Additional condition of description value
-   */
-  value: string;
-}
-
-interface IDescriptionField {
-  /**
-   * Scenario description data field to be diplay as value
-   */
-  field: string;
-  /**
-   * Scenario description data field to be diplay as label
-   */
-  name: string;
-  /**
-   * Optional condition to be display as description
-   */
-  condition?: {
-    field: string;
-    value: string;
-  };
+  status: Istatus[];
 }
 
 export default IScenarioListProps;
-export { IScenario, ICondition, IDescriptionField };
