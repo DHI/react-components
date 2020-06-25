@@ -71,7 +71,13 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   );
 
   return (
-    <div className={classes.scenario} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)}>
+    <div
+      className={classes.scenario}
+      onMouseOver={() => setHover(true)}
+      onMouseOut={() => setHover(false)}
+      onFocus={() => undefined}
+      onBlur={() => undefined}
+    >
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}

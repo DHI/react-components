@@ -132,7 +132,7 @@ interface IScenariosProps {
   /**
    * The object data to be add as new scenario
    */
-  addScenario: IScenario;
+  addScenario: IScenario | undefined;
 }
 
 interface IScenario {

@@ -1,3 +1,5 @@
+import { Button, Typography } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
 import { fetchToken, Scenario } from '..';
 import { IScenario } from './Scenario/types';
@@ -7,14 +9,14 @@ export default {
   component: [Scenario],
 };
 
-export const scenario = () => {
+export const ScenarioStory = () => {
   const [token, setToken] = useState<string>();
   const [newScenario, setNewScenario] = useState<IScenario>();
 
   useEffect(() => {
     fetchToken(process.env.ENDPOINT_URL, {
-      id: process.env.ADMINUSER,
-      password: process.env.ADMINPASSWORD,
+      id: process.env.ADMINUSER!,
+      password: process.env.ADMINPASSWORD!,
     }).subscribe(
       (res) => {
         setToken(res.accessToken.token);

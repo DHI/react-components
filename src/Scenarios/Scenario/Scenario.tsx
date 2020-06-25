@@ -64,13 +64,13 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
     if (addScenario !== scenario) {
       let newScenario: IScenario;
 
-      if (addScenario.data) {
-        newScenario = clone(addScenario);
+      if (addScenario!.data) {
+        newScenario = clone(addScenario) as IScenario;
 
         newScenario = {
           ...newScenario,
           id: uniqueId(),
-          data: addScenario.data,
+          data: addScenario!.data,
         };
       } else {
         newScenario = {

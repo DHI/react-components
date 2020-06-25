@@ -1,15 +1,15 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import React, { useEffect, useState } from 'react';
-import { ChartPlotly, fetchTimeseriesValues, fetchToken, TimeseriesExporter as TimeseriesExporterComponent } from '..';
+import { ChartPlotly, fetchTimeseriesValues, fetchToken, TimeseriesExporter } from '..';
 import { IChartPlotlyPlotData } from './ChartPlotly/types';
 
 export default {
   title: 'Timeseries Components',
-  component: [ChartPlotly, TimeseriesExporterComponent],
+  component: [ChartPlotly, TimeseriesExporter],
   decorators: [withKnobs],
 };
 
-export const ChartPlotlyTimeseries = () => {
+export const ChartPlotlyTimeseriesStory = () => {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export const ChartPlotlyTimeseries = () => {
   );
 };
 
-export const ChartPlotlyArrows = () => {
+export const ChartPlotlyArrowsStory = () => {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -222,7 +222,7 @@ export const ChartPlotlyArrows = () => {
   );
 };
 
-export const TimeseriesExporter = () => {
+export const TimeseriesExporterStory = () => {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -284,7 +284,7 @@ export const TimeseriesExporter = () => {
   ];
 
   return (
-    <TimeseriesExporterComponent
+    <TimeseriesExporter
       color="primary"
       variant="contained"
       dateTimeFormat="dd/MM-yyyy HH-mm-ss"
@@ -292,6 +292,6 @@ export const TimeseriesExporter = () => {
       data={data}
       caption="This is a download button"
       timeseries={timeseries}
-    ></TimeseriesExporterComponent>
+    ></TimeseriesExporter>
   );
 };
