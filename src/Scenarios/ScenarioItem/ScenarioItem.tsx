@@ -59,19 +59,11 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
 
   const scenarioDetails = (
     <Grid item className={classes.scenarioDetails}>
-      <Typography
-        component="span"
-        color="primary"
-        className={classes.scenarioTitle}
-      >
+      <Typography component="span" color="primary" className={classes.scenarioTitle}>
         {name}
       </Typography>
       {description.map((item: { name: string; value: string }) => (
-        <Typography
-          key={item.name}
-          component="span"
-          className={classes.textFields}
-        >
+        <Typography key={item.name} component="span" className={classes.textFields}>
           {`${item.name}: ${item.value}`}
         </Typography>
       ))}
@@ -79,21 +71,11 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   );
 
   return (
-    <div
-      className={classes.scenario}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
-    >
+    <div className={classes.scenario} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)}>
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}
-      {showMenu && (
-        <ScenarioMenu
-          onContextMenuClick={onContextMenuClick}
-          menu={menu}
-          scenario={scenario}
-        />
-      )}
+      {showMenu && <ScenarioMenu onContextMenuClick={onContextMenuClick} menu={menu} scenario={scenario} />}
     </div>
   );
 };

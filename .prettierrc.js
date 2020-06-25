@@ -1,6 +1,6 @@
 module.exports = {
   ...require('eslint-config-standard-typescript-prettier/prettier'),
-  printWidth: 180,
+  printWidth: 120,
   useTabs: false,
   semi: true,
   singleQuote: true,

@@ -34,6 +34,7 @@ export const scenario = () => {
   const onContextMenuClickHandler = (scenario: IScenario, clickId: string) => {
     alert(clickId);
   };
+
   if (token) {
     return (
       <div>
@@ -50,7 +51,13 @@ export const scenario = () => {
         </Typography>
 
         <Typography align="left" component="div" style={{ marginBottom: '10px' }}>
-          <Button variant="contained" color="primary" style={{ backgroundColor: '#0D3958' }} startIcon={<AddIcon />} onClick={onAddScenario}>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ backgroundColor: '#0D3958' }}
+            startIcon={<AddIcon />}
+            onClick={onAddScenario}
+          >
             <span>Add new scenario</span>
           </Button>
         </Typography>
@@ -142,5 +149,6 @@ export const scenario = () => {
       </div>
     );
   }
+
   return null;
 };

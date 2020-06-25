@@ -5,12 +5,23 @@ import { ITimeseriesData, ITimeseriesExporterProps } from './types';
 
 const TimeseriesExporter: FC<ITimeseriesExporterProps> = (props: ITimeseriesExporterProps) => {
   const exportTable = () => {
-    const columns = ['', ...props.data.map((timeseries, index) => (props.timeseries && props.timeseries[index] && props.timeseries[index]?.name) || timeseries.id)];
+    const columns = [
+      '',
+      ...props.data.map(
+        (timeseries, index) =>
+          (props.timeseries && props.timeseries[index] && props.timeseries[index]?.name) || timeseries.id,
+      ),
+    ];
 
     let timesteps: string[] = [];
 
     props.data.forEach((timeseries) => {
-      timesteps = [...timesteps, ...timeseries.data.map((timestep: (string | number)[]) => format(parseISO(timestep[0].toString()), "yyyy-MM-dd'T'HH:mm:ss"))];
+      timesteps = [
+        ...timesteps,
+        ...timeseries.data.map((timestep: (string | number)[]) =>
+          format(parseISO(timestep[0].toString()), "yyyy-MM-dd'T'HH:mm:ss"),
+        ),
+      ];
     });
 
     timesteps = timesteps.filter((value, index, self) => self.indexOf(value) === index);

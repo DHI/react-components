@@ -10,6 +10,7 @@ const ScenarioMenu: FC<IScenarioMenuProps> = (props: IScenarioMenuProps) => {
 
   const setShowMenu = (isShow: boolean, elementId: any) => {
     setShowMenuState(isShow);
+
     if (isShow) {
       setshowElementState(elementId);
     }
@@ -25,22 +26,13 @@ const ScenarioMenu: FC<IScenarioMenuProps> = (props: IScenarioMenuProps) => {
       <IconButton
         aria-owns={showMenu ? 'simple-menu' : undefined}
         aria-haspopup="true"
-        onClick={e => setShowMenu(true, e.currentTarget)}
+        onClick={(e) => setShowMenu(true, e.currentTarget)}
       >
         <MoreVertIcon />
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={showElement}
-        open={showMenu}
-        onClose={() => setShowMenuState(false)}
-      >
-        {menu.map(menuItem => (
-          <MenuItem
-            key={menuItem.id}
-            id={menuItem.id}
-            onClick={() => setContextMenu(menuItem, scenario)}
-          >
+      <Menu id="simple-menu" anchorEl={showElement} open={showMenu} onClose={() => setShowMenuState(false)}>
+        {menu.map((menuItem) => (
+          <MenuItem key={menuItem.id} id={menuItem.id} onClick={() => setContextMenu(menuItem, scenario)}>
             {menuItem.label}
           </MenuItem>
         ))}

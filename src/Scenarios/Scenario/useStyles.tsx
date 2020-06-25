@@ -10,8 +10,6 @@ const styles = () => ({
   },
 });
 
-const useStyles = makeStyles(
-  styles as any,
-  { withTheme: true } as WithStylesOptions<{}>
-);
+const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);
+
 export default useStyles;
