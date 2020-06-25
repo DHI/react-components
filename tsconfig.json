@@ -1,7 +1,6 @@
 {
   "include": [
-    "src",
-    "types"
+    "src", "typings.d.ts", ".eslintrc.js",
   ],
   "compilerOptions": {
     "module": "esnext",
@@ -20,16 +19,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "@": [
-        "./"
-      ],
-      "*": [
-        "src/*",
-        "node_modules/*"
-      ]
-    },
+    // "baseUrl": "./",
     "jsx": "react",
     "esModuleInterop": true
   }

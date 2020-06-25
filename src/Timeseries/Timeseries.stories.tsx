@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {
-  ChartPlotly,
-  TimeseriesExporter as TimeseriesExporterComponent,
-  fetchToken,
-  fetchTimeseriesValues,
-} from '../src';
+import { ChartPlotly, TimeseriesExporter as TimeseriesExporterComponent, fetchToken, fetchTimeseriesValues } from '..';
 import { withKnobs } from '@storybook/addon-knobs';
-import { IChartPlotlyPlotData } from '../src/Timeseries/ChartPlotly/types';
+import { IChartPlotlyPlotData } from './ChartPlotly/types';
 
 export default {
   title: 'Timeseries Components',
@@ -15,24 +10,22 @@ export default {
 };
 
 export const ChartPlotlyTimeseries = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
       id: process.env.USERUSER,
       password: process.env.USERPASSWORD,
     }).subscribe(
-      res => {
-        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
-          data => {
-            console.log(data);
-            setData(data);
-          }
-        );
+      (res) => {
+        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe((data) => {
+          console.log(data);
+          setData(data);
+        });
       },
-      err => {
+      (err) => {
         console.log(err);
-      }
+      },
     );
   }, []);
 
@@ -98,63 +91,50 @@ export const ChartPlotlyTimeseries = () => {
       host: process.env.ENDPOINT_URL,
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: [
-        'Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]',
-        'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]',
-      ],
+      ids: ['Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]'],
     },
     {
       connection: 'mclite-timeseries',
       host: process.env.ENDPOINT_URL,
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: [
-        'Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]',
-        'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]',
-      ],
+      ids: ['Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]'],
     },
   ];
 
   return (
     <div style={{ width: '100%', height: '400px' }}>
-      <ChartPlotly
-        layout={layout}
-        timeseries={timeseries}
-        data={data}
-        config={config}
-        style={{ width: '100%', height: '100%' }}
-      />
+      <ChartPlotly layout={layout} timeseries={timeseries} data={data!} config={config} style={{ width: '100%', height: '100%' }} />
     </div>
   );
 };
 
 export const ChartPlotlyArrows = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
-      id: process.env.USERUSER,
-      password: process.env.USERPASSWORD,
+      id: process.env.USERUSER!,
+      password: process.env.USERPASSWORD!,
     }).subscribe(
-      res => {
-        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
-          data => {
-            data = [
-              ...data,
-              {
-                id: data[0].id,
-                data: data[0].data.map((point: number[]) => {
-                  return [point[0], point[1] + 30];
-                }),
-              },
-            ];
-            setData(data);
-          }
-        );
+      (res) => {
+        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe((data) => {
+          data = [
+            ...data,
+            {
+              id: data[0].id,
+              data: data[0].data.map((point: number[]) => {
+                return [point[0], point[1] + 30];
+              }),
+            },
+          ];
+
+          setData(data);
+        });
       },
-      err => {
+      (err) => {
         console.log(err);
-      }
+      },
     );
   }, []);
 
@@ -209,7 +189,7 @@ export const ChartPlotlyArrows = () => {
 
   const dataSources = [
     {
-      host: process.env.ENDPOINT_URL,
+      host: process.env.ENDPOINT_URL!,
       connection: 'mclite-timeseries',
       from: '2020-01-05T00:00:00',
       to: '2020-02-10T00:00:00',
@@ -219,35 +199,27 @@ export const ChartPlotlyArrows = () => {
 
   return (
     <div style={{ width: '100%', height: '400px' }}>
-      <ChartPlotly
-        layout={layout}
-        timeseries={timeseries}
-        data={data}
-        config={config}
-        style={{ width: '100%', height: '100%' }}
-      />
+      <ChartPlotly layout={layout} timeseries={timeseries} data={data} config={config} style={{ width: '100%', height: '100%' }} />
     </div>
   );
 };
 
 export const TimeseriesExporter = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
       id: process.env.USERUSER,
       password: process.env.USERPASSWORD,
     }).subscribe(
-      res => {
-        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
-          data => {
-            setData(data);
-          }
-        );
+      (res) => {
+        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe((data) => {
+          setData(data);
+        });
       },
-      err => {
+      (err) => {
         console.log(err);
-      }
+      },
     );
   }, []);
 
@@ -276,20 +248,14 @@ export const TimeseriesExporter = () => {
       connection: 'mclite-timeseries',
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: [
-        'Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]',
-        'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]',
-      ],
+      ids: ['Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]'],
     },
     {
       host: process.env.ENDPOINT_URL,
       connection: 'mclite-timeseries',
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: [
-        'Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]',
-        'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]',
-      ],
+      ids: ['Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]'],
     },
   ];
 
