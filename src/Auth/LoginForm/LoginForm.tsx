@@ -1,11 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  CircularProgress,
-  FormControlLabel,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Button, Checkbox, CircularProgress, FormControlLabel, TextField, Typography } from '@material-ui/core';
 import React, { FC, useState } from 'react';
 import Auth from '../AuthService';
 import ILoginFormProps from './types';
@@ -35,9 +28,7 @@ const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
     rememberMe: false,
   });
   const classes = useStyles();
-
   const auth = new Auth(host);
-
   const validate = () => form.id && form.password;
 
   const handleChange = (name: string, value: string | boolean) => {
@@ -46,26 +37,30 @@ const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
     if (validate()) {
       setLoading(true);
     }
+
     auth.login(
       form,
       (user, token) => {
         console.log('login success');
         setLoading(false);
+
         if (onSuccess != null) {
           onSuccess(user, token);
         }
       },
-      error => {
+      (error) => {
         console.log('login error');
         setLoading(false);
         setError(true);
+
         if (onError != null) {
           onError(error);
         }
-      }
+      },
     );
   };
 
@@ -78,7 +73,7 @@ const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
         error={error}
         margin="dense"
         value={form.id}
-        onChange={e => handleChange('id', e.target.value)}
+        onChange={(e) => handleChange('id', e.target.value)}
         helperText={error ? 'Invalid Login' : ''}
         label={userNamePlaceholder}
         variant={textFieldVariant as any}
@@ -88,7 +83,7 @@ const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
         fullWidth
         margin="dense"
         type="password"
-        onChange={e => handleChange('password', e.target.value)}
+        onChange={(e) => handleChange('password', e.target.value)}
         label={passwordPlaceholder}
         variant={textFieldVariant as any}
       />
@@ -100,14 +95,10 @@ const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
                 name="rememberMe"
                 checked={form.rememberMe}
                 color="primary"
-                onChange={e => handleChange('rememberMe', e.target.checked)}
+                onChange={(e) => handleChange('rememberMe', e.target.checked)}
               />
             }
-            label={
-              <Typography className={classes.labels}>
-                {rememberMeLabelText}
-              </Typography>
-            }
+            label={<Typography className={classes.labels}>{rememberMeLabelText}</Typography>}
           />
         )}
       </div>
@@ -123,17 +114,11 @@ const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
                 : undefined
             }
           >
-            <Typography className={classes.labels}>
-              {resetPasswordLabelText}
-            </Typography>
+            <Typography className={classes.labels}>{resetPasswordLabelText}</Typography>
           </Button>
         )}
         <Button type="submit" color="primary" variant="contained">
-          {loading ? (
-            <CircularProgress color="inherit" size={24} />
-          ) : (
-            loginButtonText
-          )}
+          {loading ? <CircularProgress color="inherit" size={24} /> : loginButtonText}
         </Button>
       </div>
     </form>

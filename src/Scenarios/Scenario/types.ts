@@ -1,10 +1,4 @@
-import {
-  IDescriptionField,
-  IMenuItem,
-  IQueryDates,
-  IScenario,
-  Istatus,
-} from 'Scenarios/types';
+import { IDescriptionField, IMenuItem, IQueryDates, IScenario, Istatus } from 'Scenarios/types';
 
 interface IScenariosProps {
   /**
@@ -107,7 +101,7 @@ interface IScenariosProps {
   /**
    * The object data to be add as new scenario
    */
-  addScenario: IScenario;
+  addScenario: IScenario | undefined;
 }
 
 export default IScenariosProps;

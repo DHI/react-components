@@ -1,25 +1,9 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React, { FC } from 'react';
 import IGeneralDialogProps from './types';
 
 const GeneralDialog: FC<IGeneralDialogProps> = (props: IGeneralDialogProps) => {
-  const {
-    mainSection,
-    title,
-    message,
-    cancelLabel,
-    confirmLabel,
-    command,
-    showDialog,
-    closeDialog,
-  } = props;
+  const { mainSection, title, message, cancelLabel, confirmLabel, command, showDialog, closeDialog } = props;
 
   const setCloseDialog = () => {
     closeDialog && closeDialog();
@@ -39,9 +23,7 @@ const GeneralDialog: FC<IGeneralDialogProps> = (props: IGeneralDialogProps) => {
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {message}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
       </DialogContent>
       <DialogActions style={{ padding: '24px', margin: '0px' }}>
         <Button onClick={setCloseDialog} variant="outlined">

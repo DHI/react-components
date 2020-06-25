@@ -120,12 +120,4 @@ interface IQueryDates {
   windowEnd: string;
 }
 
-export {
-  Istatus,
-  IDescriptionField,
-  IMenuItem,
-  IScenario,
-  ICondition,
-  IDialog,
-  IQueryDates,
-};
+export { Istatus, IDescriptionField, IMenuItem, IScenario, ICondition, IDialog, IQueryDates };

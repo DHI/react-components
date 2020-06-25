@@ -1,8 +1,13 @@
 {
-  "include": ["src", "types"],
+  "include": [
+    "src", "typings.d.ts", ".eslintrc.js",
+  ],
   "compilerOptions": {
     "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
@@ -14,11 +19,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "@": ["./"],
-      "*": ["src/*", "node_modules/*"]
-    },
+    // "baseUrl": "./",
     "jsx": "react",
     "esModuleInterop": true
   }

@@ -1,38 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import {
-  ChartPlotly,
-  TimeseriesExporter as TimeseriesExporterComponent,
-  fetchToken,
-  fetchTimeseriesValues,
-} from '../src';
 import { withKnobs } from '@storybook/addon-knobs';
-import { IChartPlotlyPlotData } from '../src/Timeseries/ChartPlotly/types';
+import React, { useEffect, useState } from 'react';
+import { ChartPlotly, fetchTimeseriesValues, fetchToken, TimeseriesExporter } from '..';
+import { IChartPlotlyPlotData } from './ChartPlotly/types';
 
 export default {
   title: 'Timeseries Components',
-  component: [ChartPlotly, TimeseriesExporterComponent],
+  component: [ChartPlotly, TimeseriesExporter],
   decorators: [withKnobs],
 };
 
-export const ChartPlotlyTimeseries = () => {
-  const [data, setData] = useState();
+export const ChartPlotlyTimeseriesStory = () => {
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
       id: process.env.USERUSER,
       password: process.env.USERPASSWORD,
     }).subscribe(
-      res => {
-        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
-          data => {
-            console.log(data);
-            setData(data);
-          }
-        );
+      (res) => {
+        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe((data) => {
+          console.log(data);
+          setData(data);
+        });
       },
-      err => {
+      (err) => {
         console.log(err);
-      }
+      },
     );
   }, []);
 
@@ -120,7 +113,7 @@ export const ChartPlotlyTimeseries = () => {
       <ChartPlotly
         layout={layout}
         timeseries={timeseries}
-        data={data}
+        data={data!}
         config={config}
         style={{ width: '100%', height: '100%' }}
       />
@@ -128,33 +121,32 @@ export const ChartPlotlyTimeseries = () => {
   );
 };
 
-export const ChartPlotlyArrows = () => {
-  const [data, setData] = useState();
+export const ChartPlotlyArrowsStory = () => {
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
-      id: process.env.USERUSER,
-      password: process.env.USERPASSWORD,
+      id: process.env.USERUSER!,
+      password: process.env.USERPASSWORD!,
     }).subscribe(
-      res => {
-        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
-          data => {
-            data = [
-              ...data,
-              {
-                id: data[0].id,
-                data: data[0].data.map((point: number[]) => {
-                  return [point[0], point[1] + 30];
-                }),
-              },
-            ];
-            setData(data);
-          }
-        );
+      (res) => {
+        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe((data) => {
+          data = [
+            ...data,
+            {
+              id: data[0].id,
+              data: data[0].data.map((point: number[]) => {
+                return [point[0], point[1] + 30];
+              }),
+            },
+          ];
+
+          setData(data);
+        });
       },
-      err => {
+      (err) => {
         console.log(err);
-      }
+      },
     );
   }, []);
 
@@ -209,7 +201,7 @@ export const ChartPlotlyArrows = () => {
 
   const dataSources = [
     {
-      host: process.env.ENDPOINT_URL,
+      host: process.env.ENDPOINT_URL!,
       connection: 'mclite-timeseries',
       from: '2020-01-05T00:00:00',
       to: '2020-02-10T00:00:00',
@@ -230,24 +222,22 @@ export const ChartPlotlyArrows = () => {
   );
 };
 
-export const TimeseriesExporter = () => {
-  const [data, setData] = useState();
+export const TimeseriesExporterStory = () => {
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     fetchToken(dataSources[0].host, {
       id: process.env.USERUSER,
       password: process.env.USERPASSWORD,
     }).subscribe(
-      res => {
-        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe(
-          data => {
-            setData(data);
-          }
-        );
+      (res) => {
+        fetchTimeseriesValues(dataSources, res.accessToken.token).subscribe((data) => {
+          setData(data);
+        });
       },
-      err => {
+      (err) => {
         console.log(err);
-      }
+      },
     );
   }, []);
 
@@ -294,7 +284,7 @@ export const TimeseriesExporter = () => {
   ];
 
   return (
-    <TimeseriesExporterComponent
+    <TimeseriesExporter
       color="primary"
       variant="contained"
       dateTimeFormat="dd/MM-yyyy HH-mm-ss"
@@ -302,6 +292,6 @@ export const TimeseriesExporter = () => {
       data={data}
       caption="This is a download button"
       timeseries={timeseries}
-    ></TimeseriesExporterComponent>
+    ></TimeseriesExporter>
   );
 };

@@ -1,9 +1,4 @@
-import {
-  IDescriptionField,
-  IMenuItem,
-  IScenario,
-  Istatus,
-} from 'Scenarios/types';
+import { IDescriptionField, IMenuItem, IScenario, Istatus } from 'Scenarios/types';
 
 interface IScenarioListProps {
   /**

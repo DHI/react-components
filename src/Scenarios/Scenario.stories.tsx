@@ -1,50 +1,46 @@
 import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
-import { fetchToken, Scenario } from '../src';
-import { IScenario } from '../src/Scenarios/types';
+import { fetchToken, Scenario } from '..';
+import { IScenario } from './types';
 
 export default {
   title: 'Scenarios Components',
   component: [Scenario],
 };
 
-export const scenario = () => {
+export const ScenarioStory = () => {
   const [token, setToken] = useState<string>();
   const [newScenario, setNewScenario] = useState<IScenario>();
 
   useEffect(() => {
     fetchToken(process.env.ENDPOINT_URL, {
-      id: process.env.ADMINUSER,
-      password: process.env.ADMINPASSWORD,
+      id: process.env.ADMINUSER!,
+      password: process.env.ADMINPASSWORD!,
     }).subscribe(
-      res => {
+      (res) => {
         setToken(res.accessToken.token);
       },
-      err => {
+      (err) => {
         console.log('Error Fetching Token');
-      }
+      },
     );
   }, []);
 
   const onAddScenario = () => {
     setNewScenario({
-      data:
-        '{"name":"My Scenario","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}',
+      data: '{"name":"My Scenario","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}',
     });
   };
 
   const onContextMenuClickHandler = (scenario: IScenario, clickId: string) => {
     alert(clickId);
   };
+
   if (token) {
     return (
       <div>
-        <Typography
-          align="left"
-          component="div"
-          style={{ marginBottom: '20px' }}
-        >
+        <Typography align="left" component="div" style={{ marginBottom: '20px' }}>
           <span
             style={{
               fontWeight: 'bold',
@@ -56,11 +52,7 @@ export const scenario = () => {
           </span>
         </Typography>
 
-        <Typography
-          align="left"
-          component="div"
-          style={{ marginBottom: '10px' }}
-        >
+        <Typography align="left" component="div" style={{ marginBottom: '10px' }}>
           <Button
             variant="contained"
             color="primary"
@@ -171,5 +163,6 @@ export const scenario = () => {
       </div>
     );
   }
+
   return null;
 };

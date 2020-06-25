@@ -20,18 +20,16 @@ const fetchUrl = (endPoint: RequestInfo, options: Options) => {
   };
 
   return from(fetch(endPoint, mergedOptions as any)).pipe(
-    tap(response => console.log(`Response status: ${response.status}`)),
-    map(response => {
+    tap((response) => console.log(`Response status: ${response.status}`)),
+    map((response) => {
       if (response.status >= 400) {
-        throw new Error(
-          `Error: ${response.status}, reason: ${response.statusText}`
-        );
+        throw new Error(`Error: ${response.status}, reason: ${response.statusText}`);
       } else {
         return response;
       }
     }),
-    flatMap(response => checkStatus(response)),
-    catchError(error => throwError(error))
+    flatMap((response) => checkStatus(response)),
+    catchError((error) => throwError(error)),
   );
 };
 
@@ -39,6 +37,7 @@ const checkStatus = (response: Response) => {
   if (response.status === 204 || response.status === 202) {
     return of(response);
   }
+
   return response.json();
 };
 
@@ -48,43 +47,33 @@ const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
     body: JSON.stringify(user),
-  }).pipe(tap(res => console.log('token res', res)));
+  }).pipe(tap((res) => console.log('token res', res)));
 };
 
 // GIS
 
-const fetchFeatureCollectionValues = (
-  dataSources: DataSource | DataSource[],
-  token: string
-) => {
-  const dataSourcesArray = !Array.isArray(dataSources)
-    ? [dataSources]
-    : dataSources;
+const fetchFeatureCollectionValues = (dataSources: DataSource | DataSource[], token: string) => {
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
   const requests = dataSourcesArray.map((source: DataSource) =>
-    fetchUrl(
-      `${source.host}/api/featurecollections/${source.connection}/list`,
-      {
-        method: 'POST',
-        body: JSON.stringify(source.ids),
-        additionalHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    ).pipe(map(fc => dataObjectToArray(fc)))
+    fetchUrl(`${source.host}/api/featurecollections/${source.connection}/list`, {
+      method: 'POST',
+      body: JSON.stringify(source.ids),
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).pipe(map((fc) => dataObjectToArray(fc))),
   );
 
-  return forkJoin(requests).pipe(map(fc => fc.flat()));
+  return forkJoin(requests).pipe(map((fc) => fc.flat()));
 };
 
 // TIMESERIES
 
 const fetchTimeseriesValues = (dataSources: DataSource[], token: string) => {
-  const dataSourcesArray = !Array.isArray(dataSources)
-    ? [dataSources]
-    : dataSources;
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
-  const requests = dataSourcesArray.map(source => {
+  const requests = dataSourcesArray.map((source) => {
     let url = `${source.host}/api/timeseries/${source.connection}/list/values`;
 
     if (source.from && source.to) {
@@ -97,33 +86,26 @@ const fetchTimeseriesValues = (dataSources: DataSource[], token: string) => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(source.ids),
-    }).pipe(map(timeseries => dataObjectToArray(timeseries)));
+    }).pipe(map((timeseries) => dataObjectToArray(timeseries)));
   });
 
-  return forkJoin(requests).pipe(map(timeseries => timeseries.flat()));
+  return forkJoin(requests).pipe(map((timeseries) => timeseries.flat()));
 };
 
 const fetchTimeseriesByGroup = (dataSources: DataSource[], token: string) => {
-  const dataSourcesArray = !Array.isArray(dataSources)
-    ? [dataSources]
-    : dataSources;
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
-  const requests = dataSourcesArray.flatMap(source =>
-    source.ids!.map(group =>
-      fetchUrl(
-        `${source.host}/api/timeseries/${
-          source.connection
-        }/fullnames?group=${group.replace(/\//g, '|')}`,
-        {
-          additionalHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-    )
+  const requests = dataSourcesArray.flatMap((source) =>
+    source.ids!.map((group) =>
+      fetchUrl(`${source.host}/api/timeseries/${source.connection}/fullnames?group=${group.replace(/\//g, '|')}`, {
+        additionalHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    ),
   );
 
-  return forkJoin(requests).pipe(tap(ts => console.log('got group names', ts)));
+  return forkJoin(requests).pipe(tap((ts) => console.log('got group names', ts)));
 };
 
 // ACCOUNTS
@@ -134,7 +116,7 @@ const fetchAccount = (host: string, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch account', res)));
+  }).pipe(tap((res) => console.log('fetch account', res)));
 
 const fetchAccounts = (host: string, token: string) =>
   fetchUrl(`${host}/api/accounts`, {
@@ -142,7 +124,7 @@ const fetchAccounts = (host: string, token: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch accounts', res)));
+  }).pipe(tap((res) => console.log('fetch accounts', res)));
 
 const deleteAccount = (host: string, token: string, username: string) =>
   fetchUrl(`${host}/api/accounts/${username}`, {
@@ -150,7 +132,7 @@ const deleteAccount = (host: string, token: string, username: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('deleted account', res)));
+  }).pipe(tap((res) => console.log('deleted account', res)));
 
 const updateAccount = (host: string, token: string, username: string) =>
   fetchUrl(`${host}/api/accounts`, {
@@ -159,7 +141,7 @@ const updateAccount = (host: string, token: string, username: string) =>
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(username),
-  }).pipe(tap(json => console.log('updated user', json)));
+  }).pipe(tap((json) => console.log('updated user', json)));
 
 const createAccount = (host: string, token: string, username: string) =>
   fetchUrl(`${host}/api/accounts`, {
@@ -177,21 +159,16 @@ const resetPassword = (host: string, user: { Id: string }, token: string) =>
       Authorization: `Bearer ${token}`,
     },
     body: user.Id,
-  }).pipe(tap(res => console.log('password reset', res)));
+  }).pipe(tap((res) => console.log('password reset', res)));
 
-const updatePassword = (
-  host: string,
-  token: string,
-  passwordToken: string,
-  newPassword: string
-) =>
+const updatePassword = (host: string, token: string, passwordToken: string, newPassword: string) =>
   fetchUrl(`${host}/api/accounts/password/token=${passwordToken}`, {
     method: 'PUT',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
     body: newPassword,
-  }).pipe(tap(res => console.log('password reset', res)));
+  }).pipe(tap((res) => console.log('password reset', res)));
 
 const activateAccount = (host: string, token: string, accountToken: string) =>
   fetchUrl(`${host}/api/accounts/password/token=${accountToken}`, {
@@ -199,7 +176,7 @@ const activateAccount = (host: string, token: string, accountToken: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('account activiated', res)));
+  }).pipe(tap((res) => console.log('account activiated', res)));
 
 // MAIL TEMPLATES
 const fetchMailTemplate = (host: string, token: string, id: string) =>
@@ -208,7 +185,7 @@ const fetchMailTemplate = (host: string, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch mail template', res)));
+  }).pipe(tap((res) => console.log('fetch mail template', res)));
 
 const fetchMailTemplates = (host: string, token: string) =>
   fetchUrl(`${host}/api/mailtemplates`, {
@@ -216,7 +193,7 @@ const fetchMailTemplates = (host: string, token: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch mail templates', res)));
+  }).pipe(tap((res) => console.log('fetch mail templates', res)));
 
 const deleteMailTemplate = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/mailtemplates/${id}`, {
@@ -224,21 +201,16 @@ const deleteMailTemplate = (host: string, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('delete mail template', res)));
+  }).pipe(tap((res) => console.log('delete mail template', res)));
 
-const updateMailTemplate = (
-  host: string,
-  token: string,
-  id: string,
-  mailTemplateDTO: any
-) =>
+const updateMailTemplate = (host: string, token: string, id: string, mailTemplateDTO: any) =>
   fetchUrl(`${host}/api/mailtemplates/${id}`, {
     method: 'PUT',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(mailTemplateDTO),
-  }).pipe(tap(res => console.log('delete mail template', res)));
+  }).pipe(tap((res) => console.log('delete mail template', res)));
 
 // MAP
 
@@ -253,7 +225,7 @@ const fetchMapAnimationFiles = (
     shadingType: any;
     scale: any;
   },
-  token: string
+  token: string,
 ) => {
   const url = `${dataSource.host}/api/maps/${dataSource.connection}?&style=${config.style}&item=${config.item}&width=${config.width}&height=${config.height}&bbox=${config.bbox}&shadingtype=${config.shadingType}&scale=${config.scale}`;
 
@@ -301,7 +273,7 @@ const fetchMapStylePalette = (host: string, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch style palette', res)));
+  }).pipe(tap((res) => console.log('fetch style palette', res)));
 
 const fetchMapStyle = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/mapstyles/${id}`, {
@@ -309,7 +281,7 @@ const fetchMapStyle = (host: string, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch style', res)));
+  }).pipe(tap((res) => console.log('fetch style', res)));
 
 const fetchMapStyles = (host: string, token: string) =>
   fetchUrl(`${host}/api/mapstyles`, {
@@ -317,7 +289,7 @@ const fetchMapStyles = (host: string, token: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch style', res)));
+  }).pipe(tap((res) => console.log('fetch style', res)));
 
 const createMapStyle = (host: string, token: string, styleDTO: any) =>
   fetchUrl(`${host}/api/mapstyles`, {
@@ -326,7 +298,7 @@ const createMapStyle = (host: string, token: string, styleDTO: any) =>
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(styleDTO),
-  }).pipe(tap(res => console.log('fetch style', res)));
+  }).pipe(tap((res) => console.log('fetch style', res)));
 
 const fetchMapStyleCount = (host: string, token: string) =>
   fetchUrl(`${host}/api/mapstyles/count`, {
@@ -334,7 +306,7 @@ const fetchMapStyleCount = (host: string, token: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('fetch style', res)));
+  }).pipe(tap((res) => console.log('fetch style', res)));
 
 const deleteMapStyle = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/mapstyles/${id}`, {
@@ -342,20 +314,17 @@ const deleteMapStyle = (host: string, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('delete style', res)));
+  }).pipe(tap((res) => console.log('delete style', res)));
 
 // SCENARIOS
 
 const fetchScenario = (dataSource: DataSource, token: string, id: string) =>
-  fetchUrl(
-    `${dataSource.host}/api/scenarios/${dataSource.connection}/${id}?scenarioId=${id}`,
-    {
-      method: 'GET',
-      additionalHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  ).pipe(tap(res => console.log(`${id} scenario fetched`, res)));
+  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${id}?scenarioId=${id}`, {
+    method: 'GET',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log(`${id} scenario fetched`, res)));
 
 const fetchScenarios = (dataSource: DataSource, token: string) =>
   fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
@@ -363,7 +332,7 @@ const fetchScenarios = (dataSource: DataSource, token: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('List of scenarios fetched', res)));
+  }).pipe(tap((res) => console.log('List of scenarios fetched', res)));
 
 const fetchScenariosByDate = (dataSource: DataSource, token: string) =>
   fetchUrl(
@@ -373,7 +342,7 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) =>
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
 const deleteScenario = (dataSource: DataSource, token: string, id: any) =>
@@ -382,7 +351,7 @@ const deleteScenario = (dataSource: DataSource, token: string, id: any) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('scenario deleted', res)));
+  }).pipe(tap((res) => console.log('scenario deleted', res)));
 
 const postScenario = (dataSource: DataSource, token: string, scenario: any) =>
   fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
@@ -391,7 +360,7 @@ const postScenario = (dataSource: DataSource, token: string, scenario: any) =>
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(scenario),
-  }).pipe(tap(res => console.log('scenario posted', res)));
+  }).pipe(tap((res) => console.log('scenario posted', res)));
 
 const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
   fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
@@ -400,17 +369,11 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(scenario),
-  }).pipe(tap(res => console.log('scenario updated', res)));
+  }).pipe(tap((res) => console.log('scenario updated', res)));
 
 // JOBS
 
-const executeJob = (
-  dataSource: DataSource,
-  token: string,
-  taskId: any,
-  parameters: any
-) => {
-  console.log(`${dataSource.host}/api/jobs/${dataSource.connection}`);
+const executeJob = (dataSource: DataSource, token: string, taskId: any, parameters: any) => {
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
     method: 'POST',
     additionalHeaders: {
@@ -419,27 +382,24 @@ const executeJob = (
     body: JSON.stringify({ taskId, parameters }),
   }).pipe(
     tap(
-      res => {
+      (res) => {
         console.log('job executed', res);
       },
-      error => {
+      (error) => {
         console.log(error);
-      }
-    )
+      },
+    ),
   );
 };
 
 const cancelJob = (dataSource: DataSource, token: string, id: any) =>
-  fetchUrl(
-    `${dataSource.host}/api/jobs/${dataSource.connection}/${id}/cancel`,
-    {
-      method: 'PUT',
-      additionalHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: '',
-    }
-  ).pipe(tap(res => console.log('job canceled', res)));
+  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/${id}/cancel`, {
+    method: 'PUT',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: '',
+  }).pipe(tap((res) => console.log('job canceled', res)));
 
 const cancelJobs = (dataSource: DataSource, token: string, ids: string) =>
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/cancel`, {
@@ -448,7 +408,7 @@ const cancelJobs = (dataSource: DataSource, token: string, ids: string) =>
       Authorization: `Bearer ${token}`,
     },
     body: { ids },
-  }).pipe(tap(res => console.log('job canceled', res)));
+  }).pipe(tap((res) => console.log('job canceled', res)));
 
 const fetchJob = (dataSource: DataSource, token: string, id: string) =>
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/${id}`, {
@@ -456,27 +416,25 @@ const fetchJob = (dataSource: DataSource, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('jeb fetched executed', res)));
+  }).pipe(tap((res) => console.log('jeb fetched executed', res)));
 
 const fetchJobs = (
   dataSource: DataSource,
   token: string,
-  query: { account: any; since: any; status: any; task: any; tag: any }
+  query: { account: any; since: any; status: any; task: any; tag: any },
 ) => {
   const url = !query
     ? `${dataSource.host}/api/jobs/${dataSource.connection}`
-    : `${dataSource.host}/api/jobs/${dataSource.connection}?account=${queryProp(
-        query.account
-      )}&since=${queryProp(query.since)}&status=${queryProp(
-        query.status
-      )}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`;
+    : `${dataSource.host}/api/jobs/${dataSource.connection}?account=${queryProp(query.account)}&since=${queryProp(
+        query.since,
+      )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`;
 
   return fetchUrl(url, {
     method: 'GET',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('jobs fetched', res)));
+  }).pipe(tap((res) => console.log('jobs fetched', res)));
 };
 
 const deleteJob = (dataSource: DataSource, token: string, id: string) =>
@@ -485,7 +443,7 @@ const deleteJob = (dataSource: DataSource, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('job deleted', res)));
+  }).pipe(tap((res) => console.log('job deleted', res)));
 
 const deleteJobs = (dataSource: DataSource, token: string, query: JobQuery) =>
   fetchUrl(
@@ -495,8 +453,8 @@ const deleteJobs = (dataSource: DataSource, token: string, query: JobQuery) =>
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
       },
-    }
-  ).pipe(tap(res => console.log('jobs deleted', res)));
+    },
+  ).pipe(tap((res) => console.log('jobs deleted', res)));
 
 const fetchLastJob = (dataSource: DataSource, token: string, query: JobQuery) =>
   fetchUrl(
@@ -506,8 +464,8 @@ const fetchLastJob = (dataSource: DataSource, token: string, query: JobQuery) =>
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
       },
-    }
-  ).pipe(tap(res => console.log('last job fetched', res)));
+    },
+  ).pipe(tap((res) => console.log('last job fetched', res)));
 
 const fetchJobCount = (dataSource: DataSource, token: string) =>
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/count`, {
@@ -515,9 +473,9 @@ const fetchJobCount = (dataSource: DataSource, token: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap(res => console.log('job count fetched', res)));
+  }).pipe(tap((res) => console.log('job count fetched', res)));
 
-//Logs
+// Logs
 const fetchLogs = (dataSource: DataSource, token: string, query: any) =>
   fetchUrl(`${dataSource.host}/api/logs/${dataSource.connection}/query`, {
     method: 'POST',
@@ -525,7 +483,7 @@ const fetchLogs = (dataSource: DataSource, token: string, query: any) =>
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(query),
-  }).pipe(tap(res => console.log('logs fetched', res)));
+  }).pipe(tap((res) => console.log('logs fetched', res)));
 
 // Spreadsheets
 const fetchSpreadsheetUsedRange = (dataSource: DataSource, token: string) =>
@@ -536,22 +494,17 @@ const fetchSpreadsheetUsedRange = (dataSource: DataSource, token: string) =>
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
       },
-    }
-  ).pipe(tap(res => console.log(`spread sheet fetched`, res)));
+    },
+  ).pipe(tap((res) => console.log(`spread sheet fetched`, res)));
 
-const updateSpreadsheet = (
-  host: string,
-  connection: string,
-  token: string,
-  spreadSheetToUpdate: any
-) =>
+const updateSpreadsheet = (host: string, connection: string, token: string, spreadSheetToUpdate: any) =>
   fetchUrl(`${host}/api/spreadsheets/${connection}`, {
     method: 'PUT',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(spreadSheetToUpdate),
-  }).pipe(tap(json => console.log('updated spread sheet', json)));
+  }).pipe(tap((json) => console.log('updated spread sheet', json)));
 
 export {
   fetchToken,

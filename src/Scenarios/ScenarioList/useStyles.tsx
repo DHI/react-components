@@ -37,10 +37,10 @@ const styles = () => ({
     borderTop: '1px solid #c9c9c9',
   },
   listItem: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    marginLeft: '30px',
+    'display': 'flex',
+    'flex': 1,
+    'flexDirection': 'column',
+    'marginLeft': '30px',
     '&:hover': {
       cursor: 'pointer',
       background: '#ebebeb',
@@ -50,8 +50,6 @@ const styles = () => ({
     background: '#e8e8e8',
   },
 });
-const useStyles = makeStyles(
-  styles as any,
-  { withTheme: true } as WithStylesOptions<{}>
-);
+const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);
+
 export default useStyles;

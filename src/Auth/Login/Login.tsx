@@ -1,8 +1,8 @@
 import { ThemeProvider } from '@material-ui/styles';
 import React, { FC, useState } from 'react';
+import DHITheme from '../../theme';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { ResetPasswordForm } from '../ResetPasswordForm/ResetPasswordForm';
-import DHITheme from '../theme';
 import ILoginProps from './types';
 
 const Login: FC<ILoginProps> = (props: ILoginProps) => {
@@ -32,7 +32,7 @@ const Login: FC<ILoginProps> = (props: ILoginProps) => {
       {showingResetPassword ? (
         <ResetPasswordForm
           host={host}
-          onBackToLogin={value => togglePasswordResetForm(value)}
+          onBackToLogin={(value) => togglePasswordResetForm(value)}
           resetPasswordButtonText={resetPasswordButtonText}
           resetPasswordUserNamePlaceholder={resetPasswordUserNamePlaceholder}
           onResetPassword={() => console.log('Reset password not implemented.')}
@@ -49,7 +49,7 @@ const Login: FC<ILoginProps> = (props: ILoginProps) => {
           rememberMeLabelText={rememberMeLabelText}
           showResetPassword={showResetPassword}
           resetPasswordLabelText={resetPasswordLabelText}
-          onResetPassword={value => togglePasswordResetForm(value)}
+          onResetPassword={(value) => togglePasswordResetForm(value)}
           loginButtonText={loginButtonText}
           textFieldVariant={textFieldVariant}
         />

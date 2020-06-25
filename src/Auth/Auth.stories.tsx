@@ -1,12 +1,12 @@
 import React from 'react';
-import { Login } from '../src';
+import { Login } from '..';
 
 export default {
   title: 'Auth',
   component: [Login],
 };
 
-export const login = () => {
+export const LoginStory = () => {
   return (
     <Login
       host={process.env.ENDPOINT_URL}

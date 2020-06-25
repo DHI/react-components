@@ -8,12 +8,10 @@ const styles = () => ({
     display: 'flex',
     alignItems: 'center',
   },
-  labels: { fontSize: 14, '& label': { fontSize: 14 } },
+  labels: { 'fontSize': 14, '& label': { fontSize: 14 } },
   backButton: { marginTop: 5, marginRight: 15 },
 });
 
-const useStyles = makeStyles(
-  styles as any,
-  { withTheme: true } as WithStylesOptions<{}>
-);
+const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);
+
 export default useStyles;

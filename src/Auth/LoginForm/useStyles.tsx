@@ -8,7 +8,7 @@ const styles = () => ({
     flexDirection: 'column',
     height: '100%',
   },
-  labels: { fontSize: 14, '& label': { fontSize: 14 } },
+  labels: { 'fontSize': 14, '& label': { fontSize: 14 } },
   rememberMe: { float: 'left', marginTop: 15 },
   rememberMeLink: { marginTop: 6, marginRight: 15 },
   submit: {
@@ -19,8 +19,6 @@ const styles = () => ({
   },
 });
 
-const useStyles = makeStyles(
-  styles as any,
-  { withTheme: true } as WithStylesOptions<{}>
-);
+const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);
+
 export default useStyles;
