@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
 import { Button } from '@material-ui/core';
-import { parseISO, format, differenceInSeconds } from 'date-fns';
-import { ITimeseriesExporterProps, ITimeseriesData } from './types';
+import { differenceInSeconds, format, parseISO } from 'date-fns';
+import React, { FC } from 'react';
+import { ITimeseriesData, ITimeseriesExporterProps } from './types';
 
 const TimeseriesExporter: FC<ITimeseriesExporterProps> = (props: ITimeseriesExporterProps) => {
   const exportTable = () => {
