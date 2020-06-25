@@ -1,28 +1,26 @@
-const fs = require('fs');
-const path = require('path');
-
-const prettierOptions = JSON.parse(fs.readFileSync(path.resolve(__dirname, '.prettierrc'), 'utf8'));
-
+/** @ts-check @type import('eslint-config-standard-typescript-prettier/types').TsEslintConfig */
 module.exports = {
-  parser: '@typescript-eslint/parser',
-  extends: ['plugin:@typescript-eslint/recommended', 'airbnb-typescript', 'prettier', 'plugin:prettier/recommended', 'prettier/react', 'prettier/@typescript-eslint'],
-  plugins: ['@typescript-eslint', 'prettier', 'react', 'jsx-a11y', 'react-hooks'],
-  env: {
-    jest: true,
-    browser: true,
-    node: true,
-    es6: true,
-  },
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
+  plugins: ['only-warn', 'jsx-a11y', 'react', 'react-hooks', 'import'],
+  extends: ['standard-typescript-prettier', 'prettier/react'],
   rules: {
-    'prettier/prettier': ['error', prettierOptions],
-    'arrow-body-style': [2, 'as-needed'],
+    'newline-before-return': ['error'],
+    'newline-after-var': ['error'],
+    // https://eslint.org/docs/rules/padding-line-between-statements
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: 'multiline-expression' },
+      { blankLine: 'always', prev: 'multiline-expression', next: '*' },
+      { blankLine: 'always', prev: 'if', next: '*' },
+      { blankLine: 'always', prev: '*', next: 'if' },
+      {
+        blankLine: 'never',
+        prev: ['singleline-const'],
+        next: ['singleline-const'],
+      },
+    ],
+    'react/jsx-uses-react': 1,
+    '@typescript-eslint/explicit-module-boundary-types': ['off'],
+    '@typescript-eslint/ban-types': ['off'],
     'class-methods-use-this': 0,
     'comma-dangle': [2, 'always-multiline'],
     'import/imports-first': 0,
@@ -30,7 +28,7 @@ module.exports = {
     'import/no-cycle': 0,
     'import/no-dynamic-require': 0,
     // 'import/no-extraneous-dependencies': 0,
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['tooling/**'] }],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['tooling/**', '**/*.stories.*'] }],
     // I think ignoring `import/no-extraneous-dependencies`
     // across the whole app ^^ is pretty bad idea,
     // since it relies on humans to have package.json in sync.
@@ -105,23 +103,20 @@ module.exports = {
     'react/self-closing-comp': 0,
     'react/sort-comp': 0,
     'require-yield': 0,
+    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/no-explicit-any': 0,
   },
-  overrides: [
-    {
-      files: ['*.js'],
-      rules: {
-        '@typescript-eslint/no-var-requires': 0,
-        '@typescript-eslint/explicit-function-return-type': 0,
-        '@typescript-eslint/no-explicit-any': 0,
-      },
-    },
-  ],
+  parserOptions: {
+    ecmaVersion: 2019,
+    sourceType: 'module',
+    ecmaFeatures: { jsx: true },
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
+  },
   settings: {
+    'react': { version: 'detect' },
     'import/resolver': {
-      node: {}, // placed above other resolver configs
-      typescript: {
-        alwaysTryTypes: true, // always try to resolve types under `<root/>@types` directory even it doesn't contain any source code, like `@types/unist`
-      },
+      node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     },
   },
 };

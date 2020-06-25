@@ -1,12 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import { Layout, PlotData, Shape } from 'plotly.js';
-import {
-  ITimeseriesData,
-  IChartPlotlyProps,
-  IChartPlotlyConfig,
-  IChartPlotlyPlotData,
-} from './types';
+import { ITimeseriesData, IChartPlotlyProps, IChartPlotlyConfig, IChartPlotlyPlotData } from './types';
 
 const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
   const defaultLayout = {
@@ -51,41 +46,28 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
     formatData();
   }, [props.data]);
 
-  const defineSeriesFormat = (
-    timeseries: ITimeseriesData,
-    index: number
-  ): Partial<IChartPlotlyPlotData> =>
+  const defineSeriesFormat = (timeseries: ITimeseriesData, index: number): Partial<IChartPlotlyPlotData> =>
     ({
       mode: 'markers',
       type: 'scattergl',
-      name: props.config?.useShortNames
-        ? timeseries.id.substring(timeseries.id.lastIndexOf('/') + 1)
-        : timeseries.id,
+      name: props.config?.useShortNames ? timeseries.id.substring(timeseries.id.lastIndexOf('/') + 1) : timeseries.id,
       ...(props.timeseries && props.timeseries[index]),
     } as Partial<IChartPlotlyPlotData>);
 
   const getArrowValues = (timeseriesIndex: number): number[][] => {
     if (props.timeseries) {
-      const baseIndex = props.timeseries.findIndex(
-        timeseries => timeseries.arrowMaxCount
-      );
+      const baseIndex = props.timeseries.findIndex((timeseries) => timeseries.arrowMaxCount);
 
       if (baseIndex === timeseriesIndex) {
-        const arrowMaxCount = props.timeseries[baseIndex]?.arrowMaxCount
-          ? props.timeseries[baseIndex]?.arrowMaxCount!
-          : 16;
-        return props.data[baseIndex].data.filter(
-          (_, valueIndex: number) =>
-            valueIndex %
-              Math.floor(props.data[baseIndex].data.length / arrowMaxCount) ===
-            0
-        );
+        const arrowMaxCount = props.timeseries[baseIndex]?.arrowMaxCount ?? 16;
+
+        return props.data[baseIndex].data.filter((_, valueIndex: number) => valueIndex % Math.floor(props.data[baseIndex].data.length / arrowMaxCount) === 0);
       }
 
       const baseArrowValues = getArrowValues(baseIndex);
       const points = props.data[timeseriesIndex].data;
-
       const result: number[][] = [];
+
       baseArrowValues.forEach((baseArrow: number[]) => {
         for (let i = 1; i < points.length; i++) {
           const x0: number = new Date(points[i - 1][0]).getTime();
@@ -93,7 +75,9 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
           const x = new Date(baseArrow[0]).getTime();
 
           if (x0 <= x && x <= x1) {
+            // eslint-disable-next-line prefer-destructuring
             let y0 = points[i - 1][1];
+            // eslint-disable-next-line prefer-destructuring
             let y1 = points[i][1];
 
             if (Math.abs(y1 - y0) > 180) {
@@ -105,6 +89,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
             }
 
             const value = (y0 * (x1 - x) + y1 * (x - x0)) / (x1 - x0);
+
             result.push([points[i][0], value]);
             break;
           }
@@ -113,6 +98,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
 
       return result;
     }
+
     return [];
   };
 
@@ -122,17 +108,13 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
 
     if (props.data) {
       props.data.forEach((timeseriesData: ITimeseriesData, index: number) => {
-        const series: Partial<IChartPlotlyPlotData> = defineSeriesFormat(
-          timeseriesData,
-          index
-        );
+        const series: Partial<IChartPlotlyPlotData> = defineSeriesFormat(timeseriesData, index);
+
         if (!series.isArrow) {
-          series.x = timeseriesData.data.map(
-            (dateAndValue: number[]) => dateAndValue[0]
-          );
-          series.y = timeseriesData.data.map(
-            (dateAndValue: number[]) => dateAndValue[1]
-          );
+          series.x = timeseriesData.data.map((dateAndValue: number[]) => dateAndValue[0]);
+
+          series.y = timeseriesData.data.map((dateAndValue: number[]) => dateAndValue[1]);
+
           plotDataList = [...plotDataList, series];
         } else {
           shapes = [
@@ -141,10 +123,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
               (point: number[]) =>
                 ({
                   type: 'path',
-                  path: drawArrow(
-                    point[1] + (series.offset ? series.offset : 0),
-                    series.arrowScale
-                  ),
+                  path: drawArrow(point[1] + (series.offset ? series.offset : 0), series.arrowScale),
                   xref: 'x',
                   yref: 'y',
                   fillcolor: series.fillcolor ? series.fillcolor : 'black',
@@ -155,16 +134,18 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
                   line: {
                     width: 0,
                   },
-                } as Partial<Shape>)
+                } as Partial<Shape>),
             ),
           ];
         }
       });
 
       const layoutList = { ...defaultLayout, ...props.layout };
+
       if (shapes.length > 0) {
         layoutList.shapes = shapes;
       }
+
       setLayout(layoutList);
 
       setPlotData(plotDataList);
@@ -173,12 +154,11 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
 
   const rotatePath = (path: number[][], angle: number) => {
     const radians = -((angle + 180) * Math.PI) / 180;
-    return path.map(coordinate => {
+
+    return path.map((coordinate) => {
       const [x, y] = coordinate;
-      return [
-        x * Math.cos(radians) - y * Math.sin(radians),
-        x * Math.sin(radians) + y * Math.cos(radians),
-      ];
+
+      return [x * Math.cos(radians) - y * Math.sin(radians), x * Math.sin(radians) + y * Math.cos(radians)];
     });
   };
 
@@ -193,25 +173,19 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
       [3, -12],
     ];
 
-    points.forEach(point => {
+    points.forEach((point) => {
       point[0] *= scale || 1;
       point[1] *= scale || 1;
     });
 
     const rotatedArray = rotatePath(points, angle);
 
-    return `M${rotatedArray[0].join(' ')} L${rotatedArray[1].join(
-      ' '
-    )} L${rotatedArray[2].join(' ')} L${rotatedArray[3].join(
-      ' '
-    )} L${rotatedArray[4].join(' ')} L${rotatedArray[5].join(
-      ' '
-    )} L${rotatedArray[6].join(' ')} Z`;
+    return `M${rotatedArray[0].join(' ')} L${rotatedArray[1].join(' ')} L${rotatedArray[2].join(' ')} L${rotatedArray[3].join(' ')} L${rotatedArray[4].join(
+      ' ',
+    )} L${rotatedArray[5].join(' ')} L${rotatedArray[6].join(' ')} Z`;
   };
 
-  return (
-    <Plot style={props.style} data={plotData} config={config} layout={layout} />
-  );
+  return <Plot style={props.style} data={plotData} config={config} layout={layout} />;
 };
 
 export { IChartPlotlyProps, ChartPlotly };

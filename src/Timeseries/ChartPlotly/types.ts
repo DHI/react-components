@@ -44,9 +44,4 @@ interface IChartPlotlyPlotData extends PlotData {
   arrowYValue?: number;
 }
 
-export {
-  ITimeseriesData,
-  IChartPlotlyConfig,
-  IChartPlotlyPlotData,
-  IChartPlotlyProps,
-};
+export { ITimeseriesData, IChartPlotlyConfig, IChartPlotlyPlotData, IChartPlotlyProps };
