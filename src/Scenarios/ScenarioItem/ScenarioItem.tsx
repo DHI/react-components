@@ -46,19 +46,11 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
 
   const scenarioDetails = (
     <Grid item className={classes.scenarioDetails}>
-      <Typography
-        component="span"
-        color="primary"
-        className={classes.scenarioTitle}
-      >
+      <Typography component="span" color="primary" className={classes.scenarioTitle}>
         {props.name}
       </Typography>
       {props.description.map((item: { name: string; value: any }) => (
-        <Typography
-          key={item.name}
-          component="span"
-          className={classes.textFields}
-        >
+        <Typography key={item.name} component="span" className={classes.textFields}>
           {`${item.name}: ${item.value}`}
         </Typography>
       ))}
@@ -66,23 +58,11 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   );
 
   return (
-    <div
-      className={classes.scenario}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
-      onFocus={() => {}}
-      onBlur={() => {}}
-    >
+    <div className={classes.scenario} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onFocus={() => undefined} onBlur={() => undefined}>
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}
-      {props.showMenu && (
-        <ScenarioMenu
-          onContextMenuClick={props.onContextMenuClick}
-          menu={props.menu}
-          scenario={props.scenario}
-        />
-      )}
+      {props.showMenu && <ScenarioMenu onContextMenuClick={props.onContextMenuClick} menu={props.menu} scenario={props.scenario} />}
     </div>
   );
 };

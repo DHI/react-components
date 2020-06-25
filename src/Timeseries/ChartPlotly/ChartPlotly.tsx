@@ -59,7 +59,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
       const baseIndex = props.timeseries.findIndex((timeseries) => timeseries.arrowMaxCount);
 
       if (baseIndex === timeseriesIndex) {
-        const arrowMaxCount = props.timeseries[baseIndex]?.arrowMaxCount ? props.timeseries[baseIndex]?.arrowMaxCount! : 16;
+        const arrowMaxCount = props.timeseries[baseIndex]?.arrowMaxCount ?? 16;
 
         return props.data[baseIndex].data.filter((_, valueIndex: number) => valueIndex % Math.floor(props.data[baseIndex].data.length / arrowMaxCount) === 0);
       }
@@ -75,7 +75,9 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
           const x = new Date(baseArrow[0]).getTime();
 
           if (x0 <= x && x <= x1) {
+            // eslint-disable-next-line prefer-destructuring
             let y0 = points[i - 1][1];
+            // eslint-disable-next-line prefer-destructuring
             let y1 = points[i][1];
 
             if (Math.abs(y1 - y0) > 180) {

@@ -7,7 +7,7 @@ export default {
 };
 
 export const scenarioList = () => {
-  const onContextMenuClickHandler = (clickId: any, scenario: any) => {
+  const onContextMenuClickHandler = (clickId: any) => {
     alert(clickId);
   };
 

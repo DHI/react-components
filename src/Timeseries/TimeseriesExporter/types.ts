@@ -29,8 +29,4 @@ interface ITimeseriesExporterTimeseries {
   decimals?: number;
 }
 
-export {
-  ITimeseriesData,
-  ITimeseriesExporterTimeseries,
-  ITimeseriesExporterProps,
-};
+export { ITimeseriesData, ITimeseriesExporterTimeseries, ITimeseriesExporterProps };
