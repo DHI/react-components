@@ -1,15 +1,15 @@
 import { Button, CircularProgress, TextField, Typography } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import IResetPasswordFormProps from './types';
 import useStyles from './useStyles';
 
-const ResetPasswordForm: FC<IResetPasswordFormProps> = (props: IResetPasswordFormProps) => {
+const ResetPasswordForm = (props: IResetPasswordFormProps) => {
   const {
     // host,
     onBackToLogin,
     // onResetPassword,
-    resetPasswordUserNamePlaceholder,
-    resetPasswordButtonText,
+    resetPasswordUserNamePlaceholder = 'E-Mail Address or User ID',
+    resetPasswordButtonText = 'Reset Password',
     textFieldVariant,
   } = props;
   const [loading, setLoading] = useState(false);
@@ -52,7 +52,7 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = (props: IResetPasswordFor
         error={error}
         onChange={(e) => handleChange('Id', e.target.value)}
         helperText={error ? 'Account Not Found' : ''}
-        label={resetPasswordUserNamePlaceholder || 'E-Mail Address or User ID'}
+        label={resetPasswordUserNamePlaceholder}
         variant={textFieldVariant as any}
       />
 
@@ -61,7 +61,7 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = (props: IResetPasswordFor
           <Typography className={classes.labels}>Back</Typography>
         </Button>
         <Button type="submit" color="primary" variant="contained">
-          {loading ? <CircularProgress color="inherit" size={24} /> : resetPasswordButtonText || 'Reset Password'}
+          {loading ? <CircularProgress color="inherit" size={24} /> : resetPasswordButtonText}
         </Button>
       </div>
     </form>

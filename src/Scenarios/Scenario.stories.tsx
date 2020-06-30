@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
 import { fetchToken, Scenario } from '..';
-import { IScenario } from './types';
+import { IMenuItem, IScenario } from './types';
 
 export default {
   title: 'Scenarios Components',
@@ -22,6 +22,7 @@ export const ScenarioStory = () => {
         setToken(res.accessToken.token);
       },
       (err) => {
+        console.log(err);
         console.log('Error Fetching Token');
       },
     );
@@ -33,8 +34,9 @@ export const ScenarioStory = () => {
     });
   };
 
-  const onContextMenuClickHandler = (scenario: IScenario, clickId: string) => {
-    alert(clickId);
+  const onContextMenuClickHandler = (menuItem: IMenuItem, scenario: IScenario) => {
+    console.log(scenario);
+    alert(menuItem.id);
   };
 
   if (token) {
@@ -153,7 +155,7 @@ export const ScenarioStory = () => {
             terminateConfirmation:
               'Ini akan membatalkan pekerjaan yang sedang dieksekusi. Status akan berubah setelah pembatalan pekerjaan. Anda yakin ingin mengakhiri',
             cloneConfirmation:
-              'Ini akan memulai pekerjaan baru di latar belakang. Anda dapat menghapus skenario kloning ini nanti. Anda yakin ingin mengkloning?',
+              'Ini akan memulai pekerjaan baru di latar belakang. Anda dapat menghapus skenario kloning ini nanti. Anda yakin ingin mengkloning',
             deleteConfirmation:
               'Ini akan menghapus skenario yang dipilih dari daftar. Setelah dihapus, Anda tidak dapat mengambil data. Anda yakin ingin menghapus',
             cancelLabel: 'Batal',

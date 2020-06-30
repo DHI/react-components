@@ -1,4 +1,4 @@
-import { IDescriptionField, IMenuItem, IScenario, Istatus } from 'Scenarios/types';
+import { IDescriptionField, IMenuItem, IScenario, IStatus } from '../types';
 
 interface IScenarioListProps {
   /**
@@ -8,7 +8,7 @@ interface IScenarioListProps {
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: Function;
+  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
   menuItems: IMenuItem[];
   /**
    * The list of scenario
@@ -42,7 +42,7 @@ interface IScenarioListProps {
    * The id of selected scenario when it clicked
    */
   selectedScenarioId?: string;
-  status: Istatus[];
+  status: IStatus[];
 }
 
 export default IScenarioListProps;

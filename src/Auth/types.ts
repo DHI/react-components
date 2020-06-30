@@ -8,9 +8,13 @@ interface IForm {
 }
 
 interface IUser {
-  /** Roles of user result from the backend */
+  /** Id of user */
+  id: string;
+  /** Name of user */
+  name: string;
+  /** Roles of user */
   roles: string[];
-  /** Metadata of user result from the backend */
+  /** Metadata of user */
   metadata: any;
 }
 

@@ -1,4 +1,4 @@
-import { IDescriptionField, IMenuItem, IQueryDates, IScenario, Istatus } from 'Scenarios/types';
+import { IDescriptionField, IMenuItem, IQueryDates, IScenario, IStatus } from '../types';
 
 interface IScenariosProps {
   /**
@@ -85,7 +85,7 @@ interface IScenariosProps {
   /**
    * Customising scenario status display
    */
-  status: Istatus[];
+  status: IStatus[];
   /**
    * Customising scenario description field display
    */
@@ -97,7 +97,7 @@ interface IScenariosProps {
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: Function;
+  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
   /**
    * The object data to be add as new scenario
    */

@@ -1,4 +1,4 @@
-interface Istatus {
+interface IStatus {
   /**
    * Scenario status name
    */
@@ -120,4 +120,24 @@ interface IQueryDates {
   windowEnd: string;
 }
 
-export { Istatus, IDescriptionField, IMenuItem, IScenario, ICondition, IDialog, IQueryDates };
+interface IContextMenuClickHandler {
+  /** Handler on menu option clicked */
+  (menuItem: IMenuItem, scenario: IScenario): void;
+}
+
+interface ICloseDialog {
+  /** Handler on menu option closed */
+  (value: boolean): void;
+}
+
+export {
+  IStatus,
+  IDescriptionField,
+  IMenuItem,
+  IScenario,
+  ICondition,
+  IDialog,
+  IQueryDates,
+  IContextMenuClickHandler,
+  ICloseDialog,
+};

@@ -1,11 +1,11 @@
 import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
 import IScenarioItemProps from './types';
 import useStyles from './useStyles';
 
-const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
+const ScenarioItem = (props: IScenarioItemProps) => {
   const [hover, setHover] = useState(false);
   const classes = useStyles();
   const {

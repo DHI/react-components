@@ -1,10 +1,10 @@
 import { Button, Checkbox, CircularProgress, FormControlLabel, TextField, Typography } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import Auth from '../AuthService';
 import ILoginFormProps from './types';
 import useStyles from './useStyles';
 
-const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
+const LoginForm = (props: ILoginFormProps) => {
   const {
     userNamePlaceholder,
     passwordPlaceholder,
@@ -12,10 +12,10 @@ const LoginForm: FC<ILoginFormProps> = (props: ILoginFormProps) => {
     onSuccess,
     onError,
     showRememberMe,
-    rememberMeLabelText = 'Remember me?',
-    showResetPassword,
-    resetPasswordLabelText = 'Reset password',
     onResetPassword,
+    showResetPassword,
+    rememberMeLabelText = 'Remember me?',
+    resetPasswordLabelText = 'Reset password',
     loginButtonText = 'Login',
     textFieldVariant = 'outlined',
   } = props;

@@ -1,4 +1,4 @@
-import { IMenuItem, IScenario, Istatus } from 'Scenarios/types';
+import { IMenuItem, IScenario, IStatus } from '../types';
 
 interface IScenarioItemProps {
   /**
@@ -10,9 +10,9 @@ interface IScenarioItemProps {
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: Function;
+  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
 
-  status: Istatus;
+  status: IStatus;
   /**
    * Indicates if the hour of the scenario should be shown
    */

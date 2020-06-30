@@ -22,7 +22,7 @@ interface IScenarioDialogProps {
   /**
    * Handler when dialog closed
    */
-  closeDialog?: Function;
+  closeDialog?: (value: boolean) => void;
   /**
    * Handler when dialog confirmed
    */
