@@ -9,7 +9,8 @@ export default {
 
 export const LoginStory = () => {
   const onSuccesResultHandler = (user: IUser, token: IToken) => {
-    alert(`Login Success !!! ${user.name} token : ${token.accessToken}`);
+    alert(`Login Success. See console log for details.`);
+    console.log(`username = ${user.name}, token = ${token.accessToken}`);
   };
 
   return (
