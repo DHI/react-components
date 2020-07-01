@@ -67,7 +67,7 @@ export default class AuthService {
   };
 
   // checks if the user is authenticated
-  isAuthenticated = () => {
+  isAuthenticated = (): boolean => {
     const storage = localStorage.getItem('accessToken') != null ? localStorage : sessionStorage;
     const expirationStorage = storage.getItem('expiration');
 
@@ -81,6 +81,8 @@ export default class AuthService {
 
       return now < expiresAt;
     }
+
+    return false;
   };
 
   // removes user details from localStorage
