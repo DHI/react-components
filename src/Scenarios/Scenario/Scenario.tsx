@@ -1,5 +1,5 @@
 import { clone } from 'lodash';
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   cancelJob,
   deleteScenario,
@@ -12,10 +12,11 @@ import {
 import { changeObjectProperty, getObjectProperty, uniqueId } from '../../Utils/Utils';
 import { ScenarioDialog } from '../ScenarioDialog/ScenarioDialog';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
-import IScenariosProps, { IDialog, IMenuItem, IQueryDates, IScenario } from './types';
+import { IDialog, IMenuItem, IQueryDates, IScenario } from '../types';
+import IScenariosProps from './types';
 import useStyles from './useStyles';
 
-const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
+const Scenario = (props: IScenariosProps) => {
   const {
     host,
     token,
@@ -128,7 +129,6 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
       (error) => {
         console.log(error);
       },
-      () => {},
     );
   };
 
@@ -157,8 +157,8 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
               scenario.data,
               nameField,
             )} ?`,
-      dialogCancelLabel: translations && translations.cancelLabel ? translations.cancelLabel : 'Cancel',
-      dialogConfirmLabel: translations && translations.confirmLabel ? translations.confirmLabel : 'Confirm',
+      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
+      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
       dialogCommand: () => onExecuteScenario(scenario, menuItem),
     });
   };
@@ -191,8 +191,8 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
               scenario.data,
               nameField,
             )} ?`,
-      dialogCancelLabel: translations && translations.cancelLabel ? translations.cancelLabel : 'Cancel',
-      dialogConfirmLabel: translations && translations.confirmLabel ? translations.confirmLabel : 'Confirm',
+      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
+      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
       dialogCommand: () => onTerminateScenario(scenario, menuItem),
     });
   };
@@ -233,8 +233,8 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
         translations && translations.cloneConfirmation
           ? `${translations.cloneConfirmation} ?`
           : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ?`,
-      dialogCancelLabel: translations && translations.cancelLabel ? translations.cancelLabel : 'Cancel',
-      dialogConfirmLabel: translations && translations.confirmLabel ? translations.confirmLabel : 'Confirm',
+      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
+      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
       dialogCommand: () => onCloneScenario(scenario),
     });
   };
@@ -272,8 +272,8 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
               scenario.data,
               nameField,
             )} ?`,
-      dialogCancelLabel: translations && translations.cancelLabel ? translations.cancelLabel : 'Cancel',
-      dialogConfirmLabel: translations && translations.confirmLabel ? translations.confirmLabel : 'Confirm',
+      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
+      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
       dialogCommand: () => onDeleteScenario(scenario),
     });
   };
@@ -306,7 +306,7 @@ const Scenario: FC<IScenariosProps> = (props: IScenariosProps) => {
       case 'terminate':
         return terminateDialog(scenario, menuItem);
       default:
-        return onContextMenuClick(scenario, menuItem.id);
+        return onContextMenuClick(menuItem, scenario);
     }
   };
 

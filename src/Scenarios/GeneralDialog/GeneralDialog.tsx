@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import React, { FC } from 'react';
+import React from 'react';
 import IGeneralDialogProps from './types';
 
-const GeneralDialog: FC<IGeneralDialogProps> = (props: IGeneralDialogProps) => {
+const GeneralDialog = (props: IGeneralDialogProps) => {
   const { mainSection, title, message, cancelLabel, confirmLabel, command, showDialog, closeDialog } = props;
 
   const setCloseDialog = () => {

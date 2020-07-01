@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { GeneralDialog } from '../GeneralDialog/GeneralDialog';
 import IScenarioDialogProps from './types';
 
-const ScenarioDialog: FC<IScenarioDialogProps> = (props: IScenarioDialogProps) => {
+const ScenarioDialog = (props: IScenarioDialogProps) => {
   const { title, message, cancelLabel, confirmLabel, command, showDialog, closeDialog } = props;
 
   return (

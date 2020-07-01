@@ -2,13 +2,14 @@ import { Divider } from '@material-ui/core';
 import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, isEmpty, sortBy } from 'lodash';
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getObjectProperty } from '../../Utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
-import IScenarioListProps, { ICondition, IDescriptionField, IScenario } from './types';
+import { ICondition, IDescriptionField, IScenario } from '../types';
+import IScenarioListProps from './types';
 import useStyles from './useStyles';
 
-const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
+const ScenarioList = (props: IScenarioListProps) => {
   const {
     selectedScenarioId,
     scenarios,
@@ -34,7 +35,7 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
-            return format(parseISO(scenario.dateTime), 'yyyy-MM-dd');
+            return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
           })
         : groupBy(scenarios, (scenario) => scenario.dateTime),
     );
@@ -135,7 +136,7 @@ const ScenarioList: FC<IScenarioListProps> = (props: IScenarioListProps) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario) => {
-        const date = showDate ? scenario.dateTime.toString() : '';
+        const date = showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : '';
 
         return (
           <div
