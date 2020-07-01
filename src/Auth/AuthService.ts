@@ -10,7 +10,7 @@ export default class AuthService {
   login = (form: IForm, onSuccess: (user: IUser, token: IToken) => void, onError: (err: string) => void) => {
     fetchToken(this.host, form).subscribe(
       (token) => {
-        fetchAccount(this.host, token.accessToken.token, form.id).subscribe(
+        fetchAccount(this.host, token.accessToken.token, 'me').subscribe(
           (user) => {
             const loggedInUser: IUser = {
               ...user,

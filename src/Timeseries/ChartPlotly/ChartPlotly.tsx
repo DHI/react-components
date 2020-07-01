@@ -114,8 +114,10 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
 
         if (!series.isArrow) {
           series.x = timeseriesData.data.map((dateAndValue: number[]) => dateAndValue[0]);
-
-          series.y = timeseriesData.data.map((dateAndValue: number[]) => dateAndValue[1]);
+          series.y = timeseriesData.data.map(
+            (dateAndValue: number[]) =>
+              dateAndValue[1] * (series.multiplier ? series.multiplier : 1) + (series.offset ? series.offset : 0),
+          );
 
           plotDataList = [...plotDataList, series];
         } else {
@@ -125,7 +127,10 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
               (point: number[]) =>
                 ({
                   type: 'path',
-                  path: drawArrow(point[1] + (series.offset ? series.offset : 0), series.arrowScale),
+                  path: drawArrow(
+                    point[1] * (series.multiplier ? series.multiplier : 1) + (series.offset ? series.offset : 0),
+                    series.arrowScale,
+                  ),
                   xref: 'x',
                   yref: 'y',
                   fillcolor: series.fillcolor ? series.fillcolor : 'black',

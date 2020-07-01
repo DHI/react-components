@@ -53,6 +53,10 @@ interface IChartPlotlyPlotData extends PlotData {
    */
   isArrow: boolean;
   /**
+   * A value that the number will be multiplied with
+   */
+  multiplier?: number;
+  /**
    * A value that the number will be offset with
    */
   offset?: number;
