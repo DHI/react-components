@@ -1,5 +1,6 @@
 export * from './Auth/Login/Login';
 export * from './DataServices/DataServices';
+export * from './Logs/LogList/LogList';
 export * from './Scenarios/Scenario/Scenario';
 export * from './Scenarios/ScenarioItem/ScenarioItem';
 export * from './Scenarios/ScenarioList/ScenarioList';

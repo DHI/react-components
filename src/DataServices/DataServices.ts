@@ -476,14 +476,21 @@ const fetchJobCount = (dataSource: DataSource, token: string) =>
   }).pipe(tap((res) => console.log('job count fetched', res)));
 
 // Logs
-const fetchLogs = (dataSource: DataSource, token: string, query: any) =>
-  fetchUrl(`${dataSource.host}/api/logs/${dataSource.connection}/query`, {
-    method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(query),
-  }).pipe(tap((res) => console.log('logs fetched', res)));
+const fetchLogs = (dataSources: DataSource | DataSource[], token: string, query: any) => {
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
+
+  const requests = dataSourcesArray.map((source: DataSource) =>
+    fetchUrl(`${source.host}/api/logs/${source.connection}/query`, {
+      method: 'POST',
+      body: JSON.stringify(query),
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).pipe(map((fc) => dataObjectToArray(fc))),
+  );
+
+  return forkJoin(requests).pipe(map((fc) => fc.flat()));
+};
 
 // Spreadsheets
 const fetchSpreadsheetUsedRange = (dataSource: DataSource, token: string) =>
