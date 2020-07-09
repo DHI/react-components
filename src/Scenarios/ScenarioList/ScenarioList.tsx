@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, isEmpty, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { getObjectProperty } from '../../Utils/Utils';
-import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
+import { getObjectProperty } from '../../utils/utils';
+import ScenarioItem from '../ScenarioItem/ScenarioItem';
 import { ICondition, IDescriptionField, IScenario } from '../types';
 import IScenarioListProps from './types';
 import useStyles from './useStyles';
@@ -212,4 +212,4 @@ const ScenarioList = (props: IScenarioListProps) => {
   return <div className={classes.root}>{printedScenarios}</div>;
 };
 
-export { IScenarioListProps, ScenarioList };
+export default ScenarioList;

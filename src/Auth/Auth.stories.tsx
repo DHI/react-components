@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login } from '..';
+import { Login } from './Login/Login';
 import { IToken, IUser } from './types';
 
 export default {

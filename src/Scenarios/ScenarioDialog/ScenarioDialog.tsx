@@ -1,5 +1,5 @@
 import React from 'react';
-import { GeneralDialog } from '../GeneralDialog/GeneralDialog';
+import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import IScenarioDialogProps from './types';
 
 const ScenarioDialog = (props: IScenarioDialogProps) => {
@@ -19,4 +19,4 @@ const ScenarioDialog = (props: IScenarioDialogProps) => {
   );
 };
 
-export { IScenarioDialogProps, ScenarioDialog };
+export default ScenarioDialog;

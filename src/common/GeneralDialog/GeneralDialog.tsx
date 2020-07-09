@@ -37,4 +37,4 @@ const GeneralDialog = (props: IGeneralDialogProps) => {
   );
 };
 
-export { IGeneralDialogProps, GeneralDialog };
+export default GeneralDialog;

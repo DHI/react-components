@@ -1,3 +1,4 @@
+import { JobParameters } from '../../DataServices/types';
 import { IDescriptionField, IMenuItem, IQueryDates, IScenario, IStatus } from '../types';
 
 interface IScenariosProps {
@@ -49,6 +50,10 @@ interface IScenariosProps {
    * Connection to fetch data from backend
    */
   jobConnection: string;
+  /**
+   * Set of job parameters
+   */
+  jobParameters?: JobParameters;
   /**
    * Value range to fetch scenario by date
    */
