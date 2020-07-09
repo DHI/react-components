@@ -1,4 +1,4 @@
-import { fetchAccount, fetchToken } from '..';
+import { fetchAccount, fetchToken } from '../DataServices/DataServices';
 import { IForm, IToken, IUser } from './types';
 
 export default class AuthService {

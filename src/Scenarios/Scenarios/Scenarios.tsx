@@ -16,7 +16,7 @@ import { IDialog, IMenuItem, IQueryDates, IScenario } from '../types';
 import IScenariosProps from './types';
 import useStyles from './useStyles';
 
-const Scenario = (props: IScenariosProps) => {
+const Scenarios = (props: IScenariosProps) => {
   const {
     host,
     token,
@@ -352,4 +352,4 @@ const Scenario = (props: IScenariosProps) => {
   );
 };
 
-export { IScenariosProps, Scenario };
+export { IScenariosProps, Scenarios };

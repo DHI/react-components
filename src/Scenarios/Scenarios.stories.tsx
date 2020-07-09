@@ -1,15 +1,16 @@
 import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
-import { fetchToken, Scenario } from '..';
+import { fetchToken } from '../DataServices/DataServices';
+import { Scenarios } from './Scenarios/Scenarios';
 import { IMenuItem, IScenario } from './types';
 
 export default {
   title: 'Scenarios Components',
-  component: [Scenario],
+  component: [Scenarios],
 };
 
-export const ScenarioStory = () => {
+export const ScenariosStory = () => {
   const [token, setToken] = useState<string>();
   const [newScenario, setNewScenario] = useState<IScenario>();
 
@@ -66,7 +67,7 @@ export const ScenarioStory = () => {
           </Button>
         </Typography>
 
-        <Scenario
+        <Scenarios
           onContextMenuClick={onContextMenuClickHandler}
           frequency={10}
           token={token}
