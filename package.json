@@ -11,6 +11,7 @@
     "node": ">=10"
   },
   "scripts": {
+    "dev": "yarn storybook",
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
