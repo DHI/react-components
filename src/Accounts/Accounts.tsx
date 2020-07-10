@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import MaterialTable, { Icons } from 'material-table';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import {
   AddBox,
   ArrowUpward,
@@ -15,13 +14,12 @@ import {
   Remove,
   SaveAlt,
   Search,
-  ViewColumn,
+  ViewColumn
 } from '@material-ui/icons';
-
+import MaterialTable, { Icons } from 'material-table';
+import React, { useCallback, useEffect, useState } from 'react';
+import { createAccount, deleteAccount, fetchAccounts, updateAccount } from '../DataServices/DataServices';
 import AccountModel from './AccountModel';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button } from '@material-ui/core';
-
-import { fetchAccounts, updateAccount, createAccount, deleteAccount } from '../DataServices/DataServices';
 
 const tableIcons = {
   Add: AddBox,
@@ -232,7 +230,15 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
     />
   );
 
-  const accountModal = state.showModal && <AccountModel user={state.selectedUser} editing={state.editing} onSubmit={handleSubmit} open={state.showModal} onToggle={toggleModal} />;
+  const accountModal = state.showModal && (
+    <AccountModel
+      user={state.selectedUser}
+      editing={state.editing}
+      onSubmit={handleSubmit}
+      open={state.showModal}
+      onToggle={toggleModal}
+    />
+  );
 
   const deleteUserModal = state.showDialog && (
     <Dialog open={true} onClose={() => setState({ ...state, showDialog: false })}>

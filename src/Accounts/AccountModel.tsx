@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, Button, TextField, DialogTitle, DialogContent, DialogActions, InputAdornment } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  InputAdornment,
+  TextField
+} from '@material-ui/core';
 import { FiberManualRecord } from '@material-ui/icons';
+import React, { useEffect, useState } from 'react';
 import { passwordStrength } from '../Utils/Utils';
 
 const AccountModel = ({
@@ -103,7 +111,16 @@ const AccountModel = ({
 
   const content = (
     <DialogContent>
-      <TextField required fullWidth autoFocus margin="dense" label="User name" variant="outlined" value={form.id} onChange={handleChange('id')} />
+      <TextField
+        required
+        fullWidth
+        autoFocus
+        margin="dense"
+        label="User name"
+        variant="outlined"
+        value={form.id}
+        onChange={handleChange('id')}
+      />
       <TextField
         fullWidth
         margin="dense"
@@ -128,9 +145,33 @@ const AccountModel = ({
         onChange={handleChange('repeatPassword')}
         helperText={!state.passwordValid && 'Passwords do not match'}
       />
-      <TextField required fullWidth label="Name" margin="dense" variant="outlined" value={form.name} onChange={handleChange('name')} />
-      <TextField fullWidth label="Email" margin="dense" variant="outlined" value={form.email} onChange={handleChange('email')} />
-      <TextField required fullWidth type="text" label="Roles" margin="dense" variant="outlined" value={form.roles} onChange={handleChange('roles')} />
+      <TextField
+        required
+        fullWidth
+        label="Name"
+        margin="dense"
+        variant="outlined"
+        value={form.name}
+        onChange={handleChange('name')}
+      />
+      <TextField
+        fullWidth
+        label="Email"
+        margin="dense"
+        variant="outlined"
+        value={form.email}
+        onChange={handleChange('email')}
+      />
+      <TextField
+        required
+        fullWidth
+        type="text"
+        label="Roles"
+        margin="dense"
+        variant="outlined"
+        value={form.roles}
+        onChange={handleChange('roles')}
+      />
     </DialogContent>
   );
 
