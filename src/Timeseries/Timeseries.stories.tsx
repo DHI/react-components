@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { ChartPlotly, TimeseriesExporter as TimeseriesExporterComponent, fetchToken, fetchTimeseriesValues } from '..';
 import { withKnobs } from '@storybook/addon-knobs';
+import React, { useEffect, useState } from 'react';
+import { ChartPlotly, fetchTimeseriesValues, fetchToken, TimeseriesExporter } from '..';
 import { IChartPlotlyPlotData } from './ChartPlotly/types';
 
 export default {
   title: 'Timeseries Components',
-  component: [ChartPlotly, TimeseriesExporterComponent],
+  component: [ChartPlotly, TimeseriesExporter],
   decorators: [withKnobs],
 };
 
-export const ChartPlotlyTimeseries = () => {
+export const ChartPlotlyTimeseriesStory = () => {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -91,25 +91,37 @@ export const ChartPlotlyTimeseries = () => {
       host: process.env.ENDPOINT_URL,
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: ['Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]'],
+      ids: [
+        'Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]',
+        'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]',
+      ],
     },
     {
       connection: 'mclite-timeseries',
       host: process.env.ENDPOINT_URL,
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: ['Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]'],
+      ids: [
+        'Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]',
+        'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]',
+      ],
     },
   ];
 
   return (
     <div style={{ width: '100%', height: '400px' }}>
-      <ChartPlotly layout={layout} timeseries={timeseries} data={data!} config={config} style={{ width: '100%', height: '100%' }} />
+      <ChartPlotly
+        layout={layout}
+        timeseries={timeseries}
+        data={data!}
+        config={config}
+        style={{ width: '100%', height: '100%' }}
+      />
     </div>
   );
 };
 
-export const ChartPlotlyArrows = () => {
+export const ChartPlotlyArrowsStory = () => {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -199,12 +211,18 @@ export const ChartPlotlyArrows = () => {
 
   return (
     <div style={{ width: '100%', height: '400px' }}>
-      <ChartPlotly layout={layout} timeseries={timeseries} data={data} config={config} style={{ width: '100%', height: '100%' }} />
+      <ChartPlotly
+        layout={layout}
+        timeseries={timeseries}
+        data={data}
+        config={config}
+        style={{ width: '100%', height: '100%' }}
+      />
     </div>
   );
 };
 
-export const TimeseriesExporter = () => {
+export const TimeseriesExporterStory = () => {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -248,19 +266,25 @@ export const TimeseriesExporter = () => {
       connection: 'mclite-timeseries',
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: ['Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]'],
+      ids: [
+        'Telemetry/Catchment rainfall/6790_HUDINJA_SKOFJA_VAS_Rainfall.dfs0 [weighted]',
+        'Telemetry/Catchment rainfall/7060_KRKA_SOTESKA_Rainfall.dfs0 [weighted]',
+      ],
     },
     {
       host: process.env.ENDPOINT_URL,
       connection: 'mclite-timeseries',
       from: '2012-10-30T00:00:00',
       to: '2012-11-07T00:00:00',
-      ids: ['Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]', 'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]'],
+      ids: [
+        'Telemetry/Catchment rainfall/GRADASCICA_BOKALCI_Rainfall.dfs0 [weighted]',
+        'Telemetry/Catchment rainfall/KRKA_PODBOCJE_Rainfall.dfs0 [weighted]',
+      ],
     },
   ];
 
   return (
-    <TimeseriesExporterComponent
+    <TimeseriesExporter
       color="primary"
       variant="contained"
       dateTimeFormat="dd/MM-yyyy HH-mm-ss"
@@ -268,6 +292,6 @@ export const TimeseriesExporter = () => {
       data={data}
       caption="This is a download button"
       timeseries={timeseries}
-    ></TimeseriesExporterComponent>
+    ></TimeseriesExporter>
   );
 };

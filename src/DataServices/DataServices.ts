@@ -1,7 +1,7 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
-import { DataSource, JobQuery, Options, User } from './types';
 import { dataObjectToArray, queryProp } from '../';
+import { DataSource, JobQuery, Options, User } from './types';
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -335,12 +335,15 @@ const fetchScenarios = (dataSource: DataSource, token: string) =>
   }).pipe(tap((res) => console.log('List of scenarios fetched', res)));
 
 const fetchScenariosByDate = (dataSource: DataSource, token: string) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/list?from=${dataSource.from}&to=${dataSource.to}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
+  fetchUrl(
+    `${dataSource.host}/api/scenarios/${dataSource.connection}/list?from=${dataSource.from}&to=${dataSource.to}`,
+    {
+      method: 'GET',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
 
 const deleteScenario = (dataSource: DataSource, token: string, id: any) =>
   fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${id}`, {
@@ -415,12 +418,16 @@ const fetchJob = (dataSource: DataSource, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log('jeb fetched executed', res)));
 
-const fetchJobs = (dataSource: DataSource, token: string, query: { account: any; since: any; status: any; task: any; tag: any }) => {
+const fetchJobs = (
+  dataSource: DataSource,
+  token: string,
+  query: { account: any; since: any; status: any; task: any; tag: any },
+) => {
   const url = !query
     ? `${dataSource.host}/api/jobs/${dataSource.connection}`
-    : `${dataSource.host}/api/jobs/${dataSource.connection}?account=${queryProp(query.account)}&since=${queryProp(query.since)}&status=${queryProp(query.status)}&task=${queryProp(
-        query.task,
-      )}&tag=${queryProp(query.tag)}`;
+    : `${dataSource.host}/api/jobs/${dataSource.connection}?account=${queryProp(query.account)}&since=${queryProp(
+        query.since,
+      )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`;
 
   return fetchUrl(url, {
     method: 'GET',
@@ -439,20 +446,26 @@ const deleteJob = (dataSource: DataSource, token: string, id: string) =>
   }).pipe(tap((res) => console.log('job deleted', res)));
 
 const deleteJobs = (dataSource: DataSource, token: string, query: JobQuery) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}?account=${query.account}&since=${query.since}&status=${query.status}&task=${query.task}&tag=${query.tag}`, {
-    method: 'DELETE',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
+  fetchUrl(
+    `${dataSource.host}/api/jobs/${dataSource.connection}?account=${query.account}&since=${query.since}&status=${query.status}&task=${query.task}&tag=${query.tag}`,
+    {
+      method: 'DELETE',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  }).pipe(tap((res) => console.log('jobs deleted', res)));
+  ).pipe(tap((res) => console.log('jobs deleted', res)));
 
 const fetchLastJob = (dataSource: DataSource, token: string, query: JobQuery) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/last?account=${query.account}&since=${query.since}&status=${query.status}&task=${query.task}&tag=${query.tag}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
+  fetchUrl(
+    `${dataSource.host}/api/jobs/${dataSource.connection}/last?account=${query.account}&since=${query.since}&status=${query.status}&task=${query.task}&tag=${query.tag}`,
+    {
+      method: 'GET',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  }).pipe(tap((res) => console.log('last job fetched', res)));
+  ).pipe(tap((res) => console.log('last job fetched', res)));
 
 const fetchJobCount = (dataSource: DataSource, token: string) =>
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/count`, {
@@ -474,12 +487,15 @@ const fetchLogs = (dataSource: DataSource, token: string, query: any) =>
 
 // Spreadsheets
 const fetchSpreadsheetUsedRange = (dataSource: DataSource, token: string) =>
-  fetchUrl(`${dataSource.host}/api/spreadsheets/${dataSource.connection}/${dataSource.id}/${dataSource.sheetName}/usedrange`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
+  fetchUrl(
+    `${dataSource.host}/api/spreadsheets/${dataSource.connection}/${dataSource.id}/${dataSource.sheetName}/usedrange`,
+    {
+      method: 'GET',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  }).pipe(tap((res) => console.log(`spread sheet fetched`, res)));
+  ).pipe(tap((res) => console.log(`spread sheet fetched`, res)));
 
 const updateSpreadsheet = (host: string, connection: string, token: string, spreadSheetToUpdate: any) =>
   fetchUrl(`${host}/api/spreadsheets/${connection}`, {

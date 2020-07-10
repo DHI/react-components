@@ -1,44 +1,57 @@
-import React, { FC, useState } from 'react';
 import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
+import React, { useState } from 'react';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
-import useStyles from './useStyles';
 import IScenarioItemProps from './types';
+import useStyles from './useStyles';
 
-const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
+const ScenarioItem = (props: IScenarioItemProps) => {
   const [hover, setHover] = useState(false);
   const classes = useStyles();
+  const {
+    showHour,
+    date,
+    showStatus,
+    isSelected,
+    status,
+    name,
+    description,
+    showMenu,
+    onContextMenuClick,
+    menu,
+    scenario,
+  } = props;
 
-  const scenarioHour = props.showHour && (
+  const scenarioHour = showHour && (
     <Grid item className={classes.scenarioHour}>
       <Typography component="div" className={classes.hourText}>
-        {format(parseISO(props.date), 'HH:mm')}
+        {format(parseISO(date), 'HH:mm')}
       </Typography>
     </Grid>
   );
 
-  const scenarioStatus = props.showStatus && (
+  const scenarioStatus = showStatus && (
     <Grid item className={classes.status}>
       <div className={classes.verticalLine} />
       <div
         style={{
-          backgroundColor: props.isSelected || hover ? '#e8e8e8' : 'white',
+          backgroundColor: isSelected || hover ? '#e8e8e8' : 'white',
           marginLeft: '-8px',
         }}
       >
         <div>
-          <Tooltip title={props.status.message}>
+          <Tooltip title={status.message ? status.message : ''}>
             <CircularProgress
-              style={{ color: props.status.color, display: 'grid' }}
-              variant={props.status.progress ? 'indeterminate' : 'determinate'}
-              value={props.status.progress ? props.status.progress : 100}
+              style={{ color: status.color, display: 'grid' }}
+              variant={status.progress ? 'indeterminate' : 'determinate'}
+              value={status.progress ? status.progress : 100}
               size={16}
-              thickness={props.status.progress ? 7 : 21}
+              thickness={status.progress ? 7 : 21}
             />
           </Tooltip>
         </div>
         <Typography component="span" className={classes.scenarioProgress}>
-          {props.status.progress ? `${props.status.progress}%` : null}
+          {status.progress ? `${status.progress}%` : null}
         </Typography>
       </div>
     </Grid>
@@ -47,9 +60,9 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   const scenarioDetails = (
     <Grid item className={classes.scenarioDetails}>
       <Typography component="span" color="primary" className={classes.scenarioTitle}>
-        {props.name}
+        {name}
       </Typography>
-      {props.description.map((item: { name: string; value: any }) => (
+      {description.map((item: { name: string; value: string }) => (
         <Typography key={item.name} component="span" className={classes.textFields}>
           {`${item.name}: ${item.value}`}
         </Typography>
@@ -58,11 +71,17 @@ const ScenarioItem: FC<IScenarioItemProps> = (props: IScenarioItemProps) => {
   );
 
   return (
-    <div className={classes.scenario} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onFocus={() => undefined} onBlur={() => undefined}>
+    <div
+      className={classes.scenario}
+      onMouseOver={() => setHover(true)}
+      onMouseOut={() => setHover(false)}
+      onFocus={() => undefined}
+      onBlur={() => undefined}
+    >
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}
-      {props.showMenu && <ScenarioMenu onContextMenuClick={props.onContextMenuClick} menu={props.menu} scenario={props.scenario} />}
+      {showMenu && <ScenarioMenu onContextMenuClick={onContextMenuClick} menu={menu} scenario={scenario} />}
     </div>
   );
 };
