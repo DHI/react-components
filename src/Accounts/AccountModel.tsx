@@ -5,11 +5,11 @@ import {
   DialogContent,
   DialogTitle,
   InputAdornment,
-  TextField
+  TextField,
 } from '@material-ui/core';
 import { FiberManualRecord } from '@material-ui/icons';
-import React, { useEffect, useState } from 'react';
-import { passwordStrength } from '../Utils/Utils';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { passwordStrength } from '../utils/Utils';
 
 const AccountModel = ({
   user,
@@ -48,7 +48,7 @@ const AccountModel = ({
     });
   }, [open]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (form.password !== form.repeatPassword) {
@@ -92,7 +92,7 @@ const AccountModel = ({
     setState({ ...state, passwordStrengthColor });
   };
 
-  const handleChange = (param: string) => (e: any) => {
+  const handleChange = (param: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     if (param === 'password') {
       updatePasswordStrengthIndicator(e.target.value);
     }

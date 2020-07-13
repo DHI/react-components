@@ -14,7 +14,7 @@ import {
   Remove,
   SaveAlt,
   Search,
-  ViewColumn
+  ViewColumn,
 } from '@material-ui/icons';
 import MaterialTable, { Icons } from 'material-table';
 import React, { useCallback, useEffect, useState } from 'react';

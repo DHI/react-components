@@ -9,7 +9,7 @@ import {
   postScenario,
   updateScenario,
 } from '../../DataServices/DataServices';
-import { changeObjectProperty, getObjectProperty, uniqueId } from '../../Utils/Utils';
+import { changeObjectProperty, getObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioDialog } from '../ScenarioDialog/ScenarioDialog';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { IDialog, IMenuItem, IQueryDates, IScenario } from '../types';

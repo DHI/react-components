@@ -5,4 +5,4 @@ export * from './Scenarios/ScenarioMenu/ScenarioMenu';
 export * from './Scenarios/Scenarios/Scenarios';
 export * from './Timeseries/ChartPlotly/ChartPlotly';
 export * from './Timeseries/TimeseriesExporter/TimeseriesExporter';
-export * from './Utils/Utils';
+export * from './utils/Utils';
