@@ -42,4 +42,4 @@ const ScenarioMenu = (props: IScenarioMenuProps) => {
   );
 };
 
-export { IScenarioMenuProps, ScenarioMenu };
+export default ScenarioMenu;

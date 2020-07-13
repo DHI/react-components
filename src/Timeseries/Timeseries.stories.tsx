@@ -1,7 +1,9 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import React, { useEffect, useState } from 'react';
-import { ChartPlotly, fetchTimeseriesValues, fetchToken, TimeseriesExporter } from '..';
+import { fetchTimeseriesValues, fetchToken } from '../DataServices/DataServices';
+import { ChartPlotly } from './ChartPlotly/ChartPlotly';
 import { IChartPlotlyPlotData } from './ChartPlotly/types';
+import { TimeseriesExporter } from './TimeseriesExporter/TimeseriesExporter';
 
 export default {
   title: 'Timeseries Components',

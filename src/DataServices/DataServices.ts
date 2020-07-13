@@ -1,7 +1,8 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
-import { dataObjectToArray, queryProp } from '../';
-import { DataSource, JobQuery, Options, User } from './types';
+import { IToken } from '../Auth/types';
+import { dataObjectToArray, queryProp } from '../utils/Utils';
+import { DataSource, JobParameters, JobQuery, Options, User } from './types';
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -47,7 +48,7 @@ const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
     body: JSON.stringify(user),
-  }).pipe(tap((res) => console.log('token res', res)));
+  }).pipe<IToken>(tap((res) => console.log('token res', res)));
 };
 
 // GIS
@@ -373,7 +374,7 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
 
 // JOBS
 
-const executeJob = (dataSource: DataSource, token: string, taskId: any, parameters: any) => {
+const executeJob = (dataSource: DataSource, token: string, taskId: any, parameters: JobParameters) => {
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
     method: 'POST',
     additionalHeaders: {

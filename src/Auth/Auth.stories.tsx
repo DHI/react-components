@@ -8,27 +8,29 @@ export default {
 };
 
 export const LoginStory = () => {
-  const onSuccesResultHandler = (user: IUser, token: IToken) => {
-    alert(`Login Success. See console log for details.`);
-    console.log(`username = ${user.name}, token = ${token.accessToken}`);
-  };
+  const [state, setState] = React.useState<{ user?: IUser; token?: IToken }>({});
 
   return (
-    <Login
-      host={process.env.ENDPOINT_URL}
-      translations={{
-        userNamePlaceholder: 'Username',
-        passwordPlaceholder: 'Password',
-        rememberMeLabelText: 'Remember me',
-        resetPasswordLabelText: 'FORGOT PASSWORD?',
-        resetPasswordButtonText: 'FORGOT PASSWORD',
-        resetPasswordUserNamePlaceholder: 'E-Mail Address or User ID',
-        loginButtonText: 'Login',
-      }}
-      showRememberMe={true}
-      showResetPassword={true}
-      onSuccess={onSuccesResultHandler}
-      textFieldVariant={'outlined'}
-    />
+    <>
+      <Login
+        host={process.env.ENDPOINT_URL}
+        translations={{
+          userNamePlaceholder: 'Username',
+          passwordPlaceholder: 'Password',
+          rememberMeLabelText: 'Remember me',
+          resetPasswordLabelText: 'FORGOT PASSWORD?',
+          resetPasswordButtonText: 'FORGOT PASSWORD',
+          resetPasswordUserNamePlaceholder: 'E-Mail Address or User ID',
+          loginButtonText: 'Login',
+        }}
+        showRememberMe={true}
+        showResetPassword={true}
+        onSuccess={(user, token) => {
+          setState({ user, token });
+        }}
+        textFieldVariant={'outlined'}
+      />
+      {state.token && <pre style={{ padding: '2em' }}>{JSON.stringify(state, null, 2)}</pre>}
+    </>
   );
 };

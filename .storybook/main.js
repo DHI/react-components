@@ -1,3 +1,5 @@
+const TsChecker = require('fork-ts-checker-webpack-plugin')
+
 module.exports = {
   stories: ['../src/**/*.stories.tsx'],
   addons: [
@@ -8,6 +10,7 @@ module.exports = {
     '@storybook/addon-storysource',
   ],
   webpackFinal: async config => {
+    config.plugins.push(new TsChecker())
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       use: [

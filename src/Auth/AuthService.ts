@@ -1,4 +1,4 @@
-import { fetchAccount, fetchToken } from '..';
+import { fetchAccount, fetchToken } from '../DataServices/DataServices';
 import { IForm, IToken, IUser } from './types';
 
 export default class AuthService {
@@ -22,10 +22,7 @@ export default class AuthService {
             this.setSession(token, loggedInUser, form.rememberMe);
 
             if (onSuccess != null) {
-              onSuccess(loggedInUser, {
-                accessToken: token.accessToken.token,
-                refreshToken: token.refreshToken.token,
-              } as IToken);
+              onSuccess(loggedInUser, token);
             }
           },
           (err) => {

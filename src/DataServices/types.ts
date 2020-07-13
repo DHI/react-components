@@ -32,4 +32,8 @@ interface JobQuery {
   status: string;
 }
 
-export { Options, DataSource, Header, JobQuery, User };
+interface JobParameters {
+  [key: string]: string;
+}
+
+export { Options, DataSource, Header, JobQuery, JobParameters, User };
