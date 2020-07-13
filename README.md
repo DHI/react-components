@@ -1,3 +1,5 @@
+![CI](https://github.com/DHI/react-components-ts/workflows/CI/badge.svg)
+
 # React Components
 
 The React Components collection is a TypeScript based collection of components used across a range of application within DHI
