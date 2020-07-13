@@ -1,4 +1,4 @@
-import { clone } from 'lodash';
+import { clone, uniqueId } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   cancelJob,
@@ -9,9 +9,10 @@ import {
   postScenario,
   updateScenario,
 } from '../../DataServices/DataServices';
-import { changeObjectProperty, getObjectProperty, uniqueId } from '../../utils/Utils';
-import { ScenarioDialog } from '../ScenarioDialog/ScenarioDialog';
-import { ScenarioList } from '../ScenarioList/ScenarioList';
+import { JobParameters } from '../../DataServices/types';
+import { changeObjectProperty, getObjectProperty } from '../../utils/utils';
+import ScenarioDialog from '../ScenarioDialog/ScenarioDialog';
+import ScenarioList from '../ScenarioList/ScenarioList';
 import { IDialog, IMenuItem, IQueryDates, IScenario } from '../types';
 import IScenariosProps from './types';
 import useStyles from './useStyles';
@@ -23,6 +24,7 @@ const Scenarios = (props: IScenariosProps) => {
     scenarioConnection,
     nameField,
     jobConnection,
+    jobParameters,
     taskId,
     descriptionFields,
     menuItems,
@@ -166,6 +168,24 @@ const Scenarios = (props: IScenariosProps) => {
   const onExecuteScenario = (scenario: IScenario, menuItem: IMenuItem) => {
     closeDialog();
 
+    // Define Job Parameter with ScenarioId
+    const parameters = {
+      ScenarioId: scenario.id,
+    } as JobParameters;
+
+    // Append Job Parameters from Menu Item
+    // TODO: Don't understand this?
+    // if (menuItem.parameters) {
+    //   menuItem.parameters.forEach((item: JobParameter) => {
+    //     return Object.assign(parameters, {
+    //       [item.id]: getObjectProperty(scenario, item.field, item.condition),
+    //     });
+    //   });
+    // }
+
+    // Append Job Parameters Props
+    Object.assign(parameters, jobParameters);
+
     executeJob(
       {
         host,
@@ -173,9 +193,7 @@ const Scenarios = (props: IScenariosProps) => {
       },
       token,
       menuItem.taskId || taskId,
-      {
-        ScenarioId: scenario.id,
-      },
+      parameters,
     );
   };
 
@@ -352,4 +370,4 @@ const Scenarios = (props: IScenariosProps) => {
   );
 };
 
-export { IScenariosProps, Scenarios };
+export default Scenarios;

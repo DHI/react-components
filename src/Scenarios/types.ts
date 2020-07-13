@@ -47,6 +47,10 @@ interface IMenuItem {
   taskId?: string;
   connection?: string;
   condition?: ICondition;
+  /**
+   * Extra job parameters
+   */
+  parameters?: any;
 }
 
 interface IScenario {
