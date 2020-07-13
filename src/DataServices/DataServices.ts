@@ -1,7 +1,7 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
-import { dataObjectToArray, queryProp } from '../utils/utils';
 import { IToken } from '../Auth/types';
+import { dataObjectToArray, queryProp } from '../utils/Utils';
 import { DataSource, JobParameters, JobQuery, Options, User } from './types';
 
 const DEFAULT_OPTIONS = {
