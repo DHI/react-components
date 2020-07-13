@@ -12,18 +12,22 @@ export const LogListStory = () => {
   const dataSources = [
     {
       host: process.env.ENDPOINT_URL,
-      connection: 'json-logger',
+      connection: 'postgres-logger',
     },
     {
       host: process.env.ENDPOINT_URL,
-      connection: 'postgres-logger',
+      connection: 'postgres-logger1',
+    },
+    {
+      host: process.env.ENDPOINT_URL,
+      connection: 'postgres-logger2',
     },
   ];
 
   useEffect(() => {
     fetchToken(process.env.ENDPOINT_URL, {
-      id: process.env.ADMINUSER!,
-      password: process.env.ADMINPASSWORD!,
+      id: process.env.USERUSER!,
+      password: process.env.USERPASSWORD!,
     }).subscribe(
       (res) => {
         setToken(res.accessToken.token);
@@ -42,7 +46,7 @@ export const LogListStory = () => {
         token={token}
         dataSources={dataSources}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
-        startTimeUtc={'2020-07-05T01:45:34'}
+        startTimeUtc={'2020-05-05T01:45:34'}
         timezone={'Asia/Jakarta'}
       />
     );
