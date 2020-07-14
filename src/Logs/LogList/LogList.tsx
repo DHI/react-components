@@ -1,18 +1,13 @@
-import { IconButton, Paper, TableContainer, Tooltip, Typography } from '@material-ui/core';
+import { Tooltip } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MaUTable from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useTable } from 'react-table';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useBlockLayout, useTable } from 'react-table';
+import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
 import LogListProps, { Column, LogData } from './types';
 import useStyles from './useStyles';
@@ -28,7 +23,11 @@ const LogList = (props: LogListProps) => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => fetchLogsList(startDateUtc), frequency * 1000);
+    let interval: NodeJS.Timeout;
+
+    if (startDateUtc) {
+      interval = setInterval(() => fetchLogsList(startDateUtc), frequency * 1000);
+    }
 
     return () => {
       clearInterval(interval);
@@ -80,7 +79,7 @@ const LogList = (props: LogListProps) => {
     }
   };
 
-  const fetchLogsList = (dateTimeValue: string | undefined) => {
+  const fetchLogsList = (dateTimeValue: string) => {
     console.log(dateTimeValue);
     const query = [{ Item: 'DateTime', Value: dateTimeValue, QueryOperator: 'GreaterThan' }];
 
@@ -141,69 +140,75 @@ const LogList = (props: LogListProps) => {
   );
 
   const Table = (columns: Column[], data: LogData[]) => {
-    // Use the state and functions returned from useTable to build your UI
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-      columns,
-      data,
-    });
+    const { getTableProps, getTableBodyProps, headerGroups, rows, totalColumnsWidth, prepareRow } = useTable(
+      {
+        columns,
+        data,
+      },
+      useBlockLayout,
+    );
 
-    // Render the UI for your table
-    return (
-      <TableContainer component={Paper}>
-        <MaUTable {...getTableProps()} className={classes.table} size="small" aria-label="a dense table">
-          <TableHead>
-            {headerGroups.map(
-              (headerGroup: {
-                getHeaderGroupProps: () => JSX.IntrinsicAttributes &
-                  React.ClassAttributes<HTMLTableRowElement> &
-                  React.HTMLAttributes<HTMLTableRowElement>;
-                headers: Column[];
-              }) => (
-                <TableRow>
-                  {headerGroup.headers.map((column: any) => (
-                    <TableCell {...column.getHeaderProps()} size="small">
-                      <Typography noWrap>
-                        {column.render('Header')}{' '}
-                        {column.filter ? (
-                          <Tooltip title="Filter list">
-                            <IconButton aria-label="Filter list" onClick={onClickFilter}>
-                              <FilterListIcon />
-                            </IconButton>
-                          </Tooltip>
-                        ) : null}
-                      </Typography>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ),
-            )}
-          </TableHead>
-          <TableBody {...getTableBodyProps()}>
-            {rows.map(
-              (row: {
-                getRowProps: () => JSX.IntrinsicAttributes &
-                  React.ClassAttributes<HTMLTableRowElement> &
-                  React.HTMLAttributes<HTMLTableRowElement>;
-                cells: LogData[];
+    const RenderRow = useCallback(
+      ({ index, style }) => {
+        const row = rows[index];
+
+        prepareRow(row);
+
+        return (
+          <div
+            {...row.getRowProps({
+              style,
+            })}
+            className="tr"
+          >
+            {row.cells.map(
+              (cell: {
+                getCellProps: () => JSX.IntrinsicAttributes &
+                  React.ClassAttributes<HTMLDivElement> &
+                  React.HTMLAttributes<HTMLDivElement>;
+                render: (arg0: string) => React.ReactNode;
               }) => {
-                prepareRow(row);
-
                 return (
-                  <TableRow>
-                    {row.cells.map((cell: any) => {
-                      return (
-                        <TableCell {...cell.getCellProps()}>
-                          <Typography noWrap>{cell.render('Cell')}</Typography>
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
+                  <div {...cell.getCellProps()} className="td">
+                    {cell.render('Cell')}
+                  </div>
                 );
               },
             )}
-          </TableBody>
-        </MaUTable>
-      </TableContainer>
+          </div>
+        );
+      },
+      [prepareRow, rows],
+    );
+
+    // Render the UI for your table
+    return (
+      <div {...getTableProps()} className={classes.table}>
+        <div>
+          {headerGroups.map(
+            (headerGroup: {
+              getHeaderGroupProps: () => JSX.IntrinsicAttributes &
+                React.ClassAttributes<HTMLDivElement> &
+                React.HTMLAttributes<HTMLDivElement>;
+              headers: any[];
+            }) => (
+              <div {...headerGroup.getHeaderGroupProps()} className="tr">
+                {headerGroup.headers.map((column) => (
+                  <div {...column.getHeaderProps()} className="th">
+                    {column.render('Header')}
+                  </div>
+                ))}
+              </div>
+            ),
+          )}
+        </div>
+
+        <div {...getTableBodyProps()}>
+          <FixedSizeList height={350} itemCount={rows.length} itemSize={35} width={totalColumnsWidth}>
+            {RenderRow}
+          </FixedSizeList>
+        </div>
+      </div>
     );
   };
 
