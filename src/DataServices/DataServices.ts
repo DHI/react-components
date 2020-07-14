@@ -327,17 +327,32 @@ const fetchScenario = (dataSource: DataSource, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log(`${id} scenario fetched`, res)));
 
-const fetchScenarios = (dataSource: DataSource, token: string) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
+const fetchScenarios = (dataSource: DataSource, token: string) => {
+  const dataSelectors =
+    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
+      ? `?dataSelectors=[${dataSource.dataSelectors
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
+      : '';
+
+  return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}${dataSelectors}`, {
     method: 'GET',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
   }).pipe(tap((res) => console.log('List of scenarios fetched', res)));
+};
 
-const fetchScenariosByDate = (dataSource: DataSource, token: string) =>
-  fetchUrl(
-    `${dataSource.host}/api/scenarios/${dataSource.connection}/list?from=${dataSource.from}&to=${dataSource.to}`,
+const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
+  const dataSelectors =
+    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
+      ? `?dataSelectors=[${dataSource.dataSelectors
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
+      : '';
+
+  return fetchUrl(
+    `${dataSource.host}/api/scenarios/${dataSource.connection}/list?from=${dataSource.from}&to=${dataSource.to}${dataSelectors}`,
     {
       method: 'GET',
       additionalHeaders: {
@@ -345,6 +360,7 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) =>
       },
     },
   );
+};
 
 const deleteScenario = (dataSource: DataSource, token: string, id: any) =>
   fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${id}`, {

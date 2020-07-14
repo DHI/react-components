@@ -17,7 +17,7 @@ interface IStatus {
   progress?: number;
 }
 
-interface IDescriptionField {
+interface DescriptionField {
   /**
    * Scenario description data field to be diplay as value
    */
@@ -27,11 +27,19 @@ interface IDescriptionField {
    */
   name: string;
   /**
+   * Data type, generally for formatting purposes
+   */
+  dataType?: null | 'string' | 'number' | 'date';
+  /**
+   * Format string specifier
+   */
+  format?: string;
+  /**
    * Optional condition to be display as description
    */
   condition?: {
     field: string;
-    value: string;
+    value: string | string[];
   };
 }
 
@@ -136,7 +144,7 @@ interface ICloseDialog {
 
 export {
   IStatus,
-  IDescriptionField,
+  DescriptionField,
   IMenuItem,
   IScenario,
   ICondition,

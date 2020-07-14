@@ -5,7 +5,7 @@ import { Dictionary, groupBy, isEmpty, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { getObjectProperty } from '../../utils/Utils';
 import ScenarioItem from '../ScenarioItem/ScenarioItem';
-import { ICondition, IDescriptionField, IScenario } from '../types';
+import { DescriptionField, ICondition, IScenario } from '../types';
 import IScenarioListProps from './types';
 import useStyles from './useStyles';
 
@@ -85,8 +85,12 @@ const ScenarioList = (props: IScenarioListProps) => {
     return result;
   };
 
-  const createDescriptionObject = (scenarioData: string, descriptionFields: IDescriptionField[]) => {
-    const descriptionArray = [];
+  const createDescriptionObject = (scenarioData: string, descriptionFields: DescriptionField[] | undefined) => {
+    const descriptionArray: { name: string; value: any }[] = [];
+    debugger;
+    if (!descriptionFields) {
+      return descriptionArray;
+    }
 
     for (let i = 0; i < descriptionFields.length; i++) {
       const descriptionFieldCondition = descriptionFields[i].condition;
@@ -149,8 +153,8 @@ const ScenarioList = (props: IScenarioListProps) => {
             })}
           >
             <ScenarioItem
-              name={getObjectProperty(scenario.data, nameField)}
-              description={createDescriptionObject(scenario.data, descriptionFields)}
+              name={getObjectProperty(scenario, nameField)}
+              description={createDescriptionObject(JSON.stringify(scenario), descriptionFields)}
               date={date}
               key={scenario.id}
               isSelected={selectedId === getObjectProperty(scenario, 'id')}

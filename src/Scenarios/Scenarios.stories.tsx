@@ -98,14 +98,33 @@ export const ScenariosStory = () => {
             },
           ]}
           nameField="name"
+          onReceiveScenarios={(scenarios: IScenario[]) => {
+            console.log('Received new scenarios!', scenarios);
+          }}
           descriptionFields={[
             {
-              field: 'vessel.vesselName',
+              field: 'data.vessel.vesselName',
               name: 'Vessel Name',
             },
             {
-              field: 'mooring.berthName',
+              field: 'data.mooring.berthName',
               name: 'Berth Name',
+              condition: {
+                field: 'mooring.berthName',
+                value: 'Whatever',
+              },
+            },
+            {
+              field: 'data.dateTime',
+              name: 'Creation Date',
+              dataType: 'date',
+              format: 'dd-MMM-yyyy HH:mm',
+            },
+          ]}
+          extraFields={[
+            {
+              field: 'vessel.loa',
+              name: 'Vessel LOA',
             },
           ]}
           showDate={true}
@@ -163,6 +182,7 @@ export const ScenariosStory = () => {
             cancelLabel: 'Batal',
             confirmLabel: 'Lanjut',
           }}
+          timeZone="Australia/Brisbane"
         />
       </div>
     );

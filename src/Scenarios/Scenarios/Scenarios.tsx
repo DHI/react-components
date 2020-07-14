@@ -22,11 +22,13 @@ const Scenarios = (props: IScenariosProps) => {
     host,
     token,
     scenarioConnection,
+    onReceiveScenarios,
     nameField,
     jobConnection,
     jobParameters,
     taskId,
     descriptionFields,
+    extraFields,
     menuItems,
     selectedScenarioId,
     showDate,
@@ -93,6 +95,11 @@ const Scenarios = (props: IScenariosProps) => {
         connection: scenarioConnection,
         from: queryDates.windowStart,
         to: queryDates.windowEnd,
+        dataSelectors: [
+          nameField,
+          ...descriptionFields!.map((descriptionField) => descriptionField.field),
+          ...extraFields!.map((descriptionField) => descriptionField.field),
+        ],
       },
       token,
     ).subscribe(
@@ -116,6 +123,11 @@ const Scenarios = (props: IScenariosProps) => {
       {
         host,
         connection: scenarioConnection,
+        dataSelectors: [
+          nameField,
+          ...descriptionFields!.map((descriptionField) => descriptionField.field),
+          ...extraFields!.map((descriptionField) => descriptionField.field),
+        ],
       },
       token,
     ).subscribe(
@@ -127,6 +139,10 @@ const Scenarios = (props: IScenariosProps) => {
         });
 
         setScenarios(rawScenarios);
+
+        if (onReceiveScenarios) {
+          onReceiveScenarios(rawScenarios);
+        }
       },
       (error) => {
         console.log(error);
@@ -150,7 +166,7 @@ const Scenarios = (props: IScenariosProps) => {
   const executeDialog = (scenario: IScenario, menuItem: IMenuItem) => {
     setDialog({
       showDialog: true,
-      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
+      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario, nameField)}`,
       dialogMessage:
         translations && translations.executeConfirmation
           ? `${translations.executeConfirmation} 
@@ -336,6 +352,7 @@ const Scenarios = (props: IScenariosProps) => {
       <ScenarioList
         nameField={nameField}
         descriptionFields={descriptionFields}
+        extraFields={extraFields}
         menuItems={menuItems}
         scenarios={scenarios as any}
         selectedScenarioId={selectedScenarioId}
