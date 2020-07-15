@@ -167,7 +167,7 @@ const Scenarios = (props: IScenariosProps) => {
   const executeDialog = (scenario: IScenario, menuItem: IMenuItem) => {
     setDialog({
       showDialog: true,
-      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario, nameField)}`,
+      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
       dialogMessage:
         translations && translations.executeConfirmation
           ? `${translations.executeConfirmation} 
@@ -279,8 +279,8 @@ const Scenarios = (props: IScenariosProps) => {
     let clonedScenario = {
       data: scenario.data,
     };
-    const clonedNamed = `Clone of ${getObjectProperty(scenario, nameField)}`;
-    debugger;
+    const clonedNamed = `Clone of ${getObjectProperty(scenario.data, nameField)}`;
+
     clonedScenario = changeObjectProperty(clonedScenario, nameField, clonedNamed);
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);

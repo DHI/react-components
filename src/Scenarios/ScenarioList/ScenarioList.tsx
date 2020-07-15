@@ -63,7 +63,7 @@ const ScenarioList = (props: IScenarioListProps) => {
             })}
           >
             <ScenarioItem
-              name={getObjectProperty(scenario, nameField)}
+              name={getObjectProperty(scenario.data, nameField)}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.id}
