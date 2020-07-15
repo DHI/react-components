@@ -1,7 +1,8 @@
 import { parseISO } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
-import { DescriptionField, IScenario, IStatus } from '../Scenarios/types';
+import { isArray } from 'lodash';
+import { DescriptionField, ICondition, IScenario, IStatus } from '../Scenarios/types';
 
 const dataObjectToArray = (data: { [x: string]: any }) => {
   return Object.keys(data).map((key) => ({
@@ -36,7 +37,7 @@ const getDescriptions = (
     }
 
     // Check if valid conditions met
-    if (!field.condition || getObjectProperty(scenarioData, field.condition.field) === field.condition.value) {
+    if (!field.condition || checkCondition(scenarioData, field.condition)) {
       // Formatting
       let formattedValue = value;
 
@@ -59,6 +60,25 @@ const getDescriptions = (
   }
 
   return descriptions;
+};
+
+const checkCondition = (scenarioData: IScenario, condition: ICondition) => {
+  let conditions: string[] = [];
+  let isInverse = false;
+
+  if (condition) {
+    if (condition!.field.indexOf('!') === 0) {
+      isInverse = true;
+    }
+
+    if (isArray(condition.value)) {
+      conditions = [...condition.value];
+    } else {
+      conditions = [condition.value!];
+    }
+  }
+
+  return conditions.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse;
 };
 
 const changeObjectProperty = (objectItem: any, property: string, intent: any) => {
@@ -202,6 +222,7 @@ export {
   getObjectProperty,
   getDescriptions,
   changeObjectProperty,
+  checkCondition,
   checkStatus,
   queryProp,
   uniqueId,

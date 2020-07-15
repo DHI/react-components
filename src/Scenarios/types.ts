@@ -91,7 +91,7 @@ interface ICondition {
   /**
    * Additional condition of description value
    */
-  value: string;
+  value: string | string[];
 }
 
 interface IDialog {

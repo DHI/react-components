@@ -79,6 +79,10 @@ export const ScenariosStory = () => {
             {
               id: 'execute',
               label: 'Execute',
+              condition: {
+                field: '!lastJobStatus',
+                value: ['Pending', 'InProgress', 'Completed'],
+              },
             },
             {
               id: 'clone',
@@ -114,8 +118,8 @@ export const ScenariosStory = () => {
               field: 'data.mooring.berthName',
               name: 'Berth Name',
               condition: {
-                field: 'data.mooring.berthName',
-                value: 'VIG Berth 2',
+                field: 'lastJobStatus',
+                value: 'Completed',
               },
             },
             {

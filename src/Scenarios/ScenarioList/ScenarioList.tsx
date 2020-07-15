@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { checkStatus, getDescriptions, getObjectProperty } from '../../utils/Utils';
+import { checkCondition, checkStatus, getDescriptions, getObjectProperty } from '../../utils/Utils';
 import ScenarioItem from '../ScenarioItem/ScenarioItem';
 import { IScenario } from '../types';
 import IScenarioListProps from './types';
@@ -43,11 +43,9 @@ const ScenarioList = (props: IScenarioListProps) => {
   };
 
   const buildMenu = (scenario: IScenario) => {
-    return menuItems.filter((menuItem) =>
-      !menuItem.condition || getObjectProperty(scenario, menuItem.condition.field) === menuItem.condition.value
-        ? menuItem
-        : null,
-    );
+    return menuItems.filter((menuItem) => {
+      return !menuItem.condition || checkCondition(scenario, menuItem.condition) ? menuItem : null;
+    });
   };
 
   const buildScenariosList = (scenarios: IScenario[]) => {
