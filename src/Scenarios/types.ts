@@ -58,7 +58,7 @@ interface IMenuItem {
   /**
    * Extra job parameters
    */
-  parameters?: any;
+  jobParameters?: any;
 }
 
 interface IScenario {

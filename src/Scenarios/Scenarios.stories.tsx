@@ -75,6 +75,7 @@ export const ScenariosStory = () => {
           scenarioConnection={'postgres-scenarios'}
           jobConnection={'wf-jobs'}
           jobParameters={{ ClientId: 'test' }}
+          taskId={'workflow'}
           menuItems={[
             {
               id: 'execute',
@@ -82,6 +83,10 @@ export const ScenariosStory = () => {
               condition: {
                 field: '!lastJobStatus',
                 value: ['Pending', 'InProgress', 'Completed'],
+              },
+              taskId: 'workflow',
+              jobParameters: {
+                ClientId: 'test_override',
               },
             },
             {
@@ -177,7 +182,6 @@ export const ScenariosStory = () => {
             },
           ]}
           addScenario={newScenario}
-          taskId={'workflow'}
           translations={{
             executeConfirmation:
               'Ini akan memulai pekerjaan baru di latar belakang. Status akan berubah setelah penyelesaian pekerjaan. Anda yakin ingin mengeksekusi',

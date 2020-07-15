@@ -191,14 +191,11 @@ const Scenarios = (props: IScenariosProps) => {
     } as JobParameters;
 
     // Append Job Parameters from Menu Item
-    // TODO: Don't understand this?
-    // if (menuItem.parameters) {
-    //   menuItem.parameters.forEach((item: JobParameter) => {
-    //     return Object.assign(parameters, {
-    //       [item.id]: getObjectProperty(scenario, item.field, item.condition),
-    //     });
-    //   });
-    // }
+    if (menuItem.jobParameters) {
+      menuItem.jobParameters.forEach((item: JobParameters) => {
+        parameters[item.id] = getObjectProperty(scenario, item.field);
+      });
+    }
 
     // Append Job Parameters Props
     Object.assign(parameters, jobParameters);
