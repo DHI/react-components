@@ -17,7 +17,7 @@ interface IStatus {
   progress?: number;
 }
 
-interface IDescriptionField {
+interface DescriptionField {
   /**
    * Scenario description data field to be diplay as value
    */
@@ -27,11 +27,19 @@ interface IDescriptionField {
    */
   name: string;
   /**
+   * Data type, generally for formatting purposes
+   */
+  dataType?: null | 'string' | 'number' | 'dateTime';
+  /**
+   * Format string specifier
+   */
+  format?: string;
+  /**
    * Optional condition to be display as description
    */
   condition?: {
     field: string;
-    value: string;
+    value: string | string[];
   };
 }
 
@@ -50,7 +58,7 @@ interface IMenuItem {
   /**
    * Extra job parameters
    */
-  parameters?: any;
+  jobParameters?: any;
 }
 
 interface IScenario {
@@ -83,7 +91,7 @@ interface ICondition {
   /**
    * Additional condition of description value
    */
-  value: string;
+  value: string | string[];
 }
 
 interface IDialog {
@@ -136,7 +144,7 @@ interface ICloseDialog {
 
 export {
   IStatus,
-  IDescriptionField,
+  DescriptionField,
   IMenuItem,
   IScenario,
   ICondition,

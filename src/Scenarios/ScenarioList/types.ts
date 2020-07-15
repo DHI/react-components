@@ -1,4 +1,4 @@
-import { IDescriptionField, IMenuItem, IScenario, IStatus } from '../types';
+import { DescriptionField, IMenuItem, IScenario, IStatus } from '../types';
 
 interface IScenarioListProps {
   /**
@@ -9,6 +9,9 @@ interface IScenarioListProps {
    * The scenario menu function handlers
    */
   onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
+  /**
+   * List of menu items
+   */
   menuItems: IMenuItem[];
   /**
    * The list of scenario
@@ -21,7 +24,11 @@ interface IScenarioListProps {
   /**
    * Customising scenario description field display
    */
-  descriptionFields: IDescriptionField[];
+  descriptionFields?: DescriptionField[];
+  /**
+   * Customising scenario extra field display
+   */
+  extraFields?: DescriptionField[];
   /**
    * Indicates if the date of the scenario should be shown
    */
@@ -42,7 +49,14 @@ interface IScenarioListProps {
    * The id of selected scenario when it clicked
    */
   selectedScenarioId?: string;
+  /**
+   * Customising scenario status display
+   */
   status: IStatus[];
+  /**
+   * Time zone (IANA format) for date display
+   */
+  timeZone?: string;
 }
 
 export default IScenarioListProps;

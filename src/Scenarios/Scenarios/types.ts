@@ -1,5 +1,5 @@
 import { JobParameters } from '../../DataServices/types';
-import { IDescriptionField, IMenuItem, IQueryDates, IScenario, IStatus } from '../types';
+import { DescriptionField, IMenuItem, IQueryDates, IScenario, IStatus } from '../types';
 
 interface IScenariosProps {
   /**
@@ -46,6 +46,10 @@ interface IScenariosProps {
    * Scenario connection to fetch scenario by date
    */
   scenarioConnection: string;
+  /**
+   * Current list of scenarios received from the server.
+   */
+  onReceiveScenarios: (scenarios: IScenario[]) => void;
   /**
    * Connection to fetch data from backend
    */
@@ -94,7 +98,11 @@ interface IScenariosProps {
   /**
    * Customising scenario description field display
    */
-  descriptionFields: IDescriptionField[];
+  descriptionFields?: DescriptionField[];
+  /**
+   * Customising scenario extra field display
+   */
+  extraFields?: DescriptionField[];
   /**
    * The scenario menu options
    */
@@ -107,6 +115,10 @@ interface IScenariosProps {
    * The object data to be add as new scenario
    */
   addScenario: IScenario | undefined;
+  /**
+   * Time zone (IANA format) for date display
+   */
+  timeZone?: string;
 }
 
 export default IScenariosProps;
