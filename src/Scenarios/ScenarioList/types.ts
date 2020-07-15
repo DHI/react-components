@@ -49,7 +49,14 @@ interface IScenarioListProps {
    * The id of selected scenario when it clicked
    */
   selectedScenarioId?: string;
+  /**
+   * Customising scenario status display
+   */
   status: IStatus[];
+  /**
+   * Time zone (IANA format) for date display
+   */
+  timeZone?: string;
 }
 
 export default IScenarioListProps;

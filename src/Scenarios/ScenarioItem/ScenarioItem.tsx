@@ -22,7 +22,7 @@ const ScenarioItem = (props: IScenarioItemProps) => {
     scenario,
   } = props;
 
-  const scenarioHour = showHour && (
+  const scenarioHour = date && showHour && (
     <Grid item className={classes.scenarioHour}>
       <Typography component="div" className={classes.hourText}>
         {format(parseISO(date), 'HH:mm')}

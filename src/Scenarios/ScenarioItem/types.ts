@@ -36,7 +36,7 @@ interface IScenarioItemProps {
   /**
    * The Date of scenario creation
    */
-  date: string;
+  date: string | null;
   /**
    * The Description of scenario
    */

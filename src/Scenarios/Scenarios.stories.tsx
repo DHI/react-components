@@ -95,6 +95,10 @@ export const ScenariosStory = () => {
             {
               id: 'openPdf',
               label: 'Open PDF',
+              condition: {
+                field: 'data.mooring.berthName',
+                value: 'VIG Berth 2',
+              },
             },
           ]}
           nameField="name"
@@ -110,20 +114,20 @@ export const ScenariosStory = () => {
               field: 'data.mooring.berthName',
               name: 'Berth Name',
               condition: {
-                field: 'mooring.berthName',
-                value: 'Whatever',
+                field: 'data.mooring.berthName',
+                value: 'VIG Berth 2',
               },
             },
             {
-              field: 'data.dateTime',
+              field: 'dateTime',
               name: 'Creation Date',
-              dataType: 'date',
-              format: 'dd-MMM-yyyy HH:mm',
+              dataType: 'dateTime',
+              format: 'dd-MMM-yyyy h:mm:ss a',
             },
           ]}
           extraFields={[
             {
-              field: 'vessel.loa',
+              field: 'data.vessel.loa',
               name: 'Vessel LOA',
             },
           ]}
@@ -145,7 +149,7 @@ export const ScenariosStory = () => {
             {
               name: 'Unknown',
               color: 'red',
-              message: 'Ready',
+              message: 'Unknown',
             },
             {
               name: 'ReadyToInitiate',

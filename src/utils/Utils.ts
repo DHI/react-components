@@ -1,5 +1,7 @@
-import { format } from 'date-fns';
-import { isObject } from 'lodash';
+import { parseISO } from 'date-fns';
+import { format, utcToZonedTime } from 'date-fns-tz';
+import jp from 'jsonpath';
+import { DescriptionField, IScenario, IStatus } from '../Scenarios/types';
 
 const dataObjectToArray = (data: { [x: string]: any }) => {
   return Object.keys(data).map((key) => ({
@@ -8,35 +10,55 @@ const dataObjectToArray = (data: { [x: string]: any }) => {
   }));
 };
 
-const getObjectProperty = (objectItem: any, property: string, compareValue?: any) => {
-  let valid = true;
-  const properties = property != null ? property.split('.') : [];
-  let value = objectItem;
+const getObjectProperty = (objectItem: any, property: string): any => {
+  const value = jp.query(objectItem, property);
 
-  for (let i = 0; i < properties.length; i++) {
-    if (properties[i].indexOf('!') >= 0) {
-      valid = !valid;
-      properties[i] = properties[i].replace('!', '');
-    }
+  return value.length > 0 ? value[0] : null;
+};
 
-    value = isObject(value) ? (value as any)[properties[i]] : '';
+const getDescriptions = (
+  scenarioData: IScenario,
+  descriptionFields: DescriptionField[] | undefined,
+  timeZone: string | undefined,
+) => {
+  const descriptions: { name: string; value: any }[] = [];
+
+  if (!descriptionFields) {
+    return descriptions;
   }
 
-  if (compareValue) {
-    if (typeof compareValue === 'object') {
-      for (let i = 0; i < compareValue.length; i++) {
-        if (value === compareValue[i]) {
-          return valid;
+  for (const field of descriptionFields) {
+    const value = getObjectProperty(scenarioData, field.field);
+
+    if (!value) {
+      console.warn(`Could not find field reference: ${field.field}!`);
+      continue;
+    }
+
+    // Check if valid conditions met
+    if (!field.condition || getObjectProperty(scenarioData, field.condition.field) === field.condition.value) {
+      // Formatting
+      let formattedValue = value;
+
+      // Formatting if date/time type
+      if (field.dataType === 'dateTime') {
+        let date: Date = parseISO(value);
+
+        if (timeZone) {
+          date = utcToZonedTime(`${value}Z`, timeZone);
         }
+
+        formattedValue = format(date, field.format ? field.format : 'yyyy-MM-dd HH:mm:ss');
       }
 
-      return !valid;
+      descriptions.push({
+        name: field.name,
+        value: formattedValue,
+      });
     }
-
-    return valid ? value === compareValue : !(value === compareValue);
   }
 
-  return valid ? value : !value;
+  return descriptions;
 };
 
 const changeObjectProperty = (objectItem: any, property: string, intent: any) => {
@@ -54,6 +76,29 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
   }
 
   return body[0];
+};
+
+const checkStatus = (scenario: IScenario, status: IStatus[]) => {
+  const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
+  const progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
+
+  const currentStatus = {
+    ...status.find((s) => s.name === scenarioStatus),
+    progress,
+  };
+
+  let result;
+
+  if (!scenarioStatus) {
+    result = {
+      color: 'red',
+      message: 'Unknown Status Field',
+    };
+  } else {
+    result = currentStatus;
+  }
+
+  return result;
 };
 
 const queryProp = (query: any) => {
@@ -152,4 +197,12 @@ export const passwordStrength = (password?: string) => {
   return 0;
 };
 
-export { dataObjectToArray, getObjectProperty, changeObjectProperty, queryProp, uniqueId };
+export {
+  dataObjectToArray,
+  getObjectProperty,
+  getDescriptions,
+  changeObjectProperty,
+  checkStatus,
+  queryProp,
+  uniqueId,
+};

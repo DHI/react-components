@@ -29,7 +29,7 @@ interface DescriptionField {
   /**
    * Data type, generally for formatting purposes
    */
-  dataType?: null | 'string' | 'number' | 'date';
+  dataType?: null | 'string' | 'number' | 'dateTime';
   /**
    * Format string specifier
    */

@@ -41,6 +41,7 @@ const Scenarios = (props: IScenariosProps) => {
     onContextMenuClick,
     addScenario,
     translations,
+    timeZone,
   } = props;
 
   const [dialog, setDialog] = useState<IDialog>();
@@ -279,7 +280,7 @@ const Scenarios = (props: IScenariosProps) => {
       data: scenario.data,
     };
     const clonedNamed = `Clone of ${getObjectProperty(scenario, nameField)}`;
-
+    debugger;
     clonedScenario = changeObjectProperty(clonedScenario, nameField, clonedNamed);
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);
@@ -362,6 +363,7 @@ const Scenarios = (props: IScenariosProps) => {
         showMenu={showMenu}
         showStatus={showStatus}
         status={status}
+        timeZone={timeZone}
       />
     );
   }
