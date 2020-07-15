@@ -81,7 +81,7 @@ export const ScenariosStory = () => {
               id: 'execute',
               label: 'Execute',
               condition: {
-                field: '!lastJobStatus',
+                field: '!lastJobStatus', // Prefix with exclamation if you wish to inverse the condition test
                 value: ['Pending', 'InProgress', 'Completed'],
               },
               taskId: 'workflow',

@@ -46,7 +46,7 @@ const getDescriptions = (
         let date: Date = parseISO(value);
 
         if (timeZone) {
-          date = utcToZonedTime(`${value}Z`, timeZone);
+          date = utcToTz(value, timeZone);
         }
 
         formattedValue = format(date, field.format ? field.format : 'yyyy-MM-dd HH:mm:ss');
@@ -120,6 +120,13 @@ const checkStatus = (scenario: IScenario, status: IStatus[]) => {
 
   return result;
 };
+
+/**
+ * This converts the date provided to a specific IANA time zone
+ * @param date The UTC date to convert. No time zone provided
+ * @param timeZone The time zone to convert it to
+ */
+const utcToTz = (date: string, timeZone: string) => utcToZonedTime(`${date}Z`, timeZone);
 
 const queryProp = (query: any) => {
   return typeof query === 'undefined' ? '' : query;
@@ -224,6 +231,7 @@ export {
   changeObjectProperty,
   checkCondition,
   checkStatus,
+  utcToTz,
   queryProp,
   uniqueId,
 };

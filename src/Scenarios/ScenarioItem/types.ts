@@ -50,6 +50,10 @@ interface IScenarioItemProps {
      */
     value: string;
   }[];
+  /**
+   * Time zone (IANA format) for date display
+   */
+  timeZone?: string;
 }
 
 export default IScenarioItemProps;

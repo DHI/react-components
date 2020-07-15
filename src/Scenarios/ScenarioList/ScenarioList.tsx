@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { checkCondition, checkStatus, getDescriptions, getObjectProperty } from '../../utils/Utils';
+import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import ScenarioItem from '../ScenarioItem/ScenarioItem';
 import { IScenario } from '../types';
 import IScenarioListProps from './types';
@@ -75,6 +75,7 @@ const ScenarioList = (props: IScenarioListProps) => {
               showStatus={showStatus}
               scenario={scenario}
               status={checkStatus(scenario, status)}
+              timeZone={timeZone}
             />
           </div>
         );
@@ -82,10 +83,11 @@ const ScenarioList = (props: IScenarioListProps) => {
   };
 
   const buildDateArea = (date: string) => {
+    const isoDate = timeZone ? utcToTz(date, timeZone) : parseISO(date);
     const dateObject = {
-      day: format(parseISO(date), 'dd'),
-      dayName: format(parseISO(date), 'EEE'),
-      monthName: format(parseISO(date), 'MMM'),
+      day: format(isoDate, 'dd'),
+      dayName: format(isoDate, 'EEE'),
+      monthName: format(isoDate, 'MMM'),
     };
     const dateBlockwidth = showHour ? '97px' : '39px';
 

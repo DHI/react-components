@@ -1,4 +1,4 @@
-import { clone, uniqueId } from 'lodash';
+import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   cancelJob,
@@ -75,7 +75,6 @@ const Scenarios = (props: IScenariosProps) => {
 
         newScenario = {
           ...newScenario,
-          id: uniqueId(),
           data: addScenario!.data,
         };
       } else {
