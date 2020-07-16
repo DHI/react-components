@@ -14,13 +14,14 @@ interface LogListProps {
   /** Selected date for log entries from */
   startTimeUtc: string;
   /** Time zone to display data from the server to user time */
-  timezone: string;
+  timeZone: string;
 }
 
 interface LogData {
   dateTime: string;
   id: string;
   logLevel: string;
+  logLevelIcon: JSX.Element;
   machineName: string;
   source: string;
   tag: string;
@@ -28,7 +29,7 @@ interface LogData {
 }
 
 interface Column {
-  Header: string;
+  header: string;
   accessor: string;
 }
 

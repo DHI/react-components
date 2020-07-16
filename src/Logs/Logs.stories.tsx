@@ -47,7 +47,7 @@ export const LogListStory = () => {
         dataSources={dataSources}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
         startTimeUtc={'2020-03-30T01:45:34'}
-        timezone={'Asia/Jakarta'}
+        timeZone={'Asia/Jakarta'}
       />
     );
   }

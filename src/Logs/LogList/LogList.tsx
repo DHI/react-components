@@ -1,22 +1,25 @@
-import { Tooltip } from '@material-ui/core';
+import { Tooltip, Typography } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import MaUTable from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useBlockLayout, useTable } from 'react-table';
+import { useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
 import LogListProps, { Column, LogData } from './types';
-import useStyles from './useStyles';
 
 const LogList = (props: LogListProps) => {
-  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timezone } = props;
+  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone } = props;
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [logsData, setLogsData] = useState<LogData[]>([]);
-  const classes = useStyles();
 
   useEffect(() => {
     fetchLogsList(startTimeUtc);
@@ -37,10 +40,6 @@ const LogList = (props: LogListProps) => {
   const data = useMemo(() => {
     return logsData;
   }, [logsData]);
-
-  const onClickFilter = () => {
-    alert('Filter Clicked');
-  };
 
   const iconConverter = (logLevel: string) => {
     switch (logLevel) {
@@ -75,7 +74,11 @@ const LogList = (props: LogListProps) => {
           </Tooltip>
         );
       default:
-        return null;
+        return (
+          <Tooltip title="Unknown">
+            <WarningOutlinedIcon />
+          </Tooltip>
+        );
     }
   };
 
@@ -87,20 +90,20 @@ const LogList = (props: LogListProps) => {
       (res) => {
         console.log(res);
         const rawLogs = res.map((s: { data: LogData }) => {
-          const localDate = format(utcToZonedTime(s.data.dateTime, timezone), dateTimeFormat);
+          const localDate = format(utcToZonedTime(s.data.dateTime, timeZone), dateTimeFormat);
 
           s.data.dateTime = localDate;
 
           const logIcon = iconConverter(s.data.logLevel);
 
-          s.data.logLevel = logIcon;
+          s.data.logLevelIcon = logIcon;
 
           return s.data;
         });
 
         setLogsData(logsData?.concat(rawLogs));
 
-        const utcDate = zonedTimeToUtc(new Date(), timezone);
+        const utcDate = zonedTimeToUtc(new Date(), timeZone);
         const utcDateFormated = utcDate.toISOString().split('.').shift();
 
         setStartDateUtc(utcDateFormated);
@@ -114,38 +117,39 @@ const LogList = (props: LogListProps) => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Time',
+        header: 'Time',
         accessor: 'dateTime',
-        style: { whiteSpace: 'unset' },
+        width: 180,
       },
       {
-        Header: 'Level',
-        accessor: 'logLevel',
-        filter: true,
-        style: { whiteSpace: 'unset' },
+        header: 'Level',
+        accessor: 'logLevelIcon',
+        width: 80,
+        filter: 'includes',
       },
       {
-        Header: 'Source',
+        header: 'Source',
         accessor: 'source',
-        filter: true,
-        style: { whiteSpace: 'unset' },
+        width: 180,
       },
       {
-        Header: 'Text',
+        header: 'Text',
         accessor: 'text',
-        style: { whiteSpace: 'unset' },
+        width: 365,
       },
     ],
     [],
   );
 
   const Table = (columns: Column[], data: LogData[]) => {
-    const { getTableProps, getTableBodyProps, headerGroups, rows, totalColumnsWidth, prepareRow } = useTable(
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
       {
         columns,
         data,
       },
       useBlockLayout,
+      useFilters,
+      useGlobalFilter,
     );
 
     const RenderRow = useCallback(
@@ -155,60 +159,45 @@ const LogList = (props: LogListProps) => {
         prepareRow(row);
 
         return (
-          <div
+          <TableRow
             {...row.getRowProps({
               style,
             })}
-            className="tr"
           >
-            {row.cells.map(
-              (cell: {
-                getCellProps: () => JSX.IntrinsicAttributes &
-                  React.ClassAttributes<HTMLDivElement> &
-                  React.HTMLAttributes<HTMLDivElement>;
-                render: (arg0: string) => React.ReactNode;
-              }) => {
-                return (
-                  <div {...cell.getCellProps()} className="td">
-                    {cell.render('Cell')}
-                  </div>
-                );
-              },
-            )}
-          </div>
+            {row.cells.map((cell: { render: (arg0: string) => React.ReactNode }) => {
+              return (
+                <TableCell>
+                  <Typography noWrap>{cell.render('Cell')}</Typography>
+                </TableCell>
+              );
+            })}
+          </TableRow>
         );
       },
       [prepareRow, rows],
     );
 
-    // Render the UI for your table
     return (
-      <div {...getTableProps()} className={classes.table}>
-        <div>
-          {headerGroups.map(
-            (headerGroup: {
-              getHeaderGroupProps: () => JSX.IntrinsicAttributes &
-                React.ClassAttributes<HTMLDivElement> &
-                React.HTMLAttributes<HTMLDivElement>;
-              headers: any[];
-            }) => (
-              <div {...headerGroup.getHeaderGroupProps()} className="tr">
-                {headerGroup.headers.map((column) => (
-                  <div {...column.getHeaderProps()} className="th">
-                    {column.render('Header')}
-                  </div>
-                ))}
-              </div>
-            ),
-          )}
-        </div>
+      <MaUTable {...getTableProps()} size="small" aria-label="a dense table">
+        <TableHead>
+          {headerGroups.map((headerGroup: { headers: Column[] }) => (
+            <TableRow>
+              {headerGroup.headers.map((column: any) => (
+                <TableCell {...column.getHeaderProps()}>
+                  <Typography noWrap>{column.render('header')}</Typography>
+                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableHead>
 
-        <div {...getTableBodyProps()}>
-          <FixedSizeList height={350} itemCount={rows.length} itemSize={35} width={totalColumnsWidth}>
+        <TableBody {...getTableBodyProps()}>
+          <FixedSizeList height={345} itemCount={rows.length} itemSize={35}>
             {RenderRow}
           </FixedSizeList>
-        </div>
-      </div>
+        </TableBody>
+      </MaUTable>
     );
   };
 
