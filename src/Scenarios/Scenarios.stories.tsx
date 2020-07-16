@@ -68,7 +68,6 @@ export const ScenariosStory = () => {
         </Typography>
 
         <Scenarios
-          onContextMenuClick={onContextMenuClickHandler}
           frequency={10}
           token={token}
           host={process.env.ENDPOINT_URL}
@@ -110,10 +109,11 @@ export const ScenariosStory = () => {
               },
             },
           ]}
-          nameField="name"
+          onContextMenuClick={onContextMenuClickHandler}
           onReceiveScenarios={(scenarios: IScenario[]) => {
             console.log('Received new scenarios!', scenarios);
           }}
+          nameField="name"
           descriptionFields={[
             {
               field: 'data.vessel.vesselName',
