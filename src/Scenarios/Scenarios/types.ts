@@ -33,7 +33,7 @@ interface IScenariosProps {
   /**
    * Time interval to fetch data in second
    */
-  frequency: number;
+  frequency?: number;
   /**
    * Backend host
    */

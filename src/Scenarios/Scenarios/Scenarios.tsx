@@ -36,7 +36,7 @@ const Scenarios = (props: IScenariosProps) => {
     showStatus,
     status,
     queryDates,
-    frequency,
+    frequency = 10,
     onContextMenuClick,
     onSelectScenario,
     onReceiveScenarios,
