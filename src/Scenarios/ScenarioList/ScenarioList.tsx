@@ -19,6 +19,7 @@ const ScenarioList = (props: IScenarioListProps) => {
     status,
     descriptionFields,
     onContextMenuClick,
+    onSelectScenario,
     showStatus,
     showMenu,
     nameField,
@@ -105,6 +106,10 @@ const ScenarioList = (props: IScenarioListProps) => {
   const onScenarioClick = (scenario: IScenario) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id'));
+
+      if (onSelectScenario) {
+        onSelectScenario(scenario);
+      }
     }
   };
 

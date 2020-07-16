@@ -22,7 +22,6 @@ const Scenarios = (props: IScenariosProps) => {
     host,
     token,
     scenarioConnection,
-    onReceiveScenarios,
     nameField,
     jobConnection,
     jobParameters,
@@ -39,6 +38,8 @@ const Scenarios = (props: IScenariosProps) => {
     queryDates,
     frequency,
     onContextMenuClick,
+    onSelectScenario,
+    onReceiveScenarios,
     addScenario,
     translations,
     timeZone,
@@ -353,6 +354,7 @@ const Scenarios = (props: IScenariosProps) => {
         menuItems={menuItems}
         scenarios={scenarios as any}
         selectedScenarioId={selectedScenarioId}
+        onSelectScenario={onSelectScenario}
         onContextMenuClick={onContextMenuClickHandler}
         showDate={showDate}
         showHour={showHour}

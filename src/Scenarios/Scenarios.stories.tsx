@@ -109,6 +109,7 @@ export const ScenariosStory = () => {
               },
             },
           ]}
+          onSelectScenario={(scenario: IScenario) => console.log('Scenario selected', scenario)}
           onContextMenuClick={onContextMenuClickHandler}
           onReceiveScenarios={(scenarios: IScenario[]) => {
             console.log('Received new scenarios!', scenarios);
