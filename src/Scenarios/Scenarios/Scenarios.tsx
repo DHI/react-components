@@ -11,8 +11,8 @@ import {
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { changeObjectProperty, getObjectProperty } from '../../utils/Utils';
-import ScenarioDialog from '../ScenarioDialog/ScenarioDialog';
-import ScenarioList from '../ScenarioList/ScenarioList';
+import { ScenarioDialog } from '../ScenarioDialog/ScenarioDialog';
+import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { IDialog, IMenuItem, IQueryDates, IScenario } from '../types';
 import IScenariosProps from './types';
 import useStyles from './useStyles';
@@ -22,7 +22,6 @@ const Scenarios = (props: IScenariosProps) => {
     host,
     token,
     scenarioConnection,
-    onReceiveScenarios,
     nameField,
     jobConnection,
     jobParameters,
@@ -39,6 +38,8 @@ const Scenarios = (props: IScenariosProps) => {
     queryDates,
     frequency,
     onContextMenuClick,
+    onSelectScenario,
+    onReceiveScenarios,
     addScenario,
     translations,
     timeZone,
@@ -353,6 +354,7 @@ const Scenarios = (props: IScenariosProps) => {
         menuItems={menuItems}
         scenarios={scenarios as any}
         selectedScenarioId={selectedScenarioId}
+        onSelectScenario={onSelectScenario}
         onContextMenuClick={onContextMenuClickHandler}
         showDate={showDate}
         showHour={showHour}
@@ -385,4 +387,4 @@ const Scenarios = (props: IScenariosProps) => {
   );
 };
 
-export default Scenarios;
+export { IScenariosProps, Scenarios };

@@ -19,4 +19,4 @@ const ScenarioDialog = (props: IScenarioDialogProps) => {
   );
 };
 
-export default ScenarioDialog;
+export { IScenarioDialogProps, ScenarioDialog };

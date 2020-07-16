@@ -2,7 +2,7 @@ import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
-import ScenarioMenu from '../ScenarioMenu/ScenarioMenu';
+import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
 import IScenarioItemProps from './types';
 import useStyles from './useStyles';
 
@@ -88,4 +88,4 @@ const ScenarioItem = (props: IScenarioItemProps) => {
   );
 };
 
-export default ScenarioItem;
+export { IScenarioItemProps, ScenarioItem };

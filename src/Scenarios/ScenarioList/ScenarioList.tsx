@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
-import ScenarioItem from '../ScenarioItem/ScenarioItem';
+import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
 import { IScenario } from '../types';
 import IScenarioListProps from './types';
 import useStyles from './useStyles';
@@ -19,6 +19,7 @@ const ScenarioList = (props: IScenarioListProps) => {
     status,
     descriptionFields,
     onContextMenuClick,
+    onSelectScenario,
     showStatus,
     showMenu,
     nameField,
@@ -105,6 +106,10 @@ const ScenarioList = (props: IScenarioListProps) => {
   const onScenarioClick = (scenario: IScenario) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id'));
+
+      if (onSelectScenario) {
+        onSelectScenario(scenario);
+      }
     }
   };
 
@@ -128,4 +133,4 @@ const ScenarioList = (props: IScenarioListProps) => {
   return <div className={classes.root}>{printedScenarios}</div>;
 };
 
-export default ScenarioList;
+export { IScenarioListProps, ScenarioList };

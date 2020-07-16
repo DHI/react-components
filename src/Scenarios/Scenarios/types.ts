@@ -47,10 +47,6 @@ interface IScenariosProps {
    */
   scenarioConnection: string;
   /**
-   * Current list of scenarios received from the server.
-   */
-  onReceiveScenarios: (scenarios: IScenario[]) => void;
-  /**
    * Connection to fetch data from backend
    */
   jobConnection: string;
@@ -111,6 +107,14 @@ interface IScenariosProps {
    * The scenario menu function handlers
    */
   onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
+  /**
+   * Emit event to client when scenario selected by user
+   */
+  onSelectScenario: (scenario: IScenario) => void;
+  /**
+   * Emit even to client when list of scenarios received from the server
+   */
+  onReceiveScenarios: (scenarios: IScenario[]) => void;
   /**
    * The object data to be add as new scenario
    */
