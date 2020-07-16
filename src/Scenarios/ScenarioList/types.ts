@@ -6,10 +6,6 @@ interface IScenarioListProps {
    */
   classes?: any;
   /**
-   * The scenario menu function handlers
-   */
-  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
-  /**
    * List of menu items
    */
   menuItems: IMenuItem[];
@@ -49,6 +45,14 @@ interface IScenarioListProps {
    * The id of selected scenario when it clicked
    */
   selectedScenarioId?: string;
+  /**
+   * The scenario menu function handlers
+   */
+  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
+  /**
+   * Emit event to client when scenario selected by user
+   */
+  onSelectScenario: (scenario: IScenario) => void;
   /**
    * Customising scenario status display
    */
