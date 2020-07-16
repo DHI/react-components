@@ -116,9 +116,9 @@ interface IScenariosProps {
    */
   onReceiveScenarios: (scenarios: IScenario[]) => void;
   /**
-   * The object data to be add as new scenario
+   * The object data to be added as new scenario (optional)
    */
-  addScenario: IScenario | undefined;
+  addScenario?: IScenario | undefined;
   /**
    * Time zone (IANA format) for date display
    */
