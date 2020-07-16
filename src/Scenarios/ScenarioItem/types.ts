@@ -36,7 +36,7 @@ interface IScenarioItemProps {
   /**
    * The Date of scenario creation
    */
-  date: string;
+  date: string | null;
   /**
    * The Description of scenario
    */
@@ -50,6 +50,10 @@ interface IScenarioItemProps {
      */
     value: string;
   }[];
+  /**
+   * Time zone (IANA format) for date display
+   */
+  timeZone?: string;
 }
 
 export default IScenarioItemProps;

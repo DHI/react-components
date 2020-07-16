@@ -1,6 +1,7 @@
 import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
 import React, { useState } from 'react';
+import { utcToTz } from '../../utils/Utils';
 import ScenarioMenu from '../ScenarioMenu/ScenarioMenu';
 import IScenarioItemProps from './types';
 import useStyles from './useStyles';
@@ -20,12 +21,13 @@ const ScenarioItem = (props: IScenarioItemProps) => {
     onContextMenuClick,
     menu,
     scenario,
+    timeZone,
   } = props;
 
-  const scenarioHour = showHour && (
+  const scenarioHour = date && showHour && (
     <Grid item className={classes.scenarioHour}>
       <Typography component="div" className={classes.hourText}>
-        {format(parseISO(date), 'HH:mm')}
+        {format(timeZone ? utcToTz(date, timeZone) : parseISO(date), 'HH:mm')}
       </Typography>
     </Grid>
   );

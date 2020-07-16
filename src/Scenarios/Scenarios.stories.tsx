@@ -75,10 +75,19 @@ export const ScenariosStory = () => {
           scenarioConnection={'postgres-scenarios'}
           jobConnection={'wf-jobs'}
           jobParameters={{ ClientId: 'test' }}
+          taskId={'workflow'}
           menuItems={[
             {
               id: 'execute',
               label: 'Execute',
+              condition: {
+                field: '!lastJobStatus', // Prefix with exclamation if you wish to inverse the condition test
+                value: ['Pending', 'InProgress', 'Completed'],
+              },
+              taskId: 'workflow',
+              jobParameters: {
+                ClientId: 'test_override',
+              },
             },
             {
               id: 'clone',
@@ -95,17 +104,40 @@ export const ScenariosStory = () => {
             {
               id: 'openPdf',
               label: 'Open PDF',
+              condition: {
+                field: 'data.mooring.berthName',
+                value: 'VIG Berth 2',
+              },
             },
           ]}
           nameField="name"
+          onReceiveScenarios={(scenarios: IScenario[]) => {
+            console.log('Received new scenarios!', scenarios);
+          }}
           descriptionFields={[
             {
-              field: 'vessel.vesselName',
+              field: 'data.vessel.vesselName',
               name: 'Vessel Name',
             },
             {
-              field: 'mooring.berthName',
+              field: 'data.mooring.berthName',
               name: 'Berth Name',
+              condition: {
+                field: 'lastJobStatus',
+                value: 'Completed',
+              },
+            },
+            {
+              field: 'dateTime',
+              name: 'Creation Date',
+              dataType: 'dateTime',
+              format: 'dd-MMM-yyyy h:mm:ss a',
+            },
+          ]}
+          extraFields={[
+            {
+              field: 'data.vessel.loa',
+              name: 'Vessel LOA',
             },
           ]}
           showDate={true}
@@ -126,7 +158,7 @@ export const ScenariosStory = () => {
             {
               name: 'Unknown',
               color: 'red',
-              message: 'Ready',
+              message: 'Unknown',
             },
             {
               name: 'ReadyToInitiate',
@@ -150,7 +182,6 @@ export const ScenariosStory = () => {
             },
           ]}
           addScenario={newScenario}
-          taskId={'workflow'}
           translations={{
             executeConfirmation:
               'Ini akan memulai pekerjaan baru di latar belakang. Status akan berubah setelah penyelesaian pekerjaan. Anda yakin ingin mengeksekusi',
@@ -163,6 +194,7 @@ export const ScenariosStory = () => {
             cancelLabel: 'Batal',
             confirmLabel: 'Lanjut',
           }}
+          timeZone="Australia/Brisbane"
         />
       </div>
     );
