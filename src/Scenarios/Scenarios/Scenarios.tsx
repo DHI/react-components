@@ -385,4 +385,4 @@ const Scenarios = (props: IScenariosProps) => {
   );
 };
 
-export default Scenarios;
+export { IScenariosProps, Scenarios };

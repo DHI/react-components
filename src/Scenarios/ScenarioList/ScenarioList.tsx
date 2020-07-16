@@ -128,4 +128,4 @@ const ScenarioList = (props: IScenarioListProps) => {
   return <div className={classes.root}>{printedScenarios}</div>;
 };
 
-export default ScenarioList;
+export { IScenarioListProps, ScenarioList };

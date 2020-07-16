@@ -88,4 +88,4 @@ const ScenarioItem = (props: IScenarioItemProps) => {
   );
 };
 
-export default ScenarioItem;
+export { IScenarioItemProps, ScenarioItem };
