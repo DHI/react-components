@@ -1,4 +1,4 @@
-import { clone, uniqueId } from 'lodash';
+import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   cancelJob,
@@ -22,11 +22,13 @@ const Scenarios = (props: IScenariosProps) => {
     host,
     token,
     scenarioConnection,
+    onReceiveScenarios,
     nameField,
     jobConnection,
     jobParameters,
     taskId,
     descriptionFields,
+    extraFields,
     menuItems,
     selectedScenarioId,
     showDate,
@@ -39,6 +41,7 @@ const Scenarios = (props: IScenariosProps) => {
     onContextMenuClick,
     addScenario,
     translations,
+    timeZone,
   } = props;
 
   const [dialog, setDialog] = useState<IDialog>();
@@ -72,7 +75,6 @@ const Scenarios = (props: IScenariosProps) => {
 
         newScenario = {
           ...newScenario,
-          id: uniqueId(),
           data: addScenario!.data,
         };
       } else {
@@ -93,6 +95,11 @@ const Scenarios = (props: IScenariosProps) => {
         connection: scenarioConnection,
         from: queryDates.windowStart,
         to: queryDates.windowEnd,
+        dataSelectors: [
+          nameField,
+          ...descriptionFields!.map((descriptionField) => descriptionField.field),
+          ...extraFields!.map((descriptionField) => descriptionField.field),
+        ],
       },
       token,
     ).subscribe(
@@ -116,6 +123,11 @@ const Scenarios = (props: IScenariosProps) => {
       {
         host,
         connection: scenarioConnection,
+        dataSelectors: [
+          nameField,
+          ...descriptionFields!.map((descriptionField) => descriptionField.field),
+          ...extraFields!.map((descriptionField) => descriptionField.field),
+        ],
       },
       token,
     ).subscribe(
@@ -127,6 +139,10 @@ const Scenarios = (props: IScenariosProps) => {
         });
 
         setScenarios(rawScenarios);
+
+        if (onReceiveScenarios) {
+          onReceiveScenarios(rawScenarios);
+        }
       },
       (error) => {
         console.log(error);
@@ -174,14 +190,11 @@ const Scenarios = (props: IScenariosProps) => {
     } as JobParameters;
 
     // Append Job Parameters from Menu Item
-    // TODO: Don't understand this?
-    // if (menuItem.parameters) {
-    //   menuItem.parameters.forEach((item: JobParameter) => {
-    //     return Object.assign(parameters, {
-    //       [item.id]: getObjectProperty(scenario, item.field, item.condition),
-    //     });
-    //   });
-    // }
+    if (menuItem.jobParameters) {
+      menuItem.jobParameters.forEach((item: JobParameters) => {
+        parameters[item.id] = getObjectProperty(scenario, item.field);
+      });
+    }
 
     // Append Job Parameters Props
     Object.assign(parameters, jobParameters);
@@ -262,7 +275,7 @@ const Scenarios = (props: IScenariosProps) => {
     let clonedScenario = {
       data: scenario.data,
     };
-    const clonedNamed = `Clone of ${getObjectProperty(scenario, nameField)}`;
+    const clonedNamed = `Clone of ${getObjectProperty(scenario.data, nameField)}`;
 
     clonedScenario = changeObjectProperty(clonedScenario, nameField, clonedNamed);
 
@@ -336,6 +349,7 @@ const Scenarios = (props: IScenariosProps) => {
       <ScenarioList
         nameField={nameField}
         descriptionFields={descriptionFields}
+        extraFields={extraFields}
         menuItems={menuItems}
         scenarios={scenarios as any}
         selectedScenarioId={selectedScenarioId}
@@ -345,6 +359,7 @@ const Scenarios = (props: IScenariosProps) => {
         showMenu={showMenu}
         showStatus={showStatus}
         status={status}
+        timeZone={timeZone}
       />
     );
   }
