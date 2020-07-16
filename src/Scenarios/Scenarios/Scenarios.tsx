@@ -11,8 +11,8 @@ import {
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { changeObjectProperty, getObjectProperty } from '../../utils/Utils';
-import ScenarioDialog from '../ScenarioDialog/ScenarioDialog';
-import ScenarioList from '../ScenarioList/ScenarioList';
+import { ScenarioDialog } from '../ScenarioDialog/ScenarioDialog';
+import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { IDialog, IMenuItem, IQueryDates, IScenario } from '../types';
 import IScenariosProps from './types';
 import useStyles from './useStyles';

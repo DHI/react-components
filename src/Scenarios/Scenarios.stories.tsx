@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
 import { fetchToken } from '../DataServices/DataServices';
-import Scenarios from './Scenarios/Scenarios';
+import { Scenarios } from './Scenarios/Scenarios';
 import { IMenuItem, IScenario } from './types';
 
 export default {
