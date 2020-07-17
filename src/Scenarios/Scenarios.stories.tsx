@@ -104,11 +104,16 @@ export const ScenariosStory = () => {
               },
             },
           ]}
-          onSelectScenario={(scenario: IScenario) => console.log('Scenario selected', scenario)}
           onContextMenuClick={(menuItem: IMenuItem, scenario: IScenario) =>
             console.log('Scenario menu item clicked', { menuItem, scenario })
           }
-          onReceiveScenarios={(scenarios: IScenario[]) => {
+          onScenarioSelected={(scenario: IScenario) => {
+            console.log('Scenario selected', scenario);
+          }}
+          onScenarioReceived={(scenario: IScenario) => {
+            console.log('Full Scenario received', scenario);
+          }}
+          onScenariosReceived={(scenarios: IScenario[]) => {
             console.log('Received new scenarios!', scenarios);
           }}
           nameField="name"

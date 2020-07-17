@@ -39,8 +39,9 @@ const Scenarios = (props: IScenariosProps) => {
     queryDates,
     frequency = 10,
     onContextMenuClick,
-    onSelectScenario,
-    onReceiveScenarios,
+    onScenarioSelected,
+    onScenarioReceived,
+    onScenariosReceived,
     addScenario,
     translations,
     timeZone,
@@ -142,8 +143,8 @@ const Scenarios = (props: IScenariosProps) => {
 
         setScenarios(rawScenarios);
 
-        if (onReceiveScenarios) {
-          onReceiveScenarios(rawScenarios);
+        if (onScenariosReceived) {
+          onScenariosReceived(rawScenarios);
         }
       },
       (error) => {
@@ -364,8 +365,9 @@ const Scenarios = (props: IScenariosProps) => {
     });
   };
 
-  const onSelectScenarioHandler = (scenario: IScenario) => {
-    getScenario(scenario.id!, (res) => onSelectScenario(res));
+  const onScenarioSelectedHandler = (scenario: IScenario) => {
+    onScenarioSelected(scenario);
+    getScenario(scenario.id!, (res) => onScenarioReceived(res));
   };
 
   let printedScenarios = null;
@@ -380,7 +382,7 @@ const Scenarios = (props: IScenariosProps) => {
         menuItems={menuItems}
         scenarios={scenarios as any}
         selectedScenarioId={selectedScenarioId}
-        onSelectScenario={onSelectScenarioHandler}
+        onScenarioSelected={onScenarioSelectedHandler}
         onContextMenuClick={onContextMenuClickHandler}
         showDate={showDate}
         showHour={showHour}
