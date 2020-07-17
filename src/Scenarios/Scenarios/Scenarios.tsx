@@ -348,18 +348,20 @@ const Scenarios = (props: IScenariosProps) => {
   };
 
   const onContextMenuClickHandler = (menuItem: IMenuItem, scenario: IScenario) => {
-    switch (menuItem.id) {
-      case 'execute':
-        return executeDialog(scenario, menuItem);
-      case 'delete':
-        return deleteDialog(scenario);
-      case 'clone':
-        return cloneDialog(scenario);
-      case 'terminate':
-        return terminateDialog(scenario, menuItem);
-      default:
-        return onContextMenuClick(menuItem, scenario);
-    }
+    getScenario(scenario.id!, (res) => {
+      switch (menuItem.id) {
+        case 'execute':
+          return executeDialog(res, menuItem);
+        case 'delete':
+          return deleteDialog(res);
+        case 'clone':
+          return cloneDialog(res);
+        case 'terminate':
+          return terminateDialog(res, menuItem);
+        default:
+          return onContextMenuClick(menuItem, res);
+      }
+    });
   };
 
   const onSelectScenarioHandler = (scenario: IScenario) => {

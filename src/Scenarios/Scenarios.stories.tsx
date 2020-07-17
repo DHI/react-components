@@ -35,11 +35,6 @@ export const ScenariosStory = () => {
     });
   };
 
-  const onContextMenuClickHandler = (menuItem: IMenuItem, scenario: IScenario) => {
-    console.log(scenario);
-    alert(menuItem.id);
-  };
-
   if (token) {
     return (
       <div>
@@ -110,7 +105,9 @@ export const ScenariosStory = () => {
             },
           ]}
           onSelectScenario={(scenario: IScenario) => console.log('Scenario selected', scenario)}
-          onContextMenuClick={onContextMenuClickHandler}
+          onContextMenuClick={(menuItem: IMenuItem, scenario: IScenario) =>
+            console.log('Scenario menu item clicked', { menuItem, scenario })
+          }
           onReceiveScenarios={(scenarios: IScenario[]) => {
             console.log('Received new scenarios!', scenarios);
           }}
