@@ -31,10 +31,10 @@ const getDescriptions = (
   for (const field of descriptionFields) {
     const value = getObjectProperty(scenarioData, field.field);
 
-    if (!value) {
-      console.warn(`Could not find field reference: ${field.field}!`);
-      continue;
-    }
+    // if (!value) {
+    //   console.warn(`Could not find field reference: ${field.field}!`);
+    //   continue;
+    // }
 
     // Check if valid conditions met
     if (!field.condition || checkCondition(scenarioData, field.condition)) {
