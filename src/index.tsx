@@ -8,6 +8,7 @@ export * from './Scenarios/ScenarioMenu/ScenarioMenu';
 export * from './Scenarios/ScenarioMenu/types';
 export * from './Scenarios/Scenarios/Scenarios';
 export * from './Scenarios/Scenarios/types';
+export * from './Scenarios/types';
 export * from './Timeseries/ChartPlotly/ChartPlotly';
 export * from './Timeseries/ChartPlotly/types';
 export * from './Timeseries/TimeseriesExporter/TimeseriesExporter';
