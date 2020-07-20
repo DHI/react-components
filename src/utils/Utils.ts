@@ -42,7 +42,7 @@ const getDescriptions = (
       let formattedValue = value;
 
       // Formatting if date/time type
-      if (field.dataType === 'dateTime') {
+      if (value && field.dataType === 'dateTime') {
         let date: Date = parseISO(value);
 
         if (timeZone) {
