@@ -3,6 +3,8 @@ const config = require('eslint-config-standard-typescript-prettier');
 /** @ts-check @type import('eslint-config-standard-typescript-prettier/types').TsEslintConfig */
 module.exports = {
   ...config,
+  plugins: [...config.plugins, 'react'],
+  extends: [...config.extends, 'plugin:react/recommended'],
   rules: {
     ...config.rules,
     //
@@ -105,6 +107,7 @@ module.exports = {
     'react/sort-comp': 0,
     'require-yield': 0,
     '@typescript-eslint/no-var-requires': 0,
+    'no-fallthrough': 0,
   },
   parserOptions: {
     ecmaVersion: 2019,
