@@ -68,6 +68,7 @@ export const ScenariosStory = () => {
           jobConnection={'wf-jobs'}
           jobParameters={{ ClientId: 'test' }}
           taskId={'workflow'}
+          timeZone="Australia/Brisbane"
           menuItems={[
             {
               id: 'execute',
@@ -206,7 +207,6 @@ export const ScenariosStory = () => {
             cancelLabel: 'Batal',
             confirmLabel: 'Lanjut',
           }}
-          timeZone="Australia/Brisbane"
         />
       </div>
     );
