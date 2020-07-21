@@ -42,11 +42,11 @@ export const LogListStory = () => {
   if (token) {
     return (
       <LogList
-        frequency={10}
+        frequency={30}
         token={token}
         dataSources={dataSources}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
-        startTimeUtc={'2020-03-30T01:45:34'}
+        startTimeUtc={'2020-06-30T01:45:34'}
         timeZone={'Asia/Jakarta'}
       />
     );

@@ -28,10 +28,5 @@ interface LogData {
   text: string;
 }
 
-interface Column {
-  header: string;
-  accessor: string;
-}
-
 export default LogListProps;
-export { LogData, Column };
+export { LogData };
