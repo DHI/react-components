@@ -1,4 +1,4 @@
-interface IGeneralDialogProps {
+interface GeneralDialogProps {
   /**
    * Value to be set as dialog id
    */
@@ -33,4 +33,4 @@ interface IGeneralDialogProps {
   command?: Function;
 }
 
-export default IGeneralDialogProps;
+export default GeneralDialogProps;

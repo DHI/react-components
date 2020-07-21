@@ -1,4 +1,4 @@
-interface IStatus {
+interface Status {
   /**
    * Scenario status name
    */
@@ -38,10 +38,10 @@ interface DescriptionField {
    * Optional display conditions
    * Prefix with `!` to indicate _not equal to_
    */
-  condition?: ICondition;
+  condition?: Condition;
 }
 
-interface IMenuItem {
+interface MenuItem {
   /**
    * The id of scenario option menu
    */
@@ -56,14 +56,14 @@ interface IMenuItem {
    * Optional display conditions
    * Prefix with `!` to indicate _not equal to_
    */
-  condition?: ICondition;
+  condition?: Condition;
   /**
    * Extra job parameters
    */
   jobParameters?: any;
 }
 
-interface IScenario {
+interface Scenario {
   /**
    * The Id of the scenario
    */
@@ -89,7 +89,7 @@ interface IScenario {
  * Optional display conditions
  * Prefix with `!` to indicate _not equal to_
  */
-interface ICondition {
+interface Condition {
   /**
    * Id of field
    */
@@ -100,7 +100,7 @@ interface ICondition {
   value?: string | string[];
 }
 
-interface IDialog {
+interface Dialog {
   /**
    * Value to be display as dialog title
    */
@@ -127,7 +127,7 @@ interface IDialog {
   showDialog: boolean;
 }
 
-interface IQueryDates {
+interface QueryDates {
   /**
    * Start date to fetch scenario by date
    */
@@ -138,24 +138,24 @@ interface IQueryDates {
   windowEnd: string;
 }
 
-interface IContextMenuClickHandler {
+interface ContextMenuClickHandler {
   /** Handler on menu option clicked */
-  (menuItem: IMenuItem, scenario: IScenario): void;
+  (menuItem: MenuItem, scenario: Scenario): void;
 }
 
-interface ICloseDialog {
+interface CloseDialog {
   /** Handler on menu option closed */
   (value: boolean): void;
 }
 
 export {
-  IStatus,
+  Status,
   DescriptionField,
-  IMenuItem,
-  IScenario,
-  ICondition,
-  IDialog,
-  IQueryDates,
-  IContextMenuClickHandler,
-  ICloseDialog,
+  MenuItem,
+  Scenario,
+  Condition,
+  Dialog,
+  QueryDates,
+  ContextMenuClickHandler,
+  CloseDialog,
 };
