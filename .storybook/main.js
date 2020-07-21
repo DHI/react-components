@@ -20,9 +20,10 @@ module.exports = {
             transpileOnly: true,
           },
         },
-        {
-          loader: require.resolve('react-docgen-typescript-loader'),
-        },
+        // todo recomment once bug is fixed, https://github.com/strothj/react-docgen-typescript-loader/issues/107
+        // {
+        //   loader: require.resolve('react-docgen-typescript-loader'),
+        // },
         {
           loader: require.resolve('@storybook/source-loader'),
           options: {

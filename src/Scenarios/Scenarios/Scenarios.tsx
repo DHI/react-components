@@ -61,6 +61,7 @@ const Scenarios = (props: IScenariosProps) => {
       interval = setInterval(() => fetchScenariosByDateList(queryDates), frequency * 1000);
     } else {
       fetchScenariosList();
+
       interval = setInterval(() => fetchScenariosList(), frequency * 1000);
     }
 
@@ -255,6 +256,7 @@ const Scenarios = (props: IScenariosProps) => {
     ).subscribe(
       (res) => {
         res.data = res.data ? JSON.parse(res.data) : res.data;
+
         resultCallback(res);
       },
       (error) => {
@@ -367,6 +369,7 @@ const Scenarios = (props: IScenariosProps) => {
 
   const onScenarioSelectedHandler = (scenario: IScenario) => {
     onScenarioSelected(scenario);
+
     getScenario(scenario.id!, (res) => onScenarioReceived(res));
   };
 

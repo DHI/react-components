@@ -31,7 +31,7 @@ export const ScenariosStory = () => {
 
   const onAddScenario = () => {
     setNewScenario({
-      data: '{"name":"My Scenario","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}',
+      data: `{"name":"My Scenario","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
     });
   };
 
@@ -49,7 +49,6 @@ export const ScenariosStory = () => {
             Scenarios
           </span>
         </Typography>
-
         <Typography align="left" component="div" style={{ marginBottom: '10px' }}>
           <Button
             variant="contained"
@@ -61,7 +60,6 @@ export const ScenariosStory = () => {
             <span>Add new scenario</span>
           </Button>
         </Typography>
-
         <Scenarios
           frequency={10}
           token={token}
@@ -105,7 +103,10 @@ export const ScenariosStory = () => {
             },
           ]}
           onContextMenuClick={(menuItem: IMenuItem, scenario: IScenario) =>
-            console.log('Scenario menu item clicked', { menuItem, scenario })
+            console.log('Scenario menu item clicked', {
+              menuItem,
+              scenario,
+            })
           }
           onScenarioSelected={(scenario: IScenario) => {
             console.log('Scenario selected', scenario);
@@ -128,6 +129,14 @@ export const ScenariosStory = () => {
               condition: {
                 field: 'lastJobStatus',
                 value: 'Completed',
+              },
+            },
+            {
+              field: 'data.startTime',
+              name: 'Start Date',
+              dataType: 'dateTime',
+              condition: {
+                field: 'data.startTime',
               },
             },
             {

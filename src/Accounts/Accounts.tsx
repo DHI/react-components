@@ -249,10 +249,8 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
         <DialogContentText>{state.dialogMessage}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={() => {}}>
-          Cancel
-        </Button>
-        <Button variant="contained" color="secondary" onClick={() => {}}>
+        <Button variant="outlined">Cancel</Button>
+        <Button variant="contained" color="secondary">
           Delete
         </Button>
       </DialogActions>

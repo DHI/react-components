@@ -44,7 +44,10 @@ const ScenarioItem = (props: IScenarioItemProps) => {
         <div>
           <Tooltip title={status.message ? status.message : ''}>
             <CircularProgress
-              style={{ color: status.color, display: 'grid' }}
+              style={{
+                color: status.color,
+                display: 'grid',
+              }}
               variant={status.progress ? 'indeterminate' : 'determinate'}
               value={status.progress ? status.progress : 100}
               size={16}

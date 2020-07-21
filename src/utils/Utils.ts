@@ -71,14 +71,22 @@ const checkCondition = (scenarioData: IScenario, condition: ICondition) => {
       isInverse = true;
     }
 
-    if (isArray(condition.value)) {
-      conditions = [...condition.value];
-    } else {
-      conditions = [condition.value!];
-    }
-  }
+    // If we have a value, check that it matches
+    // If we didn't specify a value, just want to check if this field has data or not
+    if (condition.value) {
+      if (isArray(condition.value)) {
+        conditions = [...condition.value];
+      } else {
+        conditions = [condition.value!];
+      }
 
-  return conditions.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse;
+      return conditions.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse;
+    } else {
+      return (getObjectProperty(scenarioData, condition!.field.replace('!', '')) != null) === !isInverse;
+    }
+  } else {
+    return true;
+  }
 };
 
 const changeObjectProperty = (objectItem: any, property: string, intent: any) => {
@@ -90,7 +98,9 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
     value = value[properties[i]];
     body.push(value);
   }
+
   body[properties.length] = intent;
+
   for (let j = properties.length; j > 0; j--) {
     body[j - 1][properties[j - 1]] = body[j];
   }

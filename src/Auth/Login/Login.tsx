@@ -8,6 +8,7 @@ import ILoginProps from './types';
 const Login = (props: ILoginProps) => {
   const { host, onSuccess, onError, showRememberMe, showResetPassword, textFieldVariant, translations } = props;
   const [showingResetPassword, setShowingResetPassword] = useState(false);
+
   const togglePasswordResetForm = (value: boolean) => {
     setShowingResetPassword(value);
   };
