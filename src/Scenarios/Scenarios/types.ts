@@ -33,7 +33,7 @@ interface IScenariosProps {
   /**
    * Time interval to fetch data in second
    */
-  frequency: number;
+  frequency?: number;
   /**
    * Backend host
    */
@@ -108,17 +108,21 @@ interface IScenariosProps {
    */
   onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
   /**
-   * Emit event to client when scenario selected by user
+   * Emit event to client when scenario selected by user (basic scenario data)
    */
-  onSelectScenario: (scenario: IScenario) => void;
+  onScenarioSelected: (scenario: IScenario) => void;
+  /**
+   * Emit event to client when scenario received from the server after a selection (full scenario data)
+   */
+  onScenarioReceived: (scenario: IScenario) => void;
   /**
    * Emit even to client when list of scenarios received from the server
    */
-  onReceiveScenarios: (scenarios: IScenario[]) => void;
+  onScenariosReceived: (scenarios: IScenario[]) => void;
   /**
-   * The object data to be add as new scenario
+   * The object data to be added as new scenario (optional)
    */
-  addScenario: IScenario | undefined;
+  addScenario?: IScenario | undefined;
   /**
    * Time zone (IANA format) for date display
    */

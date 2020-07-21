@@ -438,7 +438,13 @@ const fetchJob = (dataSource: DataSource, token: string, id: string) =>
 const fetchJobs = (
   dataSource: DataSource,
   token: string,
-  query: { account: any; since: any; status: any; task: any; tag: any },
+  query: {
+    account: any;
+    since: any;
+    status: any;
+    task: any;
+    tag: any;
+  },
 ) => {
   const url = !query
     ? `${dataSource.host}/api/jobs/${dataSource.connection}`

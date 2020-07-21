@@ -1,6 +1,9 @@
 {
   "include": [
-    "src", "typings.d.ts", ".eslintrc.js",
+    "src",
+    "typings.d.ts",
+    ".eslintrc.js",
+    ".prettierrc.js"
   ],
   "compilerOptions": {
     "module": "esnext",

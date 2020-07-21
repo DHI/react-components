@@ -5,7 +5,11 @@ import { IToken, IUser } from './types';
 export type ILoginState = { user?: IUser; token?: IToken };
 
 /** See ../Accounts/Accounts.stories.tsx for example usage */
-export const LoginGate = (props: ILoginProps & { children(login: Required<ILoginState>): React.ReactNode }) => {
+export const LoginGate = (
+  props: ILoginProps & {
+    children(login: Required<ILoginState>): React.ReactNode;
+  },
+) => {
   const [state, setState] = React.useState<ILoginState>({});
 
   if (!state.token?.accessToken?.token)

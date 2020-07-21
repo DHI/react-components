@@ -4,6 +4,7 @@ import {
   cancelJob,
   deleteScenario,
   executeJob,
+  fetchScenario,
   fetchScenarios,
   fetchScenariosByDate,
   postScenario,
@@ -36,10 +37,11 @@ const Scenarios = (props: IScenariosProps) => {
     showStatus,
     status,
     queryDates,
-    frequency,
+    frequency = 10,
     onContextMenuClick,
-    onSelectScenario,
-    onReceiveScenarios,
+    onScenarioSelected,
+    onScenarioReceived,
+    onScenariosReceived,
     addScenario,
     translations,
     timeZone,
@@ -59,6 +61,7 @@ const Scenarios = (props: IScenariosProps) => {
       interval = setInterval(() => fetchScenariosByDateList(queryDates), frequency * 1000);
     } else {
       fetchScenariosList();
+
       interval = setInterval(() => fetchScenariosList(), frequency * 1000);
     }
 
@@ -141,8 +144,8 @@ const Scenarios = (props: IScenariosProps) => {
 
         setScenarios(rawScenarios);
 
-        if (onReceiveScenarios) {
-          onReceiveScenarios(rawScenarios);
+        if (onScenariosReceived) {
+          onScenariosReceived(rawScenarios);
         }
       },
       (error) => {
@@ -162,24 +165,6 @@ const Scenarios = (props: IScenariosProps) => {
         newScenario,
       ).subscribe((res) => res && fetchScenariosList());
     }
-  };
-
-  const executeDialog = (scenario: IScenario, menuItem: IMenuItem) => {
-    setDialog({
-      showDialog: true,
-      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
-      dialogMessage:
-        translations && translations.executeConfirmation
-          ? `${translations.executeConfirmation} 
-        ${getObjectProperty(scenario.data, nameField)} ?`
-          : `This will start a new job in the background. The status will change after job completion. Are you sure you want to execute ${getObjectProperty(
-              scenario.data,
-              nameField,
-            )} ?`,
-      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
-      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
-      dialogCommand: () => onExecuteScenario(scenario, menuItem),
-    });
   };
 
   const onExecuteScenario = (scenario: IScenario, menuItem: IMenuItem) => {
@@ -211,24 +196,6 @@ const Scenarios = (props: IScenariosProps) => {
     );
   };
 
-  const terminateDialog = (scenario: IScenario, menuItem: IMenuItem) => {
-    setDialog({
-      showDialog: true,
-      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
-      dialogMessage:
-        translations && translations.terminateConfirmation
-          ? `${translations.terminateConfirmation} 
-          ${getObjectProperty(scenario.data, nameField)} ?`
-          : `This will cancel the job currently executing. The status will change after job cancelation. Are you sure you want to terminate ${getObjectProperty(
-              scenario.data,
-              nameField,
-            )} ?`,
-      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
-      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
-      dialogCommand: () => onTerminateScenario(scenario, menuItem),
-    });
-  };
-
   const onTerminateScenario = (scenario: IScenario, menuItem: IMenuItem) => {
     closeDialog();
 
@@ -257,20 +224,6 @@ const Scenarios = (props: IScenariosProps) => {
     );
   };
 
-  const cloneDialog = (scenario: IScenario) => {
-    setDialog({
-      showDialog: true,
-      dialogTitle: `Clone ${getObjectProperty(scenario.data, nameField)}`,
-      dialogMessage:
-        translations && translations.cloneConfirmation
-          ? `${translations.cloneConfirmation} ?`
-          : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ?`,
-      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
-      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
-      dialogCommand: () => onCloneScenario(scenario),
-    });
-  };
-
   const onCloneScenario = (scenario: IScenario) => {
     closeDialog();
     let clonedScenario = {
@@ -290,6 +243,76 @@ const Scenarios = (props: IScenariosProps) => {
       token,
       clonedScenario,
     ).subscribe((res) => res && fetchScenariosList());
+  };
+
+  const getScenario = (id: string, resultCallback: (data: any) => void) => {
+    fetchScenario(
+      {
+        host,
+        connection: scenarioConnection,
+      },
+      token,
+      id,
+    ).subscribe(
+      (res) => {
+        res.data = res.data ? JSON.parse(res.data) : res.data;
+
+        resultCallback(res);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  };
+
+  const executeDialog = (scenario: IScenario, menuItem: IMenuItem) => {
+    setDialog({
+      showDialog: true,
+      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
+      dialogMessage:
+        translations && translations.executeConfirmation
+          ? `${translations.executeConfirmation} 
+        ${getObjectProperty(scenario.data, nameField)} ?`
+          : `This will start a new job in the background. The status will change after job completion. Are you sure you want to execute ${getObjectProperty(
+              scenario.data,
+              nameField,
+            )} ?`,
+      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
+      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
+      dialogCommand: () => onExecuteScenario(scenario, menuItem),
+    });
+  };
+
+  const terminateDialog = (scenario: IScenario, menuItem: IMenuItem) => {
+    setDialog({
+      showDialog: true,
+      dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
+      dialogMessage:
+        translations && translations.terminateConfirmation
+          ? `${translations.terminateConfirmation} 
+          ${getObjectProperty(scenario.data, nameField)} ?`
+          : `This will cancel the job currently executing. The status will change after job cancelation. Are you sure you want to terminate ${getObjectProperty(
+              scenario.data,
+              nameField,
+            )} ?`,
+      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
+      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
+      dialogCommand: () => onTerminateScenario(scenario, menuItem),
+    });
+  };
+
+  const cloneDialog = (scenario: IScenario) => {
+    setDialog({
+      showDialog: true,
+      dialogTitle: `Clone ${getObjectProperty(scenario.data, nameField)}`,
+      dialogMessage:
+        translations && translations.cloneConfirmation
+          ? `${translations.cloneConfirmation} ?`
+          : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ?`,
+      dialogCancelLabel: translations?.cancelLabel || 'Cancel',
+      dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
+      dialogCommand: () => onCloneScenario(scenario),
+    });
   };
 
   const deleteDialog = (scenario: IScenario) => {
@@ -328,18 +351,26 @@ const Scenarios = (props: IScenariosProps) => {
   };
 
   const onContextMenuClickHandler = (menuItem: IMenuItem, scenario: IScenario) => {
-    switch (menuItem.id) {
-      case 'execute':
-        return executeDialog(scenario, menuItem);
-      case 'delete':
-        return deleteDialog(scenario);
-      case 'clone':
-        return cloneDialog(scenario);
-      case 'terminate':
-        return terminateDialog(scenario, menuItem);
-      default:
-        return onContextMenuClick(menuItem, scenario);
-    }
+    getScenario(scenario.id!, (res) => {
+      switch (menuItem.id) {
+        case 'execute':
+          return executeDialog(res, menuItem);
+        case 'delete':
+          return deleteDialog(res);
+        case 'clone':
+          return cloneDialog(res);
+        case 'terminate':
+          return terminateDialog(res, menuItem);
+        default:
+          return onContextMenuClick(menuItem, res);
+      }
+    });
+  };
+
+  const onScenarioSelectedHandler = (scenario: IScenario) => {
+    onScenarioSelected(scenario);
+
+    getScenario(scenario.id!, (res) => onScenarioReceived(res));
   };
 
   let printedScenarios = null;
@@ -354,7 +385,7 @@ const Scenarios = (props: IScenariosProps) => {
         menuItems={menuItems}
         scenarios={scenarios as any}
         selectedScenarioId={selectedScenarioId}
-        onSelectScenario={onSelectScenario}
+        onScenarioSelected={onScenarioSelectedHandler}
         onContextMenuClick={onContextMenuClickHandler}
         showDate={showDate}
         showHour={showHour}

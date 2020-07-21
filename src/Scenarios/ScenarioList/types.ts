@@ -52,7 +52,7 @@ interface IScenarioListProps {
   /**
    * Emit event to client when scenario selected by user
    */
-  onSelectScenario: (scenario: IScenario) => void;
+  onScenarioSelected: (scenario: IScenario) => void;
   /**
    * Customising scenario status display
    */

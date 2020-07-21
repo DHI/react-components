@@ -1,12 +1,9 @@
+import { DataSource } from '../../DataServices/types';
+
 interface LogListProps {
   /** Time interval to fetch data in second */
   frequency: number;
-  dataSources: {
-    /** Backend host */
-    host: string;
-    /** Connection to fetch data */
-    connection: string;
-  }[];
+  dataSources: DataSource[];
   /** Authorization header to backend call */
   token: string;
   /** The date time format that the dates shown in */

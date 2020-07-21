@@ -20,6 +20,7 @@ const ResetPasswordForm = (props: IResetPasswordFormProps) => {
   const classes = useStyles();
   const validate = () => form.Id;
   const handleChange = (name: string, value: string) => setForm({ ...form, [name]: value });
+
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 

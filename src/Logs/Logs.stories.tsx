@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { fetchToken, LogList } from '..';
+import { fetchToken } from '../DataServices/DataServices';
+import { LogList } from './LogList/LogList';
 
 export default {
   title: 'Logs Components',

@@ -35,12 +35,10 @@ interface DescriptionField {
    */
   format?: string;
   /**
-   * Optional condition to be display as description
+   * Optional display conditions
+   * Prefix with `!` to indicate _not equal to_
    */
-  condition?: {
-    field: string;
-    value: string | string[];
-  };
+  condition?: ICondition;
 }
 
 interface IMenuItem {
@@ -54,6 +52,10 @@ interface IMenuItem {
   label: string;
   taskId?: string;
   connection?: string;
+  /**
+   * Optional display conditions
+   * Prefix with `!` to indicate _not equal to_
+   */
   condition?: ICondition;
   /**
    * Extra job parameters
@@ -83,15 +85,19 @@ interface IScenario {
   lastJobProgress?: number;
 }
 
+/**
+ * Optional display conditions
+ * Prefix with `!` to indicate _not equal to_
+ */
 interface ICondition {
   /**
-   * Additional condition of description field
+   * Id of field
    */
   field: string;
   /**
-   * Additional condition of description value
+   * If value omitted, just test if field has or does not have a value ('has not' denoted by ! prefix in `field` parameter)
    */
-  value: string | string[];
+  value?: string | string[];
 }
 
 interface IDialog {

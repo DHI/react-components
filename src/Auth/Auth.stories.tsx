@@ -8,7 +8,10 @@ export default {
 };
 
 export const LoginStory = () => {
-  const [state, setState] = React.useState<{ user?: IUser; token?: IToken }>({});
+  const [state, setState] = React.useState<{
+    user?: IUser;
+    token?: IToken;
+  }>({});
 
   return (
     <>
