@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React from 'react';
-import IGeneralDialogProps from './types';
+import GeneralDialogProps from './types';
 
-const GeneralDialog = (props: IGeneralDialogProps) => {
+const GeneralDialog = (props: GeneralDialogProps) => {
   const { mainSection, title, message, cancelLabel, confirmLabel, command, showDialog, closeDialog } = props;
 
   const setCloseDialog = () => {
@@ -37,4 +37,4 @@ const GeneralDialog = (props: IGeneralDialogProps) => {
   );
 };
 
-export { IGeneralDialogProps, GeneralDialog };
+export { GeneralDialogProps, GeneralDialog };

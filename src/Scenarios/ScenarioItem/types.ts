@@ -1,18 +1,18 @@
-import { IMenuItem, IScenario, IStatus } from '../types';
+import { MenuItem, Scenario, Status } from '../types';
 
-interface IScenarioItemProps {
+interface ScenarioItemProps {
   /**
    * Style of the scenario item
    */
   classes?: any;
-  menu: IMenuItem[];
-  scenario: IScenario;
+  menu: MenuItem[];
+  scenario: Scenario;
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
+  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
 
-  status: IStatus;
+  status: Status;
   /**
    * Indicates if the hour of the scenario should be shown
    */
@@ -56,4 +56,4 @@ interface IScenarioItemProps {
   timeZone?: string;
 }
 
-export default IScenarioItemProps;
+export default ScenarioItemProps;

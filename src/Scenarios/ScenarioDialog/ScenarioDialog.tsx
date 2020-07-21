@@ -1,8 +1,8 @@
 import React from 'react';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
-import IScenarioDialogProps from './types';
+import ScenarioDialogProps from './types';
 
-const ScenarioDialog = (props: IScenarioDialogProps) => {
+const ScenarioDialog = (props: ScenarioDialogProps) => {
   const { title, message, cancelLabel, confirmLabel, command, showDialog, closeDialog } = props;
 
   return (
@@ -19,4 +19,4 @@ const ScenarioDialog = (props: IScenarioDialogProps) => {
   );
 };
 
-export { IScenarioDialogProps, ScenarioDialog };
+export { ScenarioDialogProps, ScenarioDialog };
