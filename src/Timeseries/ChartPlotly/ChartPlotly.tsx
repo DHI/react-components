@@ -60,7 +60,7 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
 
       if (baseIndex === timeseriesIndex) {
         const arrowMaxCount = props.timeseries[baseIndex]?.arrowMaxCount
-          ? props.timeseries[baseIndex]?.arrowMaxCount!
+          ? props.timeseries[baseIndex].arrowMaxCount!
           : 16;
 
         return props.data[baseIndex].data.filter(
@@ -148,7 +148,10 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
         }
       });
 
-      const layoutList = { ...defaultLayout, ...props.layout };
+      const layoutList = {
+        ...defaultLayout,
+        ...props.layout,
+      };
 
       if (shapes.length > 0) {
         layoutList.shapes = shapes;

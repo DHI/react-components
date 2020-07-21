@@ -31,13 +31,8 @@ export const ScenariosStory = () => {
 
   const onAddScenario = () => {
     setNewScenario({
-      data: '{"name":"My Scenario","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}',
+      data: `{"name":"My Scenario","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
     });
-  };
-
-  const onContextMenuClickHandler = (menuItem: IMenuItem, scenario: IScenario) => {
-    console.log(scenario);
-    alert(menuItem.id);
   };
 
   if (token) {
@@ -54,7 +49,6 @@ export const ScenariosStory = () => {
             Scenarios
           </span>
         </Typography>
-
         <Typography align="left" component="div" style={{ marginBottom: '10px' }}>
           <Button
             variant="contained"
@@ -66,7 +60,6 @@ export const ScenariosStory = () => {
             <span>Add new scenario</span>
           </Button>
         </Typography>
-
         <Scenarios
           frequency={10}
           token={token}
@@ -109,9 +102,19 @@ export const ScenariosStory = () => {
               },
             },
           ]}
-          onSelectScenario={(scenario: IScenario) => console.log('Scenario selected', scenario)}
-          onContextMenuClick={onContextMenuClickHandler}
-          onReceiveScenarios={(scenarios: IScenario[]) => {
+          onContextMenuClick={(menuItem: IMenuItem, scenario: IScenario) =>
+            console.log('Scenario menu item clicked', {
+              menuItem,
+              scenario,
+            })
+          }
+          onScenarioSelected={(scenario: IScenario) => {
+            console.log('Scenario selected', scenario);
+          }}
+          onScenarioReceived={(scenario: IScenario) => {
+            console.log('Full Scenario received', scenario);
+          }}
+          onScenariosReceived={(scenarios: IScenario[]) => {
             console.log('Received new scenarios!', scenarios);
           }}
           nameField="name"
@@ -126,6 +129,14 @@ export const ScenariosStory = () => {
               condition: {
                 field: 'lastJobStatus',
                 value: 'Completed',
+              },
+            },
+            {
+              field: 'data.startTime',
+              name: 'Start Date',
+              dataType: 'dateTime',
+              condition: {
+                field: 'data.startTime',
               },
             },
             {

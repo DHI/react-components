@@ -58,8 +58,11 @@ export default class AuthService {
     const storage = useLocalStorage ? localStorage : sessionStorage;
 
     storage.setItem('accessToken', authResult.accessToken.token);
+
     storage.setItem('refreshToken', authResult.refreshToken.token);
+
     storage.setItem('user', JSON.stringify(user));
+
     storage.setItem('expiration', authResult.accessToken.expiration);
   };
 

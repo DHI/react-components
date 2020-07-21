@@ -39,8 +39,9 @@ const Scenarios = (props: IScenariosProps) => {
     queryDates,
     frequency = 10,
     onContextMenuClick,
-    onSelectScenario,
-    onReceiveScenarios,
+    onScenarioSelected,
+    onScenarioReceived,
+    onScenariosReceived,
     addScenario,
     translations,
     timeZone,
@@ -60,6 +61,7 @@ const Scenarios = (props: IScenariosProps) => {
       interval = setInterval(() => fetchScenariosByDateList(queryDates), frequency * 1000);
     } else {
       fetchScenariosList();
+
       interval = setInterval(() => fetchScenariosList(), frequency * 1000);
     }
 
@@ -142,8 +144,8 @@ const Scenarios = (props: IScenariosProps) => {
 
         setScenarios(rawScenarios);
 
-        if (onReceiveScenarios) {
-          onReceiveScenarios(rawScenarios);
+        if (onScenariosReceived) {
+          onScenariosReceived(rawScenarios);
         }
       },
       (error) => {
@@ -254,6 +256,7 @@ const Scenarios = (props: IScenariosProps) => {
     ).subscribe(
       (res) => {
         res.data = res.data ? JSON.parse(res.data) : res.data;
+
         resultCallback(res);
       },
       (error) => {
@@ -348,22 +351,26 @@ const Scenarios = (props: IScenariosProps) => {
   };
 
   const onContextMenuClickHandler = (menuItem: IMenuItem, scenario: IScenario) => {
-    switch (menuItem.id) {
-      case 'execute':
-        return executeDialog(scenario, menuItem);
-      case 'delete':
-        return deleteDialog(scenario);
-      case 'clone':
-        return cloneDialog(scenario);
-      case 'terminate':
-        return terminateDialog(scenario, menuItem);
-      default:
-        return onContextMenuClick(menuItem, scenario);
-    }
+    getScenario(scenario.id!, (res) => {
+      switch (menuItem.id) {
+        case 'execute':
+          return executeDialog(res, menuItem);
+        case 'delete':
+          return deleteDialog(res);
+        case 'clone':
+          return cloneDialog(res);
+        case 'terminate':
+          return terminateDialog(res, menuItem);
+        default:
+          return onContextMenuClick(menuItem, res);
+      }
+    });
   };
 
-  const onSelectScenarioHandler = (scenario: IScenario) => {
-    getScenario(scenario.id!, (res) => onSelectScenario(res));
+  const onScenarioSelectedHandler = (scenario: IScenario) => {
+    onScenarioSelected(scenario);
+
+    getScenario(scenario.id!, (res) => onScenarioReceived(res));
   };
 
   let printedScenarios = null;
@@ -378,7 +385,7 @@ const Scenarios = (props: IScenariosProps) => {
         menuItems={menuItems}
         scenarios={scenarios as any}
         selectedScenarioId={selectedScenarioId}
-        onSelectScenario={onSelectScenarioHandler}
+        onScenarioSelected={onScenarioSelectedHandler}
         onContextMenuClick={onContextMenuClickHandler}
         showDate={showDate}
         showHour={showHour}
