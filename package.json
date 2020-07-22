@@ -28,7 +28,7 @@
       "pre-commit": "eslint ."
     }
   },
-  "name": "@dhi/react-components",
+  "name": "@dhi/react-components-ts",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
