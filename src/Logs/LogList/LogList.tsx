@@ -1,78 +1,143 @@
-import { Tooltip, Typography } from '@material-ui/core';
+import { Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
+import { yellow } from '@material-ui/core/colors';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MaUTable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { HelpOutline } from '@material-ui/icons';
 import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-// A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useAsyncDebounce, useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
+import { useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
-import LogListProps, { LogData } from './types';
+import LogListProps, { BaseFilter, LogData } from './types';
 
-const iconConverter = (logLevel: string) => {
-  switch (logLevel) {
+const LevelIconCell = ({ value }: { value: string }) => {
+  switch (value) {
     case 'Debug':
       return (
         <Tooltip title="Debug">
-          <BugReportOutlinedIcon />
+          <BugReportOutlinedIcon style={{ color: yellow[800] }} />
         </Tooltip>
       );
     case 'Information':
       return (
         <Tooltip title="Information">
-          <InfoOutlinedIcon />
+          <InfoOutlinedIcon color="primary" />
         </Tooltip>
       );
     case 'Error':
       return (
-        <Tooltip title="Warning">
-          <WarningOutlinedIcon />
+        <Tooltip title="Error">
+          <ErrorOutlineOutlinedIcon color="secondary" />
         </Tooltip>
       );
     case 'Warning':
       return (
-        <Tooltip title="Error">
-          <ErrorOutlineOutlinedIcon />
+        <Tooltip title="Warning">
+          <WarningOutlinedIcon style={{ color: yellow[800] }} />
         </Tooltip>
       );
     case 'Critical':
       return (
         <Tooltip title="Critical">
-          <ErrorOutlineOutlinedIcon />
+          <ErrorOutlineOutlinedIcon color="secondary" />
         </Tooltip>
       );
     default:
       return (
         <Tooltip title="Unknown">
-          <WarningOutlinedIcon />
+          <HelpOutline style={{ color: yellow[700] }} />
         </Tooltip>
       );
   }
 };
 
-function fuzzyTextFilterFn(rows, id, filterValue) {
-  return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
-}
+const fuzzyTextFilterFn = (rows: readonly any[][], id: React.ReactText, filterValue: string) => {
+  return matchSorter(rows, filterValue, { keys: [(row: any[]) => row.values[id]] });
+};
 
-// Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
+
+const DefaultColumnFilter = () => {
+  return null;
+};
+
+const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: BaseFilter) => {
+  const options = React.useMemo(() => {
+    const options = new Set();
+
+    preFilteredRows.forEach((row: { values: { [x: string]: unknown } }) => {
+      options.add(row.values[id]);
+    });
+
+    if (options.size > 0) {
+      return [...options.values()];
+    } else {
+      return [];
+    }
+  }, [id, preFilteredRows]);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (option: string) => {
+    setAnchorEl(null);
+    setFilter(option);
+  };
+
+  return (
+    <div>
+      <Tooltip title="Filter list">
+        <IconButton aria-label="Filter list" size={'small'} onClick={handleClick}>
+          <FilterListIcon />
+        </IconButton>
+      </Tooltip>
+      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+        <MenuItem
+          selected={!filterValue}
+          key={-1}
+          onClick={() => {
+            handleMenuItemClick('');
+          }}
+        >
+          All
+        </MenuItem>
+        {options.map((option, index) => (
+          <MenuItem
+            key={index}
+            selected={option === filterValue}
+            onClick={() => {
+              handleMenuItemClick(option as string);
+            }}
+          >
+            {option}
+          </MenuItem>
+        ))}
+      </Menu>
+    </div>
+  );
+};
 
 const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
   const filterTypes = React.useMemo(
     () => ({
-      // Add a new fuzzyTextFilterFn filter type.
       fuzzyText: fuzzyTextFilterFn,
-      // Or, override the default text filter to use
-      // "startWith"
       text: (rows, id, filterValue) => {
         return rows.filter((row) => {
           const rowValue = row.values[id];
@@ -88,33 +153,21 @@ const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
 
   const defaultColumn = React.useMemo(
     () => ({
-      // Let's set up our default Filter UI
       Filter: DefaultColumnFilter,
     }),
     [],
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-    totalColumnsWidth,
-    visibleColumns,
-    preGlobalFilteredRows,
-    setGlobalFilter,
-  } = useTable(
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } = useTable(
     {
       columns,
       data,
-      defaultColumn, // Be sure to pass the defaultColumn option
       filterTypes,
+      defaultColumn,
     },
     useBlockLayout,
-    useFilters, // useFilters!
-    useGlobalFilter, // useGlobalFilter!
+    useFilters,
+    useGlobalFilter,
   );
 
   const RenderRow = useCallback(
@@ -133,7 +186,9 @@ const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
           {row.cells.map((cell) => {
             return (
               <TableCell {...cell.getCellProps()} component="div">
-                <Typography noWrap>{cell.render('Cell')}</Typography>
+                <Typography noWrap variant="body2" align={(cell.column as any).header === 'Level' ? 'center' : 'left'}>
+                  {cell.render('Cell')}
+                </Typography>
               </TableCell>
             );
           })}
@@ -150,30 +205,14 @@ const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
           <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
             {headerGroup.headers.map((column) => (
               <TableCell {...column.getHeaderProps()} component="div">
-                <Typography noWrap>
-                  {column.render('header')}
-                  {/* Render the columns filter UI */}
-                  <div>{(column as any).canFilter ? column.render('Filter') : 'nope'}</div>
-                </Typography>
+                <Box display="flex" flexDirection="row">
+                  <Typography variant="subtitle1">{column.render('header')}</Typography>
+                  {(column as any).canFilter ? column.render('Filter') : null}
+                </Box>
               </TableCell>
             ))}
           </TableRow>
         ))}
-        <TableRow>
-          <TableCell
-            colSpan={visibleColumns.length}
-            style={{
-              textAlign: 'left',
-            }}
-            component="div"
-          >
-            <GlobalFilter
-              preGlobalFilteredRows={preGlobalFilteredRows}
-              globalFilter={state.globalFilter}
-              setGlobalFilter={setGlobalFilter}
-            />
-          </TableCell>
-        </TableRow>
       </TableHead>
 
       <TableBody {...getTableBodyProps()} component="div">
@@ -184,94 +223,6 @@ const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
     </MaUTable>
   );
 };
-
-// Define a default UI for filtering
-function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
-  const count = preGlobalFilteredRows.length;
-  const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
-
-  return (
-    <span>
-      Search:{' '}
-      <input
-        value={value || ''}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`${count} records...`}
-        style={{
-          fontSize: '1.1rem',
-          border: '0',
-        }}
-      />
-    </span>
-  );
-}
-
-// Define a default UI for filtering
-function DefaultColumnFilter({ column: { filterValue, preFilteredRows, setFilter } }) {
-  const count = preFilteredRows.length;
-
-  return (
-    <input
-      value={filterValue || ''}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-      }}
-      placeholder={`Search ${count} records...`}
-    />
-  );
-}
-
-function SelectColumnFilter({
-  column: { filterValue, setFilter, preFilteredRows, id },
-}: {
-  column: {
-    filterValue: any;
-    setFilter: any;
-    preFilteredRows: any;
-    id: any;
-  };
-}) {
-  // Calculate the options for filtering
-  // using the preFilteredRows
-  const options = React.useMemo(() => {
-    const options = new Set();
-
-    preFilteredRows.forEach((row: { values: { [x: string]: unknown } }) => {
-      options.add(row.values[id]);
-    });
-
-    if (options.size > 0) {
-      return [...options.values()];
-    } else {
-      return [];
-    }
-  }, [id, preFilteredRows]);
-
-  console.log(options);
-
-  // Render a multi-select box
-  return (
-    <select
-      value={filterValue}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined);
-      }}
-    >
-      <option value="">All</option>
-      {options.map((option, i) => (
-        <option key={i} value={option as string}>
-          {option}
-        </option>
-      ))}
-    </select>
-  );
-}
 
 const LogList = (props: LogListProps) => {
   const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone } = props;
@@ -286,18 +237,12 @@ const LogList = (props: LogListProps) => {
       (res) => {
         console.log(res);
         const rawLogs = res.map((s: { data: LogData }) => {
-          const localDate = format(utcToZonedTime(s.data.dateTime, timeZone), dateTimeFormat);
-
-          s.data.dateTime = localDate;
-
-          const logIcon = iconConverter(s.data.logLevel);
-
-          s.data.logLevelIcon = logIcon;
+          s.data.dateTime = format(utcToZonedTime(s.data.dateTime, timeZone), dateTimeFormat);
 
           return s.data;
         });
 
-        setLogsData(logsData?.concat(rawLogs));
+        setLogsData(rawLogs.concat(logsData));
 
         const utcDate = zonedTimeToUtc(new Date(), timeZone);
         const utcDateFormated = utcDate.toISOString().split('.').shift();
@@ -335,24 +280,27 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: 200,
+        width: 180,
       },
       {
         header: 'Level',
         accessor: 'logLevel',
-        width: 80,
+        width: 110,
         Filter: SelectColumnFilter,
         filter: 'includes',
+        Cell: LevelIconCell,
       },
       {
         header: 'Source',
         accessor: 'source',
-        width: 200,
+        width: 210,
+        Filter: SelectColumnFilter,
+        filter: 'includes',
       },
       {
         header: 'Text',
         accessor: 'text',
-        width: 400,
+        width: 500,
       },
     ],
     [],
