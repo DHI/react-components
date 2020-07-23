@@ -5,11 +5,11 @@ import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
-import { IScenario } from '../types';
-import IScenarioListProps from './types';
+import { Scenario } from '../types';
+import ScenarioListProps from './types';
 import useStyles from './useStyles';
 
-const ScenarioList = (props: IScenarioListProps) => {
+const ScenarioList = (props: ScenarioListProps) => {
   const {
     selectedScenarioId,
     scenarios,
@@ -25,7 +25,7 @@ const ScenarioList = (props: IScenarioListProps) => {
     nameField,
     timeZone,
   } = props;
-  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<IScenario[]>>();
+  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
 
@@ -33,7 +33,7 @@ const ScenarioList = (props: IScenarioListProps) => {
     groupScenarios(scenarios);
   }, [scenarios]);
 
-  const groupScenarios = (scenarios: IScenario[]) => {
+  const groupScenarios = (scenarios: Scenario[]) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
@@ -43,13 +43,13 @@ const ScenarioList = (props: IScenarioListProps) => {
     );
   };
 
-  const buildMenu = (scenario: IScenario) => {
+  const buildMenu = (scenario: Scenario) => {
     return menuItems.filter((menuItem) => {
       return !menuItem.condition || checkCondition(scenario, menuItem.condition) ? menuItem : null;
     });
   };
 
-  const buildScenariosList = (scenarios: IScenario[]) => {
+  const buildScenariosList = (scenarios: Scenario[]) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario) => {
@@ -103,7 +103,7 @@ const ScenarioList = (props: IScenarioListProps) => {
     );
   };
 
-  const onScenarioClick = (scenario: IScenario) => {
+  const onScenarioClick = (scenario: Scenario) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id'));
 
@@ -133,4 +133,4 @@ const ScenarioList = (props: IScenarioListProps) => {
   return <div className={classes.root}>{printedScenarios}</div>;
 };
 
-export { IScenarioListProps, ScenarioList };
+export { ScenarioListProps, ScenarioList };

@@ -14,11 +14,11 @@ import { JobParameters } from '../../DataServices/types';
 import { changeObjectProperty, getObjectProperty } from '../../utils/Utils';
 import { ScenarioDialog } from '../ScenarioDialog/ScenarioDialog';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
-import { IDialog, IMenuItem, IQueryDates, IScenario } from '../types';
-import IScenariosProps from './types';
+import { Dialog, MenuItem, QueryDates, Scenario } from '../types';
+import ScenariosProps from './types';
 import useStyles from './useStyles';
 
-const Scenarios = (props: IScenariosProps) => {
+const Scenarios = (props: ScenariosProps) => {
   const {
     host,
     token,
@@ -47,9 +47,9 @@ const Scenarios = (props: IScenariosProps) => {
     timeZone,
   } = props;
 
-  const [dialog, setDialog] = useState<IDialog>();
-  const [scenarios, setScenarios] = useState<IScenario[]>();
-  const [scenario, setScenario] = useState<IScenario>();
+  const [dialog, setDialog] = useState<Dialog>();
+  const [scenarios, setScenarios] = useState<Scenario[]>();
+  const [scenario, setScenario] = useState<Scenario>();
   const classes = useStyles();
 
   useEffect(() => {
@@ -72,10 +72,10 @@ const Scenarios = (props: IScenariosProps) => {
 
   useEffect(() => {
     if (addScenario !== scenario) {
-      let newScenario: IScenario;
+      let newScenario: Scenario;
 
       if (addScenario!.data) {
-        newScenario = clone(addScenario) as IScenario;
+        newScenario = clone(addScenario) as Scenario;
 
         newScenario = {
           ...newScenario,
@@ -92,7 +92,7 @@ const Scenarios = (props: IScenariosProps) => {
     }
   }, [addScenario]);
 
-  const fetchScenariosByDateList = (queryDates: IQueryDates) => {
+  const fetchScenariosByDateList = (queryDates: QueryDates) => {
     fetchScenariosByDate(
       {
         host,
@@ -154,7 +154,7 @@ const Scenarios = (props: IScenariosProps) => {
     );
   };
 
-  const onAddScenario = (newScenario: IScenario) => {
+  const onAddScenario = (newScenario: Scenario) => {
     if (newScenario) {
       postScenario(
         {
@@ -167,7 +167,7 @@ const Scenarios = (props: IScenariosProps) => {
     }
   };
 
-  const onExecuteScenario = (scenario: IScenario, menuItem: IMenuItem) => {
+  const onExecuteScenario = (scenario: Scenario, menuItem: MenuItem) => {
     closeDialog();
 
     // Define Job Parameter with ScenarioId
@@ -196,7 +196,7 @@ const Scenarios = (props: IScenariosProps) => {
     );
   };
 
-  const onTerminateScenario = (scenario: IScenario, menuItem: IMenuItem) => {
+  const onTerminateScenario = (scenario: Scenario, menuItem: MenuItem) => {
     closeDialog();
 
     cancelJob(
@@ -224,7 +224,7 @@ const Scenarios = (props: IScenariosProps) => {
     );
   };
 
-  const onCloneScenario = (scenario: IScenario) => {
+  const onCloneScenario = (scenario: Scenario) => {
     closeDialog();
     let clonedScenario = {
       data: scenario.data,
@@ -265,7 +265,7 @@ const Scenarios = (props: IScenariosProps) => {
     );
   };
 
-  const executeDialog = (scenario: IScenario, menuItem: IMenuItem) => {
+  const executeDialog = (scenario: Scenario, menuItem: MenuItem) => {
     setDialog({
       showDialog: true,
       dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
@@ -283,7 +283,7 @@ const Scenarios = (props: IScenariosProps) => {
     });
   };
 
-  const terminateDialog = (scenario: IScenario, menuItem: IMenuItem) => {
+  const terminateDialog = (scenario: Scenario, menuItem: MenuItem) => {
     setDialog({
       showDialog: true,
       dialogTitle: `${menuItem.label} ${getObjectProperty(scenario.data, nameField)}`,
@@ -301,7 +301,7 @@ const Scenarios = (props: IScenariosProps) => {
     });
   };
 
-  const cloneDialog = (scenario: IScenario) => {
+  const cloneDialog = (scenario: Scenario) => {
     setDialog({
       showDialog: true,
       dialogTitle: `Clone ${getObjectProperty(scenario.data, nameField)}`,
@@ -315,7 +315,7 @@ const Scenarios = (props: IScenariosProps) => {
     });
   };
 
-  const deleteDialog = (scenario: IScenario) => {
+  const deleteDialog = (scenario: Scenario) => {
     setDialog({
       showDialog: true,
       dialogTitle: `Delete ${getObjectProperty(scenario.data, nameField)}`,
@@ -333,7 +333,7 @@ const Scenarios = (props: IScenariosProps) => {
     });
   };
 
-  const onDeleteScenario = (scenario: IScenario) => {
+  const onDeleteScenario = (scenario: Scenario) => {
     closeDialog();
 
     deleteScenario(
@@ -350,7 +350,7 @@ const Scenarios = (props: IScenariosProps) => {
     setDialog({ showDialog: false });
   };
 
-  const onContextMenuClickHandler = (menuItem: IMenuItem, scenario: IScenario) => {
+  const onContextMenuClickHandler = (menuItem: MenuItem, scenario: Scenario) => {
     getScenario(scenario.id!, (res) => {
       switch (menuItem.id) {
         case 'execute':
@@ -367,7 +367,7 @@ const Scenarios = (props: IScenariosProps) => {
     });
   };
 
-  const onScenarioSelectedHandler = (scenario: IScenario) => {
+  const onScenarioSelectedHandler = (scenario: Scenario) => {
     onScenarioSelected(scenario);
 
     getScenario(scenario.id!, (res) => onScenarioReceived(res));
@@ -418,4 +418,4 @@ const Scenarios = (props: IScenariosProps) => {
   );
 };
 
-export { IScenariosProps, Scenarios };
+export { ScenariosProps, Scenarios };

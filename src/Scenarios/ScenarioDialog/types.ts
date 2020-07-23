@@ -1,4 +1,4 @@
-interface IScenarioDialogProps {
+interface ScenarioDialogProps {
   /**
    * Title of the dialog
    */
@@ -29,4 +29,4 @@ interface IScenarioDialogProps {
   command?: Function;
 }
 
-export default IScenarioDialogProps;
+export default ScenarioDialogProps;
