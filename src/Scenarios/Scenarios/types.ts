@@ -1,7 +1,7 @@
 import { JobParameters } from '../../DataServices/types';
-import { DescriptionField, IMenuItem, IQueryDates, IScenario, IStatus } from '../types';
+import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
 
-interface IScenariosProps {
+interface ScenariosProps {
   /**
    * Property field to specify the scenario name
    */
@@ -57,7 +57,7 @@ interface IScenariosProps {
   /**
    * Value range to fetch scenario by date
    */
-  queryDates?: IQueryDates;
+  queryDates?: QueryDates;
   /**
    * Customising translation dialog
    */
@@ -90,7 +90,7 @@ interface IScenariosProps {
   /**
    * Customising scenario status display
    */
-  status: IStatus[];
+  status: Status[];
   /**
    * Customising scenario description field display
    */
@@ -102,31 +102,31 @@ interface IScenariosProps {
   /**
    * The scenario menu options
    */
-  menuItems: IMenuItem[];
+  menuItems: MenuItem[];
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
+  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   /**
    * Emit event to client when scenario selected by user (basic scenario data)
    */
-  onScenarioSelected: (scenario: IScenario) => void;
+  onScenarioSelected: (scenario: Scenario) => void;
   /**
    * Emit event to client when scenario received from the server after a selection (full scenario data)
    */
-  onScenarioReceived: (scenario: IScenario) => void;
+  onScenarioReceived: (scenario: Scenario) => void;
   /**
    * Emit even to client when list of scenarios received from the server
    */
-  onScenariosReceived: (scenarios: IScenario[]) => void;
+  onScenariosReceived: (scenarios: Scenario[]) => void;
   /**
    * The object data to be added as new scenario (optional)
    */
-  addScenario?: IScenario | undefined;
+  addScenario?: Scenario | undefined;
   /**
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
 }
 
-export default IScenariosProps;
+export default ScenariosProps;
