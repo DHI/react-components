@@ -1,6 +1,6 @@
-import { DescriptionField, IMenuItem, IScenario, IStatus } from '../types';
+import { DescriptionField, MenuItem, Scenario, Status } from '../types';
 
-interface IScenarioListProps {
+interface ScenarioListProps {
   /**
    * Style of the list
    */
@@ -8,11 +8,11 @@ interface IScenarioListProps {
   /**
    * List of menu items
    */
-  menuItems: IMenuItem[];
+  menuItems: MenuItem[];
   /**
    * The list of scenario
    */
-  scenarios: IScenario[];
+  scenarios: Scenario[];
   /**
    * Property field to specify the scenario name
    */
@@ -48,19 +48,19 @@ interface IScenarioListProps {
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
+  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   /**
    * Emit event to client when scenario selected by user
    */
-  onScenarioSelected: (scenario: IScenario) => void;
+  onScenarioSelected: (scenario: Scenario) => void;
   /**
    * Customising scenario status display
    */
-  status: IStatus[];
+  status: Status[];
   /**
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
 }
 
-export default IScenarioListProps;
+export default ScenarioListProps;

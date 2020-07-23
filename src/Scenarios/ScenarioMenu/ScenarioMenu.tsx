@@ -1,10 +1,10 @@
-import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import { IconButton, Menu, MenuItem as MenuItemUI } from '@material-ui/core';
 import { MoreVert as MoreVertIcon } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { IMenuItem, IScenario } from '../types';
-import IScenarioMenuProps from './types';
+import { MenuItem, Scenario } from '../types';
+import ScenarioMenuProps from './types';
 
-const ScenarioMenu = (props: IScenarioMenuProps) => {
+const ScenarioMenu = (props: ScenarioMenuProps) => {
   const { onContextMenuClick, scenario, menu } = props;
   const [showMenu, setShowMenuState] = useState(false);
   const [showElement, setshowElementState] = useState();
@@ -17,7 +17,7 @@ const ScenarioMenu = (props: IScenarioMenuProps) => {
     }
   };
 
-  const setContextMenu = (menuItem: IMenuItem, scenario: IScenario) => {
+  const setContextMenu = (menuItem: MenuItem, scenario: Scenario) => {
     onContextMenuClick(menuItem, scenario);
     setShowMenuState(false);
   };
@@ -33,13 +33,13 @@ const ScenarioMenu = (props: IScenarioMenuProps) => {
       </IconButton>
       <Menu id="simple-menu" anchorEl={showElement} open={showMenu} onClose={() => setShowMenuState(false)}>
         {menu.map((menuItem) => (
-          <MenuItem key={menuItem.id} id={menuItem.id} onClick={() => setContextMenu(menuItem, scenario)}>
+          <MenuItemUI key={menuItem.id} id={menuItem.id} onClick={() => setContextMenu(menuItem, scenario)}>
             {menuItem.label}
-          </MenuItem>
+          </MenuItemUI>
         ))}
       </Menu>
     </div>
   );
 };
 
-export { IScenarioMenuProps, ScenarioMenu };
+export { ScenarioMenuProps, ScenarioMenu };
