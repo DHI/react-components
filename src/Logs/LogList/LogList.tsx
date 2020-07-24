@@ -1,5 +1,5 @@
 import { Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
-import { yellow } from '@material-ui/core/colors';
+import { blueGrey, red, yellow } from '@material-ui/core/colors';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MaUTable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,6 +11,7 @@ import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import matchSorter from 'match-sorter';
@@ -25,37 +26,37 @@ const LevelIconCell = ({ value }: { value: string }) => {
     case 'Debug':
       return (
         <Tooltip title="Debug">
-          <BugReportOutlinedIcon style={{ color: yellow[800] }} />
+          <BugReportOutlinedIcon style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Information':
       return (
         <Tooltip title="Information">
-          <InfoOutlinedIcon color="primary" />
+          <InfoOutlinedIcon style={{ color: blueGrey[500] }} />
         </Tooltip>
       );
     case 'Error':
       return (
         <Tooltip title="Error">
-          <ErrorOutlineOutlinedIcon color="secondary" />
+          <ErrorOutlineOutlinedIcon style={{ color: red[900] }} />
         </Tooltip>
       );
     case 'Warning':
       return (
         <Tooltip title="Warning">
-          <WarningOutlinedIcon style={{ color: yellow[800] }} />
+          <WarningOutlinedIcon style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Critical':
       return (
         <Tooltip title="Critical">
-          <ErrorOutlineOutlinedIcon color="secondary" />
+          <NewReleasesIcon style={{ color: red[900] }} />
         </Tooltip>
       );
     default:
       return (
         <Tooltip title="Unknown">
-          <HelpOutline style={{ color: yellow[700] }} />
+          <HelpOutline style={{ color: yellow[900] }} />
         </Tooltip>
       );
   }
