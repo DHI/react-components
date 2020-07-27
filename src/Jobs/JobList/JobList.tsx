@@ -14,7 +14,6 @@ import ErrorIcon from '@material-ui/icons/Error';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import matchSorter from 'match-sorter';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
@@ -68,12 +67,6 @@ const StatusIconCell = ({ value }: { value: string }) => {
       );
   }
 };
-
-const fuzzyTextFilterFn = (rows: readonly any[][], id: React.ReactText, filterValue: string) => {
-  return matchSorter(rows, filterValue, { keys: [(row: any[]) => row.values[id]] });
-};
-
-fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 const DefaultColumnFilter = () => {
   return null;
@@ -143,34 +136,16 @@ const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows,
 };
 
 const Table = ({ columns, data }: { columns: any; data: JobData[] }) => {
-  const filterTypes = React.useMemo(
-    () => ({
-      fuzzyText: fuzzyTextFilterFn,
-      text: (rows, id, filterValue) => {
-        return rows.filter((row) => {
-          const rowValue = row.values[id];
-
-          return rowValue !== undefined
-            ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
-            : true;
-        });
-      },
-    }),
-    [],
-  );
-
-  const defaultColumn = React.useMemo(
-    () => ({
-      Filter: DefaultColumnFilter,
-    }),
-    [],
-  );
+  const defaultColumn = {
+    Filter: DefaultColumnFilter,
+    minWidth: 30,
+    maxWidth: 1000,
+  };
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } = useTable(
     {
       columns,
       data,
-      filterTypes,
       defaultColumn,
     },
     useBlockLayout,
