@@ -1,5 +1,7 @@
 export * from './Auth/Login/Login';
 export * from './Auth/Login/types';
+export * from './Jobs/JobList/JobList';
+export * from './Jobs/JobList/types';
 export * from './Logs/LogList/LogList';
 export * from './Logs/LogList/types';
 export * from './Scenarios/ScenarioItem/ScenarioItem';
