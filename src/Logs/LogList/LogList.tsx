@@ -65,6 +65,17 @@ const DefaultColumnFilter = () => {
   return null;
 };
 
+const getColumnWidth = (data: LogData[], accessor: string, headerText: string) => {
+  if (data.length > 0) {
+    const spacing = 10;
+    const cellLength = Math.max(...data.map((row) => (`${row[accessor]}` || '').length), headerText.length);
+
+    return cellLength * spacing;
+  } else {
+    return 150;
+  }
+};
+
 const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: BaseFilter) => {
   const options = React.useMemo(() => {
     const options = new Set();
@@ -251,17 +262,17 @@ const LogList = (props: LogListProps) => {
     return logsData;
   }, [logsData]);
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: 180,
+        width: getColumnWidth(data, 'dateTime', 'Time'),
       },
       {
         header: 'Level',
         accessor: 'logLevel',
-        width: 110,
+        width: getColumnWidth(data, 'logLevel', 'Level'),
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
@@ -269,17 +280,17 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Source',
         accessor: 'source',
-        width: 210,
+        width: getColumnWidth(data, 'source', 'Source'),
         Filter: SelectColumnFilter,
         filter: 'includes',
       },
       {
         header: 'Text',
         accessor: 'text',
-        width: 500,
+        width: getColumnWidth(data, 'text', 'Text'),
       },
     ],
-    [],
+    [logsData],
   );
 
   return (
