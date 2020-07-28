@@ -273,7 +273,7 @@ const Scenarios = (props: ScenariosProps) => {
       dialogTitle: `${menuItem.label} ${job}`,
       dialogMessage:
         translations && translations.executeConfirmation
-          ? translations.executeConfirmation.replace('{job}', job)
+          ? translations.executeConfirmation.replace('%job%', job)
           : `This will start a new job in the background. The status will change after job completion. Are you sure you want to execute ${job}?`,
       dialogCancelLabel: translations?.cancelLabel || 'Cancel',
       dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
@@ -289,7 +289,7 @@ const Scenarios = (props: ScenariosProps) => {
       dialogTitle: `${menuItem.label} ${job}`,
       dialogMessage:
         translations && translations.terminateConfirmation
-          ? translations.terminateConfirmation.replace('{job}', job)
+          ? translations.terminateConfirmation.replace('%job%', job)
           : `This will cancel the job currently executing. The status will change after job cancelation. Are you sure you want to terminate ${job}?`,
       dialogCancelLabel: translations?.cancelLabel || 'Cancel',
       dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
@@ -305,7 +305,7 @@ const Scenarios = (props: ScenariosProps) => {
       dialogTitle: `Clone ${job}`,
       dialogMessage:
         translations && translations.cloneConfirmation
-          ? translations.cloneConfirmation.replace('{job}', job)
+          ? translations.cloneConfirmation.replace('%job%', job)
           : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ${job}?`,
       dialogCancelLabel: translations?.cancelLabel || 'Cancel',
       dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
@@ -321,7 +321,7 @@ const Scenarios = (props: ScenariosProps) => {
       dialogTitle: `Delete ${job}`,
       dialogMessage:
         translations && translations.deleteConfirmation
-          ? translations.deleteConfirmation.replace('{job}', job)
+          ? translations.deleteConfirmation.replace('%job%', job)
           : `This will delete the selected scenario from the list. After it is deleted you cannot retrieve the data. Are you sure you want to delete ${job}?`,
       dialogCancelLabel: translations?.cancelLabel || 'Cancel',
       dialogConfirmLabel: translations?.confirmLabel || 'Confirm',
