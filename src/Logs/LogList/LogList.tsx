@@ -14,7 +14,6 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import matchSorter from 'match-sorter';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
@@ -62,14 +61,19 @@ const LevelIconCell = ({ value }: { value: string }) => {
   }
 };
 
-const fuzzyTextFilterFn = (rows: readonly any[][], id: React.ReactText, filterValue: string) => {
-  return matchSorter(rows, filterValue, { keys: [(row: any[]) => row.values[id]] });
-};
-
-fuzzyTextFilterFn.autoRemove = (val) => !val;
-
 const DefaultColumnFilter = () => {
   return null;
+};
+
+const getColumnWidth = (data: LogData[], accessor: string, headerText: string) => {
+  if (data.length > 0) {
+    const spacing = 10;
+    const cellLength = Math.max(...data.map((row) => (`${row[accessor]}` || '').length), headerText.length);
+
+    return cellLength * spacing;
+  } else {
+    return 150;
+  }
 };
 
 const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: BaseFilter) => {
@@ -136,34 +140,16 @@ const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows,
 };
 
 const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
-  const filterTypes = React.useMemo(
-    () => ({
-      fuzzyText: fuzzyTextFilterFn,
-      text: (rows, id, filterValue) => {
-        return rows.filter((row) => {
-          const rowValue = row.values[id];
-
-          return rowValue !== undefined
-            ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
-            : true;
-        });
-      },
-    }),
-    [],
-  );
-
-  const defaultColumn = React.useMemo(
-    () => ({
-      Filter: DefaultColumnFilter,
-    }),
-    [],
-  );
+  const defaultColumn = {
+    Filter: DefaultColumnFilter,
+    minWidth: 30,
+    maxWidth: 1000,
+  };
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } = useTable(
     {
       columns,
       data,
-      filterTypes,
       defaultColumn,
     },
     useBlockLayout,
@@ -276,17 +262,17 @@ const LogList = (props: LogListProps) => {
     return logsData;
   }, [logsData]);
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: 180,
+        width: getColumnWidth(data, 'dateTime', 'Time'),
       },
       {
         header: 'Level',
         accessor: 'logLevel',
-        width: 110,
+        width: getColumnWidth(data, 'logLevel', 'Level'),
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
@@ -294,17 +280,17 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Source',
         accessor: 'source',
-        width: 210,
+        width: getColumnWidth(data, 'source', 'Source'),
         Filter: SelectColumnFilter,
         filter: 'includes',
       },
       {
         header: 'Text',
         accessor: 'text',
-        width: 500,
+        width: getColumnWidth(data, 'text', 'Text'),
       },
     ],
-    [],
+    [logsData],
   );
 
   return (
