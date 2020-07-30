@@ -169,6 +169,7 @@ const Table = ({ columns, data, hiddenColumns }: { columns: any; data: JobData[]
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } = useTable(
     {
+      autoResetFilters: false,
       columns,
       data,
       defaultColumn,

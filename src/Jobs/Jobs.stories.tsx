@@ -35,7 +35,7 @@ export const JobListStory = () => {
   if (token) {
     return (
       <JobList
-        frequency={30}
+        frequency={10}
         token={token}
         dataSources={dataSources}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
