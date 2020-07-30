@@ -12,8 +12,8 @@ export const JobListStory = () => {
 
   const dataSources = [
     {
-      host: process.env.ENDPOINT_URL,
-      connection: 'wf-jobs',
+      host: 'https://ncos.ozsea.online/api/job/OzSea-Exe',
+      connection: 'list',
     },
   ];
 
@@ -39,7 +39,7 @@ export const JobListStory = () => {
         token={token}
         dataSources={dataSources}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
-        startTimeUtc={'2010-06-30T01:45:34'}
+        startTimeUtc={'2020-06-30T014534'}
         timeZone={'Asia/Jakarta'}
       />
     );

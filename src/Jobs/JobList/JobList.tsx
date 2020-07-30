@@ -1,5 +1,5 @@
 import { Box, CircularProgress, IconButton, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
-import { green, red, yellow } from '@material-ui/core/colors';
+import { blue, green, red, yellow } from '@material-ui/core/colors';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MaUTable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -21,7 +21,7 @@ import { FilterProps } from '../..';
 import { fetchJobs } from '../../DataServices/DataServices';
 import JobListProps, { JobData } from './types';
 
-const StatusIconCell = ({ value }: { value: string }) => {
+const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
   switch (value) {
     case 'Completed':
       return (
@@ -32,13 +32,31 @@ const StatusIconCell = ({ value }: { value: string }) => {
     case 'InProgress':
       return (
         <Tooltip title={value}>
-          <CircularProgress style={{ color: green[300] }} variant="static" />
+          <Box position="relative" display="inline-flex">
+            <CircularProgress style={{ color: blue[900] }} variant={'indeterminate'} size={28} thickness={4} />
+            <Box
+              top={0}
+              left={0}
+              bottom={0}
+              right={0}
+              position="absolute"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography
+                variant="caption"
+                component="div"
+                style={{ fontSize: 10 }}
+              >{`${cell.row.original.progress}%`}</Typography>
+            </Box>
+          </Box>
         </Tooltip>
       );
     case 'Pending':
       return (
         <Tooltip title={value}>
-          <HourglassEmpty style={{ color: yellow[300] }} />
+          <HourglassEmpty style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Error':
@@ -50,18 +68,18 @@ const StatusIconCell = ({ value }: { value: string }) => {
     case 'Cancelled':
       return (
         <Tooltip title={value}>
-          <CancelIcon style={{ color: yellow[300] }} />
+          <CancelIcon style={{ color: yellow[900] }} />
         </Tooltip>
       );
-    case 'Cancel':
+    case 'Cancelling':
       return (
-        <Tooltip title="Cancelling">
-          <CancelScheduleSendIcon style={{ color: yellow[300] }} />
+        <Tooltip title={value}>
+          <CancelScheduleSendIcon style={{ color: yellow[900] }} />
         </Tooltip>
       );
     default:
       return (
-        <Tooltip title="Unknown">
+        <Tooltip title={value}>
           <HelpOutline style={{ color: yellow[900] }} />
         </Tooltip>
       );
@@ -72,19 +90,26 @@ const DefaultColumnFilter = () => {
   return null;
 };
 
-const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: FilterProps) => {
-  const options = React.useMemo(() => {
-    const options = new Set();
+const getColumnWidth = (data: JobData[], accessor: string, headerText: string, minWidth: number) => {
+  if (data.length > 0) {
+    const spacing = 10;
+    const cellLength = Math.max(...data.map((row) => (`${row[accessor]}` || '').length), headerText.length);
 
-    preFilteredRows.forEach((row: { values: { [x: string]: unknown } }) => {
+    return Math.max(minWidth, cellLength * spacing);
+  } else {
+    return minWidth;
+  }
+};
+
+const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: FilterProps) => {
+  const options = useMemo(() => {
+    const options = new Set<any>();
+
+    preFilteredRows.forEach((row) => {
       options.add(row.values[id]);
     });
 
-    if (options.size > 0) {
-      return [...options.values()];
-    } else {
-      return [];
-    }
+    return [...Array.from(options.values())];
   }, [id, preFilteredRows]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -135,7 +160,7 @@ const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows,
   );
 };
 
-const Table = ({ columns, data }: { columns: any; data: JobData[] }) => {
+const Table = ({ columns, data, hiddenColumns }: { columns: any; data: JobData[]; hiddenColumns: string[] }) => {
   const defaultColumn = {
     Filter: DefaultColumnFilter,
     minWidth: 30,
@@ -147,6 +172,9 @@ const Table = ({ columns, data }: { columns: any; data: JobData[] }) => {
       columns,
       data,
       defaultColumn,
+      initialState: {
+        hiddenColumns: hiddenColumns,
+      },
     },
     useBlockLayout,
     useFilters,
@@ -169,9 +197,15 @@ const Table = ({ columns, data }: { columns: any; data: JobData[] }) => {
           {row.cells.map((cell) => {
             return (
               <TableCell {...cell.getCellProps()} component="div">
-                <Typography noWrap variant="body2" align={(cell.column as any).header === 'Status' ? 'center' : 'left'}>
-                  {cell.render('Cell')}
-                </Typography>
+                {(cell.column as any).header === 'Status' ? (
+                  <Typography align="center" component="div">
+                    {cell.render('Cell')}
+                  </Typography>
+                ) : (
+                  <Typography noWrap variant="body2">
+                    {cell.render('Cell')}
+                  </Typography>
+                )}
               </TableCell>
             );
           })}
@@ -182,7 +216,7 @@ const Table = ({ columns, data }: { columns: any; data: JobData[] }) => {
   );
 
   return (
-    <MaUTable {...getTableProps()} component="div" size="small" aria-label="a dense table">
+    <MaUTable {...getTableProps()} component="div" size="small">
       <TableHead component="div">
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
@@ -199,7 +233,7 @@ const Table = ({ columns, data }: { columns: any; data: JobData[] }) => {
       </TableHead>
 
       <TableBody {...getTableBodyProps()} component="div">
-        <FixedSizeList height={345} itemCount={rows.length} itemSize={35} width={totalColumnsWidth}>
+        <FixedSizeList height={345} itemCount={rows.length} itemSize={35} width={totalColumnsWidth + 20}>
           {RenderRow}
         </FixedSizeList>
       </TableBody>
@@ -219,10 +253,21 @@ const JobList = (props: JobListProps) => {
     fetchJobs(dataSources, token, query).subscribe(
       (res) => {
         console.log(res);
-        const rawJobs = res.map((s: { data: JobData }) => {
-          s.data.requested = format(utcToZonedTime(s.data.requested, timeZone), dateTimeFormat);
-          s.data.started = format(utcToZonedTime(s.data.started, timeZone), dateTimeFormat);
-          s.data.finished = format(utcToZonedTime(s.data.finished, timeZone), dateTimeFormat);
+        const rawJobs = res.map((s: { data }) => {
+          s.data.taskId = s.data.TaskId;
+          s.data.hostId = s.data.HostId;
+          s.data.status = s.data.Status;
+          s.data.progress = s.data.Progress || 0;
+
+          if (s.data.Requested) {
+            s.data.requested = format(utcToZonedTime(s.data.Requested.replace('T', ' '), timeZone), dateTimeFormat);
+          }
+          if (s.data.Started) {
+            s.data.started = format(utcToZonedTime(s.data.Started.replace('T', ' '), timeZone), dateTimeFormat);
+          }
+          if (s.data.Finished) {
+            s.data.finished = format(utcToZonedTime(s.data.Finished.replace('T', ' '), timeZone), dateTimeFormat);
+          }
 
           if (s.data.started && s.data.finished) {
             s.data.duration = calcTimeDifference(s.data.started, s.data.finished);
@@ -236,11 +281,13 @@ const JobList = (props: JobListProps) => {
         });
 
         setJobsData(rawJobs.concat(jobsData));
+        // console.log(jobsData.length);
 
         const utcDate = zonedTimeToUtc(new Date(), timeZone);
-        const utcDateFormated = utcDate.toISOString().split('.').shift();
+        const utcDateFormated = utcDate.toISOString().split('.').shift().replace(':', '');
+        const fixedUtcDateFormated = utcDateFormated.replace(':', '');
 
-        setStartDateUtc(utcDateFormated);
+        setStartDateUtc(fixedUtcDateFormated);
       },
       (error) => {
         console.log(error);
@@ -274,7 +321,7 @@ const JobList = (props: JobListProps) => {
     } else if (isNaN(difference)) {
       return 'cannot compute';
     } else {
-      return `${hour} h ${minute} m`;
+      return `${hour}h ${minute}m`;
     }
   };
 
@@ -282,58 +329,109 @@ const JobList = (props: JobListProps) => {
     return jobsData;
   }, [jobsData]);
 
-  const columns = React.useMemo(
-    () => [
-      {
-        header: 'Task Id',
-        accessor: 'taskId',
-        width: 200,
-      },
-      {
-        header: 'Status',
-        accessor: 'status',
-        Cell: StatusIconCell,
-        Filter: SelectColumnFilter,
-        width: 100,
-      },
-      {
-        header: 'Host Id',
-        accessor: 'hostId',
-        width: 120,
-      },
-      {
-        header: 'Duration',
-        accessor: 'duration',
-        width: 80,
-      },
-      {
-        header: 'Delay',
-        accessor: 'delay',
-        width: 80,
-      },
-      {
-        header: 'Requested',
-        accessor: 'requested',
-        width: 175,
-      },
-      {
-        header: 'Started',
-        accessor: 'started',
-        width: 175,
-      },
-      {
-        header: 'Finished',
-        accessor: 'finished',
-        width: 175,
-      },
-    ],
-    [],
-  );
+  const columns = [
+    {
+      header: 'Task Id',
+      accessor: 'taskId',
+      width: getColumnWidth(data, 'taskId', 'Task Id', 120),
+    },
+    {
+      header: 'Status',
+      accessor: 'status',
+      Cell: StatusIconCell,
+      Filter: SelectColumnFilter,
+      width: getColumnWidth(data, 'status', 'Status', 100),
+    },
+    {
+      header: 'Host Id',
+      accessor: 'hostId',
+      width: getColumnWidth(data, 'hostId', 'Host Id', 100),
+    },
+    {
+      header: 'Duration',
+      accessor: 'duration',
+      width: getColumnWidth(data, 'duration', 'Duration', 100),
+    },
+    {
+      header: 'Delay',
+      accessor: 'delay',
+      width: getColumnWidth(data, 'delay', 'Delay', 100),
+    },
+    {
+      header: 'Requested',
+      accessor: 'requested',
+      width: getColumnWidth(data, 'requested', 'Requested', 175),
+    },
+    {
+      header: 'Started',
+      accessor: 'started',
+      width: getColumnWidth(data, 'started', 'Started', 175),
+    },
+    {
+      header: 'Finished',
+      accessor: 'finished',
+      width: getColumnWidth(data, 'finished', 'Finished', 175),
+    },
+  ];
+
+  const [open, setOpen] = useState(false);
+  const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
+
+  const hiddenColumnsData = useMemo(() => {
+    return hiddenColumns;
+  }, [hiddenColumns]);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.checked) {
+      setHiddenColumns([...hiddenColumns, event.target.name]);
+    } else {
+      setHiddenColumns(hiddenColumns.filter((e) => e !== event.target.name));
+    }
+  };
 
   return (
     <div>
       <CssBaseline />
-      <Table columns={columns} data={data} />
+      {/* Button and dialog to select display column */}
+      {/* <Typography align="left" component="div" style={{ marginBottom: '10px', marginTop: '10px' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ backgroundColor: '#0D3958' }}
+          startIcon={<MenuIcon />}
+          onClick={handleClickOpen}
+        >
+          <span>Select columns</span>
+        </Button>
+      </Typography>
+
+      <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+        <DialogTitle id="simple-dialog-title">Select column to display</DialogTitle>
+        {columns.map((column, index) => (
+          <FormControlLabel
+            style={{ marginLeft: '10px' }}
+            key={column.header}
+            control={
+              <Checkbox
+                key={column.header}
+                checked={hiddenColumnsData.indexOf(column.accessor) < 0}
+                name={column.accessor}
+                onChange={handleOnChange}
+              />
+            }
+            label={column.header}
+          />
+        ))}
+      </Dialog> */}
+      <Table columns={columns} data={data} hiddenColumns={hiddenColumnsData} />
     </div>
   );
 };

@@ -32,6 +32,8 @@ interface JobData {
   started: string;
   /** Datetime when job is finished */
   finished: string;
+  /** Progress when job status still in progress */
+  progress: number;
 }
 
 interface FilterProps {

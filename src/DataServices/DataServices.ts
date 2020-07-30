@@ -451,8 +451,8 @@ const fetchJobs = (
   const requests = dataSourcesArray.map((source: DataSource) =>
     fetchUrl(
       !query
-        ? `${source.host}/api/jobs/${source.connection}`
-        : `${source.host}/api/jobs/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
+        ? `${source.host}/${source.connection}`
+        : `${source.host}/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
             query.since,
           )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
       {
