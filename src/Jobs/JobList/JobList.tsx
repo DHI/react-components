@@ -72,6 +72,7 @@ const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
         </Tooltip>
       );
     case 'Cancelling':
+    case 'Cancel':
       return (
         <Tooltip title={value}>
           <CancelScheduleSendIcon style={{ color: yellow[900] }} />
@@ -160,14 +161,26 @@ const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows,
   );
 };
 
-const Table = ({ columns, data, hiddenColumns }: { columns: any; data: JobData[]; hiddenColumns: string[] }) => {
+const Table = ({
+  columns,
+  data,
+  translations,
+  loading,
+  hiddenColumns,
+}: {
+  columns: any;
+  data: JobData[];
+  translations: any;
+  loading: boolean;
+  hiddenColumns: string[];
+}) => {
   const defaultColumn = {
     Filter: DefaultColumnFilter,
     minWidth: 30,
     maxWidth: 1000,
   };
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } = useTable(
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth, state } = useTable(
     {
       autoResetFilters: false,
       columns,
@@ -234,20 +247,105 @@ const Table = ({ columns, data, hiddenColumns }: { columns: any; data: JobData[]
       </TableHead>
 
       <TableBody {...getTableBodyProps()} component="div">
-        <FixedSizeList height={345} itemCount={rows.length} itemSize={35} width={totalColumnsWidth + 20}>
-          {RenderRow}
-        </FixedSizeList>
+        {rows.length > 0 ? (
+          <FixedSizeList height={345} itemCount={rows.length} itemSize={35} width={totalColumnsWidth + 20}>
+            {RenderRow}
+          </FixedSizeList>
+        ) : (
+          <Typography align="center" component="div" style={{ lineHeight: '345px' }}>
+            {loading ? (
+              <CircularProgress />
+            ) : (state as any).filters.length > 0 ? (
+              translations.noEntriesFilter ? (
+                `${translations.noEntriesFilter} : ${(state as any).filters[0].value}`
+              ) : (
+                `No job entries for selected job status : ${(state as any).filters[0].value}`
+              )
+            ) : (
+              translations?.noEntriesData || 'No job entries'
+            )}
+          </Typography>
+        )}
       </TableBody>
     </MaUTable>
   );
 };
 
 const JobList = (props: JobListProps) => {
-  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone } = props;
+  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone, translations, onReceived } = props;
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [jobsData, setJobsData] = useState<JobData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onJobsRecieved = (data: JobData[]) => {
+    return data.reduce(function (obj, v) {
+      obj[v.status] = (obj[v.status] || 0) + 1;
+
+      return obj;
+    }, {});
+  };
+
+  const data = useMemo(() => {
+    setLoading(false);
+
+    const statusCounter = onJobsRecieved(jobsData);
+
+    if (onReceived) {
+      onReceived(statusCounter);
+    }
+
+    return jobsData;
+  }, [jobsData]);
+
+  const columns = [
+    {
+      header: 'Task Id',
+      accessor: 'taskId',
+      Filter: SelectColumnFilter,
+      width: getColumnWidth(data, 'taskId', 'Task Id', 140),
+    },
+    {
+      header: 'Status',
+      accessor: 'status',
+      Cell: StatusIconCell,
+      Filter: SelectColumnFilter,
+      width: getColumnWidth(data, 'status', 'Status', 100),
+    },
+    {
+      header: 'Host Id',
+      accessor: 'hostId',
+      Filter: SelectColumnFilter,
+      width: getColumnWidth(data, 'hostId', 'Host Id', 140),
+    },
+    {
+      header: 'Duration',
+      accessor: 'duration',
+      width: getColumnWidth(data, 'duration', 'Duration', 100),
+    },
+    {
+      header: 'Delay',
+      accessor: 'delay',
+      width: getColumnWidth(data, 'delay', 'Delay', 100),
+    },
+    {
+      header: 'Requested',
+      accessor: 'requested',
+      width: getColumnWidth(data, 'requested', 'Requested', 175),
+    },
+    {
+      header: 'Started',
+      accessor: 'started',
+      width: getColumnWidth(data, 'started', 'Started', 175),
+    },
+    {
+      header: 'Finished',
+      accessor: 'finished',
+      width: getColumnWidth(data, 'finished', 'Finished', 175),
+    },
+  ];
 
   const fetchJobList = (dateTimeValue: string) => {
+    setLoading(true);
     console.log(dateTimeValue);
     const query = { since: dateTimeValue };
 
@@ -255,34 +353,30 @@ const JobList = (props: JobListProps) => {
       (res) => {
         console.log(res);
         const rawJobs = res.map((s: { data }) => {
-          s.data.taskId = s.data.TaskId;
-          s.data.hostId = s.data.HostId;
-          s.data.status = s.data.Status;
-          s.data.progress = s.data.Progress || 0;
+          // Mapping to JobData.
+          const dataMapping = {
+            id: s.data.Id,
+            taskId: s.data.TaskId,
+            hostId: s.data.HostId,
+            status: s.data.Status,
+            progress: s.data.Progress || 0,
+            requested: s.data.Requested
+              ? format(utcToZonedTime(s.data.Requested.replace('T', ' '), timeZone), dateTimeFormat)
+              : '',
+            started: s.data.Started
+              ? format(utcToZonedTime(s.data.Started.replace('T', ' '), timeZone), dateTimeFormat)
+              : '',
+            finished: s.data.Finished
+              ? format(utcToZonedTime(s.data.Finished.replace('T', ' '), timeZone), dateTimeFormat)
+              : '',
+            duration: calcTimeDifference(s.data.Started, s.data.Finished),
+            delay: calcTimeDifference(s.data.Requested, s.data.Started),
+          };
 
-          if (s.data.Requested) {
-            s.data.requested = format(utcToZonedTime(s.data.Requested.replace('T', ' '), timeZone), dateTimeFormat);
-          }
-          if (s.data.Started) {
-            s.data.started = format(utcToZonedTime(s.data.Started.replace('T', ' '), timeZone), dateTimeFormat);
-          }
-          if (s.data.Finished) {
-            s.data.finished = format(utcToZonedTime(s.data.Finished.replace('T', ' '), timeZone), dateTimeFormat);
-          }
-
-          if (s.data.started && s.data.finished) {
-            s.data.duration = calcTimeDifference(s.data.started, s.data.finished);
-          }
-
-          if (s.data.requested && s.data.started) {
-            s.data.delay = calcTimeDifference(s.data.requested, s.data.started);
-          }
-
-          return s.data;
+          return dataMapping;
         });
 
         setJobsData(rawJobs.concat(jobsData));
-        // console.log(jobsData.length);
 
         const utcDate = zonedTimeToUtc(new Date(), timeZone);
         const utcDateFormated = utcDate.toISOString().split('.').shift().replace(':', '');
@@ -320,83 +414,35 @@ const JobList = (props: JobListProps) => {
     if (hour === 0 && minute === 0) {
       return `<1m`;
     } else if (isNaN(difference)) {
-      return 'cannot compute';
+      return '';
     } else {
       return `${hour}h ${minute}m`;
     }
   };
 
-  const data = useMemo(() => {
-    return jobsData;
-  }, [jobsData]);
-
-  const columns = [
-    {
-      header: 'Task Id',
-      accessor: 'taskId',
-      width: getColumnWidth(data, 'taskId', 'Task Id', 120),
-    },
-    {
-      header: 'Status',
-      accessor: 'status',
-      Cell: StatusIconCell,
-      Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'status', 'Status', 100),
-    },
-    {
-      header: 'Host Id',
-      accessor: 'hostId',
-      width: getColumnWidth(data, 'hostId', 'Host Id', 100),
-    },
-    {
-      header: 'Duration',
-      accessor: 'duration',
-      width: getColumnWidth(data, 'duration', 'Duration', 100),
-    },
-    {
-      header: 'Delay',
-      accessor: 'delay',
-      width: getColumnWidth(data, 'delay', 'Delay', 100),
-    },
-    {
-      header: 'Requested',
-      accessor: 'requested',
-      width: getColumnWidth(data, 'requested', 'Requested', 175),
-    },
-    {
-      header: 'Started',
-      accessor: 'started',
-      width: getColumnWidth(data, 'started', 'Started', 175),
-    },
-    {
-      header: 'Finished',
-      accessor: 'finished',
-      width: getColumnWidth(data, 'finished', 'Finished', 175),
-    },
-  ];
-
-  const [open, setOpen] = useState(false);
+  /** Function and variable to select display column */
+  // const [open, setOpen] = useState(false);
   const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
 
   const hiddenColumnsData = useMemo(() => {
     return hiddenColumns;
   }, [hiddenColumns]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.checked) {
-      setHiddenColumns([...hiddenColumns, event.target.name]);
-    } else {
-      setHiddenColumns(hiddenColumns.filter((e) => e !== event.target.name));
-    }
-  };
+  // const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!event.target.checked) {
+  //     setHiddenColumns([...hiddenColumns, event.target.name]);
+  //   } else {
+  //     setHiddenColumns(hiddenColumns.filter((e) => e !== event.target.name));
+  //   }
+  // };
 
   return (
     <div>
@@ -432,7 +478,13 @@ const JobList = (props: JobListProps) => {
           />
         ))}
       </Dialog> */}
-      <Table columns={columns} data={data} hiddenColumns={hiddenColumnsData} />
+      <Table
+        columns={columns}
+        data={data}
+        translations={translations}
+        loading={loading}
+        hiddenColumns={hiddenColumnsData}
+      />
     </div>
   );
 };

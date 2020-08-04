@@ -41,6 +41,13 @@ export const JobListStory = () => {
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
         startTimeUtc={'2020-06-30T014534'}
         timeZone={'Asia/Jakarta'}
+        translations={{
+          noEntriesData: 'Tidak ada entri job',
+          noEntriesFilter: 'Tidak ada entri job untuk status job yang dipilih',
+        }}
+        onReceived={(data) => {
+          console.log(data);
+        }}
       />
     );
   }
