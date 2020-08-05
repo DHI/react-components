@@ -1,6 +1,6 @@
 import React from 'react';
 import { Login } from '..';
-import { IToken, IUser } from './types';
+import { Token, User } from './types';
 
 export default {
   title: 'Auth',
@@ -9,8 +9,8 @@ export default {
 
 export const LoginStory = () => {
   const [state, setState] = React.useState<{
-    user?: IUser;
-    token?: IToken;
+    user?: User;
+    token?: Token;
   }>({});
 
   return (

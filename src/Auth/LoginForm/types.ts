@@ -1,10 +1,10 @@
-import { IToken, IUser } from '../types';
+import { Token, User } from '../types';
 
-interface ILoginFormProps {
+interface LoginFormProps {
   /** Authentication server */
   host: string;
   /** Callback on successful login */
-  onSuccess?: (user: IUser, token: IToken) => void;
+  onSuccess?: (user: User, token: Token) => void;
   /** Callback on failed login */
   onError?: (error: string) => void;
   /** Should the remember me checkbox be displayed? */
@@ -27,4 +27,4 @@ interface ILoginFormProps {
   textFieldVariant?: string;
 }
 
-export default ILoginFormProps;
+export default LoginFormProps;

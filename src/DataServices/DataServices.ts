@@ -1,6 +1,6 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
-import { IToken } from '../Auth/types';
+import { Token } from '../Auth/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
 import { DataSource, JobParameters, JobQuery, Options, User } from './types';
 
@@ -48,7 +48,7 @@ const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
     body: JSON.stringify(user),
-  }).pipe<IToken>(tap((res) => console.log('token res', res)));
+  }).pipe<Token>(tap((res) => console.log('token res', res)));
 };
 
 // GIS

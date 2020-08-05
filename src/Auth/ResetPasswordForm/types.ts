@@ -1,4 +1,4 @@
-interface IResetPasswordFormProps {
+interface ResetPasswordFormProps {
   /** Authentication server */
   host: string;
   /** Action handler when back to login link clicked */
@@ -13,4 +13,4 @@ interface IResetPasswordFormProps {
   textFieldVariant?: string;
 }
 
-export default IResetPasswordFormProps;
+export default ResetPasswordFormProps;
