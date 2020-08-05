@@ -436,35 +436,28 @@ const fetchJob = (dataSource: DataSource, token: string, id: string) =>
   }).pipe(tap((res) => console.log('jeb fetched executed', res)));
 
 const fetchJobs = (
-  dataSources: DataSource | DataSource[],
+  dataSource: DataSource,
   token: string,
   query: {
-    account?: any;
+    account: any;
     since: any;
-    status?: any;
-    task?: any;
-    tag?: any;
+    status: any;
+    task: any;
+    tag: any;
   },
 ) => {
-  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
+  const url = !query
+    ? `${dataSource.host}/api/jobs/${dataSource.connection}`
+    : `${dataSource.host}/api/jobs/${dataSource.connection}?account=${queryProp(query.account)}&since=${queryProp(
+        query.since,
+      )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`;
 
-  const requests = dataSourcesArray.map((source: DataSource) =>
-    fetchUrl(
-      !query
-        ? `${source.host}/${source.connection}`
-        : `${source.host}/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
-            query.since,
-          )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
-      {
-        method: 'GET',
-        additionalHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    ).pipe(map((fc) => dataObjectToArray(fc))),
-  );
-
-  return forkJoin(requests).pipe(map((fc) => fc.flat()));
+  return fetchUrl(url, {
+    method: 'GET',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log('jobs fetched', res)));
 };
 
 const deleteJob = (dataSource: DataSource, token: string, id: string) =>
