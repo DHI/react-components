@@ -252,14 +252,20 @@ const Table = ({
             {RenderRow}
           </FixedSizeList>
         ) : (
-          <Typography align="center" component="div" style={{ lineHeight: '345px' }}>
+          <Typography
+            align="center"
+            component="div"
+            style={{ lineHeight: '345px', fontWeight: 'bold', color: 'dimgrey' }}
+          >
             {loading ? (
               <CircularProgress />
-            ) : (state as any).filters.length > 0 ? (
+            ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
               translations.noEntriesFilter ? (
-                `${translations.noEntriesFilter} : ${(state as any).filters[0].value}`
+                `${(state as any).filters.find((x: { id: string }) => x.id === 'status').value}`
               ) : (
-                `No job entries for selected job status : ${(state as any).filters[0].value}`
+                `No job entries for selected job status : ${
+                  (state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                }`
               )
             ) : (
               translations?.noEntriesData || 'No job entries'
@@ -348,6 +354,7 @@ const JobList = (props: JobListProps) => {
     setLoading(true);
     console.log(dateTimeValue);
     const query = { since: dateTimeValue };
+    const oldJobsData = jobsData;
 
     fetchJobs(dataSources, token, query).subscribe(
       (res) => {
@@ -373,10 +380,16 @@ const JobList = (props: JobListProps) => {
             delay: calcTimeDifference(s.data.Requested, s.data.Started),
           };
 
+          const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.Id);
+
+          // Remove duplicate data
+          if (duplicateIndex > -1) {
+            oldJobsData.splice(duplicateIndex, 1);
+          }
+
           return dataMapping;
         });
-
-        setJobsData(rawJobs.concat(jobsData));
+        setJobsData(rawJobs.concat(oldJobsData));
 
         const utcDate = zonedTimeToUtc(new Date(), timeZone);
         const utcDateFormated = utcDate.toISOString().split('.').shift().replace(':', '');
