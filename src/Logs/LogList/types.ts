@@ -1,5 +1,14 @@
 import { DataSource } from '../../DataServices/types';
 
+/** Additional type for UseFilterOptions properties, currently to set autoResetfilter. */
+declare module 'react-table' {
+  export interface TableOptions<D extends object>
+    extends UseExpandedOptions<D>,
+      UseFiltersOptions<D>,
+      UseGlobalFiltersOptions<D>,
+      Record<string, any> {}
+}
+
 interface LogListProps {
   /** Time interval to fetch data in second */
   frequency: number;
@@ -13,6 +22,14 @@ interface LogListProps {
   startTimeUtc: string;
   /** Time zone to display data from the server to user time */
   timeZone: string;
+  translations: {
+    /** Message when no data entries. */
+    noEntriesData?: string;
+    /** Message when no data entries. */
+    noEntriesFilter?: string;
+  };
+  /** Emit event to client when jobs received from the server */
+  onReceived: (data: any) => void;
 }
 
 interface LogData {

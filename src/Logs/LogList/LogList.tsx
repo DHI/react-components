@@ -1,4 +1,4 @@
-import { Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
+import { Box, CircularProgress, IconButton, Input, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
 import { blueGrey, red, yellow } from '@material-ui/core/colors';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MaUTable from '@material-ui/core/Table';
@@ -15,7 +15,7 @@ import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
+import { useAsyncDebounce, useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
 import LogListProps, { BaseFilter, LogData } from './types';
@@ -139,15 +139,63 @@ const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows,
   );
 };
 
-const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
+const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) => {
+  const count = preGlobalFilteredRows.length;
+  const [value, setValue] = React.useState(globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  return (
+    <Box display="flex" flexDirection="row">
+      <Typography variant="subtitle1" style={{ marginTop: '2px' }}>
+        Search : {''}
+      </Typography>
+      &nbsp;
+      <Input
+        value={value || ''}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`${count} records`}
+      />
+    </Box>
+  );
+};
+
+const Table = ({
+  columns,
+  data,
+  translations,
+  loading,
+}: {
+  columns: any;
+  data: LogData[];
+  translations: any;
+  loading: boolean;
+}) => {
   const defaultColumn = {
     Filter: DefaultColumnFilter,
     minWidth: 30,
     maxWidth: 1000,
   };
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } = useTable(
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    totalColumnsWidth,
+    state,
+    visibleColumns,
+    preGlobalFilteredRows,
+    setGlobalFilter,
+  } = useTable(
     {
+      autoResetFilters: false,
+      autoResetGlobalFilter: false,
       columns,
       data,
       defaultColumn,
@@ -188,6 +236,21 @@ const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
   return (
     <MaUTable {...getTableProps()} component="div" size="small" aria-label="a dense table">
       <TableHead component="div">
+        <TableRow component="div">
+          <TableCell
+            component="div"
+            colSpan={visibleColumns.length}
+            style={{
+              float: 'right',
+            }}
+          >
+            <GlobalFilter
+              preGlobalFilteredRows={preGlobalFilteredRows}
+              globalFilter={(state as any).globalFilter}
+              setGlobalFilter={setGlobalFilter}
+            />
+          </TableCell>
+        </TableRow>
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
             {headerGroup.headers.map((column) => (
@@ -203,20 +266,93 @@ const Table = ({ columns, data }: { columns: any; data: LogData[] }) => {
       </TableHead>
 
       <TableBody {...getTableBodyProps()} component="div">
-        <FixedSizeList height={345} itemCount={rows.length} itemSize={35} width={totalColumnsWidth}>
-          {RenderRow}
-        </FixedSizeList>
+        {rows.length > 0 ? (
+          <FixedSizeList height={345} itemCount={rows.length} itemSize={35} width={totalColumnsWidth + 20}>
+            {RenderRow}
+          </FixedSizeList>
+        ) : (
+          <Typography
+            align="center"
+            component="div"
+            style={{ lineHeight: '345px', fontWeight: 'bold', color: 'dimgrey' }}
+          >
+            {loading ? (
+              <CircularProgress />
+            ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'logLevel') > -1 ? (
+              translations.noEntriesFilter ? (
+                `${(state as any).filters.find((x: { id: string }) => x.id === 'logLevel').value}`
+              ) : (
+                `No log entries for selected log level : ${
+                  (state as any).filters.find((x: { id: string }) => x.id === 'logLevel').value
+                }`
+              )
+            ) : (
+              translations?.noEntriesData || 'No log entries'
+            )}
+          </Typography>
+        )}
       </TableBody>
     </MaUTable>
   );
 };
 
 const LogList = (props: LogListProps) => {
-  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone } = props;
+  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone, translations, onReceived } = props;
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [logsData, setLogsData] = useState<LogData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onLogsRecieved = (data: LogData[]) => {
+    return data.reduce(function (obj, v) {
+      obj[v.logLevel] = (obj[v.logLevel] || 0) + 1;
+
+      return obj;
+    }, {});
+  };
+
+  const data = useMemo(() => {
+    setLoading(false);
+
+    if (onReceived) {
+      onReceived(onLogsRecieved(logsData));
+    }
+
+    return logsData;
+  }, [logsData]);
+
+  const columns = useMemo(
+    () => [
+      {
+        header: 'Time',
+        accessor: 'dateTime',
+        width: getColumnWidth(data, 'dateTime', 'Time'),
+      },
+      {
+        header: 'Level',
+        accessor: 'logLevel',
+        width: getColumnWidth(data, 'logLevel', 'Level'),
+        Filter: SelectColumnFilter,
+        filter: 'includes',
+        Cell: LevelIconCell,
+      },
+      {
+        header: 'Source',
+        accessor: 'source',
+        width: getColumnWidth(data, 'source', 'Source'),
+        Filter: SelectColumnFilter,
+        filter: 'includes',
+      },
+      {
+        header: 'Text',
+        accessor: 'text',
+        width: getColumnWidth(data, 'text', 'Text'),
+      },
+    ],
+    [logsData],
+  );
 
   const fetchLogsList = (dateTimeValue: string) => {
+    setLoading(true);
     console.log(dateTimeValue);
     const query = [{ Item: 'DateTime', Value: dateTimeValue, QueryOperator: 'GreaterThan' }];
 
@@ -258,45 +394,10 @@ const LogList = (props: LogListProps) => {
     };
   }, [startDateUtc]);
 
-  const data = useMemo(() => {
-    return logsData;
-  }, [logsData]);
-
-  const columns = useMemo(
-    () => [
-      {
-        header: 'Time',
-        accessor: 'dateTime',
-        width: getColumnWidth(data, 'dateTime', 'Time'),
-      },
-      {
-        header: 'Level',
-        accessor: 'logLevel',
-        width: getColumnWidth(data, 'logLevel', 'Level'),
-        Filter: SelectColumnFilter,
-        filter: 'includes',
-        Cell: LevelIconCell,
-      },
-      {
-        header: 'Source',
-        accessor: 'source',
-        width: getColumnWidth(data, 'source', 'Source'),
-        Filter: SelectColumnFilter,
-        filter: 'includes',
-      },
-      {
-        header: 'Text',
-        accessor: 'text',
-        width: getColumnWidth(data, 'text', 'Text'),
-      },
-    ],
-    [logsData],
-  );
-
   return (
     <div>
       <CssBaseline />
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data} translations={translations} loading={loading} />
     </div>
   );
 };

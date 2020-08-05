@@ -49,6 +49,13 @@ export const LogListStory = () => {
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
         startTimeUtc={'2020-06-30T01:45:34'}
         timeZone={'Asia/Jakarta'}
+        translations={{
+          noEntriesData: 'Tidak ada entri log',
+          noEntriesFilter: 'Tidak ada entri log untuk level log yang dipilih',
+        }}
+        onReceived={(data) => {
+          console.log(data);
+        }}
       />
     );
   }
