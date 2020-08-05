@@ -294,10 +294,8 @@ const JobList = (props: JobListProps) => {
   const data = useMemo(() => {
     setLoading(false);
 
-    const statusCounter = onJobsRecieved(jobsData);
-
     if (onReceived) {
-      onReceived(statusCounter);
+      onReceived(onJobsRecieved(jobsData));
     }
 
     return jobsData;
