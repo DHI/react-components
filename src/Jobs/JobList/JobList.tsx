@@ -168,12 +168,14 @@ const Table = ({
   translations,
   loading,
   hiddenColumns,
+  windowHeight,
 }: {
   columns: any;
   data: JobData[];
   translations: any;
   loading: boolean;
   hiddenColumns: string[];
+  windowHeight: number;
 }) => {
   const defaultColumn = {
     Filter: DefaultColumnFilter,
@@ -250,7 +252,7 @@ const Table = ({
       <TableBody {...getTableBodyProps()} component="div">
         {rows.length > 0 ? (
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: '84vh' }}>
+            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 60).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
                   <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width + 20}>
@@ -261,7 +263,11 @@ const Table = ({
             </div>
           </div>
         ) : (
-          <Typography align="center" component="div" style={{ lineHeight: '84vh', color: '#999999' }}>
+          <Typography
+            align="center"
+            component="div"
+            style={{ lineHeight: `${(windowHeight - 60).toString()}px`, color: '#999999' }}
+          >
             {loading ? (
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
@@ -287,6 +293,19 @@ const JobList = (props: JobListProps) => {
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowHeight(window.innerHeight);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   const onJobsRecieved = (data: JobData[]) => {
     return data.reduce(function (obj, v) {
@@ -500,6 +519,7 @@ const JobList = (props: JobListProps) => {
         translations={translations}
         loading={loading}
         hiddenColumns={hiddenColumnsData}
+        windowHeight={windowHeight}
       />
     </div>
   );
