@@ -280,7 +280,7 @@ const Table = ({
             </div>
           </div>
         ) : (
-          <Typography align="center" component="div" style={{ lineHeight: '345px', color: '#999999' }}>
+          <Typography align="center" component="div" style={{ lineHeight: '84vh', color: '#999999' }}>
             {loading ? (
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'logLevel') > -1 ? (
