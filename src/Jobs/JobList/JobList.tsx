@@ -16,6 +16,7 @@ import { differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { FilterProps } from '../..';
 import { fetchJobs } from '../../DataServices/DataServices';
@@ -248,15 +249,19 @@ const Table = ({
 
       <TableBody {...getTableBodyProps()} component="div">
         {rows.length > 0 ? (
-          <FixedSizeList height={345} itemCount={rows.length} itemSize={35} width={totalColumnsWidth + 20}>
-            {RenderRow}
-          </FixedSizeList>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: '1 1 auto', height: '84vh' }}>
+              <AutoSizer>
+                {({ height, width }) => (
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
+                    {RenderRow}
+                  </FixedSizeList>
+                )}
+              </AutoSizer>
+            </div>
+          </div>
         ) : (
-          <Typography
-            align="center"
-            component="div"
-            style={{ lineHeight: '345px', fontWeight: 'bold', color: 'dimgrey' }}
-          >
+          <Typography align="center" component="div" style={{ lineHeight: '84vh', color: '#999999' }}>
             {loading ? (
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
