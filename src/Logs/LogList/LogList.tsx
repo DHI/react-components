@@ -15,7 +15,7 @@ import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useAsyncDebounce, useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
+import { useAsyncDebounce, useFilters, useFlexLayout, useGlobalFilter, useTable } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
@@ -170,11 +170,13 @@ const Table = ({
   data,
   translations,
   loading,
+  windowHeight,
 }: {
   columns: any;
   data: LogData[];
   translations: any;
   loading: boolean;
+  windowHeight: number;
 }) => {
   const defaultColumn = {
     Filter: DefaultColumnFilter,
@@ -201,7 +203,7 @@ const Table = ({
       data,
       defaultColumn,
     },
-    useBlockLayout,
+    useFlexLayout,
     useFilters,
     useGlobalFilter,
   );
@@ -269,7 +271,7 @@ const Table = ({
       <TableBody {...getTableBodyProps()} component="div">
         {rows.length > 0 ? (
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: '84vh' }}>
+            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 100).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
                   <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
@@ -306,6 +308,19 @@ const LogList = (props: LogListProps) => {
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [logsData, setLogsData] = useState<LogData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowHeight(window.innerHeight);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   const onLogsRecieved = (data: LogData[]) => {
     return data.reduce(function (obj, v) {
@@ -402,7 +417,7 @@ const LogList = (props: LogListProps) => {
   return (
     <div>
       <CssBaseline />
-      <Table columns={columns} data={data} translations={translations} loading={loading} />
+      <Table columns={columns} data={data} translations={translations} loading={loading} windowHeight={windowHeight} />
     </div>
   );
 };
