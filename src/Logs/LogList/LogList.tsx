@@ -66,14 +66,14 @@ const DefaultColumnFilter = () => {
   return null;
 };
 
-const getColumnWidth = (data: LogData[], accessor: string, headerText: string) => {
+const getColumnWidth = (data: LogData[], accessor: string, headerText: string, minWidth: number) => {
   if (data.length > 0) {
     const spacing = 10;
     const cellLength = Math.max(...data.map((row) => (`${row[accessor]}` || '').length), headerText.length);
 
-    return cellLength * spacing;
+    return Math.max(minWidth, cellLength * spacing);
   } else {
-    return 150;
+    return minWidth;
   }
 };
 
@@ -271,10 +271,10 @@ const Table = ({
       <TableBody {...getTableBodyProps()} component="div">
         {rows.length > 0 ? (
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 90).toString()}px` }}>
+            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 110).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
-                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width + 20}>
                     {RenderRow}
                   </FixedSizeList>
                 )}
@@ -285,7 +285,7 @@ const Table = ({
           <Typography
             align="center"
             component="div"
-            style={{ lineHeight: `${(windowHeight - 90).toString()}px`, color: '#999999' }}
+            style={{ lineHeight: `${(windowHeight - 110).toString()}px`, color: '#999999' }}
           >
             {loading ? (
               <CircularProgress />
@@ -349,12 +349,12 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: getColumnWidth(data, 'dateTime', 'Time'),
+        width: getColumnWidth(data, 'dateTime', 'Time', 150),
       },
       {
         header: 'Level',
         accessor: 'logLevel',
-        width: getColumnWidth(data, 'logLevel', 'Level'),
+        width: 80,
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
@@ -362,14 +362,14 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Source',
         accessor: 'source',
-        width: getColumnWidth(data, 'source', 'Source'),
+        width: getColumnWidth(data, 'source', 'Source', 150),
         Filter: SelectColumnFilter,
         filter: 'includes',
       },
       {
         header: 'Text',
         accessor: 'text',
-        width: getColumnWidth(data, 'text', 'Text'),
+        width: getColumnWidth(data, 'text', 'Text', 150),
       },
     ],
     [logsData],
