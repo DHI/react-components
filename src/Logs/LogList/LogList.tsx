@@ -271,7 +271,7 @@ const Table = ({
       <TableBody {...getTableBodyProps()} component="div">
         {rows.length > 0 ? (
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 100).toString()}px` }}>
+            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 90).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
                   <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
@@ -282,7 +282,11 @@ const Table = ({
             </div>
           </div>
         ) : (
-          <Typography align="center" component="div" style={{ lineHeight: '84vh', color: '#999999' }}>
+          <Typography
+            align="center"
+            component="div"
+            style={{ lineHeight: `${(windowHeight - 90).toString()}px`, color: '#999999' }}
+          >
             {loading ? (
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'logLevel') > -1 ? (
