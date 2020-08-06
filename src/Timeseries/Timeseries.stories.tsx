@@ -2,7 +2,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesValues, fetchToken } from '../DataServices/DataServices';
 import { ChartPlotly } from './ChartPlotly/ChartPlotly';
-import { IChartPlotlyPlotData } from './ChartPlotly/types';
+import { ChartPlotlyPlotData } from './ChartPlotly/types';
 import { TimeseriesExporter } from './TimeseriesExporter/TimeseriesExporter';
 
 export default {
@@ -81,7 +81,7 @@ export const ChartPlotlyTimeseriesStory = () => {
         dash: 'dashdot',
       },
     },
-  ] as Partial<IChartPlotlyPlotData>[];
+  ] as Partial<ChartPlotlyPlotData>[];
 
   const config = {
     displayModeBar: false,
@@ -195,7 +195,7 @@ export const ChartPlotlyArrowsStory = () => {
       isArrow: true,
       fillcolor: '#C423AE',
     },
-  ] as Partial<IChartPlotlyPlotData>[];
+  ] as Partial<ChartPlotlyPlotData>[];
 
   const config = {
     displayModeBar: false,
