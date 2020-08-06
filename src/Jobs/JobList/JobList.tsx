@@ -253,7 +253,7 @@ const Table = ({
             <div style={{ flex: '1 1 auto', height: '84vh' }}>
               <AutoSizer>
                 {({ height, width }) => (
-                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width + 20}>
                     {RenderRow}
                   </FixedSizeList>
                 )}
@@ -318,7 +318,7 @@ const JobList = (props: JobListProps) => {
       accessor: 'status',
       Cell: StatusIconCell,
       Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'status', 'Status', 100),
+      width: getColumnWidth(data, 'status', 'Status', 110),
     },
     {
       header: 'Host Id',
