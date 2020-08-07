@@ -2,17 +2,16 @@ const config = require('eslint-config-standard-typescript-prettier');
 
 /** @ts-check @type import('eslint-config-standard-typescript-prettier/types').TsEslintConfig */
 module.exports = {
-  ...config,
-  plugins: [...config.plugins, 'react'],
-  extends: [...config.extends, 'plugin:react/recommended'],
+  extends: ['standard-typescript-prettier', 'plugin:react/recommended'],
+  plugins: ['react', 'only-warn'],
   rules: {
-    ...config.rules,
     //
     // Disable rules provided by other configs
     //
     'no-unused-vars': 0, // Provided by TypeScript
     'no-undef': 0, // Provided by TypeScript
     'no-void': 0,
+    'comma-dangle': 0,
 
     //
     // Disable opinionated rules from @typescript-eslint
@@ -56,7 +55,6 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': ['off'],
     '@typescript-eslint/ban-types': ['off'],
     'class-methods-use-this': 0,
-    'comma-dangle': [2, 'always-multiline'],
     'import/imports-first': 0,
     'import/newline-after-import': 0,
     'import/no-cycle': 0,

@@ -6,28 +6,36 @@ import {
   DialogTitle,
   InputAdornment,
   TextField,
+  CircularProgress,
 } from '@material-ui/core';
 import { FiberManualRecord } from '@material-ui/icons';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { passwordStrength } from '../utils/Utils';
+import { fetchUserGroups } from '../DataServices/DataServices';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const AccountModel = ({
+export const EditAccountDialog = ({
   user,
   editing,
   open = false,
   onSubmit,
   onToggle,
+  token,
+  host,
 }: {
+  token: string;
+  host: string;
   user: Record<any, any>;
   editing?: boolean;
   open?: boolean;
-  onSubmit(details: any): void;
+  onSubmit(details: any, groups: string[]): void;
   onToggle(data?: any, isEditing?: boolean): () => void;
 }) => {
   const [state, setState] = useState({
     passwordValid: true,
     passwordStrengthColor: 'red',
   });
+  const [userGroups, setUserGroups] = React.useState<string[]>([]);
   const [form, setForm] = useState({
     id: '',
     name: '',
@@ -51,7 +59,12 @@ const AccountModel = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (form.password !== form.repeatPassword) {
+    console.log({
+      form,
+      user,
+    });
+
+    if (form.password && form.password !== form.repeatPassword) {
       setState({ ...state, passwordValid: false });
 
       return;
@@ -66,7 +79,7 @@ const AccountModel = ({
       repeatPassword: form.repeatPassword,
     };
 
-    onSubmit(userDetails);
+    onSubmit(userDetails, userGroups);
   };
 
   const updatePasswordStrengthIndicator = (password: string) => {
@@ -162,15 +175,18 @@ const AccountModel = ({
         value={form.email}
         onChange={handleChange('email')}
       />
-      <TextField
-        required
-        fullWidth
-        type="text"
-        label="Roles"
-        margin="dense"
-        variant="outlined"
-        value={form.roles}
-        onChange={handleChange('roles')}
+      <UserGroupsInput
+        userId={user.id}
+        token={token}
+        host={host}
+        onChange={(groups) => {
+          setUserGroups(groups);
+
+          setForm({
+            ...form,
+            roles: groups.join(', '),
+          });
+        }}
       />
     </DialogContent>
   );
@@ -193,4 +209,63 @@ const AccountModel = ({
   );
 };
 
-export default AccountModel;
+type IUserGroups = {
+  id: string;
+  name: string;
+  users: string[];
+};
+
+const UserGroupsInput = ({
+  token,
+  host,
+  onChange,
+  userId,
+}: {
+  userId: string;
+  host: string;
+  token: string;
+  onChange(selectedGroups: string[]): void;
+}) => {
+  const [isLoading, setLoading] = React.useState(true);
+  const [groups, setGroups] = React.useState<IUserGroups[]>([]);
+  const [options, setOptions] = React.useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    if (!token) return;
+
+    console.log('reee', { host, token });
+
+    fetchUserGroups(host, token).subscribe(async (body) => {
+      setGroups(body);
+      setSelectedOptions(getGroupsUserBelongsTo(body, userId));
+      setLoading(false);
+    });
+  }, [token]);
+
+  React.useEffect(() => {
+    setOptions(groups.map(({ id }) => id));
+  }, [groups]);
+
+  React.useEffect(() => {
+    onChange(selectedOptions);
+  }, [selectedOptions]);
+
+  return (
+    <Autocomplete
+      disabled={isLoading}
+      placeholder={isLoading ? 'Loading user groups...' : undefined}
+      options={options}
+      value={selectedOptions}
+      onChange={(e, values) => {
+        setSelectedOptions(values as string[]);
+      }}
+      multiple={true as any}
+      renderInput={(props) => <TextField name="userGroups" {...props} />}
+    />
+  );
+};
+
+function getGroupsUserBelongsTo(groups: IUserGroups[], userId: string) {
+  return groups.filter(({ users }) => users.includes(userId)).map(({ id }) => id);
+}
