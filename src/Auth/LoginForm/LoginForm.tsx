@@ -1,6 +1,6 @@
 import { Button, Checkbox, CircularProgress, FormControlLabel, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import Auth from '../AuthService';
+import AuthService from '../AuthService';
 import ILoginFormProps from './types';
 import useStyles from './useStyles';
 
@@ -28,7 +28,7 @@ const LoginForm = (props: ILoginFormProps) => {
     rememberMe: false,
   });
   const classes = useStyles();
-  const auth = new Auth(host);
+  const auth = new AuthService(host);
   const validate = () => form.id && form.password;
 
   const handleChange = (name: string, value: string | boolean) => {

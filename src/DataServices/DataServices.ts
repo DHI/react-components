@@ -10,13 +10,13 @@ const DEFAULT_OPTIONS = {
   },
 };
 
-const fetchUrl = (endPoint: RequestInfo, options: Options) => {
+const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
   const mergedOptions = {
     ...DEFAULT_OPTIONS,
     ...options,
     headers: {
       ...DEFAULT_OPTIONS.headers,
-      ...options.additionalHeaders,
+      ...options?.additionalHeaders,
     },
   };
 
