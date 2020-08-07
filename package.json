@@ -1,5 +1,5 @@
 {
-  "version": "0.2.61",
+  "version": "0.2.63",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -28,7 +28,7 @@
       "pre-commit": "eslint ."
     }
   },
-  "name": "@dhi/react-components-ts",
+  "name": "@dhi/react-components",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
