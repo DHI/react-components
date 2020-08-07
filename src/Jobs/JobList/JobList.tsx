@@ -330,45 +330,45 @@ const JobList = (props: JobListProps) => {
       header: 'Task Id',
       accessor: 'taskId',
       Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'taskId', 'Task Id', 140),
+      width: 250,
     },
     {
       header: 'Status',
       accessor: 'status',
       Cell: StatusIconCell,
       Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'status', 'Status', 110),
+      width: 80,
     },
     {
       header: 'Host Id',
       accessor: 'hostId',
       Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'hostId', 'Host Id', 140),
+      width: 125,
     },
     {
       header: 'Duration',
       accessor: 'duration',
-      width: getColumnWidth(data, 'duration', 'Duration', 100),
+      width: 80,
     },
     {
       header: 'Delay',
       accessor: 'delay',
-      width: getColumnWidth(data, 'delay', 'Delay', 100),
+      width: 70,
     },
     {
       header: 'Requested',
       accessor: 'requested',
-      width: getColumnWidth(data, 'requested', 'Requested', 175),
+      width: 175,
     },
     {
       header: 'Started',
       accessor: 'started',
-      width: getColumnWidth(data, 'started', 'Started', 175),
+      width: 175,
     },
     {
       header: 'Finished',
       accessor: 'finished',
-      width: getColumnWidth(data, 'finished', 'Finished', 175),
+      width: 175,
     },
   ];
 

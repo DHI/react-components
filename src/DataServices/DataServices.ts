@@ -435,6 +435,31 @@ const fetchJob = (dataSource: DataSource, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log('jeb fetched executed', res)));
 
+const fetchJobsNew = (
+  dataSource: DataSource,
+  token: string,
+  query: {
+    account: any;
+    since: any;
+    status: any;
+    task: any;
+    tag: any;
+  },
+) => {
+  const url = !query
+    ? `${dataSource.host}/api/jobs/${dataSource.connection}`
+    : `${dataSource.host}/api/jobs/${dataSource.connection}?account=${queryProp(query.account)}&since=${queryProp(
+        query.since,
+      )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`;
+
+  return fetchUrl(url, {
+    method: 'GET',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log('jobs fetched', res)));
+};
+
 const fetchJobs = (
   dataSources: DataSource | DataSource[],
   token: string,
