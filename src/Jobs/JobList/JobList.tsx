@@ -15,7 +15,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
+import { useBlockLayout, useFilters, UseFiltersOptions, useGlobalFilter, useTable, UseTableOptions } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { FilterProps } from '../..';
@@ -192,7 +192,7 @@ const Table = ({
       initialState: {
         hiddenColumns: hiddenColumns,
       },
-    },
+    } as UseTableOptions<JobData> & UseFiltersOptions<JobData>,
     useBlockLayout,
     useFilters,
     useGlobalFilter,
@@ -272,7 +272,9 @@ const Table = ({
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
               translations.noEntriesFilter ? (
-                `${(state as any).filters.find((x: { id: string }) => x.id === 'status').value}`
+                `${translations.noEntriesFilter} : ${
+                  (state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                }`
               ) : (
                 `No job entries for selected job status : ${
                   (state as any).filters.find((x: { id: string }) => x.id === 'status').value
