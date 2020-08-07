@@ -435,7 +435,7 @@ const fetchJob = (dataSource: DataSource, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log('jeb fetched executed', res)));
 
-const fetchJobs = (
+const fetchJobsNew = (
   dataSource: DataSource,
   token: string,
   query: {
@@ -458,6 +458,45 @@ const fetchJobs = (
       Authorization: `Bearer ${token}`,
     },
   }).pipe(tap((res) => console.log('jobs fetched', res)));
+};
+
+const fetchJobs = (
+  dataSources: DataSource | DataSource[],
+  token: string,
+  query: {
+    account?: any;
+    since: any;
+    status?: any;
+    task?: any;
+    tag?: any;
+  },
+) => {
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
+
+  const requests = dataSourcesArray.map((source: DataSource) =>
+    fetchUrl(
+      // Apply this url when new backend already have jobs data.
+      // !query
+      // ? `${source.host}/api/jobs/${source.connection}`
+      // : `${source.host}/api/jobs/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
+      //     query.since,
+      //   )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
+
+      !query
+        ? `${source.host}/${source.connection}`
+        : `${source.host}/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
+            query.since,
+          )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
+      {
+        method: 'GET',
+        additionalHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    ).pipe(map((fc) => dataObjectToArray(fc))),
+  );
+
+  return forkJoin(requests).pipe(map((fc) => fc.flat()));
 };
 
 const deleteJob = (dataSource: DataSource, token: string, id: string) =>
