@@ -430,7 +430,7 @@ const JobList = (props: JobListProps) => {
   }, []);
 
   useEffect(() => {
-    let interval: number;
+    let interval: NodeJS.Timeout;
 
     if (startDateUtc) {
       interval = setInterval(() => fetchJobList(startDateUtc), frequency * 1000);
