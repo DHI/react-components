@@ -1,3 +1,4 @@
+export * from './Auth/AuthService';
 export * from './Auth/Login/Login';
 export * from './Auth/Login/types';
 export * from './DataServices/DataServices';
