@@ -2,6 +2,8 @@ export * from './Auth/Login/Login';
 export * from './Auth/Login/types';
 export * from './DataServices/DataServices';
 export * from './DataServices/types';
+export * from './Jobs/JobList/JobList';
+export * from './Jobs/JobList/types';
 export * from './Scenarios/ScenarioItem/ScenarioItem';
 export * from './Scenarios/ScenarioItem/types';
 export * from './Scenarios/ScenarioList/ScenarioList';
