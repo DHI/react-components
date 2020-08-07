@@ -255,7 +255,7 @@ const Table = ({
             <div style={{ flex: '1 1 auto', height: `${(windowHeight - 60).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
-                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width + 20}>
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
                     {RenderRow}
                   </FixedSizeList>
                 )}
