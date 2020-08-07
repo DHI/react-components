@@ -274,7 +274,7 @@ const Table = ({
             <div style={{ flex: '1 1 auto', height: `${(windowHeight - 110).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
-                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width + 20}>
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
                     {RenderRow}
                   </FixedSizeList>
                 )}
@@ -349,20 +349,20 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: getColumnWidth(data, 'dateTime', 'Time', 150),
+        width: 120,
       },
       {
         header: 'Level',
         accessor: 'logLevel',
-        width: 80,
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
+        width: 80,
       },
       {
         header: 'Source',
         accessor: 'source',
-        width: getColumnWidth(data, 'source', 'Source', 150),
+        width: getColumnWidth(data, 'source', 'Source', 100),
         Filter: SelectColumnFilter,
         filter: 'includes',
       },
