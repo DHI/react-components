@@ -349,7 +349,7 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: 120,
+        width: 100,
       },
       {
         header: 'Level',
@@ -357,7 +357,7 @@ const LogList = (props: LogListProps) => {
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
-        width: 80,
+        width: 75,
       },
       {
         header: 'Source',
