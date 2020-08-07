@@ -15,7 +15,7 @@ import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useAsyncDebounce, useFilters, useFlexLayout, useGlobalFilter, useTable } from 'react-table';
+import { useAsyncDebounce, useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
@@ -203,7 +203,7 @@ const Table = ({
       data,
       defaultColumn,
     },
-    useFlexLayout,
+    useBlockLayout,
     useFilters,
     useGlobalFilter,
   );
@@ -349,7 +349,7 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: 100,
+        width: 180,
       },
       {
         header: 'Level',
@@ -357,19 +357,19 @@ const LogList = (props: LogListProps) => {
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
-        width: 75,
+        width: 100,
       },
       {
         header: 'Source',
         accessor: 'source',
-        width: getColumnWidth(data, 'source', 'Source', 100),
+        width: 180,
         Filter: SelectColumnFilter,
         filter: 'includes',
       },
       {
         header: 'Text',
         accessor: 'text',
-        width: getColumnWidth(data, 'text', 'Text', 150),
+        width: 350,
       },
     ],
     [logsData],
@@ -407,7 +407,7 @@ const LogList = (props: LogListProps) => {
   }, []);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number;
 
     if (startDateUtc) {
       interval = setInterval(() => fetchLogsList(startDateUtc), frequency * 1000);

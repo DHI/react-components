@@ -255,7 +255,7 @@ const Table = ({
             <div style={{ flex: '1 1 auto', height: `${(windowHeight - 60).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
-                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width + 20}>
                     {RenderRow}
                   </FixedSizeList>
                 )}
@@ -330,45 +330,45 @@ const JobList = (props: JobListProps) => {
       header: 'Task Id',
       accessor: 'taskId',
       Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'taskId', 'Task Id', 140),
+      width: 250,
     },
     {
       header: 'Status',
       accessor: 'status',
       Cell: StatusIconCell,
       Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'status', 'Status', 110),
+      width: 100,
     },
     {
       header: 'Host Id',
       accessor: 'hostId',
       Filter: SelectColumnFilter,
-      width: getColumnWidth(data, 'hostId', 'Host Id', 140),
+      width: 130,
     },
     {
       header: 'Duration',
       accessor: 'duration',
-      width: getColumnWidth(data, 'duration', 'Duration', 100),
+      width: 100,
     },
     {
       header: 'Delay',
       accessor: 'delay',
-      width: getColumnWidth(data, 'delay', 'Delay', 100),
+      width: 100,
     },
     {
       header: 'Requested',
       accessor: 'requested',
-      width: getColumnWidth(data, 'requested', 'Requested', 175),
+      width: 175,
     },
     {
       header: 'Started',
       accessor: 'started',
-      width: getColumnWidth(data, 'started', 'Started', 175),
+      width: 175,
     },
     {
       header: 'Finished',
       accessor: 'finished',
-      width: getColumnWidth(data, 'finished', 'Finished', 175),
+      width: 175,
     },
   ];
 
@@ -430,7 +430,7 @@ const JobList = (props: JobListProps) => {
   }, []);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number;
 
     if (startDateUtc) {
       interval = setInterval(() => fetchJobList(startDateUtc), frequency * 1000);
