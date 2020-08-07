@@ -255,7 +255,7 @@ const Table = ({
             <div style={{ flex: '1 1 auto', height: `${(windowHeight - 60).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
-                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width + 20}>
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
                     {RenderRow}
                   </FixedSizeList>
                 )}
@@ -337,23 +337,23 @@ const JobList = (props: JobListProps) => {
       accessor: 'status',
       Cell: StatusIconCell,
       Filter: SelectColumnFilter,
-      width: 100,
+      width: 80,
     },
     {
       header: 'Host Id',
       accessor: 'hostId',
       Filter: SelectColumnFilter,
-      width: 130,
+      width: 125,
     },
     {
       header: 'Duration',
       accessor: 'duration',
-      width: 100,
+      width: 80,
     },
     {
       header: 'Delay',
       accessor: 'delay',
-      width: 100,
+      width: 70,
     },
     {
       header: 'Requested',
