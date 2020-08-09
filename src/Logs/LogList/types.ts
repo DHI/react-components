@@ -1,10 +1,5 @@
 import { DataSource } from '../../DataServices/types';
 
-/** Additional type for UseFilterOptions properties, currently to set autoResetfilter. */
-declare module 'react-table' {
-  export interface TableOptions<D extends object> extends UseExpandedOptions<D>, Record<string, any> {}
-}
-
 interface LogListProps {
   /** Time interval to fetch data in second */
   frequency: number;

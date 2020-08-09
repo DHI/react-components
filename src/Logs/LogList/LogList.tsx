@@ -16,11 +16,13 @@ import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  TableInstance,
   useAsyncDebounce,
   useBlockLayout,
   useFilters,
   UseFiltersOptions,
   useGlobalFilter,
+  UseGlobalFiltersInstanceProps,
   UseGlobalFiltersOptions,
   useTable,
   UseTableOptions,
@@ -215,7 +217,7 @@ const Table = ({
     useGlobalFilter,
     useBlockLayout,
     useFilters,
-  );
+  ) as TableInstance<LogData> & UseGlobalFiltersInstanceProps<LogData>;
 
   const RenderRow = useCallback(
     ({ index, style }) => {
