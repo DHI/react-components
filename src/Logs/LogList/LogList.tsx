@@ -15,7 +15,18 @@ import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useAsyncDebounce, useBlockLayout, useFilters, useGlobalFilter, useTable } from 'react-table';
+import {
+  TableInstance,
+  useAsyncDebounce,
+  useBlockLayout,
+  useFilters,
+  UseFiltersOptions,
+  useGlobalFilter,
+  UseGlobalFiltersInstanceProps,
+  UseGlobalFiltersOptions,
+  useTable,
+  UseTableOptions,
+} from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
@@ -202,11 +213,11 @@ const Table = ({
       columns,
       data,
       defaultColumn,
-    },
+    } as UseTableOptions<LogData> & UseFiltersOptions<LogData> & UseGlobalFiltersOptions<LogData>,
+    useGlobalFilter,
     useBlockLayout,
     useFilters,
-    useGlobalFilter,
-  );
+  ) as TableInstance<LogData> & UseGlobalFiltersInstanceProps<LogData>;
 
   const RenderRow = useCallback(
     ({ index, style }) => {

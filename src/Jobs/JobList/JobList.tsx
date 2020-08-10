@@ -272,7 +272,9 @@ const Table = ({
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
               translations.noEntriesFilter ? (
-                `${(state as any).filters.find((x: { id: string }) => x.id === 'status').value}`
+                `${translations.noEntriesFilter} : ${
+                  (state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                }`
               ) : (
                 `No job entries for selected job status : ${
                   (state as any).filters.find((x: { id: string }) => x.id === 'status').value
