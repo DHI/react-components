@@ -1,4 +1,4 @@
-interface IForm {
+interface Form {
   /** Id field to use as login payload */
   id: string;
   /** Password field to use as login payload */
@@ -7,7 +7,7 @@ interface IForm {
   rememberMe: boolean;
 }
 
-interface IUser {
+interface User {
   /** Id of user */
   id: string;
   /** Name of user */
@@ -18,7 +18,7 @@ interface IUser {
   metadata: any;
 }
 
-interface IToken {
+interface Token {
   accessToken: {
     /** Access token when successfully login */
     token: string;
@@ -31,4 +31,4 @@ interface IToken {
   };
 }
 
-export { IForm, IUser, IToken };
+export { Form, User, Token };

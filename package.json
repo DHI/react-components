@@ -1,5 +1,5 @@
 {
-  "version": "0.2.5",
+  "version": "0.2.66",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -51,6 +51,8 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "@types/react-plotly.js": "^2.2.4",
+    "@types/react-table": "^7.0.19",
+    "@types/react-window": "^1.8.2",
     "@typescript-eslint/eslint-plugin": "3.5.0",
     "@typescript-eslint/parser": "3.5.0",
     "babel-loader": "^8.1.0",
@@ -78,14 +80,20 @@
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
+    "@types/match-sorter": "^4.0.0",
+    "@types/react-virtualized-auto-sizer": "^1.0.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.13.0",
     "date-fns-tz": "^1.0.10",
     "jsonpath": "^1.0.2",
     "lodash": "^4.17.15",
+    "match-sorter": "^4.2.0",
     "material-table": "^1.62.0",
     "plotly.js": "^1.54.2",
     "react-plotly.js": "^2.4.0",
+    "react-table": "^7.2.2",
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-window": "^1.8.5",
     "rxjs": "^6.5.5"
   }
 }

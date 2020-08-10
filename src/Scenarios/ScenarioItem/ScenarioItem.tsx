@@ -3,10 +3,10 @@ import { format, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
-import IScenarioItemProps from './types';
+import ScenarioItemProps from './types';
 import useStyles from './useStyles';
 
-const ScenarioItem = (props: IScenarioItemProps) => {
+const ScenarioItem = (props: ScenarioItemProps) => {
   const [hover, setHover] = useState(false);
   const classes = useStyles();
   const {
@@ -91,4 +91,4 @@ const ScenarioItem = (props: IScenarioItemProps) => {
   );
 };
 
-export { IScenarioItemProps, ScenarioItem };
+export { ScenarioItemProps, ScenarioItem };

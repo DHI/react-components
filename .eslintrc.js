@@ -71,6 +71,7 @@ module.exports = {
     'import/no-webpack-loader-syntax': 0,
     'import/prefer-default-export': 0,
     'react/prop-types': 0,
+    'react/jsx-key': 0,
     // 'react-hooks/exhaustive-deps': 0,
     // indent: [
     //   2,

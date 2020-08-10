@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { ILoginProps, Login } from './Login/Login';
-import { IToken, IUser } from './types';
+import { Login, LoginProps } from './Login/Login';
+import { Token, User } from './types';
 
-export type ILoginState = { user?: IUser; token?: IToken };
+export type ILoginState = { user?: User; token?: Token };
 
 /** See ../Accounts/Accounts.stories.tsx for example usage */
 export const LoginGate = (
-  props: ILoginProps & {
+  props: LoginProps & {
     children(login: Required<ILoginState>): React.ReactNode;
   },
 ) => {

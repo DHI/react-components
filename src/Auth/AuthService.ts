@@ -1,5 +1,5 @@
 import { fetchAccount, fetchToken } from '../DataServices/DataServices';
-import { IForm, IToken, IUser } from './types';
+import { Form, Token, User } from './types';
 
 export default class AuthService {
   host: string;
@@ -7,13 +7,13 @@ export default class AuthService {
     this.host = host;
   }
 
-  login = (form: IForm, onSuccess: (user: IUser, token: IToken) => void, onError: (err: string) => void) => {
+  login = (form: Form, onSuccess: (user: User, token: Token) => void, onError: (err: string) => void) => {
     fetchToken(this.host, form).subscribe(
       (token) => {
         // Only admins can ask for other account, the user can ask for own details using 'me'
         fetchAccount(this.host, token.accessToken.token, 'me').subscribe(
           (user) => {
-            const loggedInUser: IUser = {
+            const loggedInUser: User = {
               ...user,
               roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
               metadata: user.metadata ? user.metadata : {},
@@ -52,7 +52,7 @@ export default class AuthService {
   };
 
   // Sets user details in localStorage
-  setSession = (authResult: IToken, user: IUser, useLocalStorage: boolean) => {
+  setSession = (authResult: Token, user: User, useLocalStorage: boolean) => {
     // Set the time that the access token will expire at
     // const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
     const storage = useLocalStorage ? localStorage : sessionStorage;
