@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import DHITheme from '../../theme';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { ResetPasswordForm } from '../ResetPasswordForm/ResetPasswordForm';
-import ILoginProps from './types';
+import LoginProps from './types';
 
-const Login = (props: ILoginProps) => {
+const Login = (props: LoginProps) => {
   const { host, onSuccess, onError, showRememberMe, showResetPassword, textFieldVariant, translations } = props;
   const [showingResetPassword, setShowingResetPassword] = useState(false);
 
@@ -45,4 +45,4 @@ const Login = (props: ILoginProps) => {
   );
 };
 
-export { ILoginProps, Login };
+export { LoginProps, Login };

@@ -1,12 +1,12 @@
-import { IToken, IUser } from '../types';
+import { Token, User } from '../types';
 
-interface ILoginProps {
+interface LoginProps {
   /** style used in the component */
   style?: any;
   /** Authentication server */
   host: string;
   /** Callback on successful login */
-  onSuccess?: (user: IUser, token: IToken) => void;
+  onSuccess?: (user: User, token: Token) => void;
   /** Callback on failed login */
   onError?: (error: string) => void;
   translations: {
@@ -33,4 +33,4 @@ interface ILoginProps {
   textFieldVariant?: string;
 }
 
-export default ILoginProps;
+export default LoginProps;
