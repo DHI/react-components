@@ -9,21 +9,21 @@ interface LoginProps {
   onSuccess?: (user: User, token: Token) => void;
   /** Callback on failed login */
   onError?: (error: string) => void;
-  translations: {
+  translations?: {
     /** Placeholder text for user edit box. */
     userNamePlaceholder?: string;
     /** Placeholder text for password edit box. */
     passwordPlaceholder?: string;
     /** Local text translation for field */
-    rememberMeLabelText?: string;
+    rememberMeLabel?: string;
     /** Local text translation for field */
-    resetPasswordLabelText?: string;
+    resetPasswordLabel?: string;
     /** Local text translation for field */
-    resetPasswordButtonText?: string;
+    resetPasswordButton?: string;
     /** Placeholder text for password reset edit box. */
     resetPasswordUserNamePlaceholder?: string;
     /** Local text translation for field */
-    loginButtonText?: string;
+    loginButton?: string;
   };
   /** Should the remember me checkbox be displayed? */
   showRememberMe?: boolean;

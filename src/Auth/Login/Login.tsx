@@ -19,8 +19,10 @@ const Login = (props: LoginProps) => {
         <ResetPasswordForm
           host={host}
           onBackToLogin={(value) => togglePasswordResetForm(value)}
-          resetPasswordButtonText={translations.resetPasswordButtonText}
-          resetPasswordUserNamePlaceholder={translations.resetPasswordUserNamePlaceholder}
+          resetPasswordButtonText={translations?.resetPasswordButton ?? 'FORGOT PASSWORD'}
+          resetPasswordUserNamePlaceholder={
+            translations?.resetPasswordUserNamePlaceholder ?? 'E-Mail Address or User ID'
+          }
           onResetPassword={() => console.log('Reset password not implemented.')}
           textFieldVariant={textFieldVariant}
         />
@@ -29,14 +31,14 @@ const Login = (props: LoginProps) => {
           host={host}
           onSuccess={onSuccess}
           onError={onError}
-          userNamePlaceholder={translations.userNamePlaceholder}
-          passwordPlaceholder={translations.passwordPlaceholder}
+          userNamePlaceholder={translations?.userNamePlaceholder ?? 'Username'}
+          passwordPlaceholder={translations?.passwordPlaceholder ?? 'Password'}
           showRememberMe={showRememberMe}
-          rememberMeLabelText={translations.rememberMeLabelText}
+          rememberMeLabelText={translations?.rememberMeLabel ?? 'Remember me'}
           showResetPassword={showResetPassword}
-          resetPasswordLabelText={translations.resetPasswordLabelText}
+          resetPasswordLabelText={translations?.resetPasswordLabel ?? 'FORGOT PASSWORD?'}
           onResetPassword={(value) => togglePasswordResetForm(value)}
-          loginButtonText={translations.loginButtonText}
+          loginButtonText={translations?.loginButton ?? 'Login'}
           textFieldVariant={textFieldVariant}
         />
       )}

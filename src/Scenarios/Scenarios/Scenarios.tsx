@@ -177,9 +177,9 @@ const Scenarios = (props: ScenariosProps) => {
 
     // Append Job Parameters from Menu Item
     if (menuItem.jobParameters) {
-      menuItem.jobParameters.forEach((item: JobParameters) => {
-        parameters[item.id] = getObjectProperty(scenario, item.field);
-      });
+      for (const key in menuItem.jobParameters) {
+        parameters[key] = getObjectProperty(scenario, menuItem.jobParameters[key]);
+      }
     }
 
     // Append Job Parameters Props
