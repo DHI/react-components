@@ -109,8 +109,8 @@ const LoginForm = (props: LoginFormProps) => {
             onClick={
               onResetPassword
                 ? () => {
-                  onResetPassword(true);
-                }
+                    onResetPassword(true);
+                  }
                 : undefined
             }
           >
