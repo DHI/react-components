@@ -1,12 +1,12 @@
-interface ITimeseriesExporterProps {
+interface TimeseriesExporterProps {
   /**
    * A list of time series
    */
-  data: ITimeseriesData[];
+  data: TimeseriesData[];
   /**
    * Extra information on allowing defining overrideing name as well as number of decimal
    */
-  timeseries: ITimeseriesExporterTimeseries[];
+  timeseries: TimeseriesExporterTimeseries[];
   /**
    * The file name that the data should be exported to, defaults to the format in the example here 'Timeseries 2018-10-31 11-43-21.csv'
    */
@@ -29,7 +29,7 @@ interface ITimeseriesExporterProps {
   caption?: string;
 }
 
-interface ITimeseriesData {
+interface TimeseriesData {
   /**
    * The id of the time series
    */
@@ -40,7 +40,7 @@ interface ITimeseriesData {
   data: (string | number)[][];
 }
 
-interface ITimeseriesExporterTimeseries {
+interface TimeseriesExporterTimeseries {
   /**
    * An optional name to override the columns with
    */
@@ -51,4 +51,4 @@ interface ITimeseriesExporterTimeseries {
   decimals?: number;
 }
 
-export { ITimeseriesData, ITimeseriesExporterTimeseries, ITimeseriesExporterProps };
+export { TimeseriesData, TimeseriesExporterTimeseries, TimeseriesExporterProps };
