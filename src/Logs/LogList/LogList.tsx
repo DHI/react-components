@@ -25,7 +25,7 @@ import {
   UseGlobalFiltersInstanceProps,
   UseGlobalFiltersOptions,
   useTable,
-  UseTableOptions,
+  UseTableOptions
 } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
@@ -388,7 +388,6 @@ const LogList = (props: LogListProps) => {
 
   const fetchLogsList = (dateTimeValue: string) => {
     setLoading(true);
-    console.log(dateTimeValue);
     const query = [{ Item: 'DateTime', Value: dateTimeValue, QueryOperator: 'GreaterThan' }];
 
     fetchLogs(dataSources, token, query).subscribe(

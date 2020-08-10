@@ -12,8 +12,8 @@ export const JobListStory = () => {
 
   const dataSources = [
     {
-      host: 'https://ncos.ozsea.online/api/job/OzSea-Exe',
-      connection: 'list',
+      host: 'https://domainservices.dhigroup.com',
+      connection: 'wf-jobs',
     },
   ];
 
@@ -39,7 +39,7 @@ export const JobListStory = () => {
         token={token}
         dataSources={dataSources}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
-        startTimeUtc={'2020-06-30T014534'}
+        startTimeUtc={'2020-06-30T01:45:34'}
         timeZone={'Asia/Jakarta'}
         translations={{
           noEntriesData: 'Tidak ada entri job',

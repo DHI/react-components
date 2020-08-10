@@ -376,7 +376,6 @@ const JobList = (props: JobListProps) => {
 
   const fetchJobList = (dateTimeValue: string) => {
     setLoading(true);
-    console.log(dateTimeValue);
     const query = { since: dateTimeValue };
     const oldJobsData = jobsData;
 
@@ -386,22 +385,22 @@ const JobList = (props: JobListProps) => {
         const rawJobs = res.map((s: { data }) => {
           // Mapping to JobData.
           const dataMapping = {
-            id: s.data.Id,
-            taskId: s.data.TaskId,
-            hostId: s.data.HostId,
-            status: s.data.Status,
-            progress: s.data.Progress || 0,
-            requested: s.data.Requested
-              ? format(utcToZonedTime(s.data.Requested.replace('T', ' '), timeZone), dateTimeFormat)
+            id: s.data.id,
+            taskId: s.data.taskId,
+            hostId: s.data.hostId,
+            status: s.data.status,
+            progress: s.data.progress || 0,
+            requested: s.data.requested
+              ? format(utcToZonedTime(s.data.requested.replace('T', ' '), timeZone), dateTimeFormat)
               : '',
-            started: s.data.Started
-              ? format(utcToZonedTime(s.data.Started.replace('T', ' '), timeZone), dateTimeFormat)
+            started: s.data.started
+              ? format(utcToZonedTime(s.data.started.replace('T', ' '), timeZone), dateTimeFormat)
               : '',
-            finished: s.data.Finished
-              ? format(utcToZonedTime(s.data.Finished.replace('T', ' '), timeZone), dateTimeFormat)
+            finished: s.data.finished
+              ? format(utcToZonedTime(s.data.finished.replace('T', ' '), timeZone), dateTimeFormat)
               : '',
-            duration: calcTimeDifference(s.data.Started, s.data.Finished),
-            delay: calcTimeDifference(s.data.Requested, s.data.Started),
+            duration: calcTimeDifference(s.data.started, s.data.finished),
+            delay: calcTimeDifference(s.data.requested, s.data.started),
           };
 
           const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.Id);
@@ -415,11 +414,9 @@ const JobList = (props: JobListProps) => {
         });
         setJobsData(rawJobs.concat(oldJobsData));
 
-        const utcDate = zonedTimeToUtc(new Date(), timeZone);
-        const utcDateFormated = utcDate.toISOString().split('.').shift().replace(':', '');
-        const fixedUtcDateFormated = utcDateFormated.replace(':', '');
+        const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
-        setStartDateUtc(fixedUtcDateFormated);
+        setStartDateUtc(utcDate);
       },
       (error) => {
         console.log(error);
