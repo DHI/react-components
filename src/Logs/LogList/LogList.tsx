@@ -25,7 +25,7 @@ import {
   UseGlobalFiltersInstanceProps,
   UseGlobalFiltersOptions,
   useTable,
-  UseTableOptions
+  UseTableOptions,
 } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
