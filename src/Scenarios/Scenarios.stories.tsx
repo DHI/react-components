@@ -3,7 +3,7 @@ import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
 import { fetchToken } from '../DataServices/DataServices';
 import { Scenarios } from './Scenarios/Scenarios';
-import { IMenuItem, IScenario } from './types';
+import { MenuItem, Scenario } from './types';
 
 export default {
   title: 'Scenarios Components',
@@ -12,7 +12,7 @@ export default {
 
 export const ScenariosStory = () => {
   const [token, setToken] = useState<string>();
-  const [newScenario, setNewScenario] = useState<IScenario>();
+  const [newScenario, setNewScenario] = useState<Scenario>();
 
   useEffect(() => {
     fetchToken(process.env.ENDPOINT_URL, {
@@ -103,19 +103,19 @@ export const ScenariosStory = () => {
               },
             },
           ]}
-          onContextMenuClick={(menuItem: IMenuItem, scenario: IScenario) =>
+          onContextMenuClick={(menuItem: MenuItem, scenario: Scenario) =>
             console.log('Scenario menu item clicked', {
               menuItem,
               scenario,
             })
           }
-          onScenarioSelected={(scenario: IScenario) => {
+          onScenarioSelected={(scenario: Scenario) => {
             console.log('Scenario selected', scenario);
           }}
-          onScenarioReceived={(scenario: IScenario) => {
+          onScenarioReceived={(scenario: Scenario) => {
             console.log('Full Scenario received', scenario);
           }}
-          onScenariosReceived={(scenarios: IScenario[]) => {
+          onScenariosReceived={(scenarios: Scenario[]) => {
             console.log('Received new scenarios!', scenarios);
           }}
           nameField="name"

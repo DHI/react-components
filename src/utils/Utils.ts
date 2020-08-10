@@ -2,7 +2,7 @@ import { parseISO } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
-import { DescriptionField, ICondition, IScenario, IStatus } from '../Scenarios/types';
+import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
 
 const dataObjectToArray = (data: { [x: string]: any }) => {
   return Object.keys(data).map((key) => ({
@@ -18,7 +18,7 @@ const getObjectProperty = (objectItem: any, property: string): any => {
 };
 
 const getDescriptions = (
-  scenarioData: IScenario,
+  scenarioData: Scenario,
   descriptionFields: DescriptionField[] | undefined,
   timeZone: string | undefined,
 ) => {
@@ -62,7 +62,7 @@ const getDescriptions = (
   return descriptions;
 };
 
-const checkCondition = (scenarioData: IScenario, condition: ICondition) => {
+const checkCondition = (scenarioData: Scenario, condition: Condition) => {
   let conditions: string[] = [];
   let isInverse = false;
 
@@ -108,7 +108,7 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
   return body[0];
 };
 
-const checkStatus = (scenario: IScenario, status: IStatus[]) => {
+const checkStatus = (scenario: Scenario, status: Status[]) => {
   const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
   const progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
 

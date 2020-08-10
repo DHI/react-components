@@ -1,10 +1,10 @@
-import { IMenuItem, IScenario } from '../types';
+import { MenuItem, Scenario } from '../types';
 
-interface IScenarioMenuProps {
+interface ScenarioMenuProps {
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: IMenuItem, scenario: IScenario) => void;
+  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   menu: {
     /**
      * The id of scenario option menu
@@ -18,7 +18,7 @@ interface IScenarioMenuProps {
   /**
    * The scenario data
    */
-  scenario: IScenario;
+  scenario: Scenario;
 }
 
-export default IScenarioMenuProps;
+export default ScenarioMenuProps;
