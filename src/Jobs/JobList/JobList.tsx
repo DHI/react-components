@@ -1,17 +1,28 @@
-import { Box, CircularProgress, IconButton, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  CssBaseline,
+  IconButton,
+  Menu,
+  MenuItem,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { blue, green, red, yellow } from '@material-ui/core/colors';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import MaUTable from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { HelpOutline, HourglassEmpty } from '@material-ui/icons';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CancelScheduleSendIcon from '@material-ui/icons/CancelScheduleSend';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import {
+  Cancel,
+  CancelScheduleSend,
+  CheckCircle,
+  Error,
+  FilterList,
+  HelpOutline,
+  HourglassEmpty,
+} from '@material-ui/icons';
 import { differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -27,7 +38,7 @@ const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
     case 'Completed':
       return (
         <Tooltip title={value}>
-          <CheckCircleIcon style={{ color: green[300] }} />
+          <CheckCircle style={{ color: green[300] }} />
         </Tooltip>
       );
     case 'InProgress':
@@ -63,20 +74,20 @@ const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
     case 'Error':
       return (
         <Tooltip title={value}>
-          <ErrorIcon style={{ color: red[300] }} />
+          <Error style={{ color: red[300] }} />
         </Tooltip>
       );
     case 'Cancelled':
       return (
         <Tooltip title={value}>
-          <CancelIcon style={{ color: yellow[900] }} />
+          <Cancel style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Cancelling':
     case 'Cancel':
       return (
         <Tooltip title={value}>
-          <CancelScheduleSendIcon style={{ color: yellow[900] }} />
+          <CancelScheduleSend style={{ color: yellow[900] }} />
         </Tooltip>
       );
     default:
@@ -133,7 +144,7 @@ const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows,
     <div>
       <Tooltip title="Filter list">
         <IconButton aria-label="Filter list" size={'small'} onClick={handleClick}>
-          <FilterListIcon />
+          <FilterList />
         </IconButton>
       </Tooltip>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
@@ -376,7 +387,6 @@ const JobList = (props: JobListProps) => {
 
   const fetchJobList = (dateTimeValue: string) => {
     setLoading(true);
-    console.log(dateTimeValue);
     const query = { since: dateTimeValue };
     const oldJobsData = jobsData;
 
@@ -386,22 +396,22 @@ const JobList = (props: JobListProps) => {
         const rawJobs = res.map((s: { data }) => {
           // Mapping to JobData.
           const dataMapping = {
-            id: s.data.Id,
-            taskId: s.data.TaskId,
-            hostId: s.data.HostId,
-            status: s.data.Status,
-            progress: s.data.Progress || 0,
-            requested: s.data.Requested
-              ? format(utcToZonedTime(s.data.Requested.replace('T', ' '), timeZone), dateTimeFormat)
+            id: s.data.id,
+            taskId: s.data.taskId,
+            hostId: s.data.hostId,
+            status: s.data.status,
+            progress: s.data.progress || 0,
+            requested: s.data.requested
+              ? format(utcToZonedTime(s.data.requested.replace('T', ' '), timeZone), dateTimeFormat)
               : '',
-            started: s.data.Started
-              ? format(utcToZonedTime(s.data.Started.replace('T', ' '), timeZone), dateTimeFormat)
+            started: s.data.started
+              ? format(utcToZonedTime(s.data.started.replace('T', ' '), timeZone), dateTimeFormat)
               : '',
-            finished: s.data.Finished
-              ? format(utcToZonedTime(s.data.Finished.replace('T', ' '), timeZone), dateTimeFormat)
+            finished: s.data.finished
+              ? format(utcToZonedTime(s.data.finished.replace('T', ' '), timeZone), dateTimeFormat)
               : '',
-            duration: calcTimeDifference(s.data.Started, s.data.Finished),
-            delay: calcTimeDifference(s.data.Requested, s.data.Started),
+            duration: calcTimeDifference(s.data.started, s.data.finished),
+            delay: calcTimeDifference(s.data.requested, s.data.started),
           };
 
           const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.Id);
@@ -415,11 +425,9 @@ const JobList = (props: JobListProps) => {
         });
         setJobsData(rawJobs.concat(oldJobsData));
 
-        const utcDate = zonedTimeToUtc(new Date(), timeZone);
-        const utcDateFormated = utcDate.toISOString().split('.').shift().replace(':', '');
-        const fixedUtcDateFormated = utcDateFormated.replace(':', '');
+        const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
-        setStartDateUtc(fixedUtcDateFormated);
+        setStartDateUtc(utcDate);
       },
       (error) => {
         console.log(error);

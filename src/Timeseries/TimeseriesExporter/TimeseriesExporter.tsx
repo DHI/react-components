@@ -1,9 +1,9 @@
 import { Button } from '@material-ui/core';
 import { differenceInSeconds, format, parseISO } from 'date-fns';
-import React, { FC } from 'react';
+import React from 'react';
 import { TimeseriesData, TimeseriesExporterProps } from './types';
 
-const TimeseriesExporter: FC<TimeseriesExporterProps> = (props: TimeseriesExporterProps) => {
+const TimeseriesExporter = (props: TimeseriesExporterProps) => {
   const exportTable = () => {
     const columns = [
       '',

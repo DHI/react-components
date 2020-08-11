@@ -20,11 +20,11 @@ export const LoginStory = () => {
         translations={{
           userNamePlaceholder: 'Username',
           passwordPlaceholder: 'Password',
-          rememberMeLabelText: 'Remember me',
-          resetPasswordLabelText: 'FORGOT PASSWORD?',
-          resetPasswordButtonText: 'FORGOT PASSWORD',
+          rememberMeLabel: 'Remember me',
+          resetPasswordLabel: 'FORGOT PASSWORD?',
+          resetPasswordButton: 'FORGOT PASSWORD',
           resetPasswordUserNamePlaceholder: 'E-Mail Address or User ID',
-          loginButtonText: 'Login',
+          loginButton: 'Login',
         }}
         showRememberMe={true}
         showResetPassword={true}

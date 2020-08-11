@@ -1,11 +1,20 @@
-import { Box, CircularProgress, IconButton, Input, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  CssBaseline,
+  IconButton,
+  Input,
+  Menu,
+  MenuItem,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { blueGrey, red, yellow } from '@material-ui/core/colors';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import MaUTable from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import { HelpOutline } from '@material-ui/icons';
 import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
@@ -388,7 +397,6 @@ const LogList = (props: LogListProps) => {
 
   const fetchLogsList = (dateTimeValue: string) => {
     setLoading(true);
-    console.log(dateTimeValue);
     const query = [{ Item: 'DateTime', Value: dateTimeValue, QueryOperator: 'GreaterThan' }];
 
     fetchLogs(dataSources, token, query).subscribe(
