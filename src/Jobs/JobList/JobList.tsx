@@ -1,17 +1,28 @@
-import { Box, CircularProgress, IconButton, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  CssBaseline,
+  IconButton,
+  Menu,
+  MenuItem,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { blue, green, red, yellow } from '@material-ui/core/colors';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import MaUTable from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { HelpOutline, HourglassEmpty } from '@material-ui/icons';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CancelScheduleSendIcon from '@material-ui/icons/CancelScheduleSend';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import {
+  Cancel,
+  CancelScheduleSend,
+  CheckCircle,
+  Error,
+  FilterList,
+  HelpOutline,
+  HourglassEmpty,
+} from '@material-ui/icons';
 import { differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -27,7 +38,7 @@ const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
     case 'Completed':
       return (
         <Tooltip title={value}>
-          <CheckCircleIcon style={{ color: green[300] }} />
+          <CheckCircle style={{ color: green[300] }} />
         </Tooltip>
       );
     case 'InProgress':
@@ -63,20 +74,20 @@ const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
     case 'Error':
       return (
         <Tooltip title={value}>
-          <ErrorIcon style={{ color: red[300] }} />
+          <Error style={{ color: red[300] }} />
         </Tooltip>
       );
     case 'Cancelled':
       return (
         <Tooltip title={value}>
-          <CancelIcon style={{ color: yellow[900] }} />
+          <Cancel style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Cancelling':
     case 'Cancel':
       return (
         <Tooltip title={value}>
-          <CancelScheduleSendIcon style={{ color: yellow[900] }} />
+          <CancelScheduleSend style={{ color: yellow[900] }} />
         </Tooltip>
       );
     default:
@@ -133,7 +144,7 @@ const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows,
     <div>
       <Tooltip title="Filter list">
         <IconButton aria-label="Filter list" size={'small'} onClick={handleClick}>
-          <FilterListIcon />
+          <FilterList />
         </IconButton>
       </Tooltip>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>

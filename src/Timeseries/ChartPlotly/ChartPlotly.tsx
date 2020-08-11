@@ -1,9 +1,9 @@
 import { Layout, PlotData, Shape } from 'plotly.js';
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
 import { ChartPlotlyConfig, ChartPlotlyPlotData, ChartPlotlyProps, TimeseriesData } from './types';
 
-const ChartPlotly: FC<ChartPlotlyProps> = (props: ChartPlotlyProps) => {
+const ChartPlotly = (props: ChartPlotlyProps) => {
   const defaultLayout = {
     autosize: true,
     title: 'Chart',
