@@ -11,8 +11,10 @@ module.exports = {
   ],
   webpackFinal: async config => {
     config.plugins.push(new TsChecker())
+    config.devtool = 'source-map'
+
     config.module.rules.push({
-      test: /\.(ts|tsx)$/,
+      test: /[.]stories[.]tsx?$/,
       use: [
         {
           loader: require.resolve('ts-loader'),
@@ -40,7 +42,17 @@ module.exports = {
       ],
       enforce: 'pre',
     });
-
+    config.module.rules.push({
+      test: /\.(ts|tsx)$/,
+      use: [
+        {
+          loader: require.resolve('ts-loader'),
+          options: {
+            transpileOnly: true,
+          },
+        },
+      ],
+    });
     config.resolve.extensions.push('.ts', '.tsx');
 
     return config;

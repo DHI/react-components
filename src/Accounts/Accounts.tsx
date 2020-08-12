@@ -1,25 +1,16 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import {
-  AddBox,
-  ArrowUpward,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Clear,
-  DeleteOutline,
-  Edit,
-  FilterList,
-  FirstPage,
-  LastPage,
-  Remove,
-  SaveAlt,
-  Search,
-  ViewColumn,
-} from '@material-ui/icons';
+// eslint-disable-next-line prettier/prettier
+import { AddBox, ArrowUpward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn } from '@material-ui/icons';
 import MaterialTable, { Icons } from 'material-table';
 import React, { useCallback, useEffect, useState } from 'react';
-import { createAccount, fetchAccounts, updateAccount } from '../DataServices/DataServices';
-import AccountModel from './AccountModel';
+import {
+  createAccount,
+  deleteAccount,
+  fetchAccounts,
+  updateAccount,
+  updateUserGroupsForUser,
+} from '../DataServices/DataServices';
+import { EditAccountDialog } from './EditAccountDialog';
 
 const tableIcons = {
   Add: AddBox,
@@ -87,7 +78,7 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
     };
   }, [state.data.length]);
 
-  const handleSubmit = (userDetails: any) => {
+  const handleSubmit = (userDetails: any, groups: string[]) => {
     if (state.editing) {
       updateAccount(host, token, userDetails).subscribe(
         (updatedUser) =>
@@ -105,10 +96,14 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
           }),
         (error) => console.log(error),
       );
+
+      updateUserGroupsForUser(host, token, { groups, userId: userDetails.id });
     } else {
       createAccount(host, token, userDetails).subscribe(
-        (newUser) =>
-          setState({
+        (newUser) => {
+          updateUserGroupsForUser(host, token, { groups, userId: newUser.id });
+
+          return setState({
             ...state,
             data: [...state.data, newUser] as any,
             editing: false,
@@ -119,7 +114,8 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
               email: '',
               roles: '',
             },
-          }),
+          });
+        },
         (error) => console.log(error),
       );
     }
@@ -176,24 +172,23 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
     }
   };
 
-  // TODO: make this work
-  // const deleteUser = () =>
-  //   deleteAccount(host, token, state.selectedUser.id).subscribe(
-  //     () => {
-  //       const newData = state.data;
-  //       const index = newData.indexOf(state.selectedUser);
+  const deleteUser = () =>
+    deleteAccount(host, token, state.selectedUser.id).subscribe(
+      () => {
+        const newData = state.data;
+        const index = newData.indexOf(state.selectedUser);
 
-  //       newData.splice(index, 1);
+        newData.splice(index, 1);
 
-  //       setState({
-  //         ...state,
-  //         data: [...newData],
-  //         showDialog: !state.showDialog,
-  //         selectedUser: null as any,
-  //       });
-  //     },
-  //     (error) => console.log(error),
-  //   );
+        setState({
+          ...state,
+          data: [...newData],
+          showDialog: !state.showDialog,
+          selectedUser: null as any,
+        });
+      },
+      (error: any) => console.log(error),
+    );
 
   const accountsTable = (
     <MaterialTable
@@ -232,7 +227,9 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
   );
 
   const accountModal = state.showModal && (
-    <AccountModel
+    <EditAccountDialog
+      token={token}
+      host={host}
       user={state.selectedUser}
       editing={state.editing}
       onSubmit={handleSubmit}
@@ -250,7 +247,7 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
       </DialogContent>
       <DialogActions>
         <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" onClick={() => deleteUser()}>
           Delete
         </Button>
       </DialogActions>

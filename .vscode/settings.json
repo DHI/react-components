@@ -1,7 +1,5 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": true
-  },
+  "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSave": true,
   "workbench.tree.indent": 20
 }

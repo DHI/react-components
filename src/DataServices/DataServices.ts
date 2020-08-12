@@ -111,6 +111,19 @@ const fetchTimeseriesByGroup = (dataSources: DataSource[], token: string) => {
 
 // ACCOUNTS
 // Could be an account name or `me`.
+export const fetchUserGroups = (host: string, token: string) =>
+  fetchUrl(`${host}/api/usergroups`, {
+    method: 'GET',
+    additionalHeaders: { Authorization: `Bearer ${token}` },
+  }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+
+export const updateUserGroupsForUser = (host: string, token: string, options: { userId: string; groups: string[] }) =>
+  fetchUrl(`${host}/api/usergroups/user/${options.userId}`, {
+    method: 'POST',
+    additionalHeaders: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(options.groups),
+  }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+
 const fetchAccount = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/accounts/${id}`, {
     method: 'GET',
