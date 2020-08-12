@@ -1,6 +1,6 @@
 import React from 'react';
 import { Login } from '..';
-import { IToken, IUser } from './types';
+import { Token, User } from './types';
 
 export default {
   title: 'Auth',
@@ -9,8 +9,8 @@ export default {
 
 export const LoginStory = () => {
   const [state, setState] = React.useState<{
-    user?: IUser;
-    token?: IToken;
+    user?: User;
+    token?: Token;
   }>({});
 
   return (
@@ -20,11 +20,11 @@ export const LoginStory = () => {
         translations={{
           userNamePlaceholder: 'Username',
           passwordPlaceholder: 'Password',
-          rememberMeLabelText: 'Remember me',
-          resetPasswordLabelText: 'FORGOT PASSWORD?',
-          resetPasswordButtonText: 'FORGOT PASSWORD',
+          rememberMeLabel: 'Remember me',
+          resetPasswordLabel: 'FORGOT PASSWORD?',
+          resetPasswordButton: 'FORGOT PASSWORD',
           resetPasswordUserNamePlaceholder: 'E-Mail Address or User ID',
-          loginButtonText: 'Login',
+          loginButton: 'Login',
         }}
         showRememberMe={true}
         showResetPassword={true}

@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import DHITheme from '../../theme';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { ResetPasswordForm } from '../ResetPasswordForm/ResetPasswordForm';
-import ILoginProps from './types';
+import LoginProps from './types';
 
-const Login = (props: ILoginProps) => {
+const Login = (props: LoginProps) => {
   const { host, onSuccess, onError, showRememberMe, showResetPassword, textFieldVariant, translations } = props;
   const [showingResetPassword, setShowingResetPassword] = useState(false);
 
@@ -19,8 +19,10 @@ const Login = (props: ILoginProps) => {
         <ResetPasswordForm
           host={host}
           onBackToLogin={(value) => togglePasswordResetForm(value)}
-          resetPasswordButtonText={translations.resetPasswordButtonText}
-          resetPasswordUserNamePlaceholder={translations.resetPasswordUserNamePlaceholder}
+          resetPasswordButtonText={translations?.resetPasswordButton ?? 'FORGOT PASSWORD'}
+          resetPasswordUserNamePlaceholder={
+            translations?.resetPasswordUserNamePlaceholder ?? 'E-Mail Address or User ID'
+          }
           onResetPassword={() => console.log('Reset password not implemented.')}
           textFieldVariant={textFieldVariant}
         />
@@ -29,14 +31,14 @@ const Login = (props: ILoginProps) => {
           host={host}
           onSuccess={onSuccess}
           onError={onError}
-          userNamePlaceholder={translations.userNamePlaceholder}
-          passwordPlaceholder={translations.passwordPlaceholder}
+          userNamePlaceholder={translations?.userNamePlaceholder ?? 'Username'}
+          passwordPlaceholder={translations?.passwordPlaceholder ?? 'Password'}
           showRememberMe={showRememberMe}
-          rememberMeLabelText={translations.rememberMeLabelText}
+          rememberMeLabelText={translations?.rememberMeLabel ?? 'Remember me'}
           showResetPassword={showResetPassword}
-          resetPasswordLabelText={translations.resetPasswordLabelText}
+          resetPasswordLabelText={translations?.resetPasswordLabel ?? 'FORGOT PASSWORD?'}
           onResetPassword={(value) => togglePasswordResetForm(value)}
-          loginButtonText={translations.loginButtonText}
+          loginButtonText={translations?.loginButton ?? 'Login'}
           textFieldVariant={textFieldVariant}
         />
       )}
@@ -45,4 +47,4 @@ const Login = (props: ILoginProps) => {
   );
 };
 
-export { ILoginProps, Login };
+export { LoginProps, Login };

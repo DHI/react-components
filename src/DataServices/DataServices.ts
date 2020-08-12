@@ -1,6 +1,6 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
-import { IToken } from '../Auth/types';
+import { Token } from '../Auth/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
 import { DataSource, JobParameters, JobQuery, Options, User } from './types';
 
@@ -10,13 +10,13 @@ const DEFAULT_OPTIONS = {
   },
 };
 
-const fetchUrl = (endPoint: RequestInfo, options: Options) => {
+const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
   const mergedOptions = {
     ...DEFAULT_OPTIONS,
     ...options,
     headers: {
       ...DEFAULT_OPTIONS.headers,
-      ...options.additionalHeaders,
+      ...options?.additionalHeaders,
     },
   };
 
@@ -48,7 +48,7 @@ const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
     body: JSON.stringify(user),
-  }).pipe<IToken>(tap((res) => console.log('token res', res)));
+  }).pipe<Token>(tap((res) => console.log('token res', res)));
 };
 
 // GIS
@@ -446,31 +446,38 @@ const fetchJob = (dataSource: DataSource, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap((res) => console.log('jeb fetched executed', res)));
+  }).pipe(tap((res) => console.log('job fetched executed', res)));
 
 const fetchJobs = (
-  dataSource: DataSource,
+  dataSources: DataSource | DataSource[],
   token: string,
   query: {
-    account: any;
+    account?: any;
     since: any;
-    status: any;
-    task: any;
-    tag: any;
+    status?: any;
+    task?: any;
+    tag?: any;
   },
 ) => {
-  const url = !query
-    ? `${dataSource.host}/api/jobs/${dataSource.connection}`
-    : `${dataSource.host}/api/jobs/${dataSource.connection}?account=${queryProp(query.account)}&since=${queryProp(
-        query.since,
-      )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`;
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
-  return fetchUrl(url, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('jobs fetched', res)));
+  const requests = dataSourcesArray.map((source: DataSource) =>
+    fetchUrl(
+      !query
+        ? `${source.host}/api/jobs/${source.connection}`
+        : `${source.host}/api/jobs/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
+            query.since,
+          )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
+      {
+        method: 'GET',
+        additionalHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    ).pipe(map((fc) => dataObjectToArray(fc))),
+  );
+
+  return forkJoin(requests).pipe(map((fc) => fc.flat()));
 };
 
 const deleteJob = (dataSource: DataSource, token: string, id: string) =>
@@ -512,14 +519,21 @@ const fetchJobCount = (dataSource: DataSource, token: string) =>
   }).pipe(tap((res) => console.log('job count fetched', res)));
 
 // Logs
-const fetchLogs = (dataSource: DataSource, token: string, query: any) =>
-  fetchUrl(`${dataSource.host}/api/logs/${dataSource.connection}/query`, {
-    method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(query),
-  }).pipe(tap((res) => console.log('logs fetched', res)));
+const fetchLogs = (dataSources: DataSource | DataSource[], token: string, query: any) => {
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
+
+  const requests = dataSourcesArray.map((source: DataSource) =>
+    fetchUrl(`${source.host}/api/logs/${source.connection}/query`, {
+      method: 'POST',
+      body: JSON.stringify(query),
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).pipe(map((fc) => dataObjectToArray(fc))),
+  );
+
+  return forkJoin(requests).pipe(map((fc) => fc.flat()));
+};
 
 // Spreadsheets
 const fetchSpreadsheetUsedRange = (dataSource: DataSource, token: string) =>
@@ -564,7 +578,6 @@ export {
   executeJob,
   cancelJob,
   cancelJobs,
-  fetchJob,
   fetchJobs,
   deleteJob,
   deleteJobs,

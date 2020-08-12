@@ -1,14 +1,14 @@
 import { Config, Layout, PlotData } from 'plotly.js';
 
-interface IChartPlotlyProps {
+interface ChartPlotlyProps {
   /**
    * A list of time series
    */
-  data: ITimeseriesData[];
+  data: TimeseriesData[];
   /**  Customising config
    * @url: https://plot.ly/javascript/configuration-options/
    */
-  config?: Partial<IChartPlotlyConfig>;
+  config?: Partial<ChartPlotlyConfig>;
   /**  Customizing layout
    * @url: https://plot.ly/javascript/reference/#layout
    */
@@ -18,14 +18,14 @@ interface IChartPlotlyProps {
    * @url: https://plot.ly/javascript/reference/
    * Passed timeseries configs must be in the same order as the data, e.g. first object in timeseries array will correspond to the first data object specified in the data array
    */
-  timeseries?: Partial<IChartPlotlyPlotData>[];
+  timeseries?: Partial<ChartPlotlyPlotData>[];
   /**
    * The style object to be set on the plot
    */
   style: any;
 }
 
-interface ITimeseriesData {
+interface TimeseriesData {
   /**
    * The id of the time series
    */
@@ -36,14 +36,14 @@ interface ITimeseriesData {
   data: number[][];
 }
 
-interface IChartPlotlyConfig extends Config {
+interface ChartPlotlyConfig extends Config {
   /**
    * Indicates if the time series should be presented as short names
    */
   useShortNames: boolean;
 }
 
-interface IChartPlotlyPlotData extends PlotData {
+interface ChartPlotlyPlotData extends PlotData {
   /**
    * Defines the number of arrows to show on the chart at any point in time
    */
@@ -70,4 +70,4 @@ interface IChartPlotlyPlotData extends PlotData {
   arrowYValue?: number;
 }
 
-export { ITimeseriesData, IChartPlotlyConfig, IChartPlotlyPlotData, IChartPlotlyProps };
+export { TimeseriesData, ChartPlotlyConfig, ChartPlotlyPlotData, ChartPlotlyProps };

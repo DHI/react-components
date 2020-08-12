@@ -1,9 +1,9 @@
 import { Button } from '@material-ui/core';
 import { differenceInSeconds, format, parseISO } from 'date-fns';
-import React, { FC } from 'react';
-import { ITimeseriesData, ITimeseriesExporterProps } from './types';
+import React from 'react';
+import { TimeseriesData, TimeseriesExporterProps } from './types';
 
-const TimeseriesExporter: FC<ITimeseriesExporterProps> = (props: ITimeseriesExporterProps) => {
+const TimeseriesExporter = (props: TimeseriesExporterProps) => {
   const exportTable = () => {
     const columns = [
       '',
@@ -36,7 +36,7 @@ const TimeseriesExporter: FC<ITimeseriesExporterProps> = (props: ITimeseriesExpo
       const cells = [format(parseISO(datetime), props.dateTimeFormat || 'yyyy-MM-dd HH:mm:ss')];
       const dateTimeLookup = format(parseISO(datetime), "yyyy-MM-dd'T'HH:mm:ss");
 
-      props.data.forEach((timeseries: ITimeseriesData, index: number) => {
+      props.data.forEach((timeseries: TimeseriesData, index: number) => {
         const found = timeseries.data.filter((timestep: (string | number)[]) => timestep[0] === dateTimeLookup);
 
         cells.push(
@@ -71,4 +71,4 @@ const TimeseriesExporter: FC<ITimeseriesExporterProps> = (props: ITimeseriesExpo
   );
 };
 
-export { ITimeseriesExporterProps, TimeseriesExporter };
+export { TimeseriesExporterProps, TimeseriesExporter };

@@ -1,9 +1,9 @@
 import { Button, CircularProgress, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import IResetPasswordFormProps from './types';
+import ResetPasswordFormProps from './types';
 import useStyles from './useStyles';
 
-const ResetPasswordForm = (props: IResetPasswordFormProps) => {
+const ResetPasswordForm = (props: ResetPasswordFormProps) => {
   const {
     // host,
     onBackToLogin,
@@ -69,4 +69,4 @@ const ResetPasswordForm = (props: IResetPasswordFormProps) => {
   );
 };
 
-export { IResetPasswordFormProps, ResetPasswordForm };
+export { ResetPasswordFormProps, ResetPasswordForm };

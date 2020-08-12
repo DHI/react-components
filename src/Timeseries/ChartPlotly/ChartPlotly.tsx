@@ -1,9 +1,9 @@
 import { Layout, PlotData, Shape } from 'plotly.js';
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
-import { IChartPlotlyConfig, IChartPlotlyPlotData, IChartPlotlyProps, ITimeseriesData } from './types';
+import { ChartPlotlyConfig, ChartPlotlyPlotData, ChartPlotlyProps, TimeseriesData } from './types';
 
-const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
+const ChartPlotly = (props: ChartPlotlyProps) => {
   const defaultLayout = {
     autosize: true,
     title: 'Chart',
@@ -20,9 +20,9 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
     responsive: true,
     useShortNames: false,
     displayModeBar: false,
-  } as Partial<IChartPlotlyConfig>;
+  } as Partial<ChartPlotlyConfig>;
 
-  const [config, setConfig] = useState<Partial<IChartPlotlyConfig>>({
+  const [config, setConfig] = useState<Partial<ChartPlotlyConfig>>({
     ...defaultConfig,
     ...props.config,
   });
@@ -46,13 +46,13 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
     formatData();
   }, [props.data]);
 
-  const defineSeriesFormat = (timeseries: ITimeseriesData, index: number): Partial<IChartPlotlyPlotData> =>
+  const defineSeriesFormat = (timeseries: TimeseriesData, index: number): Partial<ChartPlotlyPlotData> =>
     ({
       mode: 'markers',
       type: 'scattergl',
       name: props.config?.useShortNames ? timeseries.id.substring(timeseries.id.lastIndexOf('/') + 1) : timeseries.id,
       ...(props.timeseries && props.timeseries[index]),
-    } as Partial<IChartPlotlyPlotData>);
+    } as Partial<ChartPlotlyPlotData>);
 
   const getArrowValues = (timeseriesIndex: number): number[][] => {
     if (props.timeseries) {
@@ -109,8 +109,8 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
     let shapes: Partial<Shape>[] = [];
 
     if (props.data) {
-      props.data.forEach((timeseriesData: ITimeseriesData, index: number) => {
-        const series: Partial<IChartPlotlyPlotData> = defineSeriesFormat(timeseriesData, index);
+      props.data.forEach((timeseriesData: TimeseriesData, index: number) => {
+        const series: Partial<ChartPlotlyPlotData> = defineSeriesFormat(timeseriesData, index);
 
         if (!series.isArrow) {
           series.x = timeseriesData.data.map((dateAndValue: number[]) => dateAndValue[0]);
@@ -201,4 +201,4 @@ const ChartPlotly: FC<IChartPlotlyProps> = (props: IChartPlotlyProps) => {
   return <Plot style={props.style} data={plotData} config={config} layout={layout} />;
 };
 
-export { IChartPlotlyProps, ChartPlotly };
+export { ChartPlotlyProps, ChartPlotly };
