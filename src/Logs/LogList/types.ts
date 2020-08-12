@@ -40,18 +40,5 @@ interface LogData {
   text: string;
 }
 
-interface BaseFilter {
-  column: {
-    /** Value that use to filter the data */
-    filterValue: string;
-    /** Function to set the filter value data */
-    setFilter: React.Dispatch<React.SetStateAction<string>>;
-    /** Row before data filtered */
-    preFilteredRows: any;
-    /** The id of column to be filtered */
-    id: string;
-  };
-}
-
 export default LogListProps;
-export { LogData, BaseFilter };
+export { LogData };

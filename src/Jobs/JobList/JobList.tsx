@@ -32,6 +32,7 @@ import { FixedSizeList } from 'react-window';
 import { FilterProps } from '../..';
 import { fetchJobs } from '../../DataServices/DataServices';
 import JobListProps, { JobData } from './types';
+import { DefaultColumnFilter, SelectColumnFilter } from '../../common/tableHelper';
 
 const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
   switch (value) {
@@ -97,80 +98,6 @@ const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
         </Tooltip>
       );
   }
-};
-
-const DefaultColumnFilter = () => {
-  return null;
-};
-
-const getColumnWidth = (data: JobData[], accessor: string, headerText: string, minWidth: number) => {
-  if (data.length > 0) {
-    const spacing = 10;
-    const cellLength = Math.max(...data.map((row) => (`${row[accessor]}` || '').length), headerText.length);
-
-    return Math.max(minWidth, cellLength * spacing);
-  } else {
-    return minWidth;
-  }
-};
-
-const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: FilterProps) => {
-  const options = useMemo(() => {
-    const options = new Set<any>();
-
-    preFilteredRows.forEach((row) => {
-      options.add(row.values[id]);
-    });
-
-    return [...Array.from(options.values())];
-  }, [id, preFilteredRows]);
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuItemClick = (option: string) => {
-    setAnchorEl(null);
-    setFilter(option);
-  };
-
-  return (
-    <div>
-      <Tooltip title="Filter list">
-        <IconButton aria-label="Filter list" size={'small'} onClick={handleClick}>
-          <FilterList />
-        </IconButton>
-      </Tooltip>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem
-          selected={!filterValue}
-          key={-1}
-          onClick={() => {
-            handleMenuItemClick('');
-          }}
-        >
-          All
-        </MenuItem>
-        {options.map((option, index) => (
-          <MenuItem
-            key={index}
-            selected={option === filterValue}
-            onClick={() => {
-              handleMenuItemClick(option as string);
-            }}
-          >
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
-    </div>
-  );
 };
 
 const Table = ({

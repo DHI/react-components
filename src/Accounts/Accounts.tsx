@@ -1,40 +1,240 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TableRow,
+  TableCell,
+  Typography,
+  TableHead,
+  Box,
+  TableBody,
+  CircularProgress,
+  Chip,
+  Avatar,
+} from '@material-ui/core';
+import MaUTable from '@material-ui/core/Table';
 // eslint-disable-next-line prettier/prettier
 import { AddBox, ArrowUpward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn } from '@material-ui/icons';
 import MaterialTable, { Icons } from 'material-table';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import {
   createAccount,
   deleteAccount,
   fetchAccounts,
   updateAccount,
   updateUserGroupsForUser,
+  fetchUserGroups,
 } from '../DataServices/DataServices';
 import { EditAccountDialog } from './EditAccountDialog';
+import {
+  useTable,
+  UseTableOptions,
+  UseFiltersOptions,
+  UseGlobalFiltersOptions,
+  useGlobalFilter,
+  useBlockLayout,
+  useFilters,
+  TableInstance,
+  UseGlobalFiltersInstanceProps,
+} from 'react-table';
+import { FixedSizeList } from 'react-window';
+import { DefaultColumnFilter, GlobalFilter } from '../common/tableHelper';
 
-const tableIcons = {
-  Add: AddBox,
-  Delete: DeleteOutline,
-  DetailPanel: ChevronRight,
-  Export: SaveAlt,
-  Filter: FilterList,
-  NextPage: ChevronRight,
-  PreviousPage: ChevronLeft,
-  ResetSearch: Clear,
-  SortArrow: ArrowUpward,
-  ThirdStateCheck: Remove,
-  Edit,
-  FirstPage,
-  LastPage,
-  Search,
-  Check,
-  Clear,
-  ViewColumn,
-} as Icons;
+// const tableIcons = {
+//   Add: AddBox,
+//   Delete: DeleteOutline,
+//   DetailPanel: ChevronRight,
+//   Export: SaveAlt,
+//   Filter: FilterList,
+//   NextPage: ChevronRight,
+//   PreviousPage: ChevronLeft,
+//   ResetSearch: Clear,
+//   SortArrow: ArrowUpward,
+//   ThirdStateCheck: Remove,
+//   Edit,
+//   FirstPage,
+//   LastPage,
+//   Search,
+//   Check,
+//   Clear,
+//   ViewColumn,
+// } as Icons;
 
-export const Accounts = ({ host, token }: { host: string; token: string }) => {
+// const accountsTable = (
+//   <MaterialTable
+//     title="Accounts List"
+//     actions={[
+//       {
+//         icon: tableIcons.Add as any,
+//         tooltip: 'Add User',
+//         isFreeAction: true,
+//         onClick: () => toggleModal()(),
+//       },
+//       {
+//         icon: tableIcons.Delete as any,
+//         tooltip: 'Delete User',
+//         onClick: (_, rowData) => toggleDialog(rowData, 'delete')(),
+//       },
+//       {
+//         icon: tableIcons.Edit as any,
+//         tooltip: 'Edit User',
+//         onClick: (_, rowData) => toggleModal(rowData, true)(),
+//       },
+//     ]}
+//     columns={[]}
+//     data={state.data}
+//     icons={tableIcons}
+//     options={{
+//       actionsColumnIndex: -1,
+//       exportButton: true,
+//       pageSize: 25,
+//       emptyRowsWhenPaging: false,
+//       rowStyle: {
+//         font: 'Roboto!important',
+//       },
+//     }}
+//   />
+// );
+
+const Table = ({
+  columns,
+  data,
+  translations,
+  loading,
+  windowHeight,
+}: {
+  columns: any;
+  data: AccountData[];
+  translations: any;
+  loading: boolean;
+  windowHeight: number;
+}) => {
+  const defaultColumn = {
+    Filter: DefaultColumnFilter,
+    minWidth: 30,
+    maxWidth: 1000,
+  };
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    totalColumnsWidth,
+    state,
+    visibleColumns,
+    preGlobalFilteredRows,
+    setGlobalFilter,
+  } = useTable(
+    {
+      autoResetFilters: false,
+      autoResetGlobalFilter: false,
+      columns,
+      data,
+      defaultColumn,
+    } as UseTableOptions<AccountData> & UseFiltersOptions<AccountData> & UseGlobalFiltersOptions<AccountData>,
+    useGlobalFilter,
+    useBlockLayout,
+    useFilters,
+  ) as TableInstance<AccountData> & UseGlobalFiltersInstanceProps<AccountData>;
+
+  const RenderRow = useCallback(
+    ({ index, style }) => {
+      const row = rows[index];
+
+      prepareRow(row);
+
+      return (
+        <TableRow
+          component="div"
+          {...row.getRowProps({
+            style,
+          })}
+        >
+          {row.cells.map((cell) => {
+            return (
+              <TableCell {...cell.getCellProps()} component="div">
+                <Typography noWrap variant="body2">
+                  {cell.render('Cell')}
+                </Typography>
+              </TableCell>
+            );
+          })}
+        </TableRow>
+      );
+    },
+    [prepareRow, rows],
+  );
+
+  return (
+    <MaUTable {...getTableProps()} component="div" size="small" aria-label="a dense table">
+      <TableHead component="div">
+        <TableRow component="div">
+          <TableCell
+            component="div"
+            colSpan={visibleColumns.length}
+            style={{
+              float: 'right',
+            }}
+          >
+            <GlobalFilter
+              preGlobalFilteredRows={preGlobalFilteredRows}
+              globalFilter={(state as any).globalFilter}
+              setGlobalFilter={setGlobalFilter}
+            />
+          </TableCell>
+        </TableRow>
+        {headerGroups.map((headerGroup) => (
+          <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
+            {headerGroup.headers.map((column) => (
+              <TableCell {...column.getHeaderProps()} component="div">
+                <Box display="flex" flexDirection="row">
+                  <Typography variant="subtitle1">{column.render('header')}</Typography>
+                  {(column as any).canFilter ? column.render('Filter') : null}
+                </Box>
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableHead>
+
+      <TableBody {...getTableBodyProps()} component="div">
+        {rows.length > 0 ? (
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 110).toString()}px` }}>
+              <AutoSizer>
+                {({ height, width }) => (
+                  <FixedSizeList height={height} itemCount={rows.length} itemSize={50} width={width}>
+                    {RenderRow}
+                  </FixedSizeList>
+                )}
+              </AutoSizer>
+            </div>
+          </div>
+        ) : (
+          <Typography
+            align="center"
+            component="div"
+            style={{ lineHeight: `${(windowHeight - 110).toString()}px`, color: '#999999' }}
+          >
+            {loading && <CircularProgress />}
+          </Typography>
+        )}
+      </TableBody>
+    </MaUTable>
+  );
+};
+
+export const Accounts = (props: AccountListProps) => {
+  const { host, token, translations } = props;
+  const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [state, setState] = useState({
-    data: [] as any[],
+    data: [] as AccountData[],
     dialogTitle: '',
     dialogMessage: '',
     editing: false,
@@ -44,28 +244,50 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
       id: '',
       name: '',
       email: '',
-      roles: '',
-    },
+    } as AccountData,
+    loading: true,
   });
 
-  const fetchData = useCallback(
-    () =>
-      fetchAccounts(host, token).subscribe(
-        (users) => {
+  useEffect(() => {
+    function handleResize() {
+      setWindowHeight(window.innerHeight);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  const fetchData = () =>
+    fetchAccounts(host, token).subscribe(
+      (users) => {
+        const userData = users.map((u: AccountData) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email ? u.email : '',
+          // userGroups: u.userGroups, // not impl
+        }));
+
+        console.log('called');
+
+        fetchUserGroups(host, token).subscribe(async (body: Record<any, any>) => {
+          const userGroups = body as UserGroups[];
+          const accountData = userData.map((u: AccountData) => ({
+            ...u,
+            userGroups: userGroups.filter((ug) => ug.users.indexOf(u.id) >= 0).map((ug) => ug.name),
+          }));
+
           setState({
             ...state,
-            data: users.map((u: any) => ({
-              id: u.id,
-              name: u.name,
-              email: u.email ? u.email : '',
-              roles: u.roles,
-            })),
+            data: accountData,
+            loading: false,
           });
-        },
-        (error) => console.log(error),
-      ),
-    [state.data],
-  );
+        });
+      },
+      (error) => console.log(error),
+    );
 
   useEffect(() => {
     const subscriber = fetchData();
@@ -76,12 +298,12 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
         subscriber.unsubscribe();
       }
     };
-  }, [state.data.length]);
+  }, []);
 
-  const handleSubmit = (userDetails: any, groups: string[]) => {
+  const handleEditingSubmit = (editUser: EditUser) => {
     if (state.editing) {
-      updateAccount(host, token, userDetails).subscribe(
-        (updatedUser) =>
+      updateAccount(host, token, editUser).subscribe(
+        (updatedUser) => {
           setState({
             ...state,
             data: [...state.data, updatedUser] as any,
@@ -91,17 +313,18 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
               id: '',
               name: '',
               email: '',
-              roles: '',
+              userGroups: [],
             },
-          }),
+          });
+
+          updateUserGroupsForUser(host, token, { groups: editUser.userGroups, userId: updatedUser.id });
+        },
         (error) => console.log(error),
       );
-
-      updateUserGroupsForUser(host, token, { groups, userId: userDetails.id });
     } else {
-      createAccount(host, token, userDetails).subscribe(
+      createAccount(host, token, editUser).subscribe(
         (newUser) => {
-          updateUserGroupsForUser(host, token, { groups, userId: newUser.id });
+          updateUserGroupsForUser(host, token, { groups: editUser.userGroups, userId: newUser.id });
 
           return setState({
             ...state,
@@ -112,7 +335,7 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
               id: '',
               name: '',
               email: '',
-              roles: '',
+              userGroups: [],
             },
           });
         },
@@ -190,40 +413,52 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
       (error: any) => console.log(error),
     );
 
-  const accountsTable = (
-    <MaterialTable
-      title="Accounts List"
-      actions={[
-        {
-          icon: tableIcons.Add as any,
-          tooltip: 'Add User',
-          isFreeAction: true,
-          onClick: () => toggleModal()(),
+  const columns = useMemo(
+    () => [
+      {
+        header: 'ID',
+        accessor: 'id',
+        width: 120,
+      },
+      {
+        header: 'Name',
+        accessor: 'name',
+        width: 160,
+      },
+      {
+        header: 'Email',
+        accessor: 'email',
+        width: 250,
+      },
+      {
+        header: 'User Groups',
+        accessor: 'userGroups',
+        width: 350,
+        // eslint-disable-next-line react/display-name
+        Cell: ({ cell }) => {
+          return cell.row.values.userGroups != null ? (
+            cell.row.values.userGroups.map((value) => (
+              <>
+                <Chip key={value} avatar={<Avatar>{value.substr(0, 1)}</Avatar>} label={value} />
+                &nbsp;
+              </>
+            ))
+          ) : (
+            <></>
+          );
         },
-        {
-          icon: tableIcons.Delete as any,
-          tooltip: 'Delete User',
-          onClick: (_, rowData) => toggleDialog(rowData, 'delete')(),
+      },
+      {
+        header: 'Edit',
+        width: 70,
+        accessor: null,
+        // eslint-disable-next-line react/display-name
+        Cell: ({ cell }) => {
+          return <></>;
         },
-        {
-          icon: tableIcons.Edit as any,
-          tooltip: 'Edit User',
-          onClick: (_, rowData) => toggleModal(rowData, true)(),
-        },
-      ]}
-      columns={[
-        { title: 'ID', field: 'id' },
-        { title: 'Name', field: 'name' },
-        { title: 'Email', field: 'email' },
-        { title: 'Roles', field: 'roles' },
-      ]}
-      data={state.data}
-      icons={tableIcons}
-      options={{
-        actionsColumnIndex: -1,
-        exportButton: true,
-      }}
-    />
+      },
+    ],
+    [state.data.length],
   );
 
   const accountModal = state.showModal && (
@@ -232,7 +467,7 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
       host={host}
       user={state.selectedUser}
       editing={state.editing}
-      onSubmit={handleSubmit}
+      onSubmit={handleEditingSubmit}
       open={state.showModal}
       onToggle={toggleModal}
     />
@@ -256,7 +491,13 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
 
   return (
     <div>
-      {accountsTable}
+      <Table
+        columns={columns}
+        data={state.data}
+        translations={translations}
+        loading={state.loading}
+        windowHeight={windowHeight}
+      />
       {deleteUserModal}
       {accountModal}
     </div>

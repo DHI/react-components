@@ -117,11 +117,11 @@ export const fetchUserGroups = (host: string, token: string) =>
     additionalHeaders: { Authorization: `Bearer ${token}` },
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
-export const updateUserGroupsForUser = (host: string, token: string, options: { userId: string; groups: string[] }) =>
-  fetchUrl(`${host}/api/usergroups/user/${options.userId}`, {
+export const updateUserGroupsForUser = (host: string, token: string, data: { userId: string; groups: string[] }) =>
+  fetchUrl(`${host}/api/usergroups/user/${data.userId}`, {
     method: 'POST',
     additionalHeaders: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(options.groups),
+    body: JSON.stringify(data.groups),
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
 const fetchAccount = (host: string, token: string, id: string) =>
@@ -148,22 +148,22 @@ const deleteAccount = (host: string, token: string, username: string) =>
     },
   }).pipe(tap((res) => console.log('deleted account', res)));
 
-const updateAccount = (host: string, token: string, username: string) =>
+const updateAccount = (host: string, token: string, data: Record<any, any>) =>
   fetchUrl(`${host}/api/accounts`, {
     method: 'PUT',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(username),
+    body: JSON.stringify(data),
   }).pipe(tap((json) => console.log('updated user', json)));
 
-const createAccount = (host: string, token: string, username: string) =>
+const createAccount = (host: string, token: string, data: Record<any, any>) =>
   fetchUrl(`${host}/api/accounts`, {
     method: 'POST',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(username),
+    body: JSON.stringify(data),
   });
 
 const resetPassword = (host: string, user: { Id: string }, token: string) =>
