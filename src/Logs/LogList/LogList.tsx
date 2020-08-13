@@ -324,7 +324,7 @@ const LogList = (props: LogListProps) => {
   }, []);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: any;
 
     if (startDateUtc) {
       interval = setInterval(() => fetchLogsList(startDateUtc), frequency * 1000);

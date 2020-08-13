@@ -158,7 +158,7 @@ export const EditAccountDialog = ({
           autoFocus
           margin="dense"
           label="Username"
-          variant="outlined"
+          variant="standard"
           value={form.id}
           onChange={handleChange('id')}
         />
@@ -167,7 +167,7 @@ export const EditAccountDialog = ({
           fullWidth
           label="Username"
           margin="dense"
-          variant="outlined"
+          variant="standard"
           value={form.id}
           disabled={true}
         />
@@ -178,7 +178,7 @@ export const EditAccountDialog = ({
         margin="dense"
         type="password"
         label="Password"
-        variant="outlined"
+        variant="standard"
         required={!isEditing}
         value={form.password}
         error={!state.passwordValid}
@@ -192,7 +192,7 @@ export const EditAccountDialog = ({
         name="repeatPassword"
         margin="dense"
         type="password"
-        variant="outlined"
+        variant="standard"
         required={!isEditing}
         label="Repeat Password"
         value={form.repeatPassword}
@@ -206,7 +206,7 @@ export const EditAccountDialog = ({
         fullWidth
         label="Name"
         margin="dense"
-        variant="outlined"
+        variant="standard"
         value={form.name}
         onChange={handleChange('name')}
       />
@@ -214,7 +214,7 @@ export const EditAccountDialog = ({
         fullWidth
         label="Email"
         margin="dense"
-        variant="outlined"
+        variant="standard"
         value={form.email}
         onChange={handleChange('email')}
       />
@@ -300,7 +300,7 @@ const UserGroupsInput = ({
         <TextField
           {...props}
           name="groups"
-          variant="outlined"
+          variant="standard"
           label="User group(s)"
           placeholder="Select"
           autoComplete="off"

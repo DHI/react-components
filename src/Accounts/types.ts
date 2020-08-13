@@ -29,4 +29,6 @@ type UserGroups = {
 
 type ActionCell = {
   item: Record<any, any>;
+  onEdit: (data: Record<any, any>) => void;
+  onDelete: (data: Record<any, any>) => void;
 };
