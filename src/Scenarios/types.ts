@@ -100,33 +100,6 @@ interface Condition {
   value?: string | string[];
 }
 
-interface Dialog {
-  /**
-   * Value to be display as dialog title
-   */
-  dialogTitle?: string;
-  /**
-   * Value to be display as content of dialog
-   */
-  dialogMessage?: string;
-  /**
-   * Value to be add as a cancel button text
-   */
-  dialogCancelLabel?: string;
-  /**
-   * Value to be add as a confirm button text
-   */
-  dialogConfirmLabel?: string;
-  /**
-   * A function when dialog is confirmed
-   */
-  dialogCommand?: Function;
-  /**
-   * Indicates the dialog is displayed or not
-   */
-  showDialog: boolean;
-}
-
 interface QueryDates {
   /**
    * Start date to fetch scenario by date
@@ -148,14 +121,4 @@ interface CloseDialog {
   (value: boolean): void;
 }
 
-export {
-  Status,
-  DescriptionField,
-  MenuItem,
-  Scenario,
-  Condition,
-  Dialog,
-  QueryDates,
-  ContextMenuClickHandler,
-  CloseDialog,
-};
+export { Status, DescriptionField, MenuItem, Scenario, Condition, QueryDates, ContextMenuClickHandler, CloseDialog };

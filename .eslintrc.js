@@ -68,6 +68,7 @@ module.exports = {
     'import/no-unresolved': 1,
     'import/no-webpack-loader-syntax': 0,
     'import/prefer-default-export': 0,
+    'react/display-name': 0,
     'react/prop-types': 0,
     'react/jsx-key': 0,
     // 'react-hooks/exhaustive-deps': 0,

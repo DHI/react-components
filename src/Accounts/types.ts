@@ -26,3 +26,7 @@ type UserGroups = {
   name: string;
   users: string[];
 };
+
+type ActionCell = {
+  item: Record<any, any>;
+};

@@ -15,10 +15,14 @@ import {
   CircularProgress,
   Chip,
   Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Divider,
 } from '@material-ui/core';
 import MaUTable from '@material-ui/core/Table';
 // eslint-disable-next-line prettier/prettier
-import { AddBox, ArrowUpward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn } from '@material-ui/icons';
+import { AddBox, ArrowUpward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn, MoreVert, PictureAsPdf, EditOutlined } from '@material-ui/icons';
 import MaterialTable, { Icons } from 'material-table';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import {
@@ -43,62 +47,8 @@ import {
 } from 'react-table';
 import { FixedSizeList } from 'react-window';
 import { DefaultColumnFilter, GlobalFilter } from '../common/tableHelper';
-
-// const tableIcons = {
-//   Add: AddBox,
-//   Delete: DeleteOutline,
-//   DetailPanel: ChevronRight,
-//   Export: SaveAlt,
-//   Filter: FilterList,
-//   NextPage: ChevronRight,
-//   PreviousPage: ChevronLeft,
-//   ResetSearch: Clear,
-//   SortArrow: ArrowUpward,
-//   ThirdStateCheck: Remove,
-//   Edit,
-//   FirstPage,
-//   LastPage,
-//   Search,
-//   Check,
-//   Clear,
-//   ViewColumn,
-// } as Icons;
-
-// const accountsTable = (
-//   <MaterialTable
-//     title="Accounts List"
-//     actions={[
-//       {
-//         icon: tableIcons.Add as any,
-//         tooltip: 'Add User',
-//         isFreeAction: true,
-//         onClick: () => toggleModal()(),
-//       },
-//       {
-//         icon: tableIcons.Delete as any,
-//         tooltip: 'Delete User',
-//         onClick: (_, rowData) => toggleDialog(rowData, 'delete')(),
-//       },
-//       {
-//         icon: tableIcons.Edit as any,
-//         tooltip: 'Edit User',
-//         onClick: (_, rowData) => toggleModal(rowData, true)(),
-//       },
-//     ]}
-//     columns={[]}
-//     data={state.data}
-//     icons={tableIcons}
-//     options={{
-//       actionsColumnIndex: -1,
-//       exportButton: true,
-//       pageSize: 25,
-//       emptyRowsWhenPaging: false,
-//       rowStyle: {
-//         font: 'Roboto!important',
-//       },
-//     }}
-//   />
-// );
+import GeneralDialog from '../common/GeneralDialog/GeneralDialog';
+import GeneralDialogProps from '../common/GeneralDialog/types';
 
 const Table = ({
   columns,
@@ -135,7 +85,10 @@ const Table = ({
       autoResetFilters: false,
       autoResetGlobalFilter: false,
       columns,
-      data,
+      data: data.map((item) => ({
+        ...item,
+        action: [item],
+      })),
       defaultColumn,
     } as UseTableOptions<AccountData> & UseFiltersOptions<AccountData> & UseGlobalFiltersOptions<AccountData>,
     useGlobalFilter,
@@ -233,20 +186,21 @@ const Table = ({
 export const Accounts = (props: AccountListProps) => {
   const { host, token, translations } = props;
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
+  const [data, setData] = useState<AccountData[]>([]);
   const [state, setState] = useState({
-    data: [] as AccountData[],
-    dialogTitle: '',
-    dialogMessage: '',
-    editing: false,
-    showDialog: false,
-    showModal: false,
+    isAccountDialogOpen: false,
+    isEditing: false,
     selectedUser: {
       id: '',
       name: '',
       email: '',
     } as AccountData,
     loading: true,
+    dialog: {
+      showDialog: false,
+    } as Partial<GeneralDialogProps>,
   });
+  let confirmDialog = null;
 
   useEffect(() => {
     function handleResize() {
@@ -267,10 +221,7 @@ export const Accounts = (props: AccountListProps) => {
           id: u.id,
           name: u.name,
           email: u.email ? u.email : '',
-          // userGroups: u.userGroups, // not impl
         }));
-
-        console.log('called');
 
         fetchUserGroups(host, token).subscribe(async (body: Record<any, any>) => {
           const userGroups = body as UserGroups[];
@@ -279,11 +230,7 @@ export const Accounts = (props: AccountListProps) => {
             userGroups: userGroups.filter((ug) => ug.users.indexOf(u.id) >= 0).map((ug) => ug.name),
           }));
 
-          setState({
-            ...state,
-            data: accountData,
-            loading: false,
-          });
+          setData(accountData);
         });
       },
       (error) => console.log(error),
@@ -300,118 +247,149 @@ export const Accounts = (props: AccountListProps) => {
     };
   }, []);
 
-  const handleEditingSubmit = (editUser: EditUser) => {
-    if (state.editing) {
-      updateAccount(host, token, editUser).subscribe(
+  const handleUserSubmit = (user: EditUser, onCompleteCallback: () => void, closeCallback: () => void) => {
+    if (state.isEditing) {
+      updateAccount(host, token, user).subscribe(
         (updatedUser) => {
+          updateUserGroupsForUser(host, token, { groups: user.userGroups, userId: updatedUser.id });
+
           setState({
             ...state,
-            data: [...state.data, updatedUser] as any,
-            showModal: false,
-            editing: false,
-            selectedUser: {
-              id: '',
-              name: '',
-              email: '',
-              userGroups: [],
-            },
+            isAccountDialogOpen: false,
           });
 
-          updateUserGroupsForUser(host, token, { groups: editUser.userGroups, userId: updatedUser.id });
+          fetchData();
         },
-        (error) => console.log(error),
+        (error) => {
+          console.log(error);
+          onCompleteCallback();
+        },
       );
     } else {
-      createAccount(host, token, editUser).subscribe(
+      createAccount(host, token, user).subscribe(
         (newUser) => {
-          updateUserGroupsForUser(host, token, { groups: editUser.userGroups, userId: newUser.id });
+          updateUserGroupsForUser(host, token, { groups: user.userGroups, userId: newUser.id });
 
-          return setState({
+          setState({
             ...state,
-            data: [...state.data, newUser] as any,
-            editing: false,
-            showModal: false,
-            selectedUser: {
-              id: '',
-              name: '',
-              email: '',
-              userGroups: [],
-            },
+            isAccountDialogOpen: false,
           });
+
+          fetchData();
         },
-        (error) => console.log(error),
+        (error) => {
+          console.log(error);
+          onCompleteCallback();
+        },
       );
     }
   };
 
-  const toggleModal = (rowData?: any, editing = false) => () => {
-    setState({
-      ...state,
-      editing,
-      showModal: !state.showModal,
-      selectedUser:
-        rowData !== null && editing
-          ? rowData
-          : {
-              id: '',
-              name: '',
-              email: '',
-              roles: '',
-            },
-    });
-  };
+  const handleUserDelete = (user: AccountData) => {
+    closeConfirmDialog();
 
-  const toggleDialog = (rowData: any, action: any) => () => {
-    switch (action) {
-      case 'close':
-        setState({
-          ...state,
-          showDialog: !state.showDialog,
-        });
-
-        break;
-      case 'delete':
-        setState({
-          ...state,
-          dialogTitle: `Delete ${rowData.name}`,
-          dialogMessage: `This will delete the selected user account ${rowData.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user ?`,
-          showDialog: !state.showDialog,
-          selectedUser: rowData,
-        });
-
-        break;
-      case 'edit':
-        setState({
-          ...state,
-          dialogTitle: `Update ${rowData.name}`,
-          dialogMessage: `This will update the selected user account ${rowData.name}, if you confirm this will overwrite the current user data. Are you sure you want to update this user ?`,
-          showDialog: !state.showDialog,
-          selectedUser: rowData,
-        });
-
-        break;
-      default:
-        break;
-    }
-  };
-
-  const deleteUser = () =>
-    deleteAccount(host, token, state.selectedUser.id).subscribe(
+    deleteAccount(host, token, user.id).subscribe(
       () => {
-        const newData = state.data;
-        const index = newData.indexOf(state.selectedUser);
-
-        newData.splice(index, 1);
-
-        setState({
-          ...state,
-          data: [...newData],
-          showDialog: !state.showDialog,
-          selectedUser: null as any,
-        });
+        fetchData();
       },
       (error: any) => console.log(error),
     );
+  };
+
+  const openNewUserDialog = () => {
+    setState({
+      ...state,
+      isAccountDialogOpen: true,
+      isEditing: false,
+    });
+  };
+
+  const closeConfirmDialog = () => {
+    setState({
+      ...state,
+      dialog: {
+        ...state.dialog,
+        showDialog: false,
+      },
+    });
+  };
+
+  const accountDialog = state.isAccountDialogOpen && (
+    <EditAccountDialog
+      token={token}
+      host={host}
+      user={state.selectedUser}
+      dialogOpen={state.isAccountDialogOpen}
+      isEditing={state.isEditing}
+      onCancel={() => {
+        setState({
+          ...state,
+          isAccountDialogOpen: false,
+        });
+      }}
+      onSubmit={handleUserSubmit}
+    />
+  );
+
+  const ChipCell: React.FC<{ cell: any }> = ({ cell }) => {
+    return cell.row.values.userGroups != null ? (
+      cell.row.values.userGroups.map((value) => (
+        <Chip key={value} avatar={<Avatar>{value.substr(0, 1)}</Avatar>} label={value} style={{ marginRight: 4 }} />
+      ))
+    ) : (
+      <></>
+    );
+  };
+
+  const ActionsCell: React.FC<ActionCell> = ({ item }) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
+    const handleClose = () => setAnchorEl(null);
+    const accountData = item as AccountData;
+
+    return (
+      <Box alignItems="center" justifyContent="flex-end">
+        <IconButton aria-haspopup="true" onClick={handleClick}>
+          <MoreVert />
+        </IconButton>
+        <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+          <MenuItem
+            onClick={() => {
+              setState({
+                ...state,
+                isAccountDialogOpen: true,
+                isEditing: true,
+                selectedUser: accountData,
+              });
+            }}
+          >
+            <EditOutlined color="secondary" style={{ marginRight: '0.5rem' }} fontSize="small" />
+            Edit User
+          </MenuItem>
+          <Box my={1}>
+            <Divider />
+          </Box>
+          <MenuItem
+            onClick={() => {
+              setState({
+                ...state,
+                dialog: {
+                  ...state.dialog,
+                  showDialog: !state.dialog.showDialog,
+                  title: `Delete ${accountData.name}`,
+                  message: `This will delete the selected user account ${accountData.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`,
+                  onConfirm: () => handleUserDelete(accountData),
+                },
+              });
+            }}
+          >
+            <DeleteOutline color="secondary" style={{ marginRight: '0.5rem' }} fontSize="small" />
+            Delete User
+          </MenuItem>
+        </Menu>
+      </Box>
+    );
+  };
 
   const columns = useMemo(
     () => [
@@ -434,72 +412,51 @@ export const Accounts = (props: AccountListProps) => {
         header: 'User Groups',
         accessor: 'userGroups',
         width: 350,
-        // eslint-disable-next-line react/display-name
-        Cell: ({ cell }) => {
-          return cell.row.values.userGroups != null ? (
-            cell.row.values.userGroups.map((value) => (
-              <>
-                <Chip key={value} avatar={<Avatar>{value.substr(0, 1)}</Avatar>} label={value} />
-                &nbsp;
-              </>
-            ))
-          ) : (
-            <></>
-          );
-        },
+        Cell: ChipCell,
       },
       {
-        header: 'Edit',
-        width: 70,
-        accessor: null,
-        // eslint-disable-next-line react/display-name
-        Cell: ({ cell }) => {
-          return <></>;
-        },
+        header: 'Actions',
+        width: 80,
+        accessor: 'action',
+        Cell: ({
+          cell: {
+            value: [item],
+          },
+        }) => <ActionsCell item={item} />,
       },
     ],
-    [state.data.length],
+    [data.length],
   );
 
-  const accountModal = state.showModal && (
-    <EditAccountDialog
-      token={token}
-      host={host}
-      user={state.selectedUser}
-      editing={state.editing}
-      onSubmit={handleEditingSubmit}
-      open={state.showModal}
-      onToggle={toggleModal}
-    />
-  );
-
-  const deleteUserModal = state.showDialog && (
-    <Dialog open={true} onClose={() => setState({ ...state, showDialog: false })}>
-      <DialogTitle>{state.dialogTitle}</DialogTitle>
-      <DialogContent></DialogContent>
-      <DialogContent>
-        <DialogContentText>{state.dialogMessage}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" color="secondary" onClick={() => deleteUser()}>
-          Delete
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+  if (state.dialog.showDialog) {
+    confirmDialog = (
+      <GeneralDialog
+        dialogId="user"
+        title={state.dialog.title}
+        message={state.dialog.message}
+        cancelLabel={state.dialog.cancelLabel}
+        confirmLabel={state.dialog.confirmLabel}
+        showDialog={state.dialog.showDialog}
+        onConfirm={state.dialog.onConfirm}
+        onCancel={closeConfirmDialog}
+      />
+    );
+  }
 
   return (
     <div>
+      <Button onClick={openNewUserDialog} color="primary" variant="contained">
+        New User
+      </Button>
       <Table
         columns={columns}
-        data={state.data}
+        data={data}
         translations={translations}
         loading={state.loading}
         windowHeight={windowHeight}
       />
-      {deleteUserModal}
-      {accountModal}
+      {accountDialog}
+      {confirmDialog}
     </div>
   );
 };

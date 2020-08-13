@@ -20,34 +20,37 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 export const EditAccountDialog = ({
   user,
-  editing,
-  open = false,
+  isEditing,
+  dialogOpen = false,
   onSubmit,
-  onToggle,
+  onCancel,
   token,
   host,
 }: {
   token: string;
   host: string;
   user: Record<any, any>;
-  editing?: boolean;
-  open?: boolean;
-  onSubmit(details: EditUser): void;
-  onToggle(data?: any, isEditing?: boolean): () => void;
+  isEditing?: boolean;
+  dialogOpen?: boolean;
+  onCancel(): void;
+  onSubmit(details: EditUser, onCompleteCallback: () => void, closeCallback: () => void): void;
 }) => {
   const [state, setState] = useState({
     passwordValid: true,
     passwordStrengthColor: 'red',
+    loading: false,
   });
   const [userGroups, setUserGroups] = React.useState<string[]>([]);
-  const [form, setForm] = useState<EditUser>({
+  const userTemplate = {
     id: '',
     name: '',
     email: '',
     password: '',
     repeatPassword: '',
     userGroups: [],
-  });
+  };
+  const [form, setForm] = useState<EditUser>(userTemplate);
+  user = isEditing ? user : userTemplate;
 
   useEffect(() => {
     setForm({
@@ -63,10 +66,10 @@ export const EditAccountDialog = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // console.log({
-    //   form,
-    //   user,
-    // });
+    setState({
+      ...state,
+      loading: true,
+    });
 
     if (form.password && form.password !== form.repeatPassword) {
       setState({ ...state, passwordValid: false });
@@ -83,7 +86,16 @@ export const EditAccountDialog = ({
       userGroups: form.userGroups || [],
     } as EditUser;
 
-    onSubmit(userDetails);
+    onSubmit(
+      userDetails,
+      () => {
+        setState({
+          ...state,
+          loading: false,
+        });
+      },
+      onCancel,
+    );
   };
 
   const updatePasswordStrengthIndicator = (password: string) => {
@@ -139,7 +151,7 @@ export const EditAccountDialog = ({
 
   const content = (
     <DialogContent>
-      {!editing ? (
+      {!isEditing ? (
         <TextField
           required
           fullWidth
@@ -167,7 +179,7 @@ export const EditAccountDialog = ({
         type="password"
         label="Password"
         variant="outlined"
-        required={!editing}
+        required={!isEditing}
         value={form.password}
         error={!state.passwordValid}
         InputProps={{ endAdornment }}
@@ -181,7 +193,7 @@ export const EditAccountDialog = ({
         margin="dense"
         type="password"
         variant="outlined"
-        required={!editing}
+        required={!isEditing}
         label="Repeat Password"
         value={form.repeatPassword}
         error={!state.passwordValid}
@@ -223,16 +235,16 @@ export const EditAccountDialog = ({
   );
 
   return (
-    <Dialog open={open}>
+    <Dialog open={dialogOpen}>
       <form onSubmit={handleSubmit}>
-        <DialogTitle id="form-dialog-title">{editing ? 'Edit Account Details' : 'Create New Account'}</DialogTitle>
+        <DialogTitle id="form-dialog-title">{isEditing ? 'Edit Account Details' : 'Create New Account'}</DialogTitle>
         {content}
         <DialogActions>
-          <Button variant="outlined" onClick={onToggle(null, false)}>
+          <Button variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit" variant="contained" color="primary">
-            {editing ? 'Update' : 'Create'}
+            {isEditing ? 'Update' : 'Create'}
           </Button>
         </DialogActions>
       </form>
