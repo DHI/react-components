@@ -17,6 +17,11 @@ const getObjectProperty = (objectItem: any, property: string): any => {
   return value.length > 0 ? value[0] : null;
 };
 
+const setObjectProperty = (objectItem: any, property: string, newValue: any) => {
+  // Use jsonpath to apply in a deep path approach
+  jp.apply(objectItem, `$.${property}`, () => newValue);
+};
+
 const getDescriptions = (
   scenarioData: Scenario,
   descriptionFields: DescriptionField[] | undefined,
@@ -237,6 +242,7 @@ export const passwordStrength = (password?: string) => {
 export {
   dataObjectToArray,
   getObjectProperty,
+  setObjectProperty,
   getDescriptions,
   changeObjectProperty,
   checkCondition,
