@@ -1,7 +1,7 @@
 import { Box, Chip, Avatar } from '@material-ui/core';
 import React from 'react';
 
-const ChipCell: React.FC<{ cell: any }> = ({ cell }) => {
+const ChipCell = ({ cell }: { cell: any }) => {
   return (
     <Box alignItems="center">
       {cell.row.values.userGroups != null ? (

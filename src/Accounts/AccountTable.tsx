@@ -16,7 +16,7 @@ import ChipCell from './Cells/ChipCell';
 import ActionsCell from './Cells/ActionsCell';
 import AccountTableHeader from './AccountTableHeader';
 
-interface AccountTable {
+interface AccountTableProps {
   error: boolean;
   loading: boolean;
   users: AccountData[];
@@ -25,7 +25,7 @@ interface AccountTable {
   onDelete: (data: any) => void;
 }
 
-const AccountTable: React.FC<AccountTable> = ({ error, loading, users, onNew, onEdit, onDelete }) => {
+const AccountTable = ({ error, loading, users, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
   const columns = useMemo(
     () => [

@@ -91,7 +91,6 @@
     "jsonpath": "^1.0.2",
     "lodash": "^4.17.15",
     "match-sorter": "^4.2.0",
-    "material-table": "^1.68.0",
     "plotly.js": "^1.54.2",
     "react-plotly.js": "^2.4.0",
     "react-table": "^7.2.2",
