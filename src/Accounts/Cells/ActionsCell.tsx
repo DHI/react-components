@@ -2,7 +2,7 @@ import { Box, Chip, Avatar, IconButton, Menu, MenuItem, Divider } from '@materia
 import React, { useState } from 'react';
 import { MoreVert, EditOutlined, DeleteOutline } from '@material-ui/icons';
 
-const ActionsCell = ({ item, onEdit, onDelete }: ActionCell) => {
+const ActionsCell = ({ item, onEdit, onDelete }: ActionCellProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
