@@ -21,7 +21,7 @@ const AccountTable = ({ error, loading, users, onNew, onEdit, onDelete }: Accoun
   const columns = useMemo(
     () => [
       {
-        Header: 'ID',
+        Header: 'Username',
         accessor: 'id',
       },
       {
@@ -33,7 +33,7 @@ const AccountTable = ({ error, loading, users, onNew, onEdit, onDelete }: Accoun
         accessor: 'email',
       },
       {
-        Header: 'User Groups',
+        Header: 'Groups',
         accessor: 'userGroups',
         Cell: ChipCell,
       },

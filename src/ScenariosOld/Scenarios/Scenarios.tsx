@@ -19,7 +19,7 @@ import useStyles from './useStyles';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 
-const Scenarios = (props: ScenariosProps) => {
+const ScenariosOld = (props: ScenariosProps) => {
   const {
     host,
     token,
@@ -422,4 +422,4 @@ const Scenarios = (props: ScenariosProps) => {
   );
 };
 
-export { ScenariosProps, Scenarios };
+export { ScenariosProps, ScenariosOld };

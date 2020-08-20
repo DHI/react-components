@@ -330,7 +330,7 @@ const deleteMapStyle = (host: string, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log('delete style', res)));
 
-// SCENARIOS
+// SCENARIOS (OLD)
 
 const fetchScenario = (dataSource: DataSource, token: string, id: string) =>
   fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${id}?scenarioId=${id}`, {

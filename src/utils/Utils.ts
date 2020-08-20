@@ -2,7 +2,6 @@ import { parseISO } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
-import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
 
 const dataObjectToArray = (data: { [x: string]: any }) => {
   return Object.keys(data).map((key) => ({
@@ -22,78 +21,6 @@ const setObjectProperty = (objectItem: any, property: string, newValue: any) => 
   jp.apply(objectItem, `$.${property}`, () => newValue);
 };
 
-const getDescriptions = (
-  scenarioData: Scenario,
-  descriptionFields: DescriptionField[] | undefined,
-  timeZone: string | undefined,
-) => {
-  const descriptions: { name: string; value: any }[] = [];
-
-  if (!descriptionFields) {
-    return descriptions;
-  }
-
-  for (const field of descriptionFields) {
-    const value = getObjectProperty(scenarioData, field.field);
-
-    // if (!value) {
-    //   console.warn(`Could not find field reference: ${field.field}!`);
-    //   continue;
-    // }
-
-    // Check if valid conditions met
-    if (!field.condition || checkCondition(scenarioData, field.condition)) {
-      // Formatting
-      let formattedValue = value;
-
-      // Formatting if date/time type
-      if (value && field.dataType === 'dateTime') {
-        let date: Date = parseISO(value);
-
-        if (timeZone) {
-          date = utcToTz(value, timeZone);
-        }
-
-        formattedValue = format(date, field.format ? field.format : 'yyyy-MM-dd HH:mm:ss');
-      }
-
-      descriptions.push({
-        name: field.name,
-        value: formattedValue,
-      });
-    }
-  }
-
-  return descriptions;
-};
-
-const checkCondition = (scenarioData: Scenario, condition: Condition) => {
-  let conditions: string[] = [];
-  let isInverse = false;
-
-  if (condition) {
-    if (condition!.field.indexOf('!') === 0) {
-      isInverse = true;
-    }
-
-    // If we have a value, check that it matches
-    // If we didn't specify a value, just want to check if this field has data or not
-    if (condition.value) {
-      if (isArray(condition.value)) {
-        conditions = [...condition.value];
-      } else {
-        conditions = [condition.value!];
-      }
-
-      return conditions.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse;
-    } else {
-      return (getObjectProperty(scenarioData, condition!.field.replace('!', '')) != null) === !isInverse;
-    }
-  } else {
-    return true;
-  }
-};
-
 const changeObjectProperty = (objectItem: any, property: string, intent: any) => {
   const properties = property.split('.');
   let value = objectItem;
@@ -111,29 +38,6 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
   }
 
   return body[0];
-};
-
-const checkStatus = (scenario: Scenario, status: Status[]) => {
-  const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
-  const progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
-
-  const currentStatus = {
-    ...status.find((s) => s.name === scenarioStatus),
-    progress,
-  };
-
-  let result;
-
-  if (!scenarioStatus) {
-    result = {
-      color: 'red',
-      message: 'Unknown Status Field',
-    };
-  } else {
-    result = currentStatus;
-  }
-
-  return result;
 };
 
 /**
@@ -239,15 +143,4 @@ export const passwordStrength = (password?: string) => {
   return 0;
 };
 
-export {
-  dataObjectToArray,
-  getObjectProperty,
-  setObjectProperty,
-  getDescriptions,
-  changeObjectProperty,
-  checkCondition,
-  checkStatus,
-  utcToTz,
-  queryProp,
-  uniqueId,
-};
+export { dataObjectToArray, getObjectProperty, setObjectProperty, changeObjectProperty, utcToTz, queryProp, uniqueId };

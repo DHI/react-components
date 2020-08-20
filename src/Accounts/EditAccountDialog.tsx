@@ -289,7 +289,7 @@ const UserGroupsInput = ({
   return (
     <Autocomplete
       disabled={isLoading}
-      placeholder={isLoading ? 'Loading user groups...' : 'Select user group(s)'}
+      placeholder={isLoading ? 'Loading groups...' : 'Select group(s)'}
       options={options}
       value={selectedOptions}
       onChange={(e, values) => {
@@ -301,7 +301,7 @@ const UserGroupsInput = ({
           {...props}
           name="groups"
           variant="standard"
-          label="User group(s)"
+          label="Group(s)"
           placeholder="Select"
           autoComplete="off"
         />

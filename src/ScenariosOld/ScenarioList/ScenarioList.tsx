@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
 import { Scenario } from '../types';
 import ScenarioListProps from './types';
 import useStyles from './useStyles';
+import { getObjectProperty, utcToTz } from '../../utils/Utils';
+import { checkCondition, getDescriptions, checkStatus } from '../utils';
 
 const ScenarioList = (props: ScenarioListProps) => {
   const {
