@@ -2,13 +2,13 @@ import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   cancelJob,
-  deleteScenario,
   executeJob,
-  fetchScenario,
-  fetchScenarios,
-  fetchScenariosByDate,
-  postScenario,
-  updateScenario,
+  fetchJsonDocumentsByDate,
+  fetchJsonDocuments,
+  postJsonDocument,
+  updateJsonDocument,
+  fetchJsonDocument,
+  deleteJsonDocument,
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { getObjectProperty, setObjectProperty } from '../../utils/Utils';
@@ -57,13 +57,13 @@ const Scenarios = (props: ScenariosProps) => {
     let interval: ReturnType<typeof setTimeout>;
 
     if (queryDates) {
-      fetchScenariosByDateList(queryDates);
+      fetchJsonDocumentsByDateList(queryDates);
 
-      interval = setInterval(() => fetchScenariosByDateList(queryDates), frequency * 1000);
+      interval = setInterval(() => fetchJsonDocumentsByDateList(queryDates), frequency * 1000);
     } else {
-      fetchScenariosList();
+      fetchJsonDocumentsList();
 
-      interval = setInterval(() => fetchScenariosList(), frequency * 1000);
+      interval = setInterval(() => fetchJsonDocumentsList(), frequency * 1000);
     }
 
     return () => {
@@ -93,8 +93,8 @@ const Scenarios = (props: ScenariosProps) => {
     }
   }, [addScenario]);
 
-  const fetchScenariosByDateList = (queryDates: QueryDates) => {
-    fetchScenariosByDate(
+  const fetchJsonDocumentsByDateList = (queryDates: QueryDates) => {
+    fetchJsonDocumentsByDate(
       {
         host,
         connection: scenarioConnection,
@@ -123,8 +123,8 @@ const Scenarios = (props: ScenariosProps) => {
     );
   };
 
-  const fetchScenariosList = () => {
-    fetchScenarios(
+  const fetchJsonDocumentsList = () => {
+    fetchJsonDocuments(
       {
         host,
         connection: scenarioConnection,
@@ -157,14 +157,14 @@ const Scenarios = (props: ScenariosProps) => {
 
   const onAddScenario = (newScenario: Scenario) => {
     if (newScenario) {
-      postScenario(
+      postJsonDocument(
         {
           host,
           connection: scenarioConnection,
         },
         token,
         newScenario,
-      ).subscribe((res) => res && fetchScenariosList());
+      ).subscribe((res) => res && fetchJsonDocumentsList());
     }
   };
 
@@ -210,7 +210,7 @@ const Scenarios = (props: ScenariosProps) => {
     ).subscribe(
       (res) =>
         res &&
-        updateScenario(
+        updateJsonDocument(
           {
             host,
             connection: scenarioConnection,
@@ -221,7 +221,7 @@ const Scenarios = (props: ScenariosProps) => {
             lastJobId: res.id,
             data: JSON.stringify(scenario.data),
           },
-        ).subscribe((res) => res && fetchScenariosList()),
+        ).subscribe((res) => res && fetchJsonDocumentsList()),
     );
   };
 
@@ -235,18 +235,18 @@ const Scenarios = (props: ScenariosProps) => {
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);
 
-    postScenario(
+    postJsonDocument(
       {
         host,
         connection: scenarioConnection,
       },
       token,
       clonedScenario,
-    ).subscribe((res) => res && fetchScenariosList());
+    ).subscribe((res) => res && fetchJsonDocumentsList());
   };
 
   const getScenario = (id: string, resultCallback: (data: any) => void) => {
-    fetchScenario(
+    fetchJsonDocument(
       {
         host,
         connection: scenarioConnection,
@@ -336,14 +336,14 @@ const Scenarios = (props: ScenariosProps) => {
   const onDeleteScenario = (scenario: Scenario) => {
     closeDialog();
 
-    deleteScenario(
+    deleteJsonDocument(
       {
         host,
         connection: scenarioConnection,
       },
       token,
       scenario.id,
-    ).subscribe((res) => res.ok && fetchScenariosList());
+    ).subscribe((res) => res.ok && fetchJsonDocumentsList());
   };
 
   const closeDialog = () => {

@@ -330,6 +330,77 @@ const deleteMapStyle = (host: string, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log('delete style', res)));
 
+// JSON DOCUMENT
+
+const fetchJsonDocument = (dataSource: DataSource, token: string, id: string) =>
+  fetchUrl(`${dataSource.host}/api/jsondocuments/${dataSource.connection}/${id}?id=${id}`, {
+    method: 'GET',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log(`${id} JSON document fetched`, res)));
+
+const fetchJsonDocuments = (dataSource: DataSource, token: string) => {
+  const dataSelectors =
+    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
+      ? `?dataSelectors=[${dataSource.dataSelectors
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
+      : '';
+
+  return fetchUrl(`${dataSource.host}/api/jsondocuments/${dataSource.connection}${dataSelectors}`, {
+    method: 'GET',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log('List of JSON documents fetched', res)));
+};
+
+const fetchJsonDocumentsByDate = (dataSource: DataSource, token: string) => {
+  const dataSelectors =
+    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
+      ? `?dataSelectors=[${dataSource.dataSelectors
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
+      : '';
+
+  return fetchUrl(
+    `${dataSource.host}/api/jsondocuments/${dataSource.connection}/list?from=${dataSource.from}&to=${dataSource.to}${dataSelectors}`,
+    {
+      method: 'GET',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};
+
+const deleteJsonDocument = (dataSource: DataSource, token: string, id: any) =>
+  fetchUrl(`${dataSource.host}/api/jsondocuments/${dataSource.connection}/${id}`, {
+    method: 'DELETE',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log('JSON document deleted', res)));
+
+const postJsonDocument = (dataSource: DataSource, token: string, jsonDocument: any) =>
+  fetchUrl(`${dataSource.host}/api/jsondocuments/${dataSource.connection}`, {
+    method: 'POST',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(jsonDocument),
+  }).pipe(tap((res) => console.log('JSON document posted', res)));
+
+const updateJsonDocument = (dataSource: DataSource, token: string, jsonDocument: any) =>
+  fetchUrl(`${dataSource.host}/api/jsonDocuments/${dataSource.connection}`, {
+    method: 'PUT',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(jsonDocument),
+  }).pipe(tap((res) => console.log('JSON document updated', res)));
+
 // SCENARIOS (OLD)
 
 const fetchScenario = (dataSource: DataSource, token: string, id: string) =>
@@ -569,6 +640,12 @@ export {
   fetchTimeseriesByGroup,
   fetchMapAnimationFiles,
   fetchMapStylePalette,
+  fetchJsonDocument,
+  fetchJsonDocuments,
+  fetchJsonDocumentsByDate,
+  deleteJsonDocument,
+  postJsonDocument,
+  updateJsonDocument,
   fetchScenario,
   fetchScenarios,
   fetchScenariosByDate,
