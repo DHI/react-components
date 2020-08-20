@@ -11,7 +11,7 @@ import {
   updateScenario,
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
-import { changeObjectProperty, getObjectProperty } from '../../utils/Utils';
+import { getObjectProperty, setObjectProperty } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';
 import ScenariosProps from './types';
@@ -227,12 +227,11 @@ const Scenarios = (props: ScenariosProps) => {
 
   const onCloneScenario = (scenario: Scenario) => {
     closeDialog();
-    let clonedScenario = {
+    const clonedScenario = {
       data: scenario.data,
     };
     const clonedNamed = `Clone of ${getObjectProperty(scenario.data, nameField)}`;
-
-    clonedScenario = changeObjectProperty(clonedScenario, nameField, clonedNamed);
+    setObjectProperty(clonedScenario.data, nameField, clonedNamed);
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);
 
