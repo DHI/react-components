@@ -1,8 +1,8 @@
-interface IGeneralDialogProps {
+interface GeneralDialogProps {
   /**
    * Value to be set as dialog id
    */
-  mainSection: string;
+  dialogId: string;
   /**
    * Title of the dialog
    */
@@ -24,13 +24,13 @@ interface IGeneralDialogProps {
    */
   showDialog: boolean;
   /**
-   * Handler when dialog closed
+   * Handler when dialog cancelled
    */
-  closeDialog?: Function;
+  onCancel?: () => void;
   /**
    * Handler when dialog confirmed
    */
-  command?: Function;
+  onConfirm?: () => void;
 }
 
-export default IGeneralDialogProps;
+export default GeneralDialogProps;

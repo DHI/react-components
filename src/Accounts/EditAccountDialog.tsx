@@ -7,7 +7,11 @@ import {
   InputAdornment,
   TextField,
   CircularProgress,
+  FormControlLabel,
+  FormLabel,
+  Typography,
 } from '@material-ui/core';
+import { fade, ThemeProvider, withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { FiberManualRecord } from '@material-ui/icons';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { passwordStrength } from '../utils/Utils';
@@ -16,52 +20,55 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 export const EditAccountDialog = ({
   user,
-  editing,
-  open = false,
+  isEditing,
+  dialogOpen = false,
   onSubmit,
-  onToggle,
+  onCancel,
   token,
   host,
 }: {
   token: string;
   host: string;
   user: Record<any, any>;
-  editing?: boolean;
-  open?: boolean;
-  onSubmit(details: any, groups: string[]): void;
-  onToggle(data?: any, isEditing?: boolean): () => void;
+  isEditing?: boolean;
+  dialogOpen?: boolean;
+  onCancel(): void;
+  onSubmit(details: EditUser, onCompleteCallback: () => void, closeCallback: () => void): void;
 }) => {
   const [state, setState] = useState({
     passwordValid: true,
     passwordStrengthColor: 'red',
+    loading: false,
   });
   const [userGroups, setUserGroups] = React.useState<string[]>([]);
-  const [form, setForm] = useState({
+  const userTemplate = {
     id: '',
     name: '',
-    roles: '',
     email: '',
     password: '',
     repeatPassword: '',
-  });
+    userGroups: [],
+  };
+  const [form, setForm] = useState<EditUser>(userTemplate);
+  user = isEditing ? user : userTemplate;
 
   useEffect(() => {
     setForm({
       id: user.id,
       name: user.name,
-      roles: user.roles,
       email: user.email,
       password: '',
       repeatPassword: '',
-    });
+      userGroups: user.userGroups,
+    } as EditUser);
   }, [open]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log({
-      form,
-      user,
+    setState({
+      ...state,
+      loading: true,
     });
 
     if (form.password && form.password !== form.repeatPassword) {
@@ -73,13 +80,22 @@ export const EditAccountDialog = ({
     const userDetails = {
       id: form.id,
       name: form.name,
-      roles: form.roles || '',
       email: form.email || '',
       password: form.password,
       repeatPassword: form.repeatPassword,
-    };
+      userGroups: form.userGroups || [],
+    } as EditUser;
 
-    onSubmit(userDetails, userGroups);
+    onSubmit(
+      userDetails,
+      () => {
+        setState({
+          ...state,
+          loading: false,
+        });
+      },
+      onCancel,
+    );
   };
 
   const updatePasswordStrengthIndicator = (password: string) => {
@@ -122,48 +138,75 @@ export const EditAccountDialog = ({
     </InputAdornment>
   );
 
+  const NoBorderTextField = withStyles({
+    root: {
+      '& .MuiOutlinedInput-root': {
+        'color': 'rgba(0, 0, 0, 0.87); !important',
+        '& fieldset': {
+          border: 'none',
+        },
+      },
+    },
+  })(TextField);
+
   const content = (
     <DialogContent>
+      {!isEditing ? (
+        <TextField
+          required
+          fullWidth
+          autoFocus
+          margin="dense"
+          label="Username"
+          variant="standard"
+          value={form.id}
+          onChange={handleChange('id')}
+        />
+      ) : (
+        <NoBorderTextField
+          fullWidth
+          label="Username"
+          margin="dense"
+          variant="standard"
+          value={form.id}
+          disabled={true}
+        />
+      )}
       <TextField
-        required
         fullWidth
-        autoFocus
-        margin="dense"
-        label="User name"
-        variant="outlined"
-        value={form.id}
-        onChange={handleChange('id')}
-      />
-      <TextField
-        fullWidth
+        name="newPassword"
         margin="dense"
         type="password"
         label="Password"
-        variant="outlined"
-        required={!editing}
+        variant="standard"
+        required={!isEditing}
         value={form.password}
         error={!state.passwordValid}
         InputProps={{ endAdornment }}
         onChange={handleChange('password')}
+        autoComplete="new-password"
       />
+      {/* Must be 'new-password' to avoid autoComplete. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#Browser_compatibility */}
       <TextField
         fullWidth
+        name="repeatPassword"
         margin="dense"
         type="password"
-        variant="outlined"
-        required={!editing}
+        variant="standard"
+        required={!isEditing}
         label="Repeat Password"
         value={form.repeatPassword}
         error={!state.passwordValid}
         onChange={handleChange('repeatPassword')}
         helperText={!state.passwordValid && 'Passwords do not match'}
+        autoComplete="new-password"
       />
       <TextField
         required
         fullWidth
         label="Name"
         margin="dense"
-        variant="outlined"
+        variant="standard"
         value={form.name}
         onChange={handleChange('name')}
       />
@@ -171,7 +214,7 @@ export const EditAccountDialog = ({
         fullWidth
         label="Email"
         margin="dense"
-        variant="outlined"
+        variant="standard"
         value={form.email}
         onChange={handleChange('email')}
       />
@@ -184,7 +227,7 @@ export const EditAccountDialog = ({
 
           setForm({
             ...form,
-            roles: groups.join(', '),
+            userGroups: groups,
           });
         }}
       />
@@ -192,27 +235,21 @@ export const EditAccountDialog = ({
   );
 
   return (
-    <Dialog open={open}>
+    <Dialog open={dialogOpen}>
       <form onSubmit={handleSubmit}>
-        <DialogTitle id="form-dialog-title">{editing ? 'Edit Account Details' : 'Create New Account'}</DialogTitle>
+        <DialogTitle id="form-dialog-title">{isEditing ? 'Edit Account Details' : 'Create New Account'}</DialogTitle>
         {content}
         <DialogActions>
-          <Button variant="outlined" onClick={onToggle(null, false)}>
+          <Button variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit" variant="contained" color="primary">
-            {editing ? 'Update' : 'Create'}
+            {isEditing ? 'Update' : 'Create'}
           </Button>
         </DialogActions>
       </form>
     </Dialog>
   );
-};
-
-type IUserGroups = {
-  id: string;
-  name: string;
-  users: string[];
 };
 
 const UserGroupsInput = ({
@@ -227,14 +264,12 @@ const UserGroupsInput = ({
   onChange(selectedGroups: string[]): void;
 }) => {
   const [isLoading, setLoading] = React.useState(true);
-  const [groups, setGroups] = React.useState<IUserGroups[]>([]);
+  const [groups, setGroups] = React.useState<UserGroups[]>([]);
   const [options, setOptions] = React.useState<string[]>([]);
   const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     if (!token) return;
-
-    console.log('reee', { host, token });
 
     fetchUserGroups(host, token).subscribe(async (body) => {
       setGroups(body);
@@ -254,18 +289,30 @@ const UserGroupsInput = ({
   return (
     <Autocomplete
       disabled={isLoading}
-      placeholder={isLoading ? 'Loading user groups...' : undefined}
+      placeholder={isLoading ? 'Loading user groups...' : 'Select user group(s)'}
       options={options}
       value={selectedOptions}
       onChange={(e, values) => {
         setSelectedOptions(values as string[]);
       }}
       multiple={true as any}
-      renderInput={(props) => <TextField name="userGroups" {...props} />}
+      renderInput={(props) => (
+        <TextField
+          {...props}
+          name="groups"
+          variant="standard"
+          label="User group(s)"
+          placeholder="Select"
+          autoComplete="off"
+        />
+      )}
+      style={{
+        marginTop: 8,
+      }}
     />
   );
 };
 
-function getGroupsUserBelongsTo(groups: IUserGroups[], userId: string) {
+function getGroupsUserBelongsTo(groups: UserGroups[], userId: string) {
   return groups.filter(({ users }) => users.includes(userId)).map(({ id }) => id);
 }
