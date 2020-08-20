@@ -1,23 +1,23 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React from 'react';
-import IGeneralDialogProps from './types';
+import GeneralDialogProps from './types';
 
-const GeneralDialog = (props: IGeneralDialogProps) => {
-  const { mainSection, title, message, cancelLabel, confirmLabel, command, showDialog, closeDialog } = props;
+const GeneralDialog = (props: GeneralDialogProps) => {
+  const { dialogId, title, message, cancelLabel, confirmLabel, showDialog, onConfirm, onCancel } = props;
 
-  const setCloseDialog = () => {
-    closeDialog && closeDialog();
+  const setCancel = () => {
+    onCancel && onCancel();
   };
 
-  const setCommandDialog = () => {
-    command && command();
+  const setConfirm = () => {
+    onConfirm && onConfirm();
   };
 
   return (
     <Dialog
-      id={`${mainSection}-dialog`}
+      id={`${dialogId}-dialog`}
       open={showDialog}
-      onClose={() => closeDialog}
+      onClose={onCancel}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -26,11 +26,11 @@ const GeneralDialog = (props: IGeneralDialogProps) => {
         <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
       </DialogContent>
       <DialogActions style={{ padding: '24px', margin: '0px' }}>
-        <Button onClick={setCloseDialog} variant="outlined">
-          {cancelLabel}
+        <Button onClick={setCancel} variant="outlined">
+          {cancelLabel || 'Cancel'}
         </Button>
-        <Button onClick={setCommandDialog} color="primary" variant="contained">
-          {confirmLabel}
+        <Button onClick={setConfirm} color="primary" variant="contained">
+          {confirmLabel || 'Confirm'}
         </Button>
       </DialogActions>
     </Dialog>
