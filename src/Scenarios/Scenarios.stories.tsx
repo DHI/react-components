@@ -2,12 +2,13 @@ import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useState } from 'react';
 import { LoginGate } from '../Auth/LoginGate';
-import { MenuItem, Scenario } from '../ScenariosOld/types';
-import { ScenariosOld } from '..';
+import { Scenarios } from '../Scenarios/Scenarios/Scenarios';
+import { Scenario, MenuItem } from '../Scenarios/types';
+import { ScenariosOld, ScenarioOld, MenuItemOld } from '..';
 
 export default {
   title: 'Scenarios Components',
-  component: [ScenariosOld],
+  component: [Scenarios],
 };
 
 export const ScenariosJsonDocStory = () => {
@@ -46,7 +47,7 @@ export const ScenariosJsonDocStory = () => {
                 <span>Add new scenario</span>
               </Button>
             </Typography>
-            <ScenariosOld
+            <Scenarios
               frequency={10}
               token={token.accessToken.token}
               host={process.env.ENDPOINT_URL}
@@ -202,7 +203,7 @@ export const ScenariosJsonDocStory = () => {
 };
 
 export const ScenariosStory = () => {
-  const [newScenario, setNewScenario] = useState<Scenario>();
+  const [newScenario, setNewScenario] = useState<ScenarioOld>();
 
   const onAddScenario = () => {
     setNewScenario({
@@ -280,19 +281,19 @@ export const ScenariosStory = () => {
                   },
                 },
               ]}
-              onContextMenuClick={(menuItem: MenuItem, scenario: Scenario) =>
+              onContextMenuClick={(menuItem: MenuItemOld, scenario: ScenarioOld) =>
                 console.log('Scenario menu item clicked', {
                   menuItem,
                   scenario,
                 })
               }
-              onScenarioSelected={(scenario: Scenario) => {
+              onScenarioSelected={(scenario: ScenarioOld) => {
                 console.log('Scenario selected', scenario);
               }}
-              onScenarioReceived={(scenario: Scenario) => {
+              onScenarioReceived={(scenario: ScenarioOld) => {
                 console.log('Full Scenario received', scenario);
               }}
-              onScenariosReceived={(scenarios: Scenario[]) => {
+              onScenariosReceived={(scenarios: ScenarioOld[]) => {
                 console.log('Received new scenarios!', scenarios);
               }}
               nameField="name"

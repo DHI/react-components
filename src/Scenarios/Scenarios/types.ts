@@ -1,7 +1,7 @@
 import { JobParameters } from '../../DataServices/types';
-import { QueryDatesOld, ScenarioOld, MenuItemOld, DescriptionFieldOld, StatusOld } from '../types';
+import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
 
-interface ScenariosOldProps {
+interface ScenariosProps {
   /**
    * Property field to specify the scenario name
    */
@@ -57,7 +57,7 @@ interface ScenariosOldProps {
   /**
    * Value range to fetch scenario by date
    */
-  queryDates?: QueryDatesOld;
+  queryDates?: QueryDates;
   /**
    * Customising translation dialog
    */
@@ -90,43 +90,43 @@ interface ScenariosOldProps {
   /**
    * Customising scenario status display
    */
-  status: StatusOld[];
+  status: Status[];
   /**
    * Customising scenario description field display
    */
-  descriptionFields?: DescriptionFieldOld[];
+  descriptionFields?: DescriptionField[];
   /**
    * Customising scenario extra field display
    */
-  extraFields?: DescriptionFieldOld[];
+  extraFields?: DescriptionField[];
   /**
    * The scenario menu options
    */
-  menuItems: MenuItemOld[];
+  menuItems: MenuItem[];
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: MenuItemOld, scenario: ScenarioOld) => void;
+  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   /**
    * Emit event to client when scenario selected by user (basic scenario data)
    */
-  onScenarioSelected: (scenario: ScenarioOld) => void;
+  onScenarioSelected: (scenario: Scenario) => void;
   /**
    * Emit event to client when scenario received from the server after a selection (full scenario data)
    */
-  onScenarioReceived: (scenario: ScenarioOld) => void;
+  onScenarioReceived: (scenario: Scenario) => void;
   /**
    * Emit even to client when list of scenarios received from the server
    */
-  onScenariosReceived: (scenarios: ScenarioOld[]) => void;
+  onScenariosReceived: (scenarios: Scenario[]) => void;
   /**
    * The object data to be added as new scenario (optional)
    */
-  addScenario?: ScenarioOld | undefined;
+  addScenario?: Scenario | undefined;
   /**
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
 }
 
-export default ScenariosOldProps;
+export default ScenariosProps;
