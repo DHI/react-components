@@ -2,11 +2,11 @@ import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
-import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
-import ScenarioItemProps from './types';
+import ScenarioItemOldProps from './types';
 import useStyles from './useStyles';
+import { ScenarioMenuOld } from '../ScenarioMenu/ScenarioMenu';
 
-const ScenarioItem = (props: ScenarioItemProps) => {
+const ScenarioItemOld = (props: ScenarioItemOldProps) => {
   const [hover, setHover] = useState(false);
   const classes = useStyles();
   const {
@@ -86,9 +86,9 @@ const ScenarioItem = (props: ScenarioItemProps) => {
       {scenarioHour}
       {scenarioStatus}
       {scenarioDetails}
-      {showMenu && <ScenarioMenu onContextMenuClick={onContextMenuClick} menu={menu} scenario={scenario} />}
+      {showMenu && <ScenarioMenuOld onContextMenuClick={onContextMenuClick} menu={menu} scenario={scenario} />}
     </div>
   );
 };
 
-export { ScenarioItemProps, ScenarioItem };
+export { ScenarioItemOldProps, ScenarioItemOld };

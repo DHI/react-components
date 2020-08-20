@@ -1,6 +1,6 @@
-import { DescriptionField, MenuItem, Scenario, Status } from '../types';
+import { MenuItemOld, ScenarioOld, DescriptionFieldOld, StatusOld } from '../types';
 
-interface ScenarioListProps {
+interface ScenarioListOldProps {
   /**
    * Style of the list
    */
@@ -8,11 +8,11 @@ interface ScenarioListProps {
   /**
    * List of menu items
    */
-  menuItems: MenuItem[];
+  menuItems: MenuItemOld[];
   /**
    * The list of scenario
    */
-  scenarios: Scenario[];
+  scenarios: ScenarioOld[];
   /**
    * Property field to specify the scenario name
    */
@@ -20,11 +20,11 @@ interface ScenarioListProps {
   /**
    * Customising scenario description field display
    */
-  descriptionFields?: DescriptionField[];
+  descriptionFields?: DescriptionFieldOld[];
   /**
    * Customising scenario extra field display
    */
-  extraFields?: DescriptionField[];
+  extraFields?: DescriptionFieldOld[];
   /**
    * Indicates if the date of the scenario should be shown
    */
@@ -48,19 +48,19 @@ interface ScenarioListProps {
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
+  onContextMenuClick: (menuItem: MenuItemOld, scenario: ScenarioOld) => void;
   /**
    * Emit event to client when scenario selected by user
    */
-  onScenarioSelected: (scenario: Scenario) => void;
+  onScenarioSelected: (scenario: ScenarioOld) => void;
   /**
    * Customising scenario status display
    */
-  status: Status[];
+  status: StatusOld[];
   /**
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
 }
 
-export default ScenarioListProps;
+export default ScenarioListOldProps;

@@ -1,4 +1,4 @@
-interface Status {
+interface StatusOld {
   /**
    * Scenario status name
    */
@@ -17,7 +17,7 @@ interface Status {
   progress?: number;
 }
 
-interface DescriptionField {
+interface DescriptionFieldOld {
   /**
    * Scenario description data field to be diplay as value
    */
@@ -38,10 +38,10 @@ interface DescriptionField {
    * Optional display conditions
    * Prefix with `!` to indicate _not equal to_
    */
-  condition?: Condition;
+  condition?: ConditionOld;
 }
 
-interface MenuItem {
+interface MenuItemOld {
   /**
    * The id of scenario option menu
    */
@@ -56,14 +56,14 @@ interface MenuItem {
    * Optional display conditions
    * Prefix with `!` to indicate _not equal to_
    */
-  condition?: Condition;
+  condition?: ConditionOld;
   /**
    * Extra job parameters
    */
   jobParameters?: any;
 }
 
-interface Scenario {
+interface ScenarioOld {
   /**
    * The Id of the scenario
    */
@@ -89,7 +89,7 @@ interface Scenario {
  * Optional display conditions
  * Prefix with `!` to indicate _not equal to_
  */
-interface Condition {
+interface ConditionOld {
   /**
    * Id of field
    */
@@ -100,7 +100,7 @@ interface Condition {
   value?: string | string[];
 }
 
-interface QueryDates {
+interface QueryDatesOld {
   /**
    * Start date to fetch scenario by date
    */
@@ -111,14 +111,23 @@ interface QueryDates {
   windowEnd: string;
 }
 
-interface ContextMenuClickHandler {
+interface ContextMenuClickHandlerOld {
   /** Handler on menu option clicked */
-  (menuItem: MenuItem, scenario: Scenario): void;
+  (menuItem: MenuItemOld, scenario: ScenarioOld): void;
 }
 
-interface CloseDialog {
+interface CloseDialogOld {
   /** Handler on menu option closed */
   (value: boolean): void;
 }
 
-export { Status, DescriptionField, MenuItem, Scenario, Condition, QueryDates, ContextMenuClickHandler, CloseDialog };
+export {
+  StatusOld,
+  DescriptionFieldOld,
+  MenuItemOld,
+  ScenarioOld,
+  ConditionOld,
+  QueryDatesOld,
+  ContextMenuClickHandlerOld,
+  CloseDialogOld,
+};

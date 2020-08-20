@@ -3,14 +3,14 @@ import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
-import { Scenario } from '../types';
-import ScenarioListProps from './types';
+import { ScenarioItemOld } from '../ScenarioItem/ScenarioItem';
+import { ScenarioOld } from '../types';
+import ScenarioListOldProps from './types';
 import useStyles from './useStyles';
 import { getObjectProperty, utcToTz } from '../../utils/Utils';
 import { checkCondition, getDescriptions, checkStatus } from '../utils';
 
-const ScenarioList = (props: ScenarioListProps) => {
+const ScenarioListOld = (props: ScenarioListOldProps) => {
   const {
     selectedScenarioId,
     scenarios,
@@ -26,7 +26,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     nameField,
     timeZone,
   } = props;
-  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
+  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<ScenarioOld[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
 
@@ -34,7 +34,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     groupScenarios(scenarios);
   }, [scenarios]);
 
-  const groupScenarios = (scenarios: Scenario[]) => {
+  const groupScenarios = (scenarios: ScenarioOld[]) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
@@ -44,13 +44,13 @@ const ScenarioList = (props: ScenarioListProps) => {
     );
   };
 
-  const buildMenu = (scenario: Scenario) => {
+  const buildMenu = (scenario: ScenarioOld) => {
     return menuItems.filter((menuItem) => {
       return !menuItem.condition || checkCondition(scenario, menuItem.condition) ? menuItem : null;
     });
   };
 
-  const buildScenariosList = (scenarios: Scenario[]) => {
+  const buildScenariosList = (scenarios: ScenarioOld[]) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario) => {
@@ -64,7 +64,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'id'),
             })}
           >
-            <ScenarioItem
+            <ScenarioItemOld
               name={getObjectProperty(scenario.data, nameField)}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
@@ -104,7 +104,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     );
   };
 
-  const onScenarioClick = (scenario: Scenario) => {
+  const onScenarioClick = (scenario: ScenarioOld) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id'));
 
@@ -134,4 +134,4 @@ const ScenarioList = (props: ScenarioListProps) => {
   return <div className={classes.root}>{printedScenarios}</div>;
 };
 
-export { ScenarioListProps, ScenarioList };
+export { ScenarioListOldProps, ScenarioListOld };

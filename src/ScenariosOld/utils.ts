@@ -1,11 +1,11 @@
-import { DescriptionField, Scenario, Condition, Status } from './types';
 import { getObjectProperty, utcToTz } from '..';
 import { parseISO, format } from 'date-fns';
 import { isArray } from 'lodash';
+import { ScenarioOld, DescriptionFieldOld, ConditionOld, StatusOld } from './types';
 
 const getDescriptions = (
-  scenarioData: Scenario,
-  descriptionFields: DescriptionField[] | undefined,
+  scenarioData: ScenarioOld,
+  descriptionFields: DescriptionFieldOld[] | undefined,
   timeZone: string | undefined,
 ) => {
   const descriptions: { name: string; value: any }[] = [];
@@ -48,7 +48,7 @@ const getDescriptions = (
   return descriptions;
 };
 
-const checkCondition = (scenarioData: Scenario, condition: Condition) => {
+const checkCondition = (scenarioData: ScenarioOld, condition: ConditionOld) => {
   let conditions: string[] = [];
   let isInverse = false;
 
@@ -75,7 +75,7 @@ const checkCondition = (scenarioData: Scenario, condition: Condition) => {
   }
 };
 
-const checkStatus = (scenario: Scenario, status: Status[]) => {
+const checkStatus = (scenario: ScenarioOld, status: StatusOld[]) => {
   const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
   const progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
 
