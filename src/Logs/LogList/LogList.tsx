@@ -2,10 +2,6 @@ import {
   Box,
   CircularProgress,
   CssBaseline,
-  IconButton,
-  Input,
-  Menu,
-  MenuItem,
   TableBody,
   TableCell,
   TableHead,
@@ -15,19 +11,19 @@ import {
 } from '@material-ui/core';
 import { blueGrey, red, yellow } from '@material-ui/core/colors';
 import MaUTable from '@material-ui/core/Table';
-import { HelpOutline } from '@material-ui/icons';
-import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
-import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import NewReleasesIcon from '@material-ui/icons/NewReleases';
-import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
+import {
+  HelpOutline,
+  BugReportOutlined,
+  InfoOutlined,
+  ErrorOutlineOutlined,
+  WarningOutlined,
+  NewReleases,
+} from '@material-ui/icons';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   TableInstance,
   useAsyncDebounce,
-  useBlockLayout,
   useFilters,
   UseFiltersOptions,
   useGlobalFilter,
@@ -35,6 +31,7 @@ import {
   UseGlobalFiltersOptions,
   useTable,
   UseTableOptions,
+  useBlockLayout,
 } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
@@ -47,31 +44,31 @@ const LevelIconCell = ({ value }: { value: string }) => {
     case 'Debug':
       return (
         <Tooltip title="Debug">
-          <BugReportOutlinedIcon style={{ color: yellow[900] }} />
+          <BugReportOutlined style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Information':
       return (
         <Tooltip title="Information">
-          <InfoOutlinedIcon style={{ color: blueGrey[500] }} />
+          <InfoOutlined style={{ color: blueGrey[500] }} />
         </Tooltip>
       );
     case 'Error':
       return (
         <Tooltip title="Error">
-          <ErrorOutlineOutlinedIcon style={{ color: red[900] }} />
+          <ErrorOutlineOutlined style={{ color: red[900] }} />
         </Tooltip>
       );
     case 'Warning':
       return (
         <Tooltip title="Warning">
-          <WarningOutlinedIcon style={{ color: yellow[900] }} />
+          <WarningOutlined style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Critical':
       return (
         <Tooltip title="Critical">
-          <NewReleasesIcon style={{ color: red[900] }} />
+          <NewReleases style={{ color: red[900] }} />
         </Tooltip>
       );
     default:
@@ -208,7 +205,7 @@ const Table = ({
             {loading ? (
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'logLevel') > -1 ? (
-              translations.noEntriesFilter ? (
+              translations?.noEntriesFilter ? (
                 `${(state as any).filters.find((x: { id: string }) => x.id === 'logLevel').value}`
               ) : (
                 `No log entries for selected log level : ${
