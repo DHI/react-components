@@ -20,7 +20,7 @@ interface LogListProps {
     noEntriesFilter?: string;
   };
   /** Emit event to client when jobs received from the server */
-  onReceived: (data: any) => void;
+  onReceived?: (data: any) => void;
 }
 
 interface LogData {
