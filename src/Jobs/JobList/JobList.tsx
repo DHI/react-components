@@ -209,7 +209,7 @@ const Table = ({
             {loading ? (
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
-              translations.noEntriesFilter ? (
+              translations?.noEntriesFilter ? (
                 `${translations.noEntriesFilter} : ${
                   (state as any).filters.find((x: { id: string }) => x.id === 'status').value
                 }`

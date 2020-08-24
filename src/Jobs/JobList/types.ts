@@ -13,7 +13,7 @@ interface JobListProps {
   startTimeUtc: string;
   /** Time zone to display data from the server to user time */
   timeZone: string;
-  translations: {
+  translations?: {
     /** Message when no data entries. */
     noEntriesData?: string;
     /** Message when no data entries. */
