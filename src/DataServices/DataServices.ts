@@ -71,11 +71,11 @@ const fetchFeatureCollectionValues = (dataSources: DataSource | DataSource[], to
 
 // TIMESERIES
 
-const fetchTimeseriesValues = (dataSources: DataSource[], token: string) => {
+const fetchTimeseriesValues = (dataSources: DataSource[], token: string, onlyLast = false) => {
   const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
   const requests = dataSourcesArray.map((source) => {
-    let url = `${source.host}/api/timeseries/${source.connection}/list/values`;
+    let url = `${source.host}/api/timeseries/${source.connection}/list/${onlyLast ? 'value/last' : 'values'}`;
 
     if (source.from && source.to) {
       url = `${url}?from=${source.from}&to=${source.to}`;
