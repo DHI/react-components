@@ -50,6 +50,13 @@ const AccountTable = ({ error, loading, users, onNew, onEdit, onDelete }: Accoun
     [],
   );
 
+  const noResults = () => {
+    if (error) return <Typography>Error fetching users...</Typography>;
+    if (loading) return <CircularProgress />;
+
+    return <Typography>No records to display.</Typography>;
+  };
+
   const searchItems = (item: AccountData) => {
     if (filter === '') return true;
 
@@ -112,9 +119,7 @@ const AccountTable = ({ error, loading, users, onNew, onEdit, onDelete }: Accoun
             ) : (
               <TableRow>
                 <TableCell style={{ textAlign: 'center' }} colSpan={9}>
-                  {loading && users.length === 0 && <CircularProgress />}
-                  {error && users.length === 0 && <Typography>Error fetching users...</Typography>}
-                  {!loading && !error && users.length === 0 && <Typography>No records to display.</Typography>}
+                  {noResults()}
                 </TableCell>
               </TableRow>
             )}
