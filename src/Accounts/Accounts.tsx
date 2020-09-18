@@ -25,7 +25,7 @@ export const Accounts = (props: AccountListProps) => {
       name: '',
       email: '',
     } as AccountData,
-    error: true,
+    error: false,
     loading: true,
     dialog: {
       showDialog: false,
@@ -56,6 +56,7 @@ export const Accounts = (props: AccountListProps) => {
         setState({
           ...state,
           error: true,
+          loading: false,
         });
 
         console.log(error);
