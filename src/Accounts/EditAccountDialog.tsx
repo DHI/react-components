@@ -15,39 +15,11 @@ import { fetchUserGroups } from '../DataServices/DataServices';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import AccountMetadata from './AccountMetadata';
 
-const metadataSample = [
-  {
-    key: 'myChoice',
-    label: 'My Choice',
-    type: 'SingleChoice',
-    options: ['A', 'B', 'C'],
-    default: 'B',
-  },
-  {
-    key: 'myBoolean',
-    label: 'My Boolean',
-    type: 'Boolean',
-    default: true,
-  },
-  {
-    key: 'myText',
-    label: 'My Text',
-    type: 'Text',
-    default: 'decription',
-  },
-  {
-    key: 'myOptions',
-    label: 'My Options',
-    type: 'MultiChoice',
-    options: ['A', 'C'],
-    default: ['A', 'B', 'C'],
-  },
-];
-
 export const EditAccountDialog = ({
   user,
   isEditing,
   dialogOpen = false,
+  metadata,
   onSubmit,
   onCancel,
   token,
@@ -56,6 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
+  metadata: [];
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
@@ -151,9 +124,6 @@ export const EditAccountDialog = ({
     if (key === 'password') {
       updatePasswordStrengthIndicator(value as string);
     }
-
-    console.log('keys: ', key);
-    console.log('value : ', value);
 
     setForm({
       ...form,
@@ -260,7 +230,7 @@ export const EditAccountDialog = ({
           });
         }}
       />
-      <AccountMetadata data={metadataSample} handleChange={handleChange} />
+      <AccountMetadata initialData={metadata} data={form} handleChange={handleChange} />
     </DialogContent>
   );
 

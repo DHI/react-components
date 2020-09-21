@@ -14,7 +14,7 @@ import GeneralDialogProps from '../common/GeneralDialog/types';
 import AccountTable from './AccountTable';
 
 export const Accounts = (props: AccountListProps) => {
-  const { host, token } = props;
+  const { host, token, metadata } = props;
   // const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [data, setData] = useState<AccountData[]>([]);
   const [state, setState] = useState({
@@ -157,6 +157,7 @@ export const Accounts = (props: AccountListProps) => {
     <EditAccountDialog
       token={token}
       host={host}
+      metadata={metadata}
       user={state.selectedUser}
       dialogOpen={state.isAccountDialogOpen}
       isEditing={state.isEditing}

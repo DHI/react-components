@@ -10,9 +10,38 @@ export default {
 const host = process.env.ENDPOINT_URL;
 
 export const AccountsStory = () => {
+  const metadataSample = [
+    {
+      key: 'myChoice',
+      label: 'My Choice',
+      type: 'SingleChoice',
+      options: ['A', 'B', 'C'],
+      default: 'B',
+    },
+    {
+      key: 'myBoolean',
+      label: 'My Boolean',
+      type: 'Boolean',
+      default: true,
+    },
+    {
+      key: 'myText',
+      label: 'My Text',
+      type: 'Text',
+      default: 'decription',
+    },
+    {
+      key: 'myOptions',
+      label: 'My Options',
+      type: 'MultiChoice',
+      options: ['A', 'B', 'C'],
+      default: ['A', 'C'],
+    },
+  ];
+
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
-      {({ token }) => <Accounts host={host} token={token.accessToken.token} />}
+      {({ token }) => <Accounts host={host} metadata={metadataSample} token={token.accessToken.token} />}
     </LoginGate>
   );
 };

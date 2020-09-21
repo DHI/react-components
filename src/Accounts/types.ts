@@ -1,6 +1,7 @@
 interface AccountListProps {
   host: string;
   token: string;
+  metadata: [];
   translations?: {
     /* not impl */
   };
