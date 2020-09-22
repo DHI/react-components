@@ -10,7 +10,7 @@ export default {
 const host = process.env.ENDPOINT_URL;
 
 export const AccountsStory = () => {
-  const metadataSample = [
+  const metadataAccounts = [
     {
       key: 'myChoice',
       label: 'My Choice',
@@ -41,7 +41,7 @@ export const AccountsStory = () => {
 
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
-      {({ token }) => <Accounts host={host} metadata={metadataSample} token={token.accessToken.token} />}
+      {({ token }) => <Accounts host={host} metadataAccounts={metadataAccounts} token={token.accessToken.token} />}
     </LoginGate>
   );
 };

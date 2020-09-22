@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     marginTop: theme.spacing(1),
   },
+  switch: {
+    marginTop: theme.spacing(1),
+  },
 }));
 
 export default function AccountMetadata({
@@ -16,16 +19,13 @@ export default function AccountMetadata({
   handleChange,
 }: {
   initialData: [];
-  data: [];
+  data: {};
   handleChange(key: string, value: any): void;
 }) {
   const classes = useStyles();
 
   return initialData.map(
-    (
-      meta: { key: string; type: string; label: string; default: string; options: string[] | string | {} },
-      i: number,
-    ) => {
+    (meta: { key: string; type: string; label: string; default: string; options: string[] }, i: number) => {
       if (meta.type === 'Text') {
         return (
           <TextField
@@ -35,7 +35,7 @@ export default function AccountMetadata({
             margin="dense"
             label={meta.label}
             variant="standard"
-            value={meta[meta.key]}
+            value={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
             onChange={(e) => handleChange(meta.key, e.target.value)}
           />
         );
@@ -45,7 +45,7 @@ export default function AccountMetadata({
             <InputLabel>{meta.label}</InputLabel>
             <Select
               fullWidth
-              defaultValue={meta.default}
+              value={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
               id={meta.key}
               onChange={(e) => handleChange(meta.key, e.target.value)}
             >
@@ -61,9 +61,11 @@ export default function AccountMetadata({
         return (
           <FormControlLabel
             key={i}
+            className={classes.switch}
             control={
               <Switch
-                checked={data[meta.key] !== undefined ? data[meta.key] : meta.default}
+                color="primary"
+                checked={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
                 onChange={(e) => handleChange(meta.key, e.target.checked)}
                 name={meta.label}
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -78,7 +80,7 @@ export default function AccountMetadata({
             key={i}
             placeholder={`Select ${meta.label}`}
             options={meta.options}
-            value={data[meta.key] !== undefined ? data[meta.key] : meta.default}
+            value={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
             onChange={(e, values) => handleChange(meta.key, values)}
             multiple={true as any}
             renderInput={(props) => (

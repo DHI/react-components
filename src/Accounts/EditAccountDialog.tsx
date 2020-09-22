@@ -19,7 +19,7 @@ export const EditAccountDialog = ({
   user,
   isEditing,
   dialogOpen = false,
-  metadata,
+  metadataAccounts,
   onSubmit,
   onCancel,
   token,
@@ -28,7 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
-  metadata: [];
+  metadataAccounts: MetadataSingleChoice | MetadataBoolean | MetadataText | MetadataMultiChoice | {};
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
@@ -83,6 +83,7 @@ export const EditAccountDialog = ({
       password: form.password,
       repeatPassword: form.repeatPassword,
       userGroups: form.userGroups || [],
+      metaData: form.metaData || [],
     } as EditUser;
 
     onSubmit(
@@ -121,14 +122,30 @@ export const EditAccountDialog = ({
   };
 
   const handleChange = (key: string, value: string[] | string | boolean) => {
+    let isMetadata = true;
+
     if (key === 'password') {
       updatePasswordStrengthIndicator(value as string);
     }
 
-    setForm({
-      ...form,
-      [key]: value,
-    });
+    if (key === 'id' || key === 'password' || key === 'repeatPassword' || key === 'name' || key === 'email') {
+      isMetadata = false;
+    }
+
+    setForm(
+      isMetadata
+        ? {
+            ...form,
+            metaData: {
+              ...form.metaData,
+              [key]: value,
+            },
+          }
+        : {
+            ...form,
+            [key]: value,
+          },
+    );
   };
 
   const endAdornment = (
@@ -230,7 +247,7 @@ export const EditAccountDialog = ({
           });
         }}
       />
-      <AccountMetadata initialData={metadata} data={form} handleChange={handleChange} />
+      <AccountMetadata initialData={metadataAccounts} data={form} handleChange={handleChange} />
     </DialogContent>
   );
 

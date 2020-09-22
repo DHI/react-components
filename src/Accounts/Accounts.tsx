@@ -14,8 +14,7 @@ import GeneralDialogProps from '../common/GeneralDialog/types';
 import AccountTable from './AccountTable';
 
 export const Accounts = (props: AccountListProps) => {
-  const { host, token, metadata } = props;
-  // const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
+  const { host, token, metadataAccounts } = props;
   const [data, setData] = useState<AccountData[]>([]);
   const [state, setState] = useState({
     isAccountDialogOpen: false,
@@ -157,7 +156,7 @@ export const Accounts = (props: AccountListProps) => {
     <EditAccountDialog
       token={token}
       host={host}
-      metadata={metadata}
+      metadataAccounts={metadataAccounts}
       user={state.selectedUser}
       dialogOpen={state.isAccountDialogOpen}
       isEditing={state.isEditing}
@@ -192,6 +191,7 @@ export const Accounts = (props: AccountListProps) => {
         error={state.error}
         loading={state.loading}
         users={data}
+        metadataAccounts={metadataAccounts}
         onNew={openNewUserDialog}
         onEdit={(user) => {
           setState({
