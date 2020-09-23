@@ -17,7 +17,7 @@ import AccountTableHeader from './AccountTableHeader';
 
 const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
-  const metadataHeader = metadataAccounts.reduce(
+  const metadataHeader = (metadataAccounts as any[]).reduce(
     (acc, cur) => [
       ...acc,
       {
@@ -97,7 +97,7 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
   });
 
   const prepareData = () => {
-    const fields = metadataAccounts.map((field) => ({
+    const fields = (metadataAccounts as any[]).map((field) => ({
       [field.key]: field.default,
     }));
 

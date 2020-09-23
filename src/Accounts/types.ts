@@ -1,7 +1,7 @@
 interface AccountListProps {
   host: string;
   token: string;
-  metadataAccounts: MetadataSingleChoice | MetadataBoolean | MetadataText | MetadataMultiChoice | {};
+  metadataAccounts: MetadaAccounts[] | [];
   translations?: {
     /* not impl */
   };
@@ -10,7 +10,7 @@ interface AccountTableProps {
   error: boolean;
   loading: boolean;
   users: AccountData[];
-  metadataAccounts: MetadataSingleChoice | MetadataBoolean | MetadataText | MetadataMultiChoice | {};
+  metadataAccounts: MetadaAccounts[] | [];
   onNew: () => void;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
@@ -37,15 +37,7 @@ interface EditUser {
   password: string;
   repeatPassword: string;
   userGroups: string[];
-  metaData: [
-    {
-      key: string;
-      label: string;
-      type: string;
-      options: string[];
-      default: string;
-    },
-  ];
+  metaData: {};
 }
 
 interface MetadataBase {
@@ -54,22 +46,27 @@ interface MetadataBase {
   type: string;
 }
 
-interface MetadataSingleChoice extends MetadataBase {
-  options: string[];
-  default: string;
-}
+// interface MetadataSingleChoice extends MetadataBase {
+//   options?: string[];
+//   default?: string | boolean;
+// }
 
-interface MetadataMultiChoice extends MetadataBase {
-  options: string[];
-  default: string[];
-}
+// interface MetadataMultiChoice extends MetadataBase {
+//   options?: string[];
+//   default?: string[];
+// }
 
-interface MetadataBoolean extends MetadataBase {
-  default: boolean;
-}
+// interface MetadataBoolean extends MetadataBase {
+//   default?: boolean;
+// }
 
-interface MetadataText extends MetadataBase {
-  default: string;
+// interface MetadataText extends MetadataBase {
+//   default?: string;
+// }
+
+interface MetadaAccounts extends MetadataBase {
+  options?: string[];
+  default: string | boolean | string[];
 }
 
 interface UserGroups {

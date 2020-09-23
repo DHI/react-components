@@ -28,7 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
-  metadataAccounts: MetadataSingleChoice | MetadataBoolean | MetadataText | MetadataMultiChoice | {};
+  metadataAccounts: MetadaAccounts[] | [];
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
@@ -47,6 +47,7 @@ export const EditAccountDialog = ({
     password: '',
     repeatPassword: '',
     userGroups: [],
+    metaData: {},
   };
   const [form, setForm] = useState<EditUser>(userTemplate);
   user = isEditing ? user : userTemplate;
@@ -247,7 +248,7 @@ export const EditAccountDialog = ({
           });
         }}
       />
-      <AccountMetadata initialData={metadataAccounts} data={form} handleChange={handleChange} />
+      <AccountMetadata metadataAccounts={metadataAccounts} data={form} handleChange={handleChange} />
     </DialogContent>
   );
 
