@@ -1,5 +1,13 @@
-import { Box, Chip, Avatar, Switch } from '@material-ui/core';
+import { Box, Chip, Avatar, Switch, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  switch: {
+    '& .MuiSwitch-switchBase.Mui-disabled': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
 
 const ChipCell = ({ cell }: { cell: any }) => {
   return (
@@ -16,8 +24,18 @@ const ChipCell = ({ cell }: { cell: any }) => {
 };
 
 export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { value: any }) => {
+  const classes = useStyles();
+
   if (typeof value === 'boolean') {
-    return <Switch color="primary" checked={value} inputProps={{ 'aria-label': 'secondary checkbox' }} />;
+    return (
+      <Switch
+        color="primary"
+        disabled={value}
+        checked={value}
+        inputProps={{ 'aria-label': 'secondary checkbox' }}
+        className={classes.switch}
+      />
+    );
   }
   if (type === 'MultiChoice' && value !== undefined) {
     return value.map((val, i) => (
