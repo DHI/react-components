@@ -24,8 +24,6 @@ export default function AccountMetadata({
 }) {
   const classes = useStyles();
 
-  console.log(metadataAccounts);
-
   return (
     <Fragment>
       {(metadataAccounts as any[]).map(

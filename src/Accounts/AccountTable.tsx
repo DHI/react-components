@@ -62,9 +62,6 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
 
   const newHeaders = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
 
-  console.log(users);
-  console.log(newHeaders);
-
   const noResults = () => {
     if (error) return <Typography>Error fetching users...</Typography>;
     if (loading) return <CircularProgress />;
@@ -101,31 +98,12 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
       [field.key]: field.default,
     }));
 
-    // const newArray = users.map((user) => {
-    //   let newA = [];
-    //   if (user.metadata) {
-    //     const fi = fields.forEach((f) => {
-    //       Object.entries(f).forEach(([key, value]) => {
-    //         if (user.metadata[key] === undefined) {
-    //           newA.push({ key: value });
-    //           console.log(newA);
-    //           // return user.metadata.concat({ key: value });
-    //         }
-    //       });
-    //       // const { key, value } = userField[0];
-    //     });
-    //   }
-    // });
-
-    // console.log('New Array: ', newArray);
     const allUsers = users.filter(searchItems).map((item) => ({
       ...item,
       action: [item],
     }));
 
     const data = allUsers;
-
-    console.log(data);
 
     return data;
   };
@@ -134,8 +112,6 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
     columns: newHeaders,
     data: prepareData(),
   } as UseTableOptions<AccountData>);
-
-  console.log('Rows: ', rows);
 
   return (
     <Box>

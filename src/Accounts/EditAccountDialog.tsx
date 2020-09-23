@@ -47,7 +47,7 @@ export const EditAccountDialog = ({
     password: '',
     repeatPassword: '',
     userGroups: [],
-    metaData: {},
+    metadata: {},
   };
   const [form, setForm] = useState<EditUser>(userTemplate);
   user = isEditing ? user : userTemplate;
@@ -60,8 +60,23 @@ export const EditAccountDialog = ({
       password: '',
       repeatPassword: '',
       userGroups: user.userGroups,
+      metadata: user.metadata,
     } as EditUser);
   }, [open]);
+
+  const handleMetadata = () => {
+    for (let index = 0; index < metadataAccounts.length; index++) {
+      if (form.metadata[metadataAccounts[index].key] === undefined) {
+        setForm({
+          ...form,
+          metadata: {
+            ...form.metadata,
+            [metadataAccounts[index].key]: metadataAccounts[index].default,
+          },
+        });
+      }
+    }
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,7 +99,7 @@ export const EditAccountDialog = ({
       password: form.password,
       repeatPassword: form.repeatPassword,
       userGroups: form.userGroups || [],
-      metaData: form.metaData || [],
+      metadata: form.metadata || [],
     } as EditUser;
 
     onSubmit(
@@ -137,8 +152,8 @@ export const EditAccountDialog = ({
       isMetadata
         ? {
             ...form,
-            metaData: {
-              ...form.metaData,
+            metadata: {
+              ...form.metadata,
               [key]: value,
             },
           }
@@ -248,7 +263,8 @@ export const EditAccountDialog = ({
           });
         }}
       />
-      <AccountMetadata metadataAccounts={metadataAccounts} data={form} handleChange={handleChange} />
+      {handleMetadata()}
+      <AccountMetadata metadataAccounts={metadataAccounts} data={form.metadata} handleChange={handleChange} />
     </DialogContent>
   );
 

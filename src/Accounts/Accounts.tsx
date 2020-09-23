@@ -39,6 +39,7 @@ export const Accounts = (props: AccountListProps) => {
           id: u.id,
           name: u.name,
           email: u.email ? u.email : '',
+          metadata: u.metadata ? u.metadata : [],
         }));
 
         fetchUserGroups(host, token).subscribe(async (body: Record<any, any>) => {

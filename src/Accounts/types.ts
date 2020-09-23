@@ -37,7 +37,7 @@ interface EditUser {
   password: string;
   repeatPassword: string;
   userGroups: string[];
-  metaData: {};
+  metadata: {};
 }
 
 interface MetadataBase {
