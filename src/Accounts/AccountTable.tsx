@@ -9,6 +9,9 @@ import {
   TableRow,
   CircularProgress,
   Typography,
+  Switch,
+  Chip,
+  Avatar,
 } from '@material-ui/core';
 import { TableRowProps, useTable, UseTableOptions, TableCellProps } from 'react-table';
 import ChipCell from './Cells/ChipCell';
@@ -23,6 +26,18 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
       {
         Header: cur.label,
         accessor: `metadata.${cur.key}`,
+        Cell: ({ value }) => {
+          if (typeof value === 'boolean') {
+            return <Switch color="primary" checked={value} inputProps={{ 'aria-label': 'secondary checkbox' }} />;
+          }
+          if (cur.type === 'MultiChoice' && value !== undefined) {
+            return value.map((v) => (
+              <Chip key={v} avatar={<Avatar>{v.substr(0, 1)}</Avatar>} label={v} style={{ marginRight: 4 }} />
+            ));
+          }
+
+          return <>{value}</>;
+        },
       },
     ],
     [],
@@ -93,24 +108,12 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
     style: { background: '' },
   });
 
-  const prepareData = () => {
-    const fields = (metadataAccounts as any[]).map((field) => ({
-      [field.key]: field.default,
-    }));
-
-    const allUsers = users.filter(searchItems).map((item) => ({
-      ...item,
-      action: [item],
-    }));
-
-    const data = allUsers;
-
-    return data;
-  };
-
   const { getTableProps, headerGroups, rows, prepareRow } = useTable({
     columns: newHeaders,
-    data: prepareData(),
+    data: users.filter(searchItems).map((item) => ({
+      ...item,
+      action: [item],
+    })),
   } as UseTableOptions<AccountData>);
 
   return (
