@@ -9,12 +9,9 @@ import {
   TableRow,
   CircularProgress,
   Typography,
-  Switch,
-  Chip,
-  Avatar,
 } from '@material-ui/core';
 import { TableRowProps, useTable, UseTableOptions, TableCellProps } from 'react-table';
-import ChipCell from './Cells/ChipCell';
+import ChipCell, { MetadataChipCell } from './Cells/ChipCell';
 import ActionsCell from './Cells/ActionsCell';
 import AccountTableHeader from './AccountTableHeader';
 
@@ -26,18 +23,7 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
       {
         Header: cur.label,
         accessor: `metadata.${cur.key}`,
-        Cell: ({ value }) => {
-          if (typeof value === 'boolean') {
-            return <Switch color="primary" checked={value} inputProps={{ 'aria-label': 'secondary checkbox' }} />;
-          }
-          if (cur.type === 'MultiChoice' && value !== undefined) {
-            return value.map((v) => (
-              <Chip key={v} avatar={<Avatar>{v.substr(0, 1)}</Avatar>} label={v} style={{ marginRight: 4 }} />
-            ));
-          }
-
-          return <>{value}</>;
-        },
+        Cell: MetadataChipCell(cur),
       },
     ],
     [],
