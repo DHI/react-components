@@ -30,10 +30,10 @@ export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { va
     return (
       <Switch
         color="primary"
-        disabled={value}
+        disabled
         checked={value}
         inputProps={{ 'aria-label': 'secondary checkbox' }}
-        className={classes.switch}
+        className={value && classes.switch}
       />
     );
   }
