@@ -17,7 +17,7 @@ import AccountTableHeader from './AccountTableHeader';
 
 const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
-  const metadataHeader = (metadataAccounts as any[]).reduce(
+  const metadataHeader = metadataAccounts.reduce(
     (acc, cur) => [
       ...acc,
       {

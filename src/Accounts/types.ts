@@ -1,7 +1,7 @@
 interface AccountListProps {
   host: string;
   token: string;
-  metadataAccounts: MetadataAccounts[] | [];
+  metadataAccounts: MetadataAccounts[];
   translations?: {
     /* not impl */
   };
@@ -10,7 +10,7 @@ interface AccountTableProps {
   error: boolean;
   loading: boolean;
   users: AccountData[];
-  metadataAccounts: MetadataAccounts[] | [];
+  metadataAccounts: MetadataAccounts[];
   onNew: () => void;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
