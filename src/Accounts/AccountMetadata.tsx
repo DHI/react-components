@@ -18,7 +18,7 @@ export default function AccountMetadata({
   data,
   handleChange,
 }: {
-  metadataAccounts: MetadataAccounts[];
+  metadataAccounts: MetadataAccount[];
   data: {};
   handleChange(key: string, value: any): void;
 }) {

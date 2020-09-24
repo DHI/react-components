@@ -28,7 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
-  metadataAccounts: MetadataAccounts[];
+  metadataAccounts: MetadataAccount[];
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
@@ -65,7 +65,8 @@ export const EditAccountDialog = ({
   }, [open]);
 
   const handleMetadata = () => {
-    for (let index = 0; index < metadataAccounts.length; index++) {
+    //for (let index = 0; index < metadataAccounts.length; index++) {
+    metadataAccounts.forEach((item, index) => {
       if (form.metadata[metadataAccounts[index].key] === undefined) {
         setForm({
           ...form,
@@ -75,7 +76,8 @@ export const EditAccountDialog = ({
           },
         });
       }
-    }
+    });
+    //}
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -137,7 +139,7 @@ export const EditAccountDialog = ({
     setState({ ...state, passwordStrengthColor });
   };
 
-  const handleChange = (key: string, value: string[] | string | boolean) => {
+  const handleChange = (key: string, value: MetadataDefault) => {
     let isMetadata = true;
 
     if (key === 'password') {

@@ -37,7 +37,7 @@ export const AccountsStory = () => {
       options: ['A', 'B', 'C'],
       default: ['A', 'C'],
     },
-  ];
+  ] as MetadataAccount[];
 
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>

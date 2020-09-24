@@ -13,8 +13,7 @@ import GeneralDialog from '../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../common/GeneralDialog/types';
 import AccountTable from './AccountTable';
 
-export const Accounts = (props: AccountListProps) => {
-  const { host, token, metadataAccounts } = props;
+export const Accounts = ({ host, token, metadataAccounts }: AccountListProps) => {
   const [data, setData] = useState<AccountData[]>([]);
   const [state, setState] = useState({
     isAccountDialogOpen: false,
