@@ -28,7 +28,7 @@ export const AccountsStory = () => {
       key: 'myText',
       label: 'My Text',
       type: 'Text',
-      default: 'decription',
+      default: 'description',
     },
     {
       key: 'myOptions',

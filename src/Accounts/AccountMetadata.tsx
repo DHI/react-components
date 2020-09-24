@@ -18,7 +18,7 @@ export default function AccountMetadata({
   data,
   handleChange,
 }: {
-  metadataAccounts: MetadataAccount[];
+  metadataAccounts?: MetadataAccount[];
   data: {};
   handleChange(key: string, value: any): void;
 }) {
@@ -26,17 +26,17 @@ export default function AccountMetadata({
 
   return (
     <Fragment>
-      {metadataAccounts.map((meta, i) => {
+      {metadataAccounts?.map((meta, i) => {
         if (meta.type === 'Text') {
           return (
             <TextField
               key={i}
               fullWidth
-              autoFocus
               margin="dense"
               label={meta.label}
               variant="standard"
-              value={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
+              defaultValue={meta?.default}
+              value={data[meta.key]}
               onChange={(e) => handleChange(meta.key, e.target.value)}
             />
           );
@@ -46,7 +46,8 @@ export default function AccountMetadata({
               <InputLabel>{meta.label}</InputLabel>
               <Select
                 fullWidth
-                value={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
+                defaultValue={meta?.default}
+                value={data[meta.key]}
                 id={meta.key}
                 onChange={(e) => handleChange(meta.key, e.target.value)}
               >
@@ -66,7 +67,7 @@ export default function AccountMetadata({
               control={
                 <Switch
                   color="primary"
-                  checked={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
+                  checked={data && data[meta.key] !== undefined ? data[meta.key] : meta?.default}
                   onChange={(e) => handleChange(meta.key, e.target.checked)}
                   name={meta.label}
                   inputProps={{ 'aria-label': meta.label }}
@@ -81,7 +82,8 @@ export default function AccountMetadata({
               key={i}
               placeholder={`Select ${meta.label}`}
               options={meta.options}
-              value={data && data[meta.key] !== undefined ? data[meta.key] : meta.default}
+              defaultValue={meta?.default}
+              value={data[meta.key]}
               onChange={(e, values) => handleChange(meta.key, values)}
               multiple={true as any}
               renderInput={(props) => (

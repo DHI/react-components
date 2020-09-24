@@ -28,7 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
-  metadataAccounts: MetadataAccount[];
+  metadataAccounts?: MetadataAccount[];
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
@@ -39,7 +39,7 @@ export const EditAccountDialog = ({
     passwordStrengthColor: 'red',
     loading: false,
   });
-  const [userGroups, setUserGroups] = React.useState<string[]>([]);
+  const [userGroups, setUserGroups] = useState<string[]>([]);
   const userTemplate = {
     id: '',
     name: '',
@@ -65,8 +65,7 @@ export const EditAccountDialog = ({
   }, [open]);
 
   const handleMetadata = () => {
-    //for (let index = 0; index < metadataAccounts.length; index++) {
-    metadataAccounts.forEach((item, index) => {
+    metadataAccounts?.forEach((item, index) => {
       if (form.metadata[metadataAccounts[index].key] === undefined) {
         setForm({
           ...form,
@@ -77,7 +76,6 @@ export const EditAccountDialog = ({
         });
       }
     });
-    //}
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -149,6 +147,8 @@ export const EditAccountDialog = ({
     if (key === 'id' || key === 'password' || key === 'repeatPassword' || key === 'name' || key === 'email') {
       isMetadata = false;
     }
+
+    console.log(form);
 
     setForm(
       isMetadata
@@ -299,12 +299,12 @@ const UserGroupsInput = ({
   token: string;
   onChange(selectedGroups: string[]): void;
 }) => {
-  const [isLoading, setLoading] = React.useState(true);
-  const [groups, setGroups] = React.useState<UserGroups[]>([]);
-  const [options, setOptions] = React.useState<string[]>([]);
-  const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
+  const [isLoading, setLoading] = useState(true);
+  const [groups, setGroups] = useState<UserGroups[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!token) return;
 
     fetchUserGroups(host, token).subscribe(async (body) => {
@@ -314,11 +314,11 @@ const UserGroupsInput = ({
     });
   }, [token]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOptions(groups.map(({ id }) => id));
   }, [groups]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onChange(selectedOptions);
   }, [selectedOptions]);
 

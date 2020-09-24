@@ -33,7 +33,7 @@ export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { va
         disabled
         checked={value}
         inputProps={{ 'aria-label': 'secondary checkbox' }}
-        className={value && classes.switch}
+        className={value ? classes.switch : ''}
       />
     );
   }
