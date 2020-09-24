@@ -17,17 +17,19 @@ import AccountTableHeader from './AccountTableHeader';
 
 const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
-  const metadataHeader = metadataAccounts.reduce(
-    (acc, cur) => [
-      ...acc,
-      {
-        Header: cur.label,
-        accessor: `metadata.${cur.key}`,
-        Cell: MetadataChipCell(cur),
-      },
-    ],
-    [],
-  );
+  const metadataHeader = metadataAccounts
+    ? metadataAccounts.reduce(
+        (acc, cur) => [
+          ...acc,
+          {
+            Header: cur.label,
+            accessor: `metadata.${cur.key}`,
+            Cell: MetadataChipCell(cur),
+          },
+        ],
+        [],
+      )
+    : [];
 
   const columns = [
     {
