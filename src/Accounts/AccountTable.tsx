@@ -10,45 +10,58 @@ import {
   CircularProgress,
   Typography,
 } from '@material-ui/core';
-import { get, isEmpty } from 'lodash';
-import { Column, TableRowProps, useTable, UseTableOptions, TableCellProps } from 'react-table';
-import ChipCell from './Cells/ChipCell';
+import { TableRowProps, useTable, UseTableOptions, TableCellProps } from 'react-table';
+import ChipCell, { MetadataChipCell } from './Cells/ChipCell';
 import ActionsCell from './Cells/ActionsCell';
 import AccountTableHeader from './AccountTableHeader';
 
-const AccountTable = ({ error, loading, users, onNew, onEdit, onDelete }: AccountTableProps) => {
+const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
-  const columns = useMemo(
-    () => [
+  const metadataHeader = metadataAccounts.reduce(
+    (acc, cur) => [
+      ...acc,
       {
-        Header: 'ID',
-        accessor: 'id',
-      },
-      {
-        Header: 'Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'Email',
-        accessor: 'email',
-      },
-      {
-        Header: 'User Groups',
-        accessor: 'userGroups',
-        Cell: ChipCell,
-      },
-      {
-        Header: 'Actions',
-        accessor: 'action',
-        Cell: ({
-          cell: {
-            value: [item],
-          },
-        }) => <ActionsCell item={item} onEdit={onEdit} onDelete={onDelete} />,
+        Header: cur.label,
+        accessor: `metadata.${cur.key}`,
+        Cell: MetadataChipCell(cur),
       },
     ],
     [],
   );
+
+  const columns = [
+    {
+      Header: 'ID',
+      accessor: 'id',
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+    },
+    {
+      Header: 'User Groups',
+      accessor: 'userGroups',
+      Cell: ChipCell,
+    },
+  ];
+
+  const actions = [
+    {
+      Header: 'Actions',
+      accessor: 'action',
+      Cell: ({
+        cell: {
+          value: [item],
+        },
+      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={onDelete} />,
+    },
+  ];
+
+  const newHeaders = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
 
   const noResults = () => {
     if (error) return <Typography>Error fetching users...</Typography>;
@@ -82,7 +95,7 @@ const AccountTable = ({ error, loading, users, onNew, onEdit, onDelete }: Accoun
   });
 
   const { getTableProps, headerGroups, rows, prepareRow } = useTable({
-    columns,
+    columns: newHeaders,
     data: users.filter(searchItems).map((item) => ({
       ...item,
       action: [item],

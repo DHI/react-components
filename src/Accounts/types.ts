@@ -1,6 +1,7 @@
 interface AccountListProps {
   host: string;
   token: string;
+  metadataAccounts: MetadataAccount[];
   translations?: {
     /* not impl */
   };
@@ -9,6 +10,7 @@ interface AccountTableProps {
   error: boolean;
   loading: boolean;
   users: AccountData[];
+  metadataAccounts: MetadataAccount[];
   onNew: () => void;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
@@ -20,24 +22,57 @@ interface ActionCellProps {
   onDelete: (data: Record<any, any>) => void;
 }
 
-type AccountData = {
+interface AccountData {
   id: string;
   name: string;
   email: string;
   userGroups: string[];
-};
+  metadata: any;
+}
 
-type EditUser = {
+interface EditUser {
   id: string;
   name: string;
   email: string;
   password: string;
   repeatPassword: string;
   userGroups: string[];
-};
+  metadata: {};
+}
 
-type UserGroups = {
+interface MetadataBase {
+  key: string;
+  label: string;
+  type: 'SingleChoice' | 'MultiChoice' | 'Text' | 'Boolean';
+}
+
+// interface MetadataSingleChoice extends MetadataBase {
+//   options?: string[];
+//   default?: string | boolean;
+// }
+
+// interface MetadataMultiChoice extends MetadataBase {
+//   options?: string[];
+//   default?: string[];
+// }
+
+// interface MetadataBoolean extends MetadataBase {
+//   default?: boolean;
+// }
+
+// interface MetadataText extends MetadataBase {
+//   default?: string;
+// }
+
+type MetadataDefault = string | boolean | string[];
+
+interface MetadataAccount extends MetadataBase {
+  options?: string[];
+  default: MetadataDefault;
+}
+
+interface UserGroups {
   id: string;
   name: string;
   users: string[];
-};
+}

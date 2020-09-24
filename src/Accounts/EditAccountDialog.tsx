@@ -6,22 +6,20 @@ import {
   DialogTitle,
   InputAdornment,
   TextField,
-  CircularProgress,
-  FormControlLabel,
-  FormLabel,
-  Typography,
 } from '@material-ui/core';
-import { fade, ThemeProvider, withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { FiberManualRecord } from '@material-ui/icons';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { passwordStrength } from '../utils/Utils';
 import { fetchUserGroups } from '../DataServices/DataServices';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import AccountMetadata from './AccountMetadata';
 
 export const EditAccountDialog = ({
   user,
   isEditing,
   dialogOpen = false,
+  metadataAccounts,
   onSubmit,
   onCancel,
   token,
@@ -30,6 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
+  metadataAccounts: MetadataAccount[];
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
@@ -48,6 +47,7 @@ export const EditAccountDialog = ({
     password: '',
     repeatPassword: '',
     userGroups: [],
+    metadata: {},
   };
   const [form, setForm] = useState<EditUser>(userTemplate);
   user = isEditing ? user : userTemplate;
@@ -60,8 +60,25 @@ export const EditAccountDialog = ({
       password: '',
       repeatPassword: '',
       userGroups: user.userGroups,
+      metadata: user.metadata,
     } as EditUser);
   }, [open]);
+
+  const handleMetadata = () => {
+    //for (let index = 0; index < metadataAccounts.length; index++) {
+    metadataAccounts.forEach((item, index) => {
+      if (form.metadata[metadataAccounts[index].key] === undefined) {
+        setForm({
+          ...form,
+          metadata: {
+            ...form.metadata,
+            [metadataAccounts[index].key]: metadataAccounts[index].default,
+          },
+        });
+      }
+    });
+    //}
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,6 +101,7 @@ export const EditAccountDialog = ({
       password: form.password,
       repeatPassword: form.repeatPassword,
       userGroups: form.userGroups || [],
+      metadata: form.metadata || [],
     } as EditUser;
 
     onSubmit(
@@ -121,15 +139,31 @@ export const EditAccountDialog = ({
     setState({ ...state, passwordStrengthColor });
   };
 
-  const handleChange = (param: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (param === 'password') {
-      updatePasswordStrengthIndicator(e.target.value);
+  const handleChange = (key: string, value: MetadataDefault) => {
+    let isMetadata = true;
+
+    if (key === 'password') {
+      updatePasswordStrengthIndicator(value as string);
     }
 
-    setForm({
-      ...form,
-      [param]: e.target.value.trim(),
-    });
+    if (key === 'id' || key === 'password' || key === 'repeatPassword' || key === 'name' || key === 'email') {
+      isMetadata = false;
+    }
+
+    setForm(
+      isMetadata
+        ? {
+            ...form,
+            metadata: {
+              ...form.metadata,
+              [key]: value,
+            },
+          }
+        : {
+            ...form,
+            [key]: value,
+          },
+    );
   };
 
   const endAdornment = (
@@ -160,7 +194,7 @@ export const EditAccountDialog = ({
           label="Username"
           variant="standard"
           value={form.id}
-          onChange={handleChange('id')}
+          onChange={(e) => handleChange('id', e.target.value)}
         />
       ) : (
         <NoBorderTextField
@@ -183,7 +217,7 @@ export const EditAccountDialog = ({
         value={form.password}
         error={!state.passwordValid}
         InputProps={{ endAdornment }}
-        onChange={handleChange('password')}
+        onChange={(e) => handleChange('password', e.target.value)}
         autoComplete="new-password"
       />
       {/* Must be 'new-password' to avoid autoComplete. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#Browser_compatibility */}
@@ -197,7 +231,7 @@ export const EditAccountDialog = ({
         label="Repeat Password"
         value={form.repeatPassword}
         error={!state.passwordValid}
-        onChange={handleChange('repeatPassword')}
+        onChange={(e) => handleChange('repeatPassword', e.target.value)}
         helperText={!state.passwordValid && 'Passwords do not match'}
         autoComplete="new-password"
       />
@@ -208,7 +242,7 @@ export const EditAccountDialog = ({
         margin="dense"
         variant="standard"
         value={form.name}
-        onChange={handleChange('name')}
+        onChange={(e) => handleChange('name', e.target.value)}
       />
       <TextField
         fullWidth
@@ -216,7 +250,7 @@ export const EditAccountDialog = ({
         margin="dense"
         variant="standard"
         value={form.email}
-        onChange={handleChange('email')}
+        onChange={(e) => handleChange('email', e.target.value)}
       />
       <UserGroupsInput
         userId={user.id}
@@ -231,6 +265,8 @@ export const EditAccountDialog = ({
           });
         }}
       />
+      {handleMetadata()}
+      <AccountMetadata metadataAccounts={metadataAccounts} data={form.metadata} handleChange={handleChange} />
     </DialogContent>
   );
 
