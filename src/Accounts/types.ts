@@ -1,7 +1,7 @@
 interface AccountListProps {
   host: string;
   token: string;
-  metadataAccounts: MetadaAccounts[] | [];
+  metadataAccounts: MetadataAccounts[] | [];
   translations?: {
     /* not impl */
   };
@@ -10,7 +10,7 @@ interface AccountTableProps {
   error: boolean;
   loading: boolean;
   users: AccountData[];
-  metadataAccounts: MetadaAccounts[] | [];
+  metadataAccounts: MetadataAccounts[] | [];
   onNew: () => void;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
@@ -43,7 +43,7 @@ interface EditUser {
 interface MetadataBase {
   key: string;
   label: string;
-  type: string;
+  type: 'SingleChoice' | 'MultiChoice' | 'Text' | 'Boolean';
 }
 
 // interface MetadataSingleChoice extends MetadataBase {
@@ -64,7 +64,7 @@ interface MetadataBase {
 //   default?: string;
 // }
 
-interface MetadaAccounts extends MetadataBase {
+interface MetadataAccounts extends MetadataBase {
   options?: string[];
   default: string | boolean | string[];
 }

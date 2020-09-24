@@ -28,7 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
-  metadataAccounts: MetadaAccounts[] | [];
+  metadataAccounts: MetadataAccounts[];
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
