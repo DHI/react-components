@@ -35,7 +35,6 @@ export default function AccountMetadata({
               margin="dense"
               label={meta.label}
               variant="standard"
-              defaultValue={meta?.default}
               value={data[meta.key]}
               onChange={(e) => handleChange(meta.key, e.target.value)}
             />

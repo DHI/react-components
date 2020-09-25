@@ -46,24 +46,6 @@ interface MetadataBase {
   type: 'SingleChoice' | 'MultiChoice' | 'Text' | 'Boolean';
 }
 
-// interface MetadataSingleChoice extends MetadataBase {
-//   options?: string[];
-//   default?: string | boolean;
-// }
-
-// interface MetadataMultiChoice extends MetadataBase {
-//   options?: string[];
-//   default?: string[];
-// }
-
-// interface MetadataBoolean extends MetadataBase {
-//   default?: boolean;
-// }
-
-// interface MetadataText extends MetadataBase {
-//   default?: string;
-// }
-
 type MetadataDefault = string | boolean | string[];
 
 interface MetadataAccount extends MetadataBase {

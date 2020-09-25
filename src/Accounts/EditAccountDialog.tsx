@@ -148,8 +148,6 @@ export const EditAccountDialog = ({
       isMetadata = false;
     }
 
-    console.log(form);
-
     setForm(
       isMetadata
         ? {

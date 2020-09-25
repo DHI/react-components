@@ -1,19 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  CircularProgress,
-  Typography,
-} from '@material-ui/core';
-import { TableRowProps, useTable, UseTableOptions, TableCellProps } from 'react-table';
-import ChipCell, { MetadataChipCell } from './Cells/ChipCell';
-import ActionsCell from './Cells/ActionsCell';
+import { Box, Paper } from '@material-ui/core';
+import { TableRowProps, TableCellProps } from 'react-table';
+import ChipCell, { MetadataChipCell } from '../Table/Cells/ChipCell';
+import ActionsCell from '../Table/Cells/ActionsCell';
 import AccountTableHeader from './AccountTableHeader';
+import DefaultTable from '../Table';
 
 const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
@@ -65,13 +56,6 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
 
   const newHeaders = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
 
-  const noResults = () => {
-    if (error) return <Typography>Error fetching users...</Typography>;
-    if (loading) return <CircularProgress />;
-
-    return <Typography>No records to display.</Typography>;
-  };
-
   const searchItems = (item: AccountData) => {
     if (filter === '') return true;
 
@@ -96,50 +80,19 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
     style: { background: '' },
   });
 
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable({
-    columns: newHeaders,
-    data: users.filter(searchItems).map((item) => ({
-      ...item,
-      action: [item],
-    })),
-  } as UseTableOptions<AccountData>);
-
   return (
     <Box>
       <AccountTableHeader filter={filter} setFilter={setFilter} onNew={onNew} />
       <Paper>
-        <Table {...getTableProps()} size="small">
-          <TableHead>
-            {headerGroups.map((headerGroup) => (
-              <TableRow {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <TableCell {...column.getHeaderProps(getHeaderCellProps())}>{column.render('Header')}</TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody>
-            {rows.length > 0 ? (
-              rows.map((row) => {
-                prepareRow(row);
-
-                return (
-                  <TableRow {...row.getRowProps(getRowProps())}>
-                    {row.cells.map((cell) => (
-                      <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
-                    ))}
-                  </TableRow>
-                );
-              })
-            ) : (
-              <TableRow>
-                <TableCell style={{ textAlign: 'center' }} colSpan={9}>
-                  {noResults()}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <DefaultTable
+          error={error}
+          loading={loading}
+          tableHeaders={newHeaders}
+          data={users}
+          searchItems={(item) => searchItems(item)}
+          HeaderCellProps={() => getHeaderCellProps()}
+          RowProps={() => getRowProps()}
+        />
       </Paper>
     </Box>
   );

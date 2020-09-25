@@ -10,17 +10,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ChipCell = ({ cell }: { cell: any }) => {
-  return (
-    <Box alignItems="center">
-      {cell.row.values.userGroups != null ? (
-        cell.row.values.userGroups.map((value) => (
+  if (cell.row.values.userGroups != null) {
+    return (
+      <Box alignItems="center">
+        {cell.row.values.userGroups.map((value) => (
           <Chip key={value} avatar={<Avatar>{value.substr(0, 1)}</Avatar>} label={value} style={{ marginRight: 4 }} />
-        ))
-      ) : (
-        <></>
-      )}
-    </Box>
-  );
+        ))}
+      </Box>
+    );
+  } else if (cell.row.values.users != null) {
+    return (
+      <Box alignItems="center">
+        {cell.row.values.users.map((value) => (
+          <Chip key={value} label={value} style={{ marginRight: 4 }} />
+        ))}
+      </Box>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { value: any }) => {
