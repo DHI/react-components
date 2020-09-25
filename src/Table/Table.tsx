@@ -1,22 +1,21 @@
-import { CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import React from 'react';
-import { useTable, UseTableOptions } from 'react-table';
+import { CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { useTable, UseTableOptions, TableRowProps, TableCellProps } from 'react-table';
 
-const DefaultTable = ({
-  error,
-  loading,
-  tableHeaders,
-  data,
-  searchItems,
-  HeaderCellProps,
-  RowProps,
-}: DefaultTableProps) => {
+const DefaultTable = ({ error, loading, tableHeaders, data, searchItems }: DefaultTableProps) => {
   const noResults = () => {
     if (error) return <Typography>Error fetching users...</Typography>;
     if (loading) return <CircularProgress />;
 
     return <Typography>No records to display.</Typography>;
   };
+
+  const getHeaderCellProps = (): Partial<TableCellProps> => ({
+    style: { fontWeight: 'bold' },
+  });
+  const getRowProps = (): Partial<TableRowProps> => ({
+    style: { background: '' },
+  });
 
   const { getTableProps, headerGroups, rows, prepareRow } = useTable({
     columns: tableHeaders,
@@ -32,7 +31,7 @@ const DefaultTable = ({
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <TableCell {...column.getHeaderProps(HeaderCellProps())}>{column.render('Header')}</TableCell>
+              <TableCell {...column.getHeaderProps(getHeaderCellProps())}>{column.render('Header')}</TableCell>
             ))}
           </TableRow>
         ))}
@@ -43,7 +42,7 @@ const DefaultTable = ({
             prepareRow(row);
 
             return (
-              <TableRow {...row.getRowProps(RowProps())}>
+              <TableRow {...row.getRowProps(getRowProps())}>
                 {row.cells.map((cell) => (
                   <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
                 ))}

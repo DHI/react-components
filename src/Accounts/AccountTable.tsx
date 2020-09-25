@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
-import { TableRowProps, TableCellProps } from 'react-table';
 import ChipCell, { MetadataChipCell } from '../Table/Cells/ChipCell';
 import ActionsCell from '../Table/Cells/ActionsCell';
 import AccountTableHeader from './AccountTableHeader';
-import DefaultTable from '../Table';
+import DefaultTable from '../Table/Table';
 
 const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
@@ -73,13 +72,6 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
     );
   };
 
-  const getHeaderCellProps = (): Partial<TableCellProps> => ({
-    style: { fontWeight: 'bold' },
-  });
-  const getRowProps = (): Partial<TableRowProps> => ({
-    style: { background: '' },
-  });
-
   return (
     <Box>
       <AccountTableHeader filter={filter} setFilter={setFilter} onNew={onNew} />
@@ -90,8 +82,6 @@ const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, 
           tableHeaders={newHeaders}
           data={users}
           searchItems={(item) => searchItems(item)}
-          HeaderCellProps={() => getHeaderCellProps()}
-          RowProps={() => getRowProps()}
         />
       </Paper>
     </Box>

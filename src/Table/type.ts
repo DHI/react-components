@@ -4,8 +4,8 @@ interface DefaultTableProps {
   tableHeaders: TableHeaders[];
   data: TableData[];
   searchItems: (item: any) => void;
-  HeaderCellProps: any;
-  RowProps: any;
+  HeaderCellProps?: any;
+  RowProps?: any;
 }
 
 interface TableHeaders {
