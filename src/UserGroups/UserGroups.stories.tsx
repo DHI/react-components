@@ -41,7 +41,7 @@ export const UserGroupStory = () => {
 
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
-      {({ token }) => <UserGroups metadataUserGroups={[]} token={token.accessToken.token} />}
+      {({ token }) => <UserGroups host={host} metadataUserGroups={[]} token={token.accessToken.token} />}
     </LoginGate>
   );
 };

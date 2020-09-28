@@ -10,13 +10,7 @@ const SearchInput = styled(TextField)`
   }
 `;
 
-interface AccountTableHeaderProps {
-  filter: string;
-  setFilter: (event: any) => any;
-  onNew: () => any;
-}
-
-const AccountTableHeader = ({ filter, setFilter, onNew }: AccountTableHeaderProps) => (
+const UserGroupTableHeader = ({ filter, setFilter, onNew }: UserGroupTableHeaderProps) => (
   <Box display="flex" justifyContent="space-between" py={1}>
     <Typography variant="h5">User Groups</Typography>
     <Box>
@@ -28,10 +22,10 @@ const AccountTableHeader = ({ filter, setFilter, onNew }: AccountTableHeaderProp
         onChange={({ target: { value } }: any) => setFilter(value)}
       />
       <Button variant="contained" color="primary" startIcon={<Add />} onClick={onNew}>
-        New User
+        New User Group
       </Button>
     </Box>
   </Box>
 );
 
-export default AccountTableHeader;
+export default UserGroupTableHeader;

@@ -7,6 +7,12 @@ interface UserGroupListProps {
   };
 }
 
+interface UserGroupTableHeaderProps {
+  filter: string;
+  setFilter: (event: any) => any;
+  onNew: () => any;
+}
+
 interface MetadataBase {
   key: string;
   label: string;
@@ -18,8 +24,16 @@ interface MetadataUserGoups extends MetadataBase {
   default: MetadataDefault;
 }
 
-interface UserGoupsData {
+interface UserGroupsData {
   id: string;
   name: string;
   users: string[];
+}
+
+interface UserGroupFormProps {
+  onSubmit: (e: any) => void;
+  isEditing: boolean;
+  selectedUserGroup: UserGroupsData;
+  onChange: (name: string, value: string[] | string) => void;
+  onCancel: () => void;
 }

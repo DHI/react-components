@@ -4,8 +4,6 @@ interface DefaultTableProps {
   tableHeaders: TableHeaders[];
   data: TableData[];
   searchItems: (item: any) => void;
-  HeaderCellProps?: any;
-  RowProps?: any;
 }
 
 interface TableHeaders {
@@ -16,7 +14,8 @@ interface TableHeaders {
 interface TableData {
   id: string;
   name: string;
-  email: string;
-  userGroups: string[];
-  metadata: any;
+  email?: string;
+  userGroups?: string[];
+  users?: string[];
+  metadata?: any;
 }
