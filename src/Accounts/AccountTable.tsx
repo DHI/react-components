@@ -5,10 +5,10 @@ import ActionsCell from '../Table/Cells/ActionsCell';
 import AccountTableHeader from './AccountTableHeader';
 import DefaultTable from '../Table/Table';
 
-const AccountTable = ({ error, loading, users, metadataAccounts, onNew, onEdit, onDelete }: AccountTableProps) => {
+const AccountTable = ({ error, loading, users, metadata, onNew, onEdit, onDelete }: AccountTableProps) => {
   const [filter, setFilter] = useState('');
-  const metadataHeader = metadataAccounts
-    ? metadataAccounts.reduce(
+  const metadataHeader = metadata
+    ? metadata.reduce(
         (acc, cur) => [
           ...acc,
           {

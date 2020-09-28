@@ -1,14 +1,14 @@
 import React, { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
-import { fetchUserGroups, updateUserGroups } from '../DataServices/DataServices';
+import { fetchUserGroups } from '../DataServices/DataServices';
 import DefaultTable from '../Table/Table';
-import ChipCell from '../Table/Cells/ChipCell';
+import ChipCell, { MetadataChipCell } from '../Table/Cells/ChipCell';
 import UserGroupTableHeader from './UserGroupsTableHeader';
 import ActionsCell from '../Table/Cells/ActionsCell';
 import Dialog from '../Table/Dialog';
 import UserGroupForm from './UserGroupForm';
 
-const UserGroups = ({ host, token, metadataUserGroups }: UserGroupListProps) => {
+const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   const [userGroups, setUserGroups] = useState<UserGroupsData[]>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -71,33 +71,49 @@ const UserGroups = ({ host, token, metadataUserGroups }: UserGroupListProps) => 
     setIsDialogOpen(false);
   };
 
-  const TableHeaders = useMemo(
-    () => [
-      {
-        Header: 'ID',
-        accessor: 'id',
-      },
-      {
-        Header: 'Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'Users',
-        accessor: 'users',
-        Cell: ChipCell,
-      },
-      {
-        Header: 'Actions',
-        accessor: 'action',
-        Cell: ({
-          cell: {
-            value: [item],
+  const metadataHeader = metadata
+    ? metadata.reduce(
+        (acc, cur) => [
+          ...acc,
+          {
+            Header: cur.label,
+            accessor: `metadata.${cur.key}`,
+            Cell: MetadataChipCell(cur),
           },
-        }) => <ActionsCell item={item} onEdit={onEdit} onDelete={onDelete} />,
-      },
-    ],
-    [],
-  );
+        ],
+        [],
+      )
+    : [];
+
+  const columns = [
+    {
+      Header: 'ID',
+      accessor: 'id',
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+    },
+    {
+      Header: 'Users',
+      accessor: 'users',
+      Cell: ChipCell,
+    },
+  ];
+
+  const actions = [
+    {
+      Header: 'Actions',
+      accessor: 'action',
+      Cell: ({
+        cell: {
+          value: [item],
+        },
+      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={onDelete} />,
+    },
+  ];
+
+  const TableHeaders = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
 
   const searchItems = (item: UserGroupsData) => {
     if (filter === '') return true;
@@ -147,6 +163,7 @@ const UserGroups = ({ host, token, metadataUserGroups }: UserGroupListProps) => 
             selectedUserGroup={selectedUserGroup}
             onChange={handleChange}
             onCancel={handleDialog}
+            metadata={metadata}
           />
         </Dialog>
 

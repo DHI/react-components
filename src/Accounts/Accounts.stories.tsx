@@ -10,7 +10,7 @@ export default {
 const host = process.env.ENDPOINT_URL;
 
 export const AccountsStory = () => {
-  const metadataAccounts = [
+  const metadata = [
     {
       key: 'myChoice',
       label: 'My Choice',
@@ -37,11 +37,17 @@ export const AccountsStory = () => {
       options: ['A', 'B', 'C'],
       default: ['A', 'C'],
     },
-  ] as MetadataAccount[];
+    {
+      key: 'MultiText',
+      label: 'Multi Text',
+      type: 'MultiText',
+      default: 'Multi Text',
+    },
+  ] as Metadata[];
 
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
-      {({ token }) => <Accounts host={host} metadataAccounts={metadataAccounts} token={token.accessToken.token} />}
+      {({ token }) => <Accounts host={host} metadata={metadata} token={token.accessToken.token} />}
     </LoginGate>
   );
 };

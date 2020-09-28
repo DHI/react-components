@@ -1,7 +1,7 @@
 interface AccountListProps {
   host: string;
   token: string;
-  metadataAccounts?: MetadataAccount[];
+  metadata?: Metadata[];
   translations?: {
     /* not impl */
   };
@@ -10,7 +10,7 @@ interface AccountTableProps {
   error: boolean;
   loading: boolean;
   users: AccountData[];
-  metadataAccounts?: MetadataAccount[];
+  metadata?: Metadata[];
   onNew: () => void;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
@@ -38,19 +38,6 @@ interface EditUser {
   repeatPassword: string;
   userGroups: string[];
   metadata: {};
-}
-
-interface MetadataBase {
-  key: string;
-  label: string;
-  type: 'SingleChoice' | 'MultiChoice' | 'Text' | 'Boolean';
-}
-
-type MetadataDefault = string | boolean | string[];
-
-interface MetadataAccount extends MetadataBase {
-  options?: string[];
-  default: MetadataDefault;
 }
 
 interface UserGroups {

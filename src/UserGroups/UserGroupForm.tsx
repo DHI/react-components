@@ -10,6 +10,7 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core';
+import Metadata from '../Metadata/Metadata';
 
 const useStyles = makeStyles((theme: Theme) => ({
   users: {
@@ -24,6 +25,7 @@ const UserGroupForm = ({
   selectedUserGroup: selectedUser,
   onChange,
   onCancel,
+  metadata,
 }: UserGroupFormProps) => {
   const classes = useStyles();
 
@@ -37,6 +39,29 @@ const UserGroupForm = ({
       },
     },
   })(TextField);
+
+  const handleChange = (key: string, value: string) => {
+    let isMetadata = true;
+
+    if (key === 'id' || key === 'name') {
+      isMetadata = false;
+    }
+
+    // setForm(
+    //   isMetadata
+    //     ? {
+    //         ...form,
+    //         metadata: {
+    //           ...form.metadata,
+    //           [key]: value,
+    //         },
+    //       }
+    //     : {
+    //         ...form,
+    //         [key]: value,
+    //       },
+    // );
+  };
 
   return (
     <form onSubmit={onSubmit}>
@@ -83,6 +108,8 @@ const UserGroupForm = ({
             selectedUser.users.map((val, i) => <Chip key={i} label={val} style={{ marginRight: 4 }} />)
           )}
         </div>
+
+        <Metadata metadata={metadata} data={selectedUser} handleChange={handleChange} />
 
         <DialogActions>
           <Button variant="outlined" onClick={onCancel}>

@@ -1,5 +1,17 @@
-import React, { Fragment } from 'react';
-import { FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField } from '@material-ui/core';
+import React, { Fragment, useState } from 'react';
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  ListItem,
+  MenuItem,
+  Select,
+  Switch,
+  TextField,
+  ListItemText,
+  Typography,
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
@@ -13,20 +25,31 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function AccountMetadata({
-  metadataAccounts,
+const Metadata = ({
+  metadata,
   data,
   handleChange,
 }: {
-  metadataAccounts?: MetadataAccount[];
+  metadata?: Metadata[];
   data: {};
   handleChange(key: string, value: any): void;
-}) {
+}) => {
   const classes = useStyles();
+  const [multiText, setMultiText] = useState('');
+  const [list, setList] = useState([]);
+
+  const handleMultiText = () => {
+    setList([...list, multiText]);
+    setMultiText('');
+  };
+
+  const handleText = (value) => {
+    setMultiText(value);
+  };
 
   return (
     <Fragment>
-      {metadataAccounts?.map((meta, i) => {
+      {metadata?.map((meta, i) => {
         if (meta.type === 'Text') {
           return (
             <TextField
@@ -100,10 +123,40 @@ export default function AccountMetadata({
               }}
             />
           );
+        } else if (meta.type === 'MultiText') {
+          return (
+            <>
+              {list.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
+              {list?.map((item, i) => (
+                <ListItem key={i} dense>
+                  <ListItemText primary={item} />
+                </ListItem>
+              ))}
+
+              <TextField
+                key={i}
+                fullWidth
+                margin="dense"
+                label={meta.label}
+                variant="standard"
+                value={multiText}
+                onChange={(e) => handleText(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <Button color="primary" onClick={handleMultiText}>
+                      Add
+                    </Button>
+                  ),
+                }}
+              />
+            </>
+          );
         }
 
         return null;
       })}
     </Fragment>
   );
-}
+};
+
+export default Metadata;

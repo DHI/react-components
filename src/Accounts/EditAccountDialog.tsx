@@ -13,13 +13,13 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { passwordStrength } from '../utils/Utils';
 import { fetchUserGroups } from '../DataServices/DataServices';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import AccountMetadata from './AccountMetadata';
+import Metadata from '../Metadata/Metadata';
 
 export const EditAccountDialog = ({
   user,
   isEditing,
   dialogOpen = false,
-  metadataAccounts,
+  metadata,
   onSubmit,
   onCancel,
   token,
@@ -28,7 +28,7 @@ export const EditAccountDialog = ({
   token: string;
   host: string;
   user: Record<any, any>;
-  metadataAccounts?: MetadataAccount[];
+  metadata?: Metadata[];
   isEditing?: boolean;
   dialogOpen?: boolean;
   onCancel(): void;
@@ -65,13 +65,13 @@ export const EditAccountDialog = ({
   }, [open]);
 
   const handleMetadata = () => {
-    metadataAccounts?.forEach((item, index) => {
-      if (form.metadata[metadataAccounts[index].key] === undefined) {
+    metadata?.forEach((item, index) => {
+      if (form.metadata[metadata[index].key] === undefined) {
         setForm({
           ...form,
           metadata: {
             ...form.metadata,
-            [metadataAccounts[index].key]: metadataAccounts[index].default,
+            [metadata[index].key]: metadata[index].default,
           },
         });
       }
@@ -264,7 +264,7 @@ export const EditAccountDialog = ({
         }}
       />
       {handleMetadata()}
-      <AccountMetadata metadataAccounts={metadataAccounts} data={form.metadata} handleChange={handleChange} />
+      <Metadata metadata={metadata} data={form.metadata} handleChange={handleChange} />
     </DialogContent>
   );
 
