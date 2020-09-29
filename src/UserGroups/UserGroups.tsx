@@ -40,7 +40,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   };
 
   const onDelete = () => {
-    console.log('onDelete');
     setIsDialogOpen(true);
   };
 
@@ -63,7 +62,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
       updateUserGroups(host, token, {
         id: user.id,
         name: user.name,
-        users: user.users,
+        users: user.userGroups,
         metadata: user.metadata,
       }).subscribe((user) => {
         getData();
@@ -164,9 +163,9 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
             onSubmit={handleSubmit}
             isEditing={isEditing}
             selectedUserGroup={selectedUserGroup}
+            metadata={metadata}
             onChange={handleChange}
             onCancel={handleDialog}
-            metadata={metadata}
           />
         </Dialog>
 

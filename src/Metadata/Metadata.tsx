@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -11,6 +11,8 @@ import {
   TextField,
   ListItemText,
   Typography,
+  Box,
+  Chip,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -23,6 +25,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   switch: {
     marginTop: theme.spacing(1),
   },
+  chip: {
+    marginTop: theme.spacing(1),
+  },
 }));
 
 const Metadata = ({
@@ -31,7 +36,7 @@ const Metadata = ({
   handleChange,
 }: {
   metadata?: Metadata[];
-  data: {};
+  data;
   handleChange(key: string, value: any): void;
 }) => {
   const classes = useStyles();
@@ -49,6 +54,15 @@ const Metadata = ({
   const handleText = (value) => {
     setMultiText(value);
   };
+
+  const handleChipDelete = (key, item) => {
+    const newList = list.filter((value) => value !== item);
+    handleChange(key, newList);
+  };
+
+  useEffect(() => {
+    setList(data.MultiText);
+  }, [data.MultiText]);
 
   return (
     <Fragment>
@@ -131,9 +145,15 @@ const Metadata = ({
             <>
               {list.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
               {list?.map((item, i) => (
-                <ListItem key={i} dense>
-                  <ListItemText primary={item} />
-                </ListItem>
+                <Box alignItems="center" key={i}>
+                  <Chip
+                    className={classes.chip}
+                    key={item}
+                    label={item}
+                    style={{ marginRight: 4 }}
+                    onDelete={() => handleChipDelete(meta.key, item)}
+                  />
+                </Box>
               ))}
 
               <TextField

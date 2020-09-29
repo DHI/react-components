@@ -11,12 +11,14 @@ import {
   withStyles,
 } from '@material-ui/core';
 import Metadata from '../Metadata/Metadata';
-import { stringify } from 'jsonpath';
 
 const useStyles = makeStyles((theme: Theme) => ({
   users: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+  },
+  chip: {
+    marginTop: theme.spacing(1),
   },
 }));
 
@@ -24,9 +26,9 @@ const UserGroupForm = ({
   onSubmit,
   isEditing,
   selectedUserGroup,
+  metadata,
   onChange,
   onCancel,
-  metadata,
 }: UserGroupFormProps) => {
   const classes = useStyles();
   const userGroupTemplate = {
@@ -93,7 +95,7 @@ const UserGroupForm = ({
   useEffect(() => {
     setForm({
       ...selectedUserGroup,
-      metadata: form.metadata || [],
+      metadata: selectedUserGroup.metadata || [],
     });
   }, []);
 
@@ -108,7 +110,7 @@ const UserGroupForm = ({
             margin="dense"
             label="Username"
             variant="standard"
-            value={selectedUserGroup?.id}
+            value={form?.id}
             onChange={(e) => onChange('id', e.target.value)}
           />
         ) : (
@@ -117,7 +119,7 @@ const UserGroupForm = ({
             label="Username"
             margin="dense"
             variant="standard"
-            value={selectedUserGroup?.id}
+            value={form?.id}
             disabled={true}
           />
         )}
@@ -128,7 +130,7 @@ const UserGroupForm = ({
           label="Name"
           margin="dense"
           variant="standard"
-          value={selectedUserGroup?.name}
+          value={form?.name}
           onChange={(e) => onChange('name', e.target.value)}
         />
 
@@ -140,7 +142,9 @@ const UserGroupForm = ({
               <strong>{selectedUserGroup.name}</strong>
             </Typography>
           ) : (
-            selectedUserGroup.users.map((val, i) => <Chip key={i} label={val} style={{ marginRight: 4 }} />)
+            selectedUserGroup.users.map((val, i) => (
+              <Chip key={i} className={classes.chip} label={val} style={{ marginRight: 4 }} />
+            ))
           )}
         </div>
         {handleMetadata()}
