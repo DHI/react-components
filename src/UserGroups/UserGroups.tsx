@@ -1,11 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
-import { fetchUserGroups, updateUserGroups } from '../DataServices/DataServices';
-import DefaultTable from '../Table/Table';
-import ChipCell, { MetadataChipCell } from '../Table/Cells/ChipCell';
+import { fetchUserGroups, updateUserGroups, deleteUserGroup } from '../DataServices/DataServices';
 import UserGroupTableHeader from './UserGroupsTableHeader';
-import ActionsCell from '../Table/Cells/ActionsCell';
-import Dialog from '../Table/Dialog';
+import { Dialog, ActionsButtons, DefaultTable, ActionsCell, ChipCell, MetadataChipCell } from '../Table';
 import UserGroupForm from './UserGroupForm';
 
 const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
@@ -14,6 +11,8 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [deleteItem, setDeleteItem] = useState('');
   const [isEditing, setisEditing] = useState(false);
   const [selectedUserGroup, setSelectedUser] = useState<UserGroupsData>();
 
@@ -39,8 +38,19 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
     setSelectedUser(item);
   };
 
-  const onDelete = () => {
-    setIsDialogOpen(true);
+  const handleDeleteDialog = (item) => {
+    setDeleteDialog(true);
+    setDeleteItem(item.id);
+    console.log(item);
+  };
+
+  const handleDelete = () => {
+    deleteUserGroup(host, token, deleteItem).subscribe(
+      () => {
+        fetchData();
+      },
+      (error: any) => console.log(error),
+    );
   };
 
   const handleSubmit = (user) => {
@@ -65,7 +75,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
         users: user.userGroups,
         metadata: user.metadata,
       }).subscribe((user) => {
-        getData();
+        fetchData();
       }),
       (error) => {
         console.log(error);
@@ -111,7 +121,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
         cell: {
           value: [item],
         },
-      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={onDelete} />,
+      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={handleDeleteDialog} />,
     },
   ];
 
@@ -128,7 +138,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
     return id.includes(query) || name.includes(query) || users.some((ug) => ug.indexOf(query) >= 0);
   };
 
-  const getData = () => {
+  const fetchData = () => {
     fetchUserGroups(host, token).subscribe(
       async (body: Record<any, any>) => {
         const userGroups = body as UserGroups[];
@@ -145,7 +155,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   };
 
   useEffect(() => {
-    getData();
+    fetchData();
   }, []);
 
   return (
@@ -156,8 +166,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
           title={isEditing ? 'Edit User Group Details' : 'Create New User Group'}
           message=""
           showDialog={isDialogOpen}
-          onConfirm={handleDialog}
-          onCancel={handleDialog}
         >
           <UserGroupForm
             onSubmit={handleSubmit}
@@ -166,6 +174,20 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
             metadata={metadata}
             onChange={handleChange}
             onCancel={handleDialog}
+          />
+        </Dialog>
+
+        <Dialog
+          dialogId="userGroupsDelete"
+          title={`Delete `}
+          message={`This will delete the selected user account , after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
+          showDialog={deleteDialog}
+        >
+          <ActionsButtons
+            confirmButtonText="Delete"
+            isEditing={isEditing}
+            onCancel={() => setDeleteDialog(false)}
+            onSubmit={handleDelete}
           />
         </Dialog>
 

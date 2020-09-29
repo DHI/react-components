@@ -19,3 +19,11 @@ interface TableData {
   users?: string[];
   metadata?: any;
 }
+
+interface ActionsButtonsProps {
+  cancelButtonText?: string;
+  confirmButtonText: string;
+  onCancel: (item: any) => void;
+  onSubmit: (e: any) => void;
+  isEditing: boolean;
+}

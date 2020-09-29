@@ -30,6 +30,12 @@ interface AccountData {
   metadata: any;
 }
 
+interface AccountTableHeaderProps {
+  filter: string;
+  setFilter: (event: any) => any;
+  onNew: () => any;
+}
+
 interface EditUser {
   id: string;
   name: string;

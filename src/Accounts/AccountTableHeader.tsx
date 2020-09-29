@@ -10,12 +10,6 @@ const SearchInput = styled(TextField)`
   }
 `;
 
-interface AccountTableHeaderProps {
-  filter: string;
-  setFilter: (event: any) => any;
-  onNew: () => any;
-}
-
 const AccountTableHeader = ({ filter, setFilter, onNew }: AccountTableHeaderProps) => (
   <Box display="flex" justifyContent="space-between" py={1}>
     <Typography variant="h5">Accounts</Typography>

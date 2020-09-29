@@ -4,14 +4,6 @@ import { Dialog as MUDialog, DialogContent, DialogContentText, DialogTitle } fro
 const Dialog = (props) => {
   const { dialogId, title, message, showDialog, onConfirm, onCancel } = props;
 
-  const setCancel = () => {
-    onCancel && onCancel();
-  };
-
-  const setConfirm = () => {
-    onConfirm && onConfirm();
-  };
-
   return (
     <MUDialog
       id={`${dialogId}-dialog`}

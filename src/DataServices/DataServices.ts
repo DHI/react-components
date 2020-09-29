@@ -1,3 +1,4 @@
+import { identity } from 'lodash';
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
@@ -111,20 +112,20 @@ const fetchTimeseriesByGroup = (dataSources: DataSource[], token: string) => {
 
 // ACCOUNTS
 // Could be an account name or `me`.
-export const fetchUserGroups = (host: string, token: string) =>
+const fetchUserGroups = (host: string, token: string) =>
   fetchUrl(`${host}/api/usergroups`, {
     method: 'GET',
     additionalHeaders: { Authorization: `Bearer ${token}` },
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
-export const updateUserGroupsForUser = (host: string, token: string, data: { userId: string; groups: string[] }) =>
+const updateUserGroupsForUser = (host: string, token: string, data: { userId: string; groups: string[] }) =>
   fetchUrl(`${host}/api/usergroups/user/${data.userId}`, {
     method: 'POST',
     additionalHeaders: { Authorization: `Bearer ${token}` },
     body: JSON.stringify(data.groups),
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
-export const updateUserGroups = (
+const updateUserGroups = (
   host: string,
   token: string,
   data: { id: string; name: string[]; users: string[]; metadata: {} },
@@ -139,6 +140,14 @@ export const updateUserGroups = (
       metadata: data.metadata,
     }),
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+
+const deleteUserGroup = (host: string, token: string, id: string) =>
+  fetchUrl(`${host}/api/usergroups/${id}`, {
+    method: 'DELETE',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log('deleted account', res)));
 
 const fetchAccount = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/accounts/${id}`, {
@@ -581,6 +590,10 @@ export {
   updateAccount,
   createAccount,
   fetchTimeseriesValues,
+  fetchUserGroups,
+  updateUserGroupsForUser,
+  updateUserGroups,
+  deleteUserGroup,
   fetchFeatureCollectionValues,
   fetchTimeseriesByGroup,
   fetchMapAnimationFiles,
