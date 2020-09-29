@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.primary.main,
     },
   },
+  multiText: {
+    margin: 0,
+  },
 }));
 
 const ChipCell = ({ cell }: { cell: any }) => {
@@ -51,6 +54,10 @@ export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { va
         <Chip key={val} avatar={<Avatar>{val.substr(0, 1)}</Avatar>} label={val} style={{ marginRight: 4 }} />
       </Box>
     ));
+  }
+
+  if (type === 'MultiText' && value !== undefined) {
+    return value.map((item) => <p className={classes.multiText}>{item}</p>);
   }
 
   return <>{value}</>;

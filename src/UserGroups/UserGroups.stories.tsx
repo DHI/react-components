@@ -41,7 +41,7 @@ export const UserGroupStory = () => {
       key: 'MultiText',
       label: 'Multi Text',
       type: 'MultiText',
-      default: 'Multi Text',
+      default: ['127.0.0.1', '0.0.0.10'],
     },
   ] as Metadata[];
 

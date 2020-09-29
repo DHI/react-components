@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import {
   Button,
   Chip,
@@ -11,6 +11,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import Metadata from '../Metadata/Metadata';
+import { stringify } from 'jsonpath';
 
 const useStyles = makeStyles((theme: Theme) => ({
   users: {
@@ -22,12 +23,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 const UserGroupForm = ({
   onSubmit,
   isEditing,
-  selectedUserGroup: selectedUser,
+  selectedUserGroup,
   onChange,
   onCancel,
   metadata,
 }: UserGroupFormProps) => {
   const classes = useStyles();
+  const userGroupTemplate = {
+    id: '',
+    name: '',
+    users: [],
+    metadata: {},
+  };
+  const [form, setForm] = useState(userGroupTemplate);
 
   const NoBorderTextField = withStyles({
     root: {
@@ -47,21 +55,47 @@ const UserGroupForm = ({
       isMetadata = false;
     }
 
-    // setForm(
-    //   isMetadata
-    //     ? {
-    //         ...form,
-    //         metadata: {
-    //           ...form.metadata,
-    //           [key]: value,
-    //         },
-    //       }
-    //     : {
-    //         ...form,
-    //         [key]: value,
-    //       },
-    // );
+    setForm(
+      isMetadata
+        ? {
+            ...form,
+            metadata: {
+              ...form.metadata,
+              [key]: value,
+            },
+          }
+        : {
+            ...form,
+            [key]: value,
+          },
+    );
   };
+
+  const handleMetadata = () => {
+    metadata?.forEach((item, index) => {
+      if (form.metadata[metadata[index].key] === undefined) {
+        setForm({
+          ...form,
+          metadata: {
+            ...form.metadata,
+            [metadata[index].key]: metadata[index].default,
+          },
+        });
+      }
+    });
+  };
+
+  const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    onSubmit(form);
+  };
+
+  useEffect(() => {
+    setForm({
+      ...selectedUserGroup,
+      metadata: form.metadata || [],
+    });
+  }, []);
 
   return (
     <form onSubmit={onSubmit}>
@@ -74,7 +108,7 @@ const UserGroupForm = ({
             margin="dense"
             label="Username"
             variant="standard"
-            value={selectedUser?.id}
+            value={selectedUserGroup?.id}
             onChange={(e) => onChange('id', e.target.value)}
           />
         ) : (
@@ -83,7 +117,7 @@ const UserGroupForm = ({
             label="Username"
             margin="dense"
             variant="standard"
-            value={selectedUser?.id}
+            value={selectedUserGroup?.id}
             disabled={true}
           />
         )}
@@ -94,28 +128,29 @@ const UserGroupForm = ({
           label="Name"
           margin="dense"
           variant="standard"
-          value={selectedUser?.name}
+          value={selectedUserGroup?.name}
           onChange={(e) => onChange('name', e.target.value)}
         />
 
         <div className={classes.users}>
           <Typography variant="subtitle1">Users</Typography>
-          {selectedUser.users.length > 4 ? (
+          {selectedUserGroup.users.length > 4 ? (
             <Typography>
-              there are <strong>{selectedUser.users.length}</strong> users under <strong>{selectedUser.name}</strong>
+              there are <strong>{selectedUserGroup.users.length}</strong> users under{' '}
+              <strong>{selectedUserGroup.name}</strong>
             </Typography>
           ) : (
-            selectedUser.users.map((val, i) => <Chip key={i} label={val} style={{ marginRight: 4 }} />)
+            selectedUserGroup.users.map((val, i) => <Chip key={i} label={val} style={{ marginRight: 4 }} />)
           )}
         </div>
-
-        <Metadata metadata={metadata} data={selectedUser} handleChange={handleChange} />
+        {handleMetadata()}
+        <Metadata metadata={metadata} data={form.metadata} handleChange={handleChange} />
 
         <DialogActions>
           <Button variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary" onClick={(e) => handleSubmit(e)}>
             {isEditing ? 'Update' : 'Create'}
           </Button>
         </DialogActions>

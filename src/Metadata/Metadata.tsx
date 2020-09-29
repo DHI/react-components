@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -37,10 +37,15 @@ const Metadata = ({
   const classes = useStyles();
   const [multiText, setMultiText] = useState('');
   const [list, setList] = useState([]);
+  const multiTextField = useRef(null);
 
-  const handleMultiText = () => {
+  const handleMultiText = (key) => {
     setList([...list, multiText]);
     setMultiText('');
+    multiTextField.current.focus();
+    handleChange(key, [...list, multiText]);
+
+    console.log(multiTextField.current);
   };
 
   const handleText = (value) => {
@@ -129,7 +134,7 @@ const Metadata = ({
               {list.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
               {list?.map((item, i) => (
                 <ListItem key={i} dense>
-                  <ListItemText primary={item} />
+                  <ListItemText key={i} primary={item} />
                 </ListItem>
               ))}
 
@@ -138,12 +143,13 @@ const Metadata = ({
                 fullWidth
                 margin="dense"
                 label={meta.label}
+                inputRef={multiTextField}
                 variant="standard"
                 value={multiText}
                 onChange={(e) => handleText(e.target.value)}
                 InputProps={{
                   endAdornment: (
-                    <Button color="primary" onClick={handleMultiText}>
+                    <Button color="primary" onClick={() => handleMultiText(meta.key)}>
                       Add
                     </Button>
                   ),

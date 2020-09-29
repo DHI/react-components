@@ -44,4 +44,5 @@ interface UserGroups {
   id: string;
   name: string;
   users: string[];
+  metadata: {};
 }

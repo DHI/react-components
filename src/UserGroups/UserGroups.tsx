@@ -34,7 +34,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   };
 
   const onEdit = (item) => {
-    console.log('On Edit: ', item);
     setIsDialogOpen(true);
     setisEditing(true);
     setSelectedUser(item);
@@ -45,8 +44,8 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
     setIsDialogOpen(true);
   };
 
-  const handleSubmit = (user, e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = (user) => {
+    // e.preventDefault();
     //
     // TODO: hit the endpoint to update data.
     //
@@ -69,6 +68,8 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
     setUserGroups(newGroups);
 
     setIsDialogOpen(false);
+
+    console.log('User: ', user);
   };
 
   const metadataHeader = metadata
@@ -158,7 +159,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
           onCancel={handleDialog}
         >
           <UserGroupForm
-            onSubmit={(e) => handleSubmit(selectedUserGroup, e)}
+            onSubmit={handleSubmit}
             isEditing={isEditing}
             selectedUserGroup={selectedUserGroup}
             onChange={handleChange}

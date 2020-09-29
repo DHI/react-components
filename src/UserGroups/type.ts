@@ -17,6 +17,7 @@ interface UserGroupsData {
   id: string;
   name: string;
   users: string[];
+  metadata: {};
 }
 
 interface UserGroupFormProps {
