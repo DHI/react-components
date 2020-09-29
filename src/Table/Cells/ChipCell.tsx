@@ -57,7 +57,11 @@ export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { va
   }
 
   if (type === 'MultiText' && value !== undefined) {
-    return value.map((item) => <p className={classes.multiText}>{item}</p>);
+    return value.map((item, i) => (
+      <p key={i} className={classes.multiText}>
+        {item}
+      </p>
+    ));
   }
 
   return <>{value}</>;

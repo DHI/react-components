@@ -44,8 +44,6 @@ const Metadata = ({
     setMultiText('');
     multiTextField.current.focus();
     handleChange(key, [...list, multiText]);
-
-    console.log(multiTextField.current);
   };
 
   const handleText = (value) => {
@@ -134,7 +132,7 @@ const Metadata = ({
               {list.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
               {list?.map((item, i) => (
                 <ListItem key={i} dense>
-                  <ListItemText key={i} primary={item} />
+                  <ListItemText primary={item} />
                 </ListItem>
               ))}
 

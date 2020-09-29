@@ -124,6 +124,22 @@ export const updateUserGroupsForUser = (host: string, token: string, data: { use
     body: JSON.stringify(data.groups),
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
+export const updateUserGroups = (
+  host: string,
+  token: string,
+  data: { id: string; name: string[]; users: string[]; metadata: {} },
+) =>
+  fetchUrl(`${host}/api/usergroups`, {
+    method: 'PUT',
+    additionalHeaders: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({
+      id: data.id,
+      name: data.name,
+      users: data.users,
+      metadata: data.metadata,
+    }),
+  }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+
 const fetchAccount = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/accounts/${id}`, {
     method: 'GET',

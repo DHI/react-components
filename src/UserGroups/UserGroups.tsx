@@ -1,6 +1,6 @@
-import React, { FormEvent, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
-import { fetchUserGroups } from '../DataServices/DataServices';
+import { fetchUserGroups, updateUserGroups } from '../DataServices/DataServices';
 import DefaultTable from '../Table/Table';
 import ChipCell, { MetadataChipCell } from '../Table/Cells/ChipCell';
 import UserGroupTableHeader from './UserGroupsTableHeader';
@@ -45,16 +45,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   };
 
   const handleSubmit = (user) => {
-    // e.preventDefault();
-    //
-    // TODO: hit the endpoint to update data.
-    //
-    // updateUserGroups(host, token, { id: user.id, name: user.name }).subscribe((user) => {
-    //   getData();
-    // }),
-    //   (error) => {
-    //     console.log(error);
-    //   };
     const newGroups = [...userGroups];
 
     for (const key in newGroups) {
@@ -69,7 +59,19 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
 
     setIsDialogOpen(false);
 
-    console.log('User: ', user);
+    return (
+      updateUserGroups(host, token, {
+        id: user.id,
+        name: user.name,
+        users: user.users,
+        metadata: user.metadata,
+      }).subscribe((user) => {
+        getData();
+      }),
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   const metadataHeader = metadata
