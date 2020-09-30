@@ -73,7 +73,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
           name: user.name,
           users: user.users,
           metadata: user.metadata,
-        }).subscribe((user) => {
+        }).subscribe(() => {
           fetchData();
         }),
         (error) => {
@@ -84,7 +84,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
           name: selectedUserGroup.name,
           users: selectedUserGroup.users,
           metadata: user.metadata,
-        }).subscribe((user) => {
+        }).subscribe(() => {
           fetchData();
         }),
         (error) => {

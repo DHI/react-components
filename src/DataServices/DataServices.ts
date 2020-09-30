@@ -134,7 +134,7 @@ const createUserGroup = (
     method: 'POST',
     additionalHeaders: { Authorization: `Bearer ${token}` },
     body: JSON.stringify(data),
-  }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+  }).pipe(tap((res) => console.log('createUserGroup', res)));
 
 const updateUserGroups = (
   host: string,
@@ -150,7 +150,7 @@ const updateUserGroups = (
       users: data.users,
       metadata: data.metadata,
     }),
-  }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+  }).pipe(tap((res) => console.log('updateUserGroups', res)));
 
 const deleteUserGroup = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/usergroups/${id}`, {
