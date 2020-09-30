@@ -9,8 +9,7 @@ import {
   fetchUserGroups,
 } from '../DataServices/DataServices';
 import { Box, Paper } from '@material-ui/core';
-import { ActionsCell, ActionsButtons, ChipCell, DefaultTable, MetadataChipCell, Dialog } from '../Table';
-import AccountTableHeader from './AccountTableHeader';
+import { ActionsCell, ActionsButtons, ChipCell, DefaultTable, MetadataChipCell, Dialog, TableHeaders } from '../Table';
 import AccountsForm from './AccountsForm';
 
 export const Accounts = ({ host, token, metadata }: AccountListProps) => {
@@ -173,7 +172,7 @@ export const Accounts = ({ host, token, metadata }: AccountListProps) => {
     },
   ];
 
-  const TableHeaders = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
+  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
 
   const searchItems = (item: AccountData) => {
     if (filter === '') return true;
@@ -225,12 +224,12 @@ export const Accounts = ({ host, token, metadata }: AccountListProps) => {
         />
       </Dialog>
 
-      <AccountTableHeader filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TableHeaders title="Accounts" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}
           loading={loading}
-          tableHeaders={TableHeaders}
+          tableHeaders={TableHeadersData}
           data={data}
           searchItems={(item) => searchItems(item)}
         />

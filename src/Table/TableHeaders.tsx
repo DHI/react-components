@@ -10,9 +10,9 @@ const SearchInput = styled(TextField)`
   }
 `;
 
-const AccountTableHeader = ({ filter, setFilter, onNew }: AccountTableHeaderProps) => (
+const TableHeaders = ({ title, filter, setFilter, onNew }: TableHeadersProps) => (
   <Box display="flex" justifyContent="space-between" py={1}>
-    <Typography variant="h5">Accounts</Typography>
+    <Typography variant="h5">{title}</Typography>
     <Box>
       <SearchInput
         placeholder="Search"
@@ -22,10 +22,10 @@ const AccountTableHeader = ({ filter, setFilter, onNew }: AccountTableHeaderProp
         onChange={({ target: { value } }: any) => setFilter(value)}
       />
       <Button variant="contained" color="primary" startIcon={<Add />} onClick={onNew}>
-        New User
+        New {title}
       </Button>
     </Box>
   </Box>
 );
 
-export default AccountTableHeader;
+export default TableHeaders;

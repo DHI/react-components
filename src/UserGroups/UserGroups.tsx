@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
 import { fetchUserGroups, updateUserGroups, deleteUserGroup, createUserGroup } from '../DataServices/DataServices';
-import UserGroupTableHeader from './UserGroupsTableHeader';
-import { Dialog, ActionsButtons, DefaultTable, ActionsCell, ChipCell, MetadataChipCell } from '../Table';
+import { Dialog, ActionsButtons, DefaultTable, ActionsCell, ChipCell, MetadataChipCell, TableHeaders } from '../Table';
 import UserGroupForm from './UserGroupForm';
 
 const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
@@ -134,7 +133,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
     },
   ];
 
-  const TableHeaders = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
+  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
 
   const searchItems = (item: UserGroupsData) => {
     if (filter === '') return true;
@@ -199,12 +198,12 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
         />
       </Dialog>
 
-      <UserGroupTableHeader filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TableHeaders title="User Groups" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}
           loading={loading}
-          tableHeaders={TableHeaders}
+          tableHeaders={TableHeadersData}
           data={userGroups}
           searchItems={(item) => searchItems(item)}
         />

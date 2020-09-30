@@ -27,3 +27,10 @@ interface ActionsButtonsProps {
   onSubmit: (e: any) => void;
   isEditing: boolean;
 }
+
+interface TableHeadersProps {
+  title: string;
+  filter: string;
+  setFilter: (event: any) => any;
+  onNew: () => any;
+}
