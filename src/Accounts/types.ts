@@ -27,7 +27,7 @@ interface AccountData {
   name: string;
   email: string;
   userGroups: string[];
-  metadata: any;
+  metadata: {};
 }
 
 interface AccountTableHeaderProps {
@@ -51,4 +51,14 @@ interface UserGroups {
   name: string;
   users: string[];
   metadata: {};
+}
+
+interface AccountsFormProps {
+  host: string;
+  token: string;
+  onSubmit: (e: any) => void;
+  isEditing: boolean;
+  selectedUser: AccountData;
+  onCancel: () => void;
+  metadata: Metadata[];
 }

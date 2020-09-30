@@ -12,9 +12,8 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   const [filter, setFilter] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [deleteItem, setDeleteItem] = useState('');
   const [isEditing, setisEditing] = useState(false);
-  const [selectedUserGroup, setSelectedUser] = useState<UserGroupsData>();
+  const [selectedUserGroup, setSelectedUserGroup] = useState<UserGroupsData>();
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -26,7 +25,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   };
 
   const handleChange = (name, value) => {
-    setSelectedUser({
+    setSelectedUserGroup({
       ...selectedUserGroup,
       [name]: value,
     });
@@ -35,19 +34,20 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   const onEdit = (item) => {
     setIsDialogOpen(true);
     setisEditing(true);
-    setSelectedUser(item);
+    setSelectedUserGroup(item);
   };
 
   const handleDeleteDialog = (item) => {
     setDeleteDialog(true);
-    setDeleteItem(item.id);
-    console.log(item);
+    setisEditing(false);
+    setSelectedUserGroup(item);
   };
 
   const handleDelete = () => {
-    deleteUserGroup(host, token, deleteItem).subscribe(
+    deleteUserGroup(host, token, selectedUserGroup.id).subscribe(
       () => {
         fetchData();
+        setDeleteDialog(false);
       },
       (error: any) => console.log(error),
     );
@@ -160,50 +160,48 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   }, []);
 
   return (
-    <>
-      <Box>
-        <Dialog
-          dialogId="userGroups"
-          title={isEditing ? 'Edit User Group Details' : 'Create New User Group'}
-          message=""
-          showDialog={isDialogOpen}
-        >
-          <UserGroupForm
-            onSubmit={handleSubmit}
-            isEditing={isEditing}
-            selectedUserGroup={selectedUserGroup}
-            metadata={metadata}
-            onChange={handleChange}
-            onCancel={handleDialog}
-          />
-        </Dialog>
+    <Box>
+      <Dialog
+        dialogId="userGroups"
+        title={isEditing ? 'Edit User Group Details' : 'Create New User Group'}
+        message=""
+        showDialog={isDialogOpen}
+      >
+        <UserGroupForm
+          onSubmit={handleSubmit}
+          isEditing={isEditing}
+          selectedUserGroup={selectedUserGroup}
+          metadata={metadata}
+          onChange={handleChange}
+          onCancel={handleDialog}
+        />
+      </Dialog>
 
-        <Dialog
-          dialogId="userGroupsDelete"
-          title={`Delete `}
-          message={`This will delete the selected user account , after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
-          showDialog={deleteDialog}
-        >
-          <ActionsButtons
-            confirmButtonText="Delete"
-            isEditing={isEditing}
-            onCancel={() => setDeleteDialog(false)}
-            onSubmit={handleDelete}
-          />
-        </Dialog>
+      <Dialog
+        dialogId="userGroupsDelete"
+        title={`Delete ${selectedUserGroup?.name}`}
+        message={`This will delete the selected user account ${selectedUserGroup?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
+        showDialog={deleteDialog}
+      >
+        <ActionsButtons
+          confirmButtonText="Delete"
+          isEditing={isEditing}
+          onCancel={() => setDeleteDialog(false)}
+          onSubmit={handleDelete}
+        />
+      </Dialog>
 
-        <UserGroupTableHeader filter={filter} setFilter={setFilter} onNew={openDialog} />
-        <Paper>
-          <DefaultTable
-            error={error}
-            loading={loading}
-            tableHeaders={TableHeaders}
-            data={userGroups}
-            searchItems={(item) => searchItems(item)}
-          />
-        </Paper>
-      </Box>
-    </>
+      <UserGroupTableHeader filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <Paper>
+        <DefaultTable
+          error={error}
+          loading={loading}
+          tableHeaders={TableHeaders}
+          data={userGroups}
+          searchItems={(item) => searchItems(item)}
+        />
+      </Paper>
+    </Box>
   );
 };
 
