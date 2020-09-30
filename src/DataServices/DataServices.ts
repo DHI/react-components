@@ -125,6 +125,17 @@ const updateUserGroupsForUser = (host: string, token: string, data: { userId: st
     body: JSON.stringify(data.groups),
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
+const createUserGroup = (
+  host: string,
+  token: string,
+  data: { id: string; name: string; users: string[]; metadata: {} },
+) =>
+  fetchUrl(`${host}/api/usergroups`, {
+    method: 'POST',
+    additionalHeaders: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+
 const updateUserGroups = (
   host: string,
   token: string,
@@ -592,6 +603,7 @@ export {
   fetchTimeseriesValues,
   fetchUserGroups,
   updateUserGroupsForUser,
+  createUserGroup,
   updateUserGroups,
   deleteUserGroup,
   fetchFeatureCollectionValues,

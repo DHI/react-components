@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
-import { fetchUserGroups, updateUserGroups, deleteUserGroup } from '../DataServices/DataServices';
+import { fetchUserGroups, updateUserGroups, deleteUserGroup, createUserGroup } from '../DataServices/DataServices';
 import UserGroupTableHeader from './UserGroupsTableHeader';
 import { Dialog, ActionsButtons, DefaultTable, ActionsCell, ChipCell, MetadataChipCell } from '../Table';
 import UserGroupForm from './UserGroupForm';
@@ -65,23 +65,31 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
     }
 
     setUserGroups(newGroups);
-
     setIsDialogOpen(false);
-    console.log(user);
 
-    return (
-      updateUserGroups(host, token, {
-        id: user.id,
-        name: user.name,
-        users: user.users,
-        metadata: user.metadata,
-      }).subscribe((user) => {
-        fetchData();
-      }),
-      (error) => {
-        console.log(error);
-      }
-    );
+    return isEditing
+      ? (updateUserGroups(host, token, {
+          id: user.id,
+          name: user.name,
+          users: user.users,
+          metadata: user.metadata,
+        }).subscribe((user) => {
+          fetchData();
+        }),
+        (error) => {
+          console.log(error);
+        })
+      : (createUserGroup(host, token, {
+          id: selectedUserGroup.id,
+          name: selectedUserGroup.name,
+          users: selectedUserGroup.users,
+          metadata: user.metadata,
+        }).subscribe((user) => {
+          fetchData();
+        }),
+        (error) => {
+          console.log(error);
+        });
   };
 
   const metadataHeader = metadata

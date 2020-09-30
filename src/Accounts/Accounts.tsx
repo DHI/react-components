@@ -196,7 +196,7 @@ export const Accounts = ({ host, token, metadata }: AccountListProps) => {
     <Box>
       <Dialog
         dialogId="user"
-        title={isEditing ? 'Edit User Details' : 'Create New User'}
+        title={isEditing ? 'Edit Account Details' : 'Create New Account'}
         message=""
         showDialog={isDialogOpen}
       >

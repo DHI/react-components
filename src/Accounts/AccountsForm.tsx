@@ -161,7 +161,6 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
 
   return (
     <form onSubmit={handleSubmit}>
-      <DialogTitle id="form-dialog-title">{isEditing ? 'Edit Account Details' : 'Create New Account'}</DialogTitle>
       <DialogContent>
         {!isEditing ? (
           <TextField
@@ -252,7 +251,7 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
         <Button variant="outlined" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit" variant="contained" color="primary">
+        <Button type="submit" variant="contained" color="primary" disabled={error}>
           {isEditing ? 'Update' : 'Create'}
         </Button>
       </DialogActions>

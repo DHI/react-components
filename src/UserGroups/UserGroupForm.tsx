@@ -94,14 +94,13 @@ const UserGroupForm = ({
   };
 
   const handleError = (boolean) => {
-    console.log(boolean);
     setError(boolean);
   };
 
   useEffect(() => {
     setForm({
       ...selectedUserGroup,
-      metadata: selectedUserGroup.metadata || [],
+      metadata: selectedUserGroup?.metadata || [],
     });
   }, []);
 
@@ -142,13 +141,13 @@ const UserGroupForm = ({
 
         <div className={classes.users}>
           <Typography variant="subtitle1">Users</Typography>
-          {selectedUserGroup?.users.length > 4 ? (
+          {selectedUserGroup?.users?.length > 4 ? (
             <Typography>
               there are <strong>{selectedUserGroup.users.length}</strong> users under{' '}
               <strong>{selectedUserGroup.name}</strong>
             </Typography>
           ) : (
-            selectedUserGroup?.users.map((val, i) => (
+            selectedUserGroup?.users?.map((val, i) => (
               <Chip key={i} className={classes.chip} label={val} style={{ marginRight: 4 }} />
             ))
           )}
