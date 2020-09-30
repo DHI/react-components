@@ -67,12 +67,13 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
     setUserGroups(newGroups);
 
     setIsDialogOpen(false);
+    console.log(user);
 
     return (
       updateUserGroups(host, token, {
         id: user.id,
         name: user.name,
-        users: user.userGroups,
+        users: user.users,
         metadata: user.metadata,
       }).subscribe((user) => {
         fetchData();

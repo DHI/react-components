@@ -38,6 +38,7 @@ const UserGroupForm = ({
     metadata: {},
   };
   const [form, setForm] = useState(userGroupTemplate);
+  const [error, setError] = useState(false);
 
   const NoBorderTextField = withStyles({
     root: {
@@ -90,6 +91,11 @@ const UserGroupForm = ({
   const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     onSubmit(form);
+  };
+
+  const handleError = (boolean) => {
+    console.log(boolean);
+    setError(boolean);
   };
 
   useEffect(() => {
@@ -148,13 +154,13 @@ const UserGroupForm = ({
           )}
         </div>
         {handleMetadata()}
-        <Metadata metadata={metadata} data={form.metadata} handleChange={handleChange} />
+        <Metadata metadata={metadata} data={form.metadata} onChange={handleChange} onError={handleError} />
 
         <DialogActions>
           <Button variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
-          <Button type="submit" variant="contained" color="primary" onClick={(e) => handleSubmit(e)}>
+          <Button type="submit" variant="contained" color="primary" onClick={(e) => handleSubmit(e)} disabled={error}>
             {isEditing ? 'Update' : 'Create'}
           </Button>
         </DialogActions>

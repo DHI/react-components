@@ -9,4 +9,6 @@ type MetadataDefault = string | boolean | string[];
 interface Metadata extends MetadataBase {
   options?: string[];
   default: MetadataDefault;
+  regEx?: string;
+  regExError?: string;
 }

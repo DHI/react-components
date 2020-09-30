@@ -4,18 +4,17 @@ import {
   FormControl,
   FormControlLabel,
   InputLabel,
-  ListItem,
   MenuItem,
   Select,
   Switch,
   TextField,
-  ListItemText,
   Typography,
   Box,
   Chip,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { onErrorResumeNext } from 'rxjs/operators';
 
 const useStyles = makeStyles((theme: Theme) => ({
   FormControl: {
@@ -33,22 +32,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Metadata = ({
   metadata,
   data,
-  handleChange,
+  onChange,
+  onError,
 }: {
   metadata?: Metadata[];
   data;
-  handleChange(key: string, value: any): void;
+  onChange(key: string, value: any): void;
+  onError(error: boolean): void;
 }) => {
   const classes = useStyles();
   const [multiText, setMultiText] = useState('');
   const [list, setList] = useState([]);
+  const [error, setError] = useState({});
   const multiTextField = useRef(null);
 
   const handleMultiText = (key) => {
     setList([...list, multiText]);
     setMultiText('');
     multiTextField.current.focus();
-    handleChange(key, [...list, multiText]);
+    onChange(key, [...list, multiText]);
   };
 
   const handleText = (value) => {
@@ -57,8 +59,30 @@ const Metadata = ({
 
   const handleChipDelete = (key, item) => {
     const newList = list.filter((value) => value !== item);
-    handleChange(key, newList);
+    onChange(key, newList);
   };
+
+  const handleChange = (key: string, value: any, regex: string) => {
+    const re = new RegExp(regex);
+
+    if (re.test(value)) {
+      setError({
+        ...error,
+        [key]: false,
+      });
+    } else {
+      setError({
+        ...error,
+        [key]: true,
+      });
+    }
+
+    onChange(key, value);
+  };
+
+  useEffect(() => {
+    onError(Object.keys(error).some((v) => error[v] === true));
+  }, [error]);
 
   useEffect(() => {
     setList(data.MultiText);
@@ -76,7 +100,9 @@ const Metadata = ({
               label={meta.label}
               variant="standard"
               value={data[meta.key]}
-              onChange={(e) => handleChange(meta.key, e.target.value)}
+              error={error[meta.key]}
+              helperText={error[meta.key] && meta.regExError}
+              onChange={(e) => handleChange(meta.key, e.target.value, meta.regEx)}
             />
           );
         } else if (meta.type === 'SingleChoice') {
@@ -88,7 +114,7 @@ const Metadata = ({
                 defaultValue={meta?.default}
                 value={data[meta.key]}
                 id={meta.key}
-                onChange={(e) => handleChange(meta.key, e.target.value)}
+                onChange={(e) => handleChange(meta.key, e.target.value, meta.regEx)}
               >
                 {meta.options.map((item, index) => (
                   <MenuItem key={index} value={item}>
@@ -107,7 +133,7 @@ const Metadata = ({
                 <Switch
                   color="primary"
                   checked={data && data[meta.key] !== undefined ? data[meta.key] : meta?.default}
-                  onChange={(e) => handleChange(meta.key, e.target.checked)}
+                  onChange={(e) => handleChange(meta.key, e.target.checked, meta.regEx)}
                   name={meta.label}
                   inputProps={{ 'aria-label': meta.label }}
                 />
@@ -123,7 +149,7 @@ const Metadata = ({
               options={meta.options}
               defaultValue={meta?.default}
               value={data[meta.key]}
-              onChange={(e, values) => handleChange(meta.key, values)}
+              onChange={(e, values) => handleChange(meta.key, values, meta.regEx)}
               multiple={true as any}
               renderInput={(props) => (
                 <TextField
@@ -165,6 +191,8 @@ const Metadata = ({
                 variant="standard"
                 value={multiText}
                 onChange={(e) => handleText(e.target.value)}
+                error={error[meta.key]}
+                helperText={error[meta.key] && meta.regExError}
                 InputProps={{
                   endAdornment: (
                     <Button color="primary" onClick={() => handleMultiText(meta.key)}>

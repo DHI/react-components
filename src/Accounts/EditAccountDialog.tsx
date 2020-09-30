@@ -40,6 +40,7 @@ export const EditAccountDialog = ({
     loading: false,
   });
   const [userGroups, setUserGroups] = useState<string[]>([]);
+  const [error, setError] = useState(false);
   const userTemplate = {
     id: '',
     name: '',
@@ -164,6 +165,10 @@ export const EditAccountDialog = ({
     );
   };
 
+  const handleError = (boolean) => {
+    setError(boolean);
+  };
+
   const endAdornment = (
     <InputAdornment position="end">
       <FiberManualRecord style={{ color: state.passwordStrengthColor }} />
@@ -264,7 +269,7 @@ export const EditAccountDialog = ({
         }}
       />
       {handleMetadata()}
-      <Metadata metadata={metadata} data={form.metadata} handleChange={handleChange} />
+      <Metadata metadata={metadata} data={form.metadata} onChange={handleChange} onError={handleError} />
     </DialogContent>
   );
 

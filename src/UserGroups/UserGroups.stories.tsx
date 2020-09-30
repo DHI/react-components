@@ -29,6 +29,8 @@ export const UserGroupStory = () => {
       label: 'My Text',
       type: 'Text',
       default: 'description',
+      regEx: '[a-zA-Z]*:',
+      regExError: 'The string must have a colon in it',
     },
     {
       key: 'myOptions',
