@@ -17,7 +17,7 @@ import {
   MetadataChipCell,
   Dialog,
   TopTableSection,
-} from '../Table';
+} from '../common/Table';
 import AccountsForm from './AccountsForm';
 
 export const Accounts = ({ host, token, metadata }: AccountListProps) => {

@@ -5,7 +5,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { passwordStrength } from '../utils/Utils';
 import { fetchUserGroups } from '../DataServices/DataServices';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Metadata from '../Metadata/Metadata';
+import Metadata from '../common/Metadata/Metadata';
 
 const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, token, host }: AccountsFormProps) => {
   const [state, setState] = useState({

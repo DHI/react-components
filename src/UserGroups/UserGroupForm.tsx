@@ -10,7 +10,7 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core';
-import Metadata from '../Metadata/Metadata';
+import Metadata from '../common/Metadata/Metadata';
 
 const useStyles = makeStyles((theme: Theme) => ({
   users: {

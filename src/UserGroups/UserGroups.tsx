@@ -9,7 +9,7 @@ import {
   ChipCell,
   MetadataChipCell,
   TopTableSection,
-} from '../Table';
+} from '../common/Table';
 import UserGroupForm from './UserGroupForm';
 
 const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {

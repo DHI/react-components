@@ -14,7 +14,6 @@ import {
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { onErrorResumeNext } from 'rxjs/operators';
 
 const useStyles = makeStyles((theme: Theme) => ({
   FormControl: {
