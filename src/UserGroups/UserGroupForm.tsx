@@ -139,19 +139,22 @@ const UserGroupForm = ({
           onChange={(e) => onChange('name', e.target.value)}
         />
 
-        <div className={classes.users}>
-          <Typography variant="subtitle1">Users</Typography>
-          {selectedUserGroup?.users?.length > 4 ? (
-            <Typography>
-              there are <strong>{selectedUserGroup.users.length}</strong> users under{' '}
-              <strong>{selectedUserGroup.name}</strong>
-            </Typography>
-          ) : (
-            selectedUserGroup?.users?.map((val, i) => (
-              <Chip key={i} className={classes.chip} label={val} style={{ marginRight: 4 }} />
-            ))
-          )}
-        </div>
+        {selectedUserGroup?.users.length > 0 && (
+          <div className={classes.users}>
+            <Typography variant="subtitle1">Users</Typography>
+            {selectedUserGroup?.users?.length > 4 ? (
+              <Typography>
+                there are <strong>{selectedUserGroup.users.length}</strong> users under{' '}
+                <strong>{selectedUserGroup.name}</strong>
+              </Typography>
+            ) : (
+              selectedUserGroup?.users?.map((val, i) => (
+                <Chip key={i} className={classes.chip} label={val} style={{ marginRight: 4 }} />
+              ))
+            )}
+          </div>
+        )}
+
         {handleMetadata()}
         <Metadata metadata={metadata} data={form.metadata} onChange={handleChange} onError={handleError} />
 
