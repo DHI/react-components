@@ -140,7 +140,7 @@ const UserGroupForm = ({
           onChange={(e) => onChange('name', e.target.value)}
         />
 
-        {selectedUserGroup?.users.length > 0 && (
+        {selectedUserGroup?.users?.length > 0 && (
           <div className={classes.users}>
             <Typography variant="subtitle1">Users</Typography>
             {selectedUserGroup?.users?.length > 4 ? (
