@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { LoginGate } from '../Auth/LoginGate';
-import Accounts from './Accounts';
+import UserGroups from './UserGroups';
 
 export default {
-  title: 'Accounts',
-  component: [Accounts],
+  title: 'User Groups',
+  component: [UserGroups],
 };
 
 const host = process.env.ENDPOINT_URL;
 
-export const AccountsStory = () => {
+export const UserGroupStory = () => {
   const metadata = [
     {
       key: 'myChoice',
@@ -49,7 +49,7 @@ export const AccountsStory = () => {
 
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
-      {({ token }) => <Accounts host={host} metadata={metadata} token={token.accessToken.token} />}
+      {({ token }) => <UserGroups host={host} metadata={metadata} token={token.accessToken.token} />}
     </LoginGate>
   );
 };

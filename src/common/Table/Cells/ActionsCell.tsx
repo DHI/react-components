@@ -15,14 +15,14 @@ const ActionsCell = ({ item, onEdit, onDelete }: ActionCellProps) => {
       </IconButton>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={() => onEdit(accountData)}>
-          <EditOutlined color="secondary" style={{ marginRight: '0.5rem' }} fontSize="small" />
+          <EditOutlined color="primary" style={{ marginRight: '0.5rem' }} fontSize="small" />
           Edit User
         </MenuItem>
         <Box my={1}>
           <Divider />
         </Box>
         <MenuItem onClick={() => onDelete(accountData)}>
-          <DeleteOutline color="secondary" style={{ marginRight: '0.5rem' }} fontSize="small" />
+          <DeleteOutline color="primary" style={{ marginRight: '0.5rem' }} fontSize="small" />
           Delete User
         </MenuItem>
       </Menu>

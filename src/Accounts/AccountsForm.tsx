@@ -1,45 +1,20 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  InputAdornment,
-  TextField,
-} from '@material-ui/core';
+import { Button, DialogActions, DialogContent, InputAdornment, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { FiberManualRecord } from '@material-ui/icons';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { passwordStrength } from '../utils/Utils';
 import { fetchUserGroups } from '../DataServices/DataServices';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import AccountMetadata from './AccountMetadata';
+import Metadata from '../common/Metadata/Metadata';
 
-export const EditAccountDialog = ({
-  user,
-  isEditing,
-  dialogOpen = false,
-  metadataAccounts,
-  onSubmit,
-  onCancel,
-  token,
-  host,
-}: {
-  token: string;
-  host: string;
-  user: Record<any, any>;
-  metadataAccounts?: MetadataAccount[];
-  isEditing?: boolean;
-  dialogOpen?: boolean;
-  onCancel(): void;
-  onSubmit(details: EditUser, onCompleteCallback: () => void, closeCallback: () => void): void;
-}) => {
+const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, token, host }: AccountsFormProps) => {
   const [state, setState] = useState({
     passwordValid: true,
     passwordStrengthColor: 'red',
     loading: false,
   });
   const [userGroups, setUserGroups] = useState<string[]>([]);
+  const [error, setError] = useState(false);
   const userTemplate = {
     id: '',
     name: '',
@@ -50,28 +25,28 @@ export const EditAccountDialog = ({
     metadata: {},
   };
   const [form, setForm] = useState<EditUser>(userTemplate);
-  user = isEditing ? user : userTemplate;
+  selectedUser = isEditing ? selectedUser : userTemplate;
 
   useEffect(() => {
     setForm({
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: selectedUser.id,
+      name: selectedUser.name,
+      email: selectedUser.email,
       password: '',
       repeatPassword: '',
-      userGroups: user.userGroups,
-      metadata: user.metadata,
+      userGroups: selectedUser.userGroups,
+      metadata: selectedUser.metadata,
     } as EditUser);
   }, [open]);
 
   const handleMetadata = () => {
-    metadataAccounts?.forEach((item, index) => {
-      if (form.metadata[metadataAccounts[index].key] === undefined) {
+    metadata?.forEach((item, index) => {
+      if (form.metadata[metadata[index].key] === undefined) {
         setForm({
           ...form,
           metadata: {
             ...form.metadata,
-            [metadataAccounts[index].key]: metadataAccounts[index].default,
+            [metadata[index].key]: metadata[index].default,
           },
         });
       }
@@ -102,16 +77,7 @@ export const EditAccountDialog = ({
       metadata: form.metadata || [],
     } as EditUser;
 
-    onSubmit(
-      userDetails,
-      () => {
-        setState({
-          ...state,
-          loading: false,
-        });
-      },
-      onCancel,
-    );
+    onSubmit(userDetails);
   };
 
   const updatePasswordStrengthIndicator = (password: string) => {
@@ -148,8 +114,6 @@ export const EditAccountDialog = ({
       isMetadata = false;
     }
 
-    console.log(form);
-
     setForm(
       isMetadata
         ? {
@@ -164,6 +128,10 @@ export const EditAccountDialog = ({
             [key]: value,
           },
     );
+  };
+
+  const handleError = (boolean) => {
+    setError(boolean);
   };
 
   const endAdornment = (
@@ -183,110 +151,107 @@ export const EditAccountDialog = ({
     },
   })(TextField);
 
-  const content = (
-    <DialogContent>
-      {!isEditing ? (
+  return (
+    <form onSubmit={handleSubmit}>
+      <DialogContent>
+        {!isEditing ? (
+          <TextField
+            required
+            fullWidth
+            autoFocus
+            margin="dense"
+            label="Username"
+            variant="standard"
+            value={form.id}
+            onChange={(e) => handleChange('id', e.target.value)}
+          />
+        ) : (
+          <NoBorderTextField
+            fullWidth
+            label="Username"
+            margin="dense"
+            variant="standard"
+            value={form.id}
+            disabled={true}
+          />
+        )}
+        <TextField
+          fullWidth
+          name="newPassword"
+          margin="dense"
+          type="password"
+          label="Password"
+          variant="standard"
+          required={!isEditing}
+          value={form.password}
+          error={!state.passwordValid}
+          InputProps={{ endAdornment }}
+          onChange={(e) => handleChange('password', e.target.value)}
+          autoComplete="new-password"
+        />
+        {/* Must be 'new-password' to avoid autoComplete. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#Browser_compatibility */}
+        <TextField
+          fullWidth
+          name="repeatPassword"
+          margin="dense"
+          type="password"
+          variant="standard"
+          required={!isEditing}
+          label="Repeat Password"
+          value={form.repeatPassword}
+          error={!state.passwordValid}
+          onChange={(e) => handleChange('repeatPassword', e.target.value)}
+          helperText={!state.passwordValid && 'Passwords do not match'}
+          autoComplete="new-password"
+        />
         <TextField
           required
           fullWidth
-          autoFocus
+          label="Name"
           margin="dense"
-          label="Username"
           variant="standard"
-          value={form.id}
-          onChange={(e) => handleChange('id', e.target.value)}
+          value={form.name}
+          onChange={(e) => handleChange('name', e.target.value)}
         />
-      ) : (
-        <NoBorderTextField
+        <TextField
           fullWidth
-          label="Username"
+          label="Email"
           margin="dense"
           variant="standard"
-          value={form.id}
-          disabled={true}
+          value={form.email}
+          onChange={(e) => handleChange('email', e.target.value)}
         />
-      )}
-      <TextField
-        fullWidth
-        name="newPassword"
-        margin="dense"
-        type="password"
-        label="Password"
-        variant="standard"
-        required={!isEditing}
-        value={form.password}
-        error={!state.passwordValid}
-        InputProps={{ endAdornment }}
-        onChange={(e) => handleChange('password', e.target.value)}
-        autoComplete="new-password"
-      />
-      {/* Must be 'new-password' to avoid autoComplete. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#Browser_compatibility */}
-      <TextField
-        fullWidth
-        name="repeatPassword"
-        margin="dense"
-        type="password"
-        variant="standard"
-        required={!isEditing}
-        label="Repeat Password"
-        value={form.repeatPassword}
-        error={!state.passwordValid}
-        onChange={(e) => handleChange('repeatPassword', e.target.value)}
-        helperText={!state.passwordValid && 'Passwords do not match'}
-        autoComplete="new-password"
-      />
-      <TextField
-        required
-        fullWidth
-        label="Name"
-        margin="dense"
-        variant="standard"
-        value={form.name}
-        onChange={(e) => handleChange('name', e.target.value)}
-      />
-      <TextField
-        fullWidth
-        label="Email"
-        margin="dense"
-        variant="standard"
-        value={form.email}
-        onChange={(e) => handleChange('email', e.target.value)}
-      />
-      <UserGroupsInput
-        userId={user.id}
-        token={token}
-        host={host}
-        onChange={(groups) => {
-          setUserGroups(groups);
+        <UserGroupsInput
+          userId={selectedUser.id}
+          token={token}
+          host={host}
+          onChange={(groups) => {
+            setUserGroups(groups);
 
-          setForm({
-            ...form,
-            userGroups: groups,
-          });
-        }}
-      />
-      {handleMetadata()}
-      <AccountMetadata metadataAccounts={metadataAccounts} data={form.metadata} handleChange={handleChange} />
-    </DialogContent>
-  );
+            setForm({
+              ...form,
+              userGroups: groups,
+            });
+          }}
+        />
+        {handleMetadata()}
+        <Metadata metadata={metadata} data={form.metadata} onChange={handleChange} onError={handleError} />
+      </DialogContent>
 
-  return (
-    <Dialog open={dialogOpen}>
-      <form onSubmit={handleSubmit}>
-        <DialogTitle id="form-dialog-title">{isEditing ? 'Edit Account Details' : 'Create New Account'}</DialogTitle>
-        {content}
-        <DialogActions>
-          <Button variant="outlined" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" color="primary">
-            {isEditing ? 'Update' : 'Create'}
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+      {/* TODO: add ActionsButtons Component */}
+      <DialogActions>
+        <Button variant="outlined" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" variant="contained" color="primary" disabled={error}>
+          {isEditing ? 'Update' : 'Create'}
+        </Button>
+      </DialogActions>
+    </form>
   );
 };
+
+export default AccountsForm;
 
 const UserGroupsInput = ({
   token,
