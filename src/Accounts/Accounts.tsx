@@ -19,8 +19,10 @@ import {
   TopTableSection,
 } from '../common/Table';
 import AccountsForm from './AccountsForm';
+import { AccountProps, AccountData, EditUser } from './types';
+import { UserGroups } from '../UserGroups/types';
 
-export const Accounts = ({ host, token, metadata }: AccountListProps) => {
+const Accounts = ({ host, token, metadata }: AccountProps) => {
   const [data, setData] = useState<AccountData[]>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -246,4 +248,4 @@ export const Accounts = ({ host, token, metadata }: AccountListProps) => {
   );
 };
 
-export default Accounts;
+export { Accounts, AccountProps };

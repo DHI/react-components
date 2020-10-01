@@ -1,6 +1,7 @@
-import { Box, Chip, Avatar, IconButton, Menu, MenuItem, Divider } from '@material-ui/core';
+import { Box, IconButton, Menu, MenuItem, Divider } from '@material-ui/core';
 import React, { useState } from 'react';
 import { MoreVert, EditOutlined, DeleteOutline } from '@material-ui/icons';
+import { AccountData } from '../../../Accounts/types';
 
 const ActionsCell = ({ item, onEdit, onDelete }: ActionCellProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

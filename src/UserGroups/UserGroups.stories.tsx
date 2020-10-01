@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { LoginGate } from '../Auth/LoginGate';
-import UserGroups from './UserGroups';
+import { UserGroups } from './UserGroups';
 
 export default {
   title: 'User Groups',

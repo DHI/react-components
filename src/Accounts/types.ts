@@ -1,4 +1,4 @@
-interface AccountListProps {
+interface AccountProps {
   /**
    * An endpoint url
    */
@@ -76,25 +76,6 @@ interface EditUser {
   metadata: {};
 }
 
-interface UserGroups {
-  /**
-   * User Group ID
-   */
-  id: string;
-  /**
-   * User Group name
-   */
-  name: string;
-  /**
-   * A list of users for User Groups
-   */
-  users: string[];
-  /**
-   * User Group metadata
-   */
-  metadata: {};
-}
-
 interface AccountsFormProps {
   /**
    * An endpoint url
@@ -125,3 +106,5 @@ interface AccountsFormProps {
    */
   metadata: Metadata[];
 }
+
+export { AccountProps, AccountData, EditUser, AccountsFormProps };
