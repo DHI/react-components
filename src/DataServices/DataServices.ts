@@ -3,6 +3,7 @@ import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
 import { DataSource, JobParameters, JobQuery, Options, User } from './types';
+import { UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_OPTIONS = {
   headers: {

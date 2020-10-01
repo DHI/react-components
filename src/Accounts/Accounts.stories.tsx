@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { LoginGate } from '../Auth/LoginGate';
-import Accounts from './Accounts';
+import { Accounts } from './Accounts';
 
 export default {
   title: 'Accounts',

@@ -11,8 +11,9 @@ import {
   TopTableSection,
 } from '../common/Table';
 import UserGroupForm from './UserGroupForm';
+import { UserGroupProps, UserGroupsData, UserGroups } from './types';
 
-const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
+const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
   const [userGroups, setUserGroups] = useState<UserGroupsData[]>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -220,4 +221,4 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
   );
 };
 
-export default UserGroups;
+export { UserGroupProps, UserGroups };

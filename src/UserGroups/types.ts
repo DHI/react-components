@@ -1,4 +1,4 @@
-interface UserGroupListProps {
+interface UserGroupProps {
   /**
    * An endpoint url
    */
@@ -37,6 +37,25 @@ interface UserGroupsData {
   metadata: {};
 }
 
+interface UserGroups {
+  /**
+   * User Group ID
+   */
+  id: string;
+  /**
+   * User Group name
+   */
+  name: string;
+  /**
+   * A list of users for User Groups
+   */
+  users: string[];
+  /**
+   * User Group metadata
+   */
+  metadata: {};
+}
+
 /**
  *  The props required for the User Group Form
  */
@@ -66,3 +85,5 @@ interface UserGroupFormProps {
    */
   metadata: Metadata[];
 }
+
+export { UserGroupProps, UserGroupsData, UserGroups, UserGroupFormProps };
