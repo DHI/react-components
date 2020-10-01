@@ -9,7 +9,15 @@ import {
   fetchUserGroups,
 } from '../DataServices/DataServices';
 import { Box, Paper } from '@material-ui/core';
-import { ActionsCell, ActionsButtons, ChipCell, DefaultTable, MetadataChipCell, Dialog, TableHeaders } from '../Table';
+import {
+  ActionsCell,
+  ActionsButtons,
+  ChipCell,
+  DefaultTable,
+  MetadataChipCell,
+  Dialog,
+  TopTableSection,
+} from '../Table';
 import AccountsForm from './AccountsForm';
 
 export const Accounts = ({ host, token, metadata }: AccountListProps) => {
@@ -224,7 +232,7 @@ export const Accounts = ({ host, token, metadata }: AccountListProps) => {
         />
       </Dialog>
 
-      <TableHeaders title="Accounts" filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TopTableSection title="Accounts" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}

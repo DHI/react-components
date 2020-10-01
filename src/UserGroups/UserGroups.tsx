@@ -1,7 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
 import { fetchUserGroups, updateUserGroups, deleteUserGroup, createUserGroup } from '../DataServices/DataServices';
-import { Dialog, ActionsButtons, DefaultTable, ActionsCell, ChipCell, MetadataChipCell, TableHeaders } from '../Table';
+import {
+  Dialog,
+  ActionsButtons,
+  DefaultTable,
+  ActionsCell,
+  ChipCell,
+  MetadataChipCell,
+  TopTableSection,
+} from '../Table';
 import UserGroupForm from './UserGroupForm';
 
 const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
@@ -198,7 +206,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
         />
       </Dialog>
 
-      <TableHeaders title="User Groups" filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TopTableSection title="User Groups" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}

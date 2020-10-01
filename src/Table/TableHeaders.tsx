@@ -10,7 +10,7 @@ const SearchInput = styled(TextField)`
   }
 `;
 
-const TableHeaders = ({ title, filter, setFilter, onNew }: TableHeadersProps) => (
+const TopTableSection = ({ title, filter, setFilter, onNew }: TopTableSectionProps) => (
   <Box display="flex" justifyContent="space-between" py={1}>
     <Typography variant="h5">{title}</Typography>
     <Box>
@@ -28,4 +28,4 @@ const TableHeaders = ({ title, filter, setFilter, onNew }: TableHeadersProps) =>
   </Box>
 );
 
-export default TableHeaders;
+export default TopTableSection;
