@@ -73,11 +73,11 @@ interface ActionsButtonsProps {
   /**
    * Function to close the Dialog once the cancel button is clicked.
    */
-  onCancel: (item: any) => void;
+  onCancel: (item: {}) => void;
   /**
    *  Submit the data from the form to a HOC to create or update the data.
    */
-  onSubmit: (e: any) => void;
+  onSubmit: (e: {}) => void;
   /**
    *  Check if the current form is on edit mode
    */
@@ -99,11 +99,11 @@ interface TopTableSectionProps {
   /**
    * Function to filter the current data in the table.
    */
-  setFilter: (event: any) => any;
+  setFilter: (event: string) => void;
   /**
    * Function to open an empty form
    */
-  onNew: () => any;
+  onNew: () => void;
 }
 
 interface ActionCellProps {

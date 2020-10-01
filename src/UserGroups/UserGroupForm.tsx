@@ -93,8 +93,8 @@ const UserGroupForm = ({
     onSubmit(form);
   };
 
-  const handleError = (boolean) => {
-    setError(boolean);
+  const handleError = (error) => {
+    setError(error);
   };
 
   useEffect(() => {

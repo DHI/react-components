@@ -1,4 +1,3 @@
-import { identity } from 'lodash';
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
@@ -125,22 +124,14 @@ const updateUserGroupsForUser = (host: string, token: string, data: { userId: st
     body: JSON.stringify(data.groups),
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
-const createUserGroup = (
-  host: string,
-  token: string,
-  data: { id: string; name: string; users: string[]; metadata: {} },
-) =>
+const createUserGroup = (host: string, token: string, data: UserGroupsData) =>
   fetchUrl(`${host}/api/usergroups`, {
     method: 'POST',
     additionalHeaders: { Authorization: `Bearer ${token}` },
     body: JSON.stringify(data),
   }).pipe(tap((res) => console.log('createUserGroup', res)));
 
-const updateUserGroups = (
-  host: string,
-  token: string,
-  data: { id: string; name: string[]; users: string[]; metadata: {} },
-) =>
+const updateUserGroups = (host: string, token: string, data: UserGroupsData) =>
   fetchUrl(`${host}/api/usergroups`, {
     method: 'PUT',
     additionalHeaders: { Authorization: `Bearer ${token}` },

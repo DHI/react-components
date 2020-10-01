@@ -56,7 +56,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupListProps) => {
         fetchData();
         setDeleteDialog(false);
       },
-      (error: any) => console.log(error),
+      (error) => console.log(error),
     );
   };
 
