@@ -23,14 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UserGroupForm = ({
-  onSubmit,
-  isEditing,
-  selectedUserGroup,
-  metadata,
-  onChange,
-  onCancel,
-}: UserGroupFormProps) => {
+const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCancel }: UserGroupFormProps) => {
   const classes = useStyles();
   const userGroupTemplate = {
     id: '',
@@ -40,7 +33,7 @@ const UserGroupForm = ({
   };
   const [form, setForm] = useState(userGroupTemplate);
   const [error, setError] = useState(false);
-
+  selectedUserGroup = isEditing ? selectedUserGroup : userGroupTemplate;
   const NoBorderTextField = withStyles({
     root: {
       '& .MuiOutlinedInput-root': {
@@ -73,6 +66,8 @@ const UserGroupForm = ({
             [key]: value,
           },
     );
+
+    console.log('OnChange: ', form);
   };
 
   const handleMetadata = () => {
@@ -91,6 +86,7 @@ const UserGroupForm = ({
 
   const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    console.log('OnSubmit: ', form);
     onSubmit(form);
   };
 
@@ -101,12 +97,12 @@ const UserGroupForm = ({
   useEffect(() => {
     setForm({
       ...selectedUserGroup,
-      metadata: selectedUserGroup?.metadata || [],
+      metadata: selectedUserGroup?.metadata || {},
     });
   }, []);
 
   return (
-    <form onSubmit={onSubmit}>
+    <form>
       <DialogContent>
         {!isEditing ? (
           <TextField
@@ -117,7 +113,7 @@ const UserGroupForm = ({
             label="Username"
             variant="standard"
             value={form?.id}
-            onChange={(e) => onChange('id', e.target.value)}
+            onChange={(e) => handleChange('id', e.target.value)}
           />
         ) : (
           <NoBorderTextField
@@ -137,7 +133,7 @@ const UserGroupForm = ({
           margin="dense"
           variant="standard"
           value={form?.name}
-          onChange={(e) => onChange('name', e.target.value)}
+          onChange={(e) => handleChange('name', e.target.value)}
         />
 
         {selectedUserGroup?.users?.length > 0 && (

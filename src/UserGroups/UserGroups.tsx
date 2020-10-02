@@ -32,13 +32,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
     setIsDialogOpen(!isDialogOpen);
   };
 
-  const handleChange = (name, value) => {
-    setSelectedUserGroup({
-      ...selectedUserGroup,
-      [name]: value,
-    });
-  };
-
   const onEdit = (item) => {
     setIsDialogOpen(true);
     setisEditing(true);
@@ -72,6 +65,8 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
       }
     }
 
+    console.log('Handle Submit: ', user);
+
     setUserGroups(newGroups);
     setIsDialogOpen(false);
 
@@ -88,9 +83,9 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
           console.log(error);
         })
       : (createUserGroup(host, token, {
-          id: selectedUserGroup.id,
-          name: selectedUserGroup.name,
-          users: selectedUserGroup.users,
+          id: user.id,
+          name: user.name,
+          users: user.users,
           metadata: user.metadata,
         }).subscribe(() => {
           fetchData();
@@ -188,7 +183,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
           isEditing={isEditing}
           selectedUserGroup={selectedUserGroup}
           metadata={metadata}
-          onChange={handleChange}
           onCancel={handleDialog}
         />
       </Dialog>

@@ -34,7 +34,7 @@ interface UserGroupsData {
   /**
    *  Metadata object supplied to extend the table
    */
-  metadata: {};
+  metadata?: {};
 }
 
 interface UserGroups {
@@ -72,10 +72,6 @@ interface UserGroupFormProps {
    *  Prop which contains the clicked row's data
    */
   selectedUserGroup: UserGroupsData;
-  /**
-   *  Function to update the state on the HOC on every input change
-   */
-  onChange: (name: string, value: string[] | string) => void;
   /**
    * Function to close the Dialog once the cancel button is clicked.
    */

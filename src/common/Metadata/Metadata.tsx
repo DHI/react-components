@@ -93,7 +93,7 @@ const Metadata = ({
         if (meta.type === 'Text') {
           return (
             <TextField
-              key={i}
+              key={meta.key + i}
               fullWidth
               margin="dense"
               label={meta.label}
@@ -106,7 +106,7 @@ const Metadata = ({
           );
         } else if (meta.type === 'SingleChoice') {
           return (
-            <FormControl className={classes.FormControl} key={i}>
+            <FormControl className={classes.FormControl} key={meta.key + i}>
               <InputLabel>{meta.label}</InputLabel>
               <Select
                 fullWidth
@@ -126,7 +126,7 @@ const Metadata = ({
         } else if (meta.type === 'Boolean') {
           return (
             <FormControlLabel
-              key={i}
+              key={meta.key + i}
               className={classes.switch}
               control={
                 <Switch
@@ -143,7 +143,7 @@ const Metadata = ({
         } else if (meta.type === 'MultiChoice') {
           return (
             <Autocomplete
-              key={i}
+              key={meta.key + i}
               placeholder={`Select ${meta.label}`}
               options={meta.options}
               defaultValue={meta?.default}
@@ -182,7 +182,7 @@ const Metadata = ({
               ))}
 
               <TextField
-                key={i}
+                key={meta.key + i}
                 fullWidth
                 margin="dense"
                 label={meta.label}
