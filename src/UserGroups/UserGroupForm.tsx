@@ -10,7 +10,7 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core';
-import Metadata from '../common/Metadata/Metadata';
+import { Metadata } from '../common/Metadata/Metadata';
 import { UserGroupFormProps } from './types';
 
 const useStyles = makeStyles((theme: Theme) => ({

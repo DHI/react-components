@@ -211,4 +211,4 @@ const Metadata = ({
   );
 };
 
-export default Metadata;
+export { MetadataProps, Metadata };

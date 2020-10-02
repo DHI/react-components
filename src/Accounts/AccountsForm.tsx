@@ -5,7 +5,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { passwordStrength } from '../utils/Utils';
 import { fetchUserGroups } from '../DataServices/DataServices';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Metadata from '../common/Metadata/Metadata';
+import { Metadata } from '../common/Metadata/Metadata';
 import { EditUser, AccountsFormProps } from './types';
 import { UserGroups } from '../UserGroups/types';
 import { MetadataDefault } from '../common/Metadata/types';
