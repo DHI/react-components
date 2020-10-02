@@ -8,6 +8,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Metadata from '../common/Metadata/Metadata';
 import { EditUser, AccountsFormProps } from './types';
 import { UserGroups } from '../UserGroups/types';
+import { MetadataDefault } from '../common/Metadata/types';
 
 const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, token, host }: AccountsFormProps) => {
   const [state, setState] = useState({

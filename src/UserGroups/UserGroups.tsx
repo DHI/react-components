@@ -65,8 +65,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
       }
     }
 
-    console.log('Handle Submit: ', user);
-
     setUserGroups(newGroups);
     setIsDialogOpen(false);
 

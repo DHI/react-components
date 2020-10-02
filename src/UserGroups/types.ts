@@ -1,3 +1,5 @@
+import { MetadataProps } from '../common/Metadata/types';
+
 interface UserGroupProps {
   /**
    * An endpoint url
@@ -10,7 +12,7 @@ interface UserGroupProps {
   /**
    * An array of objects to be added to the table.
    */
-  metadata?: Metadata[];
+  metadata?: MetadataProps[];
   translations?: {
     /* not impl */
   };
@@ -79,7 +81,7 @@ interface UserGroupFormProps {
   /**
    * Metadata supplied on the HOC to extend the table.
    */
-  metadata: Metadata[];
+  metadata: MetadataProps[];
 }
 
 export { UserGroupProps, UserGroupsData, UserGroups, UserGroupFormProps };

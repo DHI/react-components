@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { MetadataProps } from './types';
 
 const useStyles = makeStyles((theme: Theme) => ({
   FormControl: {
@@ -34,7 +35,7 @@ const Metadata = ({
   onChange,
   onError,
 }: {
-  metadata?: Metadata[];
+  metadata?: MetadataProps[];
   data;
   onChange(key: string, value: any): void;
   onError(error: boolean): void;
@@ -93,7 +94,7 @@ const Metadata = ({
         if (meta.type === 'Text') {
           return (
             <TextField
-              key={meta.key + i}
+              key={meta.key + '' + i}
               fullWidth
               margin="dense"
               label={meta.label}
@@ -106,7 +107,7 @@ const Metadata = ({
           );
         } else if (meta.type === 'SingleChoice') {
           return (
-            <FormControl className={classes.FormControl} key={meta.key + i}>
+            <FormControl className={classes.FormControl} key={meta.key + '' + i}>
               <InputLabel>{meta.label}</InputLabel>
               <Select
                 fullWidth
@@ -126,7 +127,7 @@ const Metadata = ({
         } else if (meta.type === 'Boolean') {
           return (
             <FormControlLabel
-              key={meta.key + i}
+              key={meta.key + '' + i}
               className={classes.switch}
               control={
                 <Switch
@@ -143,7 +144,7 @@ const Metadata = ({
         } else if (meta.type === 'MultiChoice') {
           return (
             <Autocomplete
-              key={meta.key + i}
+              key={meta.key + '' + i}
               placeholder={`Select ${meta.label}`}
               options={meta.options}
               defaultValue={meta?.default}
@@ -182,7 +183,7 @@ const Metadata = ({
               ))}
 
               <TextField
-                key={meta.key + i}
+                key={meta.key + '' + i}
                 fullWidth
                 margin="dense"
                 label={meta.label}

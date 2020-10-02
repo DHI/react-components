@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { LoginGate } from '../Auth/LoginGate';
 import { Accounts } from './Accounts';
+import { MetadataProps } from '../common/Metadata/types';
 
 export default {
   title: 'Accounts',
@@ -45,7 +46,7 @@ export const AccountsStory = () => {
       type: 'MultiText',
       default: ['127.0.0.1', '0.0.0.10'],
     },
-  ] as Metadata[];
+  ] as MetadataProps[];
 
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>

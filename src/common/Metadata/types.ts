@@ -22,7 +22,7 @@ interface MetadataBase {
  */
 type MetadataDefault = string | boolean | string[];
 
-interface Metadata extends MetadataBase {
+interface MetadataProps extends MetadataBase {
   /**
    * Optional field, used on MultiChoice and/or SingleChoice
    */
@@ -41,3 +41,5 @@ interface Metadata extends MetadataBase {
    */
   regExError?: string;
 }
+
+export { MetadataProps, MetadataDefault };

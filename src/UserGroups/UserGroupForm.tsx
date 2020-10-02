@@ -66,8 +66,6 @@ const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCan
             [key]: value,
           },
     );
-
-    console.log('OnChange: ', form);
   };
 
   const handleMetadata = () => {
@@ -86,7 +84,6 @@ const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCan
 
   const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log('OnSubmit: ', form);
     onSubmit(form);
   };
 

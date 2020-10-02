@@ -1,3 +1,4 @@
+import { MetadataProps } from '../common/Metadata/types';
 interface AccountProps {
   /**
    * An endpoint url
@@ -10,7 +11,7 @@ interface AccountProps {
   /**
    * An array of objects to be added to the table.
    */
-  metadata?: Metadata[];
+  metadata?: MetadataProps[];
   translations?: {
     /* not impl */
   };
@@ -104,7 +105,7 @@ interface AccountsFormProps {
   /**
    * Metadata supplied on the HOC to extend the table.
    */
-  metadata: Metadata[];
+  metadata: MetadataProps[];
 }
 
 export { AccountProps, AccountData, EditUser, AccountsFormProps };
