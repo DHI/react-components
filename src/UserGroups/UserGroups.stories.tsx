@@ -41,7 +41,7 @@ export const UserGroupStory = () => {
       default: ['A', 'C'],
     },
     {
-      key: 'MultiText',
+      key: 'myMultiText',
       label: 'Multi Text',
       type: 'MultiText',
       default: ['127.0.0.1', '0.0.0.10'],
