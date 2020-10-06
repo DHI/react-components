@@ -2,10 +2,12 @@ import {
   Box,
   CircularProgress,
   CssBaseline,
+  makeStyles,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Theme,
   Tooltip,
   Typography,
 } from '@material-ui/core';
@@ -79,6 +81,18 @@ const LevelIconCell = ({ value }: { value: string }) => {
   }
 };
 
+const useStyles = makeStyles((theme: Theme) => ({
+  td: {
+    flexGrow: '1 !important' as any,
+    flexBasis: '5px !important' as any,
+    width: 'unset !important' as any,
+    maxWidth: 'none !important' as any,
+  },
+  tdContent: {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
 const Table = ({
   columns,
   data,
@@ -97,14 +111,13 @@ const Table = ({
     minWidth: 30,
     maxWidth: 1000,
   };
-
+  const classes = useStyles();
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-    totalColumnsWidth,
     state,
     visibleColumns,
     preGlobalFilteredRows,
@@ -137,8 +150,13 @@ const Table = ({
         >
           {row.cells.map((cell) => {
             return (
-              <TableCell {...cell.getCellProps()} component="div">
-                <Typography noWrap variant="body2" align={(cell.column as any).header === 'Level' ? 'center' : 'left'}>
+              <TableCell
+                {...cell.getCellProps()}
+                component="div"
+                className={classes.td}
+                style={{ minWidth: (cell.column as any).header === 'Text' && '500px' }}
+              >
+                <Typography noWrap variant="body2" className={classes.tdContent}>
                   {cell.render('Cell')}
                 </Typography>
               </TableCell>
@@ -169,9 +187,14 @@ const Table = ({
           </TableCell>
         </TableRow>
         {headerGroups.map((headerGroup) => (
-          <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
+          <TableRow {...headerGroup.getHeaderGroupProps()} component="div" className={classes.td}>
             {headerGroup.headers.map((column) => (
-              <TableCell {...column.getHeaderProps()} component="div">
+              <TableCell
+                {...column.getHeaderProps()}
+                component="div"
+                className={classes.td}
+                style={{ minWidth: (column as any).header === 'Text' && '500px' }}
+              >
                 <Box display="flex" flexDirection="row">
                   <Typography variant="subtitle1">{column.render('header')}</Typography>
                   {(column as any).canFilter ? column.render('Filter') : null}
@@ -263,7 +286,6 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: 180,
       },
       {
         header: 'Level',
@@ -271,19 +293,16 @@ const LogList = (props: LogListProps) => {
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
-        width: 100,
       },
       {
         header: 'Source',
         accessor: 'source',
-        width: 180,
         Filter: SelectColumnFilter,
         filter: 'includes',
       },
       {
         header: 'Text',
         accessor: 'text',
-        width: 350,
       },
     ],
     [logsData],
