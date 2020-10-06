@@ -203,36 +203,40 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
 
   return (
     <Box>
-      <Dialog
-        dialogId="user"
-        title={isEditing ? 'Edit Account Details' : 'Create New Account'}
-        message=""
-        showDialog={isDialogOpen}
-      >
-        <AccountsForm
-          token={token}
-          host={host}
-          onSubmit={handleUserSubmit}
-          isEditing={isEditing}
-          selectedUser={selectedUser}
-          metadata={metadata}
-          onCancel={handleDialog}
-        />
-      </Dialog>
+      {isDialogOpen && (
+        <Dialog
+          dialogId="user"
+          title={isEditing ? 'Edit Account Details' : 'Create New Account'}
+          message=""
+          showDialog={isDialogOpen}
+        >
+          <AccountsForm
+            token={token}
+            host={host}
+            onSubmit={handleUserSubmit}
+            isEditing={isEditing}
+            selectedUser={selectedUser}
+            metadata={metadata}
+            onCancel={handleDialog}
+          />
+        </Dialog>
+      )}
 
-      <Dialog
-        dialogId="userDelete"
-        title={`Delete ${selectedUser?.name}`}
-        message={`This will delete the selected user account ${selectedUser?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
-        showDialog={deleteDialog}
-      >
-        <ActionsButtons
-          confirmButtonText="Delete"
-          isEditing={isEditing}
-          onCancel={() => setDeleteDialog(false)}
-          onSubmit={handleDelete}
-        />
-      </Dialog>
+      {deleteDialog && (
+        <Dialog
+          dialogId="userDelete"
+          title={`Delete ${selectedUser?.name}`}
+          message={`This will delete the selected user account ${selectedUser?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
+          showDialog={deleteDialog}
+        >
+          <ActionsButtons
+            confirmButtonText="Delete"
+            isEditing={isEditing}
+            onCancel={() => setDeleteDialog(false)}
+            onSubmit={handleDelete}
+          />
+        </Dialog>
+      )}
 
       <TopTableSection title="Accounts" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
