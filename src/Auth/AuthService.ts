@@ -8,7 +8,7 @@ export default class AuthService {
   }
 
   login = (form: Form, onSuccess: (user: User, token: Token) => void, onError: (err: string) => void) => {
-    fetchToken(this.host, form).subscribe(
+    fetchToken(this.host, { id: form.id, password: form.password }).subscribe(
       (token) => {
         // Only admins can ask for other account, the user can ask for own details using 'me'
         fetchAccount(this.host, token.accessToken.token, 'me').subscribe(
