@@ -12,8 +12,16 @@ export const JobListStory = () => {
 
   const dataSources = [
     {
-      host: 'https://domainservices.dhigroup.com',
-      connection: 'wf-jobs',
+      host: 'https://api-dev.seaportopx.com',
+      connection: 'MarineAid-Jobs-NCOS',
+    },
+    {
+      host: 'https://api-dev.seaportopx.com',
+      connection: 'MarineAid-Jobs-SOmega',
+    },
+    {
+      host: 'https://api-dev.seaportopx.com',
+      connection: 'MarineAid-Jobs-AdHoc',
     },
   ];
 

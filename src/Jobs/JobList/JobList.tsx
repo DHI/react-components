@@ -319,8 +319,8 @@ const JobList = (props: JobListProps) => {
 
     fetchJobs(dataSources, token, query).subscribe(
       (res) => {
-        console.log(res);
-        const rawJobs = res.map((s: { data }) => {
+        const sorted = res.sort((a, b) => a.data.requested - b.data.requested);
+        const rawJobs = sorted.map((s: { data }) => {
           // Mapping to JobData.
           const dataMapping = {
             id: s.data.id,
