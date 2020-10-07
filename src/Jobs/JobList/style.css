@@ -1,0 +1,6 @@
+.tale-cell-responsive-1{
+    flex-grow: 1 !important;
+    flex-basis: 5px !important;
+    width: unset !important;
+    max-width: none !important;
+}
