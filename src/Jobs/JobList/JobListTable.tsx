@@ -140,7 +140,6 @@ const JobListTable = ({
                 {...column.getHeaderProps()}
                 component="div"
                 className={(column as any).flexGrow ? `tale-cell-responsive-${(column as any).flexGrow}` : ''}
-                // style={{ minWidth: column.width || column.minWidth }}
               >
                 <Box display="flex" flexDirection="row">
                   <Typography variant="subtitle1">{column.render('header')}</Typography>

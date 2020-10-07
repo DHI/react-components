@@ -21,10 +21,6 @@ interface JobListProps {
   };
   /** Emit event to client when jobs received from the server */
   onReceived?: (data: any) => void;
-  /**
-   * Check if Table is wider than the window
-   */
-  isTableWiderThanWindow?: (larger: boolean) => void;
 }
 
 interface JobData {
@@ -36,7 +32,7 @@ interface JobData {
   status: string;
   /** Host of job  */
   hostId: string;
-  /** Column width  */
+  /** Time difference between started and finished */
   duration: string;
   /** Time difference between requested and started */
   delay: string;

@@ -1,3 +1,4 @@
+/* It goes with the table columns to make it responsive on larger screens */
 .tale-cell-responsive-1{
     flex-grow: 1 !important;
     flex-basis: 5px !important;

@@ -103,7 +103,6 @@ const JobList = (props: JobListProps) => {
 
     fetchJobs(dataSources, token, query).subscribe(
       (res) => {
-        // console.log(res);
         const rawJobs = res.map((s: { data }) => {
           // Mapping to JobData.
           const dataMapping = {
