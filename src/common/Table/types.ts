@@ -119,4 +119,9 @@ interface ActionCellProps {
    * Function to open the dialog with the current user name and id in it.
    */
   onDelete: (data: Record<any, any>) => void;
+  /**
+   * category to go into the action button labels.
+   * Default: User
+   */
+  category?: string;
 }

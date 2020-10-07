@@ -169,7 +169,7 @@ const Metadata = ({
         } else if (meta.type === 'MultiText') {
           return (
             <>
-              {list.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
+              {list?.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
               {list?.map((item, i) => (
                 <Box alignItems="center" key={i}>
                   <Chip

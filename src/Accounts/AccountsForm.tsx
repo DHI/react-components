@@ -97,6 +97,7 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
         passwordStrengthColor = 'orange';
         break;
       case 3:
+      case 4:
         passwordStrengthColor = 'green';
         break;
       default:

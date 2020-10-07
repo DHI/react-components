@@ -107,7 +107,7 @@ const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCan
             fullWidth
             autoFocus
             margin="dense"
-            label="Username"
+            label="ID"
             variant="standard"
             value={form?.id}
             onChange={(e) => handleChange('id', e.target.value)}

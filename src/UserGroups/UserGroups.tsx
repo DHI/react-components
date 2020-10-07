@@ -131,7 +131,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
         cell: {
           value: [item],
         },
-      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={handleDeleteDialog} />,
+      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={handleDeleteDialog} category="Group" />,
     },
   ];
 
@@ -188,7 +188,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
       <Dialog
         dialogId="userGroupsDelete"
         title={`Delete ${selectedUserGroup?.name}`}
-        message={`This will delete the selected user account ${selectedUserGroup?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
+        message={`This will delete the selected user group ${selectedUserGroup?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
         showDialog={deleteDialog}
       >
         <ActionsButtons
