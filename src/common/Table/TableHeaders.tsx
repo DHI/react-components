@@ -2,6 +2,7 @@ import { Box, Button, TextField, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import React from 'react';
 import styled from 'styled-components';
+import { TopTableSectionProps } from './types';
 
 const SearchInput = styled(TextField)`
   .MuiInputBase-root {

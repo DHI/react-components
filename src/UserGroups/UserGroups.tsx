@@ -22,6 +22,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [isEditing, setisEditing] = useState(false);
   const [selectedUserGroup, setSelectedUserGroup] = useState<UserGroupsData>();
+  const [isTableWider, setIsTableWider] = useState<boolean>(false);
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -101,6 +102,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
             Header: cur.label,
             accessor: `metadata.${cur.key}`,
             Cell: MetadataChipCell(cur),
+            flexGrow: isTableWider && 1,
           },
         ],
         [],
@@ -111,15 +113,19 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
     {
       Header: 'ID',
       accessor: 'id',
+      width: 180,
     },
     {
       Header: 'Name',
       accessor: 'name',
+      width: 200,
     },
     {
       Header: 'Users',
       accessor: 'users',
-      Cell: ChipCell,
+      width: 250,
+      Cell: ({ cell: { value } }) => value.join(', '),
+      flexGrow: isTableWider && 1,
     },
   ];
 
@@ -127,6 +133,8 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
     {
       Header: 'Actions',
       accessor: 'action',
+      width: 90,
+      flexGrow: 0,
       Cell: ({
         cell: {
           value: [item],
@@ -135,7 +143,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
     },
   ];
 
-  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
+  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), [isTableWider]);
 
   const searchItems = (item: UserGroupsData) => {
     if (filter === '') return true;
@@ -170,6 +178,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
 
   return (
     <Box>
+      {console.log('isTableWider: ', isTableWider)}
       <Dialog
         dialogId="userGroups"
         title={isEditing ? 'Edit User Group Details' : 'Create New User Group'}
@@ -207,6 +216,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
           tableHeaders={TableHeadersData}
           data={userGroups}
           searchItems={(item) => searchItems(item)}
+          isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
         />
       </Paper>
     </Box>

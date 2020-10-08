@@ -49,19 +49,11 @@ export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { va
     );
   }
   if (type === 'MultiChoice' && value !== undefined) {
-    return value.map((val, i) => (
-      <Box alignItems="center" key={i}>
-        <Chip key={val} avatar={<Avatar>{val.substr(0, 1)}</Avatar>} label={val} style={{ marginRight: 4 }} />
-      </Box>
-    ));
+    return value.join(', ');
   }
 
   if (type === 'MultiText' && Array.isArray(value) && value !== undefined) {
-    return value.map((item, i) => (
-      <p key={i} className={classes.multiText}>
-        {item}
-      </p>
-    ));
+    return value.join(', ');
   }
 
   return <>{value}</>;

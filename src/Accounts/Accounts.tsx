@@ -9,15 +9,7 @@ import {
   fetchUserGroups,
 } from '../DataServices/DataServices';
 import { Box, Paper } from '@material-ui/core';
-import {
-  ActionsCell,
-  ActionsButtons,
-  ChipCell,
-  DefaultTable,
-  MetadataChipCell,
-  Dialog,
-  TopTableSection,
-} from '../common/Table';
+import { ActionsCell, ActionsButtons, DefaultTable, MetadataChipCell, Dialog, TopTableSection } from '../common/Table';
 import AccountsForm from './AccountsForm';
 import { AccountProps, AccountData, EditUser } from './types';
 import { UserGroups } from '../UserGroups/types';
@@ -31,6 +23,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [isEditing, setisEditing] = useState(false);
   const [selectedUser, setSelectedUser] = useState<AccountData>();
+  const [isTableWider, setIsTableWider] = useState<boolean>(false);
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -154,19 +147,24 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
     {
       Header: 'ID',
       accessor: 'id',
+      width: 200,
     },
     {
       Header: 'Name',
       accessor: 'name',
+      width: 200,
     },
     {
       Header: 'Email',
       accessor: 'email',
+      width: 200,
     },
     {
       Header: 'User Groups',
       accessor: 'userGroups',
-      Cell: ChipCell,
+      width: 250,
+      flexGrow: isTableWider && 1,
+      Cell: ({ cell: { value } }) => value.join(', '),
     },
   ];
 
@@ -174,6 +172,8 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
     {
       Header: 'Actions',
       accessor: 'action',
+      width: 90,
+      flexGrow: 0,
       Cell: ({
         cell: {
           value: [item],
@@ -246,6 +246,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
           tableHeaders={TableHeadersData}
           data={data}
           searchItems={(item) => searchItems(item)}
+          isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
         />
       </Paper>
     </Box>
