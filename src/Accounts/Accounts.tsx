@@ -137,6 +137,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
             Header: cur.label,
             accessor: `metadata.${cur.key}`,
             Cell: MetadataChipCell(cur),
+            flexGrow: isTableWider && 1,
           },
         ],
         [],
@@ -163,7 +164,6 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
       Header: 'User Groups',
       accessor: 'userGroups',
       width: 250,
-      flexGrow: isTableWider && 1,
       Cell: ({ cell: { value } }) => value.join(', '),
     },
   ];
@@ -182,7 +182,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
     },
   ];
 
-  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), []);
+  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), [isTableWider]);
 
   const searchItems = (item: AccountData) => {
     if (filter === '') return true;

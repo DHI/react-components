@@ -123,9 +123,8 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
     {
       Header: 'Users',
       accessor: 'users',
-      width: 250,
+      width: 300,
       Cell: ({ cell: { value } }) => value.join(', '),
-      flexGrow: isTableWider && 1,
     },
   ];
 

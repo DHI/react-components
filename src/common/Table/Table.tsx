@@ -8,7 +8,9 @@ import {
   TableHead,
   TableRow,
   Theme,
+  Tooltip,
   Typography,
+  Zoom,
 } from '@material-ui/core';
 import { useTable, UseTableOptions, TableRowProps, TableCellProps, useBlockLayout } from 'react-table';
 import { FixedSizeList } from 'react-window';
@@ -63,8 +65,8 @@ const DefaultTable = ({
   const getHeaderCellProps = (): Partial<TableCellProps> => ({
     style: { fontWeight: 'bold' },
   });
-  const getRowProps = (): Partial<TableRowProps> => ({
-    style: { background: '' },
+  const getRowProps = (style): Partial<TableRowProps> => ({
+    style: { ...style, background: '' },
   });
 
   const defaultColumn = useMemo(
@@ -87,12 +89,12 @@ const DefaultTable = ({
   );
 
   const RenderRow = useCallback(
-    ({ index }) => {
+    ({ index, style }) => {
       const row = rows[index];
       prepareRow(row);
 
       return (
-        <TableRow {...row.getRowProps(getRowProps())} component="div">
+        <TableRow component="div" {...row.getRowProps(getRowProps(style))}>
           {row.cells.map((cell) => {
             return (
               <TableCell
@@ -102,13 +104,15 @@ const DefaultTable = ({
                   (cell.column as any).flexGrow ? `table-cell-responsive-${(cell.column as any).flexGrow}` : ''
                 }
               >
-                {(cell.column as any).header === 'User Groups' ? (
-                  <Typography component="div">{cell.render('Cell')}</Typography>
-                ) : (
-                  <Typography noWrap variant="body2" className={classes.tdContent}>
-                    {cell.render('Cell')}
-                  </Typography>
-                )}
+                <Tooltip title={cell.render('Cell')} placement="bottom-start" TransitionComponent={Zoom}>
+                  {(cell.column as any).header === 'User Groups' ? (
+                    <Typography component="div">{cell.render('Cell')}</Typography>
+                  ) : (
+                    <Typography noWrap variant="body2" className={classes.tdContent}>
+                      {cell.render('Cell')}
+                    </Typography>
+                  )}
+                </Tooltip>
               </TableCell>
             );
           })}
@@ -133,7 +137,6 @@ const DefaultTable = ({
                 component="div"
                 className={(column as any).flexGrow ? `table-cell-responsive-${(column as any).flexGrow}` : ''}
               >
-                {console.log('(column): ', column)}
                 {column.render('Header')}
               </TableCell>
             ))}
