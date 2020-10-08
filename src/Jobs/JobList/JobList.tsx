@@ -2,34 +2,24 @@ import {
   Box,
   CircularProgress,
   CssBaseline,
-  IconButton,
-  Menu,
-  MenuItem,
+  makeStyles,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Theme,
   Tooltip,
   Typography,
 } from '@material-ui/core';
 import { blue, green, red, yellow } from '@material-ui/core/colors';
 import MaUTable from '@material-ui/core/Table';
-import {
-  Cancel,
-  CancelScheduleSend,
-  CheckCircle,
-  Error,
-  FilterList,
-  HelpOutline,
-  HourglassEmpty,
-} from '@material-ui/icons';
+import { Cancel, CancelScheduleSend, CheckCircle, Error, HelpOutline, HourglassEmpty } from '@material-ui/icons';
 import { differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useBlockLayout, useFilters, UseFiltersOptions, useGlobalFilter, useTable, UseTableOptions } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
-import { FilterProps } from '../..';
 import { fetchJobs } from '../../DataServices/DataServices';
 import JobListProps, { JobData } from './types';
 import { DefaultColumnFilter, SelectColumnFilter } from '../../common/tableHelper';
@@ -100,6 +90,21 @@ const StatusIconCell = ({ value, cell }: { value: string; cell: any }) => {
   }
 };
 
+const useStyles = makeStyles((theme: Theme) => ({
+  td: {
+    flexGrow: '1 !important' as any,
+    flexBasis: '5px !important' as any,
+    width: 'unset !important' as any,
+    maxWidth: 'none !important' as any,
+  },
+  tdStatus: {
+    marginLeft: theme.spacing(2),
+  },
+  tdContent: {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
 const Table = ({
   columns,
   data,
@@ -121,6 +126,7 @@ const Table = ({
     maxWidth: 1000,
   };
 
+  const classes = useStyles();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth, state } = useTable(
     {
       autoResetFilters: false,
@@ -151,13 +157,13 @@ const Table = ({
         >
           {row.cells.map((cell) => {
             return (
-              <TableCell {...cell.getCellProps()} component="div">
+              <TableCell {...cell.getCellProps()} component="div" className={classes.td}>
                 {(cell.column as any).header === 'Status' ? (
-                  <Typography align="center" component="div">
+                  <Typography className={classes.tdStatus} component="div">
                     {cell.render('Cell')}
                   </Typography>
                 ) : (
-                  <Typography noWrap variant="body2">
+                  <Typography noWrap className={classes.tdContent} variant="body2">
                     {cell.render('Cell')}
                   </Typography>
                 )}
@@ -174,9 +180,9 @@ const Table = ({
     <MaUTable {...getTableProps()} component="div" size="small">
       <TableHead component="div">
         {headerGroups.map((headerGroup) => (
-          <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
+          <TableRow {...headerGroup.getHeaderGroupProps()} component="div" className={classes.td}>
             {headerGroup.headers.map((column) => (
-              <TableCell {...column.getHeaderProps()} component="div">
+              <TableCell {...column.getHeaderProps()} component="div" className={classes.td}>
                 <Box display="flex" flexDirection="row">
                   <Typography variant="subtitle1">{column.render('header')}</Typography>
                   {(column as any).canFilter ? column.render('Filter') : null}
@@ -190,7 +196,7 @@ const Table = ({
       <TableBody {...getTableBodyProps()} component="div">
         {rows.length > 0 ? (
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 60).toString()}px` }}>
+            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 130).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => (
                   <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
@@ -204,7 +210,7 @@ const Table = ({
           <Typography
             align="center"
             component="div"
-            style={{ lineHeight: `${(windowHeight - 60).toString()}px`, color: '#999999' }}
+            style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
           >
             {loading ? (
               <CircularProgress />
@@ -270,45 +276,45 @@ const JobList = (props: JobListProps) => {
       header: 'Task Id',
       accessor: 'taskId',
       Filter: SelectColumnFilter,
-      width: 250,
+      flexGrow: 1,
     },
     {
       header: 'Status',
       accessor: 'status',
       Cell: StatusIconCell,
       Filter: SelectColumnFilter,
-      width: 80,
+      flexGrow: 1,
     },
     {
       header: 'Host Id',
       accessor: 'hostId',
       Filter: SelectColumnFilter,
-      width: 125,
+      flexGrow: 1,
     },
     {
       header: 'Duration',
       accessor: 'duration',
-      width: 80,
+      flexGrow: 1,
     },
     {
       header: 'Delay',
       accessor: 'delay',
-      width: 70,
+      flexGrow: 1,
     },
     {
       header: 'Requested',
       accessor: 'requested',
-      width: 175,
+      flexGrow: 1,
     },
     {
       header: 'Started',
       accessor: 'started',
-      width: 175,
+      flexGrow: 1,
     },
     {
       header: 'Finished',
       accessor: 'finished',
-      width: 175,
+      flexGrow: 1,
     },
   ];
 

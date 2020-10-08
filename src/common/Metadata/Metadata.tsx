@@ -90,11 +90,11 @@ const Metadata = ({
 
   return (
     <Fragment>
-      {metadata?.map((meta, i) => {
+      {metadata?.map((meta) => {
         if (meta.type === 'Text') {
           return (
             <TextField
-              key={meta.key + '' + i}
+              key={meta.key}
               fullWidth
               margin="dense"
               label={meta.label}
@@ -107,7 +107,7 @@ const Metadata = ({
           );
         } else if (meta.type === 'SingleChoice') {
           return (
-            <FormControl className={classes.FormControl} key={meta.key + '' + i}>
+            <FormControl className={classes.FormControl} key={meta.key}>
               <InputLabel>{meta.label}</InputLabel>
               <Select
                 fullWidth
@@ -127,7 +127,7 @@ const Metadata = ({
         } else if (meta.type === 'Boolean') {
           return (
             <FormControlLabel
-              key={meta.key + '' + i}
+              key={meta.key}
               className={classes.switch}
               control={
                 <Switch
@@ -144,7 +144,7 @@ const Metadata = ({
         } else if (meta.type === 'MultiChoice') {
           return (
             <Autocomplete
-              key={meta.key + '' + i}
+              key={meta.key}
               placeholder={`Select ${meta.label}`}
               options={meta.options}
               defaultValue={meta?.default}
@@ -183,7 +183,7 @@ const Metadata = ({
               ))}
 
               <TextField
-                key={meta.key + '' + i}
+                key={meta.key}
                 fullWidth
                 margin="dense"
                 label={meta.label}
