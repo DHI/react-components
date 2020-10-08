@@ -9,6 +9,7 @@ import { Metadata } from '../common/Metadata/Metadata';
 import { EditUser, AccountsFormProps } from './types';
 import { UserGroups } from '../UserGroups/types';
 import { MetadataDefault } from '../common/Metadata/types';
+import { ActionsButtons } from '../common/Table';
 
 const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, token, host }: AccountsFormProps) => {
   const [state, setState] = useState({
@@ -242,15 +243,12 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
         <Metadata metadata={metadata} data={form.metadata} onChange={handleChange} onError={handleError} />
       </DialogContent>
 
-      {/* TODO: add ActionsButtons Component */}
-      <DialogActions>
-        <Button variant="outlined" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit" variant="contained" color="primary" disabled={error}>
-          {isEditing ? 'Update' : 'Create'}
-        </Button>
-      </DialogActions>
+      <ActionsButtons
+        confirmButtonText="Create"
+        onCancel={onCancel}
+        onSubmit={(e) => handleSubmit(e)}
+        isEditing={isEditing}
+      />
     </form>
   );
 };

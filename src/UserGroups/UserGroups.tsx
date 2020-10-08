@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
-import { fetchUserGroups, updateUserGroups, deleteUserGroup, createUserGroup } from '../DataServices/DataServices';
+import {
+  fetchUserGroups,
+  updateUserGroups,
+  deleteUserGroup,
+  createUserGroup,
+  fetchAccounts,
+} from '../DataServices/DataServices';
 import {
   Dialog,
   ActionsButtons,
@@ -15,6 +21,7 @@ import { UserGroupProps, UserGroupsData, UserGroups } from './types';
 
 const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
   const [userGroups, setUserGroups] = useState<UserGroupsData[]>([]);
+  const [users, setUsers] = useState<string[]>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');
@@ -152,7 +159,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
     fetchUserGroups(host, token).subscribe(
       async (body: Record<any, any>) => {
         const userGroups = body as UserGroups[];
-
         setUserGroups(userGroups);
       },
       (error) => {
@@ -160,6 +166,19 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
         setLoading(false);
 
         console.error('UG Error: ', error);
+      },
+    );
+
+    fetchAccounts(host, token).subscribe(
+      async (body: Record<any, any>) => {
+        const usersOnly = body.map((item) => item.id);
+        setUsers(usersOnly);
+      },
+      (error) => {
+        setError(true);
+        setLoading(false);
+
+        console.error('UGU Error: ', error);
       },
     );
   };
@@ -180,6 +199,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
           onSubmit={handleSubmit}
           isEditing={isEditing}
           selectedUserGroup={selectedUserGroup}
+          listOfUsers={users}
           metadata={metadata}
           onCancel={handleDialog}
         />

@@ -77,7 +77,7 @@ interface ActionsButtonsProps {
   /**
    *  Submit the data from the form to a HOC to create or update the data.
    */
-  onSubmit: (e: {}) => void;
+  onSubmit: (e) => void;
   /**
    *  Check if the current form is on edit mode
    */
@@ -125,3 +125,5 @@ interface ActionCellProps {
    */
   category?: string;
 }
+
+export { DefaultTableProps, TableHeaders, TableData, ActionsButtonsProps, TopTableSectionProps, ActionCellProps };

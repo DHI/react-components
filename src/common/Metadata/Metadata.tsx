@@ -84,10 +84,6 @@ const Metadata = ({
     onError(Object.keys(error).some((v) => error[v] === true));
   }, [error]);
 
-  useEffect(() => {
-    setList(data.MultiText);
-  }, [data.MultiText]);
-
   return (
     <Fragment>
       {metadata?.map((meta) => {

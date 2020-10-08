@@ -1,6 +1,7 @@
 import React from 'react';
 import { CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { useTable, UseTableOptions, TableRowProps, TableCellProps } from 'react-table';
+import { DefaultTableProps, TableData } from './types';
 
 const DefaultTable = ({ error, loading, tableHeaders, data, searchItems }: DefaultTableProps) => {
   const noResults = () => {
