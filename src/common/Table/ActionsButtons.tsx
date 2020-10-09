@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button, DialogActions } from '@material-ui/core';
+import React from 'react';
 import { ActionsButtonsProps } from './types';
 
 const ActionsButtons = ({
