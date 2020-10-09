@@ -502,7 +502,13 @@ const fetchJobs = (
           Authorization: `Bearer ${token}`,
         },
       },
-    ).pipe(map((fc) => dataObjectToArray(fc))),
+    ).pipe(
+      map((fc) =>
+        dataObjectToArray(fc).sort((a, b) => {
+          return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
+        }),
+      ),
+    ),
   );
 
   return forkJoin(requests).pipe(map((fc) => fc.flat()));

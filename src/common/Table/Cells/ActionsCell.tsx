@@ -2,6 +2,7 @@ import { Box, IconButton, Menu, MenuItem, Divider } from '@material-ui/core';
 import React, { useState } from 'react';
 import { MoreVert, EditOutlined, DeleteOutline } from '@material-ui/icons';
 import { AccountData } from '../../../Accounts/types';
+import { ActionCellProps } from '../types';
 
 const ActionsCell = ({ item, onEdit, onDelete }: ActionCellProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

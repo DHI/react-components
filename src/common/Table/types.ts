@@ -19,6 +19,10 @@ interface DefaultTableProps {
    * Items where the search filter checks for data.
    */
   searchItems: (item: any) => void;
+  /**
+   * Check if table is wider then window
+   */
+  isTableWiderThanWindow: (size: boolean) => void;
 }
 
 interface TableHeaders {
@@ -120,3 +124,5 @@ interface ActionCellProps {
    */
   onDelete: (data: Record<any, any>) => void;
 }
+
+export { DefaultTableProps, TableHeaders, TableData, ActionsButtonsProps, TopTableSectionProps, ActionCellProps };
