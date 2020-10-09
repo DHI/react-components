@@ -135,6 +135,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
           ...acc,
           {
             Header: cur.label,
+            category: cur.type,
             accessor: `metadata.${cur.key}`,
             Cell: MetadataChipCell(cur),
             flexGrow: isTableWider && 1,

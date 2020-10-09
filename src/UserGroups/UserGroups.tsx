@@ -100,6 +100,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
           ...acc,
           {
             Header: cur.label,
+            category: cur.type,
             accessor: `metadata.${cur.key}`,
             Cell: MetadataChipCell(cur),
             flexGrow: isTableWider && 1,

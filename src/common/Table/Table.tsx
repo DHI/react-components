@@ -102,7 +102,11 @@ const DefaultTable = ({
                 component="div"
                 className={(cell.column as any).flexGrow ? classes.td : ''}
               >
-                <Tooltip title={cell.render('Cell')} placement="bottom-start" TransitionComponent={Zoom}>
+                <Tooltip
+                  title={(cell.column as any).category !== 'Boolean' ? cell.render('Cell') : ''}
+                  placement="bottom-start"
+                  TransitionComponent={Zoom}
+                >
                   {(cell.column as any).header === 'User Groups' ? (
                     <Typography component="div">{cell.render('Cell')}</Typography>
                   ) : (
