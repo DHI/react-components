@@ -6,7 +6,6 @@ import { SelectColumnFilter } from '../../common/tableHelper';
 import { calcTimeDifference } from '../../utils/Utils';
 import StatusIconCell from './StatusIconCell';
 import JobListTable from './JobListTable';
-import './style.css';
 
 const JobList = (props: JobListProps) => {
   const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone, translations, onReceived } = props;

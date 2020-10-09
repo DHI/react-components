@@ -100,9 +100,7 @@ const DefaultTable = ({
               <TableCell
                 {...cell.getCellProps()}
                 component="div"
-                className={
-                  (cell.column as any).flexGrow ? `table-cell-responsive-${(cell.column as any).flexGrow}` : ''
-                }
+                className={(cell.column as any).flexGrow ? classes.td : ''}
               >
                 <Tooltip title={cell.render('Cell')} placement="bottom-start" TransitionComponent={Zoom}>
                   {(cell.column as any).header === 'User Groups' ? (
@@ -135,7 +133,7 @@ const DefaultTable = ({
               <TableCell
                 {...column.getHeaderProps(getHeaderCellProps())}
                 component="div"
-                className={(column as any).flexGrow ? `table-cell-responsive-${(column as any).flexGrow}` : ''}
+                className={(column as any).flexGrow ? classes.td : ''}
               >
                 {column.render('Header')}
               </TableCell>

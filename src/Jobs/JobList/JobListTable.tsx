@@ -89,9 +89,7 @@ const JobListTable = ({
               <TableCell
                 {...cell.getCellProps()}
                 component="div"
-                className={
-                  (cell.column as any).flexGrow ? `table-cell-responsive-${(cell.column as any).flexGrow}` : ''
-                }
+                className={(cell.column as any).flexGrow ? classes.td : ''}
               >
                 {(cell.column as any).header === 'Status' ? (
                   <Typography
@@ -141,7 +139,7 @@ const JobListTable = ({
               <TableCell
                 {...column.getHeaderProps()}
                 component="div"
-                className={(column as any).flexGrow ? `table-cell-responsive-${(column as any).flexGrow}` : ''}
+                className={(column as any).flexGrow ? classes.td : ''}
               >
                 <Box display="flex" flexDirection="row">
                   <Typography variant="subtitle1">{column.render('header')}</Typography>

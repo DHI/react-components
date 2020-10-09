@@ -1,7 +1,0 @@
-/* It goes with the table columns to make it responsive on larger screens */
-.table-cell-responsive-1{
-    flex-grow: 1 !important;
-    flex-basis: 5px !important;
-    width: unset !important;
-    max-width: none !important;
-}
