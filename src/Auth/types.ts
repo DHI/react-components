@@ -1,4 +1,10 @@
-interface Form {
+interface OtpValidation {
+  /** 2FA/OTP code  */
+  otp?: string;
+  /** 2FA Authenticator */
+  otpAuthenticator?: string;
+}
+interface Form extends OtpValidation {
   /** Id field to use as login payload */
   id: string;
   /** Password field to use as login payload */
@@ -7,7 +13,7 @@ interface Form {
   rememberMe: boolean;
 }
 
-interface User {
+interface User extends OtpInfo {
   /** Id of user */
   id: string;
   /** Name of user */
@@ -31,4 +37,11 @@ interface Token {
   };
 }
 
-export { Form, User, Token };
+interface OtpInfo {
+  /** Check if credentials have 2FA authenticator */
+  otpRequired?: boolean;
+  /** List of Authenticator services */
+  otpAuthenticatorIds?: string[];
+}
+
+export { Form, User, Token, OtpInfo };

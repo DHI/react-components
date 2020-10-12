@@ -1,5 +1,17 @@
-import { Button, Checkbox, CircularProgress, FormControlLabel, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import AuthService from '../AuthService';
 import LoginFormProps from './types';
 import useStyles from './useStyles';
@@ -17,7 +29,9 @@ const LoginForm = (props: LoginFormProps) => {
     rememberMeLabelText = 'Remember me?',
     resetPasswordLabelText = 'Reset password',
     loginButtonText = 'Login',
+    backButtonText = 'Back',
     textFieldVariant = 'outlined',
+    otpAuthPlaceholder = 'Two Factor Authenticator',
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -25,8 +39,12 @@ const LoginForm = (props: LoginFormProps) => {
   const [form, setForm] = useState({
     id: '',
     password: '',
-    rememberMe: false,
+    rememberMe: showRememberMe,
+    otpAuthenticator: null,
+    otp: null,
   });
+  const [twoFA, setTwoFA] = useState(false);
+  const [otpAuthenticatorIds, setOtpAuthenticatorIds] = useState([]);
   const classes = useStyles();
   const auth = new AuthService(host);
   const validate = () => form.id && form.password;
@@ -37,6 +55,7 @@ const LoginForm = (props: LoginFormProps) => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setError(false);
 
     if (validate()) {
       setLoading(true);
@@ -44,9 +63,18 @@ const LoginForm = (props: LoginFormProps) => {
 
     auth.login(
       form,
+      (otpInfo) => {
+        console.log('otpInfo: ', otpInfo);
+        setTwoFA(otpInfo.otpRequired);
+        setOtpAuthenticatorIds(otpInfo.otpAuthenticatorIds);
+        setLoading(false);
+      },
       (user, token) => {
         console.log('login success');
         setLoading(false);
+
+        console.log('user: ', user);
+        console.log('token: ', token);
 
         if (onSuccess != null) {
           onSuccess(user, token);
@@ -64,29 +92,78 @@ const LoginForm = (props: LoginFormProps) => {
     );
   };
 
+  const handleBack = () => {
+    setTwoFA(false);
+    setError(false);
+    setForm({
+      ...form,
+      otpAuthenticator: null,
+      otp: null,
+    })
+  };
+
   return (
     <form onSubmit={handleSubmit}>
-      <TextField
-        required
-        fullWidth
-        name="id"
-        error={error}
-        margin="dense"
-        value={form.id}
-        onChange={(e) => handleChange('id', e.target.value)}
-        helperText={error ? 'Invalid Login' : ''}
-        label={userNamePlaceholder}
-        variant={textFieldVariant as any}
-      />
-      <TextField
-        required
-        fullWidth
-        margin="dense"
-        type="password"
-        onChange={(e) => handleChange('password', e.target.value)}
-        label={passwordPlaceholder}
-        variant={textFieldVariant as any}
-      />
+      {error && (
+        <Alert severity="error">{`Username ${
+          twoFA ? 'or Two Factor Authenticator are invalid' : 'and/or password is invalid'
+        }`}</Alert>
+      )}
+
+      {twoFA ? (
+        <>
+          <Typography>Please select your 2 Two Factor Authenticator</Typography>
+          <FormControl variant="outlined" fullWidth margin="dense">
+            <InputLabel id="demo-simple-select-outlined-label">Authenticator</InputLabel>
+            <Select
+              fullWidth
+              defaultValue={otpAuthenticatorIds[0]}
+              value={form?.otpAuthenticator}
+              id="otpAuthenticator"
+              label="Authenticator"
+              onChange={(e) => handleChange('otpAuthenticator', e.target.value as string)}
+            >
+              {otpAuthenticatorIds?.map((item, index) => (
+                <MenuItem key={index} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            fullWidth
+            margin="dense"
+            type="number"
+            onChange={(e) => handleChange('otp', e.target.value)}
+            label={otpAuthPlaceholder}
+            error={error}
+            variant={textFieldVariant as any}
+          />
+        </>
+      ) : (
+        <>
+          <TextField
+            required
+            fullWidth
+            name="id"
+            error={error}
+            margin="dense"
+            value={form.id}
+            onChange={(e) => handleChange('id', e.target.value)}
+            label={userNamePlaceholder}
+            variant={textFieldVariant as any}
+          />
+          <TextField
+            required
+            fullWidth
+            margin="dense"
+            type="password"
+            onChange={(e) => handleChange('password', e.target.value)}
+            label={passwordPlaceholder}
+            variant={textFieldVariant as any}
+          />
+        </>
+      )}
       <div className={classes.rememberMe}>
         {showRememberMe && (
           <FormControlLabel
@@ -117,6 +194,12 @@ const LoginForm = (props: LoginFormProps) => {
             <Typography className={classes.labels}>{resetPasswordLabelText}</Typography>
           </Button>
         )}
+        {twoFA && (
+          <Button type="submit" className={classes.button} color="secondary" variant="contained" onClick={handleBack}>
+            {backButtonText}
+          </Button>
+        )}
+
         <Button type="submit" color="primary" variant="contained">
           {loading ? <CircularProgress color="inherit" size={24} /> : loginButtonText}
         </Button>

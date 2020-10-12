@@ -17,6 +17,9 @@ const styles = () => ({
     display: 'flex',
     alignItems: 'center',
   },
+  button: {
+    marginRight: 15,
+  }
 });
 
 const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);

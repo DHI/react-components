@@ -13,6 +13,8 @@ interface LoginFormProps {
   rememberMeLabelText?: string;
   /** Local text translation for field */
   loginButtonText?: string;
+  /** Local text translation for field */
+  backButtonText?: string;
   /** Placeholder text for user edit box. */
   userNamePlaceholder?: string;
   /** Placeholder text for password edit box. */
@@ -25,6 +27,8 @@ interface LoginFormProps {
   showResetPassword?: boolean;
   /** Variant of text fields */
   textFieldVariant?: string;
+  /** Placeholder text for OTP Authenticator input field. */
+  otpAuthPlaceholder?: string;
 }
 
 export default LoginFormProps;
