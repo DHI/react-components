@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -36,6 +36,8 @@ const LoginForm = (props: LoginFormProps) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [twoFA, setTwoFA] = useState(false);
+  const [otpAuthenticatorIds, setOtpAuthenticatorIds] = useState([]);
   const [form, setForm] = useState({
     id: '',
     password: '',
@@ -43,8 +45,6 @@ const LoginForm = (props: LoginFormProps) => {
     otpAuthenticator: null,
     otp: null,
   });
-  const [twoFA, setTwoFA] = useState(false);
-  const [otpAuthenticatorIds, setOtpAuthenticatorIds] = useState([]);
   const classes = useStyles();
   const auth = new AuthService(host);
   const validate = () => form.id && form.password;
@@ -64,7 +64,6 @@ const LoginForm = (props: LoginFormProps) => {
     auth.login(
       form,
       (otpInfo) => {
-        console.log('otpInfo: ', otpInfo);
         setTwoFA(otpInfo.otpRequired);
         setOtpAuthenticatorIds(otpInfo.otpAuthenticatorIds);
         setLoading(false);
@@ -72,9 +71,6 @@ const LoginForm = (props: LoginFormProps) => {
       (user, token) => {
         console.log('login success');
         setLoading(false);
-
-        console.log('user: ', user);
-        console.log('token: ', token);
 
         if (onSuccess != null) {
           onSuccess(user, token);
@@ -95,12 +91,24 @@ const LoginForm = (props: LoginFormProps) => {
   const handleBack = () => {
     setTwoFA(false);
     setError(false);
+
     setForm({
       ...form,
       otpAuthenticator: null,
       otp: null,
-    })
+    });
   };
+
+  const handleDefaultAuthenticator = () => {
+    setForm({
+      ...form,
+      otpAuthenticator: otpAuthenticatorIds[0] || null,
+    });
+  };
+
+  useEffect(() => {
+    handleDefaultAuthenticator();
+  }, [otpAuthenticatorIds]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -114,10 +122,12 @@ const LoginForm = (props: LoginFormProps) => {
         <>
           <Typography>Please select your 2 Two Factor Authenticator</Typography>
           <FormControl variant="outlined" fullWidth margin="dense">
-            <InputLabel id="demo-simple-select-outlined-label">Authenticator</InputLabel>
+            <InputLabel shrink id="demo-simple-select-outlined-label" className={classes.shrink}>
+              Authenticator
+            </InputLabel>
             <Select
               fullWidth
-              defaultValue={otpAuthenticatorIds[0]}
+              defaultValue={form?.otpAuthenticator}
               value={form?.otpAuthenticator}
               id="otpAuthenticator"
               label="Authenticator"
