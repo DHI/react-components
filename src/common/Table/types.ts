@@ -81,7 +81,7 @@ interface ActionsButtonsProps {
   /**
    *  Submit the data from the form to a HOC to create or update the data.
    */
-  onSubmit: (e: {}) => void;
+  onSubmit: (e) => void;
   /**
    *  Check if the current form is on edit mode
    */
@@ -123,6 +123,11 @@ interface ActionCellProps {
    * Function to open the dialog with the current user name and id in it.
    */
   onDelete: (data: Record<any, any>) => void;
+  /**
+   * category to go into the action button labels.
+   * Default: User
+   */
+  category?: string;
 }
 
 export { DefaultTableProps, TableHeaders, TableData, ActionsButtonsProps, TopTableSectionProps, ActionCellProps };
