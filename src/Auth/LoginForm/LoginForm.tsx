@@ -147,7 +147,7 @@ const LoginForm = (props: LoginFormProps) => {
             onChange={(e) => handleChange('otp', e.target.value)}
             label={otpAuthPlaceholder}
             error={error}
-            variant={textFieldVariant as 'outlined' | 'standard' | 'filled'}
+            variant={textFieldVariant}
           />
         </>
       ) : (
@@ -161,7 +161,7 @@ const LoginForm = (props: LoginFormProps) => {
             value={form.id}
             onChange={(e) => handleChange('id', e.target.value)}
             label={userNamePlaceholder}
-            variant={textFieldVariant as 'outlined' | 'standard' | 'filled'}
+            variant={textFieldVariant}
           />
           <TextField
             required
@@ -170,7 +170,7 @@ const LoginForm = (props: LoginFormProps) => {
             type="password"
             onChange={(e) => handleChange('password', e.target.value)}
             label={passwordPlaceholder}
-            variant={textFieldVariant as 'outlined' | 'standard' | 'filled'}
+            variant={textFieldVariant}
           />
         </>
       )}

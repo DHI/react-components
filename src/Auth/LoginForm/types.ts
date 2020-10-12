@@ -26,7 +26,7 @@ interface LoginFormProps {
   /** Should the reset password checkbox be displayed? */
   showResetPassword?: boolean;
   /** Variant of text fields */
-  textFieldVariant?: string;
+  textFieldVariant?: 'outlined' | 'standard' | 'filled';
   /** Placeholder text for OTP Authenticator input field. */
   otpAuthPlaceholder?: string;
 }
