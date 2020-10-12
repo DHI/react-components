@@ -79,6 +79,10 @@ interface UserGroupFormProps {
    */
   onCancel: () => void;
   /**
+   * List of existing users
+   */
+  listOfUsers: string[];
+  /**
    * Metadata supplied on the HOC to extend the table.
    */
   metadata: MetadataProps[];

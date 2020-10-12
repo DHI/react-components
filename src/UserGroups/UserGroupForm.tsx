@@ -10,8 +10,10 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Metadata } from '../common/Metadata/Metadata';
 import { UserGroupFormProps } from './types';
+import { ActionsButtons } from '../common/Table';
 
 const useStyles = makeStyles((theme: Theme) => ({
   users: {
@@ -23,7 +25,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCancel }: UserGroupFormProps) => {
+const UserGroupForm = ({
+  onSubmit,
+  isEditing,
+  selectedUserGroup,
+  listOfUsers,
+  metadata,
+  onCancel,
+}: UserGroupFormProps) => {
   const classes = useStyles();
   const userGroupTemplate = {
     id: '',
@@ -91,6 +100,13 @@ const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCan
     setError(error);
   };
 
+  const handleUsers = (users) => {
+    setForm({
+      ...form,
+      users,
+    });
+  };
+
   useEffect(() => {
     setForm({
       ...selectedUserGroup,
@@ -107,7 +123,7 @@ const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCan
             fullWidth
             autoFocus
             margin="dense"
-            label="Username"
+            label="ID"
             variant="standard"
             value={form?.id}
             onChange={(e) => handleChange('id', e.target.value)}
@@ -133,34 +149,34 @@ const UserGroupForm = ({ onSubmit, isEditing, selectedUserGroup, metadata, onCan
           onChange={(e) => handleChange('name', e.target.value)}
         />
 
-        {selectedUserGroup?.users?.length > 0 && (
-          <div className={classes.users}>
-            <Typography variant="subtitle1">Users</Typography>
-            {selectedUserGroup?.users?.length > 4 ? (
-              <Typography>
-                there are <strong>{selectedUserGroup.users.length}</strong> users under{' '}
-                <strong>{selectedUserGroup.name}</strong>
-              </Typography>
-            ) : (
-              selectedUserGroup?.users?.map((val, i) => (
-                <Chip key={i} className={classes.chip} label={val} style={{ marginRight: 4 }} />
-              ))
-            )}
-          </div>
-        )}
+        <Autocomplete
+          disabled={!listOfUsers}
+          placeholder={!listOfUsers ? 'Loading users...' : 'Select user(s)'}
+          options={listOfUsers}
+          value={form?.users}
+          onChange={(e, values) => handleUsers(values)}
+          multiple={true as any}
+          renderInput={(props) => (
+            <TextField
+              {...props}
+              name="users"
+              variant="standard"
+              label="User(s)"
+              placeholder="Select"
+              autoComplete="off"
+            />
+          )}
+        />
 
         {handleMetadata()}
         <Metadata metadata={metadata} data={form.metadata} onChange={handleChange} onError={handleError} />
 
-        {/* TODO: add ActionsButtons Component */}
-        <DialogActions>
-          <Button variant="outlined" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" color="primary" onClick={(e) => handleSubmit(e)} disabled={error}>
-            {isEditing ? 'Update' : 'Create'}
-          </Button>
-        </DialogActions>
+        <ActionsButtons
+          confirmButtonText="Create"
+          onCancel={onCancel}
+          onSubmit={(e) => handleSubmit(e)}
+          isEditing={isEditing}
+        />
       </DialogContent>
     </form>
   );

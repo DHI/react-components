@@ -84,10 +84,6 @@ const Metadata = ({
     onError(Object.keys(error).some((v) => error[v] === true));
   }, [error]);
 
-  useEffect(() => {
-    setList(data.MultiText);
-  }, [data.MultiText]);
-
   return (
     <Fragment>
       {metadata?.map((meta) => {
@@ -169,7 +165,7 @@ const Metadata = ({
         } else if (meta.type === 'MultiText') {
           return (
             <>
-              {list.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
+              {list?.length > 0 && <Typography className={classes.switch}>{meta.label} list</Typography>}
               {list?.map((item, i) => (
                 <Box alignItems="center" key={i}>
                   <Chip
