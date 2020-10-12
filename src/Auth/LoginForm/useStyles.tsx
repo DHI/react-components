@@ -17,6 +17,14 @@ const styles = () => ({
     display: 'flex',
     alignItems: 'center',
   },
+  button: {
+    marginRight: 15,
+  },
+  shrink: {
+    backgroundColor: '#FFF',
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
 });
 
 const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);

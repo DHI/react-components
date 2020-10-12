@@ -18,6 +18,8 @@ interface DataSource {
 interface User {
   id: string;
   password: string;
+  otp?: string;
+  otpAuthenticator?: string;
 }
 
 interface Header {

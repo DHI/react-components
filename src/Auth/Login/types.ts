@@ -30,7 +30,7 @@ interface LoginProps {
   /** Should the reset password checkbox be displayed? */
   showResetPassword?: boolean;
   /** Variant of text fields */
-  textFieldVariant?: string;
+  textFieldVariant?: 'outlined' | 'standard' | 'filled';
 }
 
 export default LoginProps;
