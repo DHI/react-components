@@ -8,7 +8,17 @@ import StatusIconCell from './StatusIconCell';
 import JobListTable from './JobListTable';
 
 const JobList = (props: JobListProps) => {
-  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone, translations, onReceived } = props;
+  const {
+    frequency,
+    dataSources,
+    parameters,
+    token,
+    startTimeUtc,
+    dateTimeFormat,
+    timeZone,
+    translations,
+    onReceived,
+  } = props;
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,6 +54,20 @@ const JobList = (props: JobListProps) => {
 
     return jobsData;
   }, [jobsData]);
+
+  const parameterHeader = parameters
+    ? parameters.reduce(
+        (acc, cur) => [
+          ...acc,
+          {
+            header: cur.label,
+            accessor: cur.parameter,
+            flexGrow: isTableWider && 1,
+          },
+        ],
+        [],
+      )
+    : [];
 
   const columns = [
     {
@@ -95,6 +119,8 @@ const JobList = (props: JobListProps) => {
     },
   ];
 
+  const TableHeadersData = useMemo(() => columns.concat(parameterHeader), [isTableWider]);
+
   const fetchJobList = (dateTimeValue: string) => {
     setLoading(true);
     const query = { since: dateTimeValue };
@@ -122,6 +148,12 @@ const JobList = (props: JobListProps) => {
             duration: calcTimeDifference(s.data.started, s.data.finished),
             delay: calcTimeDifference(s.data.requested, s.data.started),
           };
+
+          if (s.data.parameters) {
+            for (const key of Object.keys(s.data.parameters)) {
+              dataMapping[key] = s.data.parameters[key];
+            }
+          }
 
           const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.Id);
 
@@ -170,7 +202,7 @@ const JobList = (props: JobListProps) => {
 
   return (
     <JobListTable
-      columns={columns}
+      columns={TableHeadersData}
       data={data}
       translations={translations}
       loading={loading}
