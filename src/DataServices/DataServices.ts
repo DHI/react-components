@@ -3,6 +3,7 @@ import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
 import { DataSource, JobParameters, JobQuery, Options, User } from './types';
+import { UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -48,7 +49,12 @@ const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
     body: JSON.stringify(user),
-  }).pipe<Token>(tap((res) => console.log('token res', res)));
+  }).pipe<Token>(
+    tap(
+      (res) => console.log('token res', res),
+      (error) => console.log(error),
+    ),
+  );
 };
 
 // GIS
@@ -111,18 +117,45 @@ const fetchTimeseriesByGroup = (dataSources: DataSource[], token: string) => {
 
 // ACCOUNTS
 // Could be an account name or `me`.
-export const fetchUserGroups = (host: string, token: string) =>
+const fetchUserGroups = (host: string, token: string) =>
   fetchUrl(`${host}/api/usergroups`, {
     method: 'GET',
     additionalHeaders: { Authorization: `Bearer ${token}` },
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
 
-export const updateUserGroupsForUser = (host: string, token: string, data: { userId: string; groups: string[] }) =>
+const updateUserGroupsForUser = (host: string, token: string, data: { userId: string; groups: string[] }) =>
   fetchUrl(`${host}/api/usergroups/user/${data.userId}`, {
     method: 'POST',
     additionalHeaders: { Authorization: `Bearer ${token}` },
     body: JSON.stringify(data.groups),
   }).pipe(tap((res) => console.log('fetchUserGroups', res)));
+
+const createUserGroup = (host: string, token: string, data: UserGroupsData) =>
+  fetchUrl(`${host}/api/usergroups`, {
+    method: 'POST',
+    additionalHeaders: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  }).pipe(tap((res) => console.log('createUserGroup', res)));
+
+const updateUserGroups = (host: string, token: string, data: UserGroupsData) =>
+  fetchUrl(`${host}/api/usergroups`, {
+    method: 'PUT',
+    additionalHeaders: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({
+      id: data.id,
+      name: data.name,
+      users: data.users,
+      metadata: data.metadata,
+    }),
+  }).pipe(tap((res) => console.log('updateUserGroups', res)));
+
+const deleteUserGroup = (host: string, token: string, id: string) =>
+  fetchUrl(`${host}/api/usergroups/${id}`, {
+    method: 'DELETE',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).pipe(tap((res) => console.log('deleted account', res)));
 
 const fetchAccount = (host: string, token: string, id: string) =>
   fetchUrl(`${host}/api/accounts/${id}`, {
@@ -474,7 +507,13 @@ const fetchJobs = (
           Authorization: `Bearer ${token}`,
         },
       },
-    ).pipe(map((fc) => dataObjectToArray(fc))),
+    ).pipe(
+      map((fc) =>
+        dataObjectToArray(fc).sort((a, b) => {
+          return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
+        }),
+      ),
+    ),
   );
 
   return forkJoin(requests).pipe(map((fc) => fc.flat()));
@@ -565,6 +604,11 @@ export {
   updateAccount,
   createAccount,
   fetchTimeseriesValues,
+  fetchUserGroups,
+  updateUserGroupsForUser,
+  createUserGroup,
+  updateUserGroups,
+  deleteUserGroup,
   fetchFeatureCollectionValues,
   fetchTimeseriesByGroup,
   fetchMapAnimationFiles,

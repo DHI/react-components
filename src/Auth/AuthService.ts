@@ -1,5 +1,5 @@
 import { fetchAccount, fetchToken } from '../DataServices/DataServices';
-import { Form, Token, User } from './types';
+import { Form, Token, User, OtpInfo } from './types';
 
 export default class AuthService {
   host: string;
@@ -7,34 +7,45 @@ export default class AuthService {
     this.host = host;
   }
 
-  login = (form: Form, onSuccess: (user: User, token: Token) => void, onError: (err: string) => void) => {
-    fetchToken(this.host, form).subscribe(
-      (token) => {
-        // Only admins can ask for other account, the user can ask for own details using 'me'
-        fetchAccount(this.host, token.accessToken.token, 'me').subscribe(
-          (user) => {
-            const loggedInUser: User = {
-              ...user,
-              roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
-              metadata: user.metadata ? user.metadata : {},
-            };
+  login = (
+    form: Form,
+    onOtpRequired: (otpInfo: OtpInfo) => void,
+    onSuccess: (user: User, token: Token) => void,
+    onError: (err: string) => void,
+  ) => {
+    fetchToken(this.host, {
+      id: form.id,
+      password: form.password,
+      otp: form.otp,
+      otpAuthenticator: form.otpAuthenticator,
+    }).subscribe(
+      (response) => {
+        if ((response as OtpInfo).otpRequired && !form.otp) {
+          onOtpRequired(response as OtpInfo);
+        } else {
+          fetchAccount(this.host, response.accessToken.token, 'me').subscribe(
+            (user) => {
+              const loggedInUser: User = {
+                ...user,
+                roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
+                metadata: user.metadata ? user.metadata : {},
+              };
 
-            this.setSession(token, loggedInUser, form.rememberMe);
+              this.setSession(response, loggedInUser, form.rememberMe);
 
-            if (onSuccess != null) {
-              onSuccess(loggedInUser, token);
-            }
-          },
-          (err) => {
-            if (onError != null) {
-              onError(err);
-            }
-          },
-        );
+              if (onSuccess != null) {
+                onSuccess(loggedInUser, response);
+              }
+            },
+            (err) => {
+              if (onError != null) {
+                onError(err);
+              }
+            },
+          );
+        }
       },
-      (err) => {
-        onError(err);
-      },
+      (error) => onError(error),
     );
   };
 

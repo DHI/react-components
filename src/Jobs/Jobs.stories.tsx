@@ -12,8 +12,14 @@ export const JobListStory = () => {
 
   const dataSources = [
     {
-      host: 'https://domainservices.dhigroup.com',
-      connection: 'wf-jobs',
+      host: '',
+      connection: '',
+    },
+  ];
+  const parameters = [
+    {
+      parameter: 'string',
+      label: 'String Label',
     },
   ];
 
@@ -38,6 +44,7 @@ export const JobListStory = () => {
         frequency={10}
         token={token}
         dataSources={dataSources}
+        parameters={parameters}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
         startTimeUtc={'2020-06-30T01:45:34'}
         timeZone={'Asia/Jakarta'}

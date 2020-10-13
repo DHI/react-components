@@ -5,6 +5,8 @@ interface JobListProps {
   frequency: number;
   /** Data source to get the logs data */
   dataSources: DataSource[];
+  /** Data source to get the logs specific parameters */
+  parameters?: Parameters[];
   /** Authorization header to backend call */
   token: string;
   /** The date time format that the dates shown in */
@@ -21,6 +23,11 @@ interface JobListProps {
   };
   /** Emit event to client when jobs received from the server */
   onReceived?: (data: any) => void;
+}
+
+interface Parameters {
+  parameter: string;
+  label: string;
 }
 
 interface JobData {

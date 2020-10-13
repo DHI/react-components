@@ -22,7 +22,7 @@ interface ChartPlotlyProps {
   /**
    * The style object to be set on the plot
    */
-  style: any;
+  style?: any;
 }
 
 interface TimeseriesData {

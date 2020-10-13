@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns';
+import { parseISO, differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
@@ -177,47 +177,47 @@ export const passwordStrength = (password?: string) => {
 
   // At least one lower case letter
   if (password.match(/[a-z]/)) {
-    score += 1;
+    score += 3;
   }
 
   // At least one upper case letter
   if (password.match(/[A-Z]/)) {
-    score += 5;
+    score += 6;
   }
 
   // At least one number
   if (password.match(/\d+/)) {
-    score += 5;
+    score += 6;
   }
 
   // At least three numbers
   if (password.match(/(.*[0-9].*[0-9].*[0-9])/)) {
-    score += 5;
+    score += 6;
   }
 
   // At least one special character
   if (password.match(/.[!,@,#,$,%,^,&,*,?,_,~]/)) {
-    score += 5;
+    score += 6;
   }
 
   // Aat least two special characters
   if (password.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/)) {
-    score += 5;
+    score += 8;
   }
 
   // Combinations both upper and lower case
   if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
-    score += 2;
+    score += 5;
   }
 
   // Both letters and numbers
   if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) {
-    score += 2;
+    score += 5;
   }
 
   // Letters, numbers, and special characters
   if (password.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])/)) {
-    score += 2;
+    score += 5;
   }
 
   if (score < 16) {
@@ -236,7 +236,25 @@ export const passwordStrength = (password?: string) => {
     return 3;
   }
 
+  if (score > 45) {
+    return 4;
+  }
+
   return 0;
+};
+
+const calcTimeDifference = (beginDate: string, endDate: string) => {
+  const difference = differenceInMinutes(new Date(endDate), new Date(beginDate));
+  const hour = Math.floor(difference / 60);
+  const minute = Math.floor(difference - hour * 60);
+
+  if (hour === 0 && minute === 0) {
+    return `<1m`;
+  } else if (isNaN(difference)) {
+    return '';
+  } else {
+    return `${hour}h ${minute}m`;
+  }
 };
 
 export {
@@ -250,4 +268,5 @@ export {
   utcToTz,
   queryProp,
   uniqueId,
+  calcTimeDifference,
 };

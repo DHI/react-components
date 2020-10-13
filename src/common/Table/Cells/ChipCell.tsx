@@ -7,20 +7,31 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.primary.main,
     },
   },
+  multiText: {
+    margin: 0,
+  },
 }));
 
 const ChipCell = ({ cell }: { cell: any }) => {
-  return (
-    <Box alignItems="center">
-      {cell.row.values.userGroups != null ? (
-        cell.row.values.userGroups.map((value) => (
+  if (cell.row.values.userGroups != null) {
+    return (
+      <Box alignItems="center">
+        {cell.row.values.userGroups.map((value) => (
           <Chip key={value} avatar={<Avatar>{value.substr(0, 1)}</Avatar>} label={value} style={{ marginRight: 4 }} />
-        ))
-      ) : (
-        <></>
-      )}
-    </Box>
-  );
+        ))}
+      </Box>
+    );
+  } else if (cell.row.values.users != null) {
+    return (
+      <Box alignItems="center">
+        {cell.row.values.users.map((value) => (
+          <Chip key={value} label={value} style={{ marginRight: 4 }} />
+        ))}
+      </Box>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { value: any }) => {
@@ -38,11 +49,11 @@ export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { va
     );
   }
   if (type === 'MultiChoice' && value !== undefined) {
-    return value.map((val, i) => (
-      <Box alignItems="center" key={i}>
-        <Chip key={val} avatar={<Avatar>{val.substr(0, 1)}</Avatar>} label={val} style={{ marginRight: 4 }} />
-      </Box>
-    ));
+    return value.join(', ');
+  }
+
+  if (type === 'MultiText' && Array.isArray(value) && value !== undefined) {
+    return value.join(', ');
   }
 
   return <>{value}</>;

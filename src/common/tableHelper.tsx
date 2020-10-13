@@ -36,7 +36,7 @@ export const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilter
     const options = new Set();
 
     preFilteredRows.forEach((row: { values: { [x: string]: unknown } }) => {
-      options.add(row.values[id]);
+      options.add((row.values[id] as string).toLowerCase());
     });
 
     if (options.size > 0) {

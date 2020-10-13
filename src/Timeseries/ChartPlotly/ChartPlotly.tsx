@@ -198,7 +198,7 @@ const ChartPlotly = (props: ChartPlotlyProps) => {
     )} L${rotatedArray[6].join(' ')} Z`;
   };
 
-  return <Plot style={props.style} data={plotData} config={config} layout={layout} />;
+  return <Plot style={props.style} data={plotData} config={config} layout={layout} useResizeHandler={true} />;
 };
 
 export { ChartPlotlyProps, ChartPlotly };

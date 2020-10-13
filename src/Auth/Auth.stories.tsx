@@ -31,7 +31,7 @@ export const LoginStory = () => {
         onSuccess={(user, token) => {
           setState({ user, token });
         }}
-        textFieldVariant={'outlined'}
+        textFieldVariant="outlined"
       />
       {state.token && <pre style={{ padding: '2em' }}>{JSON.stringify(state, null, 2)}</pre>}
     </>
