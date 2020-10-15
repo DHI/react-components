@@ -103,17 +103,17 @@ const DefaultTable = ({
                 className={(cell.column as any).flexGrow ? classes.td : ''}
               >
                 <Tooltip
-                  title={(cell.column as any).category !== 'Boolean' ? cell.render('Cell') : ''}
+                  title={( (cell.column as any).category !== 'Boolean' && (cell.column as any).category !== 'Action') ? cell.render('Cell') : ''}
                   placement="bottom-start"
                   TransitionComponent={Zoom}
                 >
-                  {(cell.column as any).header === 'User Groups' ? (
-                    <Typography component="div">{cell.render('Cell')}</Typography>
-                  ) : (
+                  {(cell.column as any).Header === 'Actions' ? 
+                     <>{cell.render('Cell')}</>
+                  : 
                     <Typography noWrap variant="body2" className={classes.tdContent}>
                       {cell.render('Cell')}
                     </Typography>
-                  )}
+                  }
                 </Tooltip>
               </TableCell>
             );

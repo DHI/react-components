@@ -17,7 +17,8 @@ const ActionsButtons = ({
       <Button
         type="submit"
         variant="contained"
-        color={confirmButtonText === 'Delete' ? 'secondary' : 'primary'}
+        style={confirmButtonText === 'Delete' ? {background: '#DC1B4E', color: '#FFF'} : {} }
+        color='primary'
         onClick={onSubmit}
       >
         {isEditing ? 'Update' : confirmButtonText}
