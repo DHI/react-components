@@ -142,6 +142,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
       accessor: 'action',
       width: 90,
       flexGrow: 0,
+      category: 'Action',
       Cell: ({
         cell: {
           value: [item],
@@ -197,7 +198,6 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
 
   return (
     <Box>
-      {console.log('isTableWider: ', isTableWider)}
       <Dialog
         dialogId="userGroups"
         title={isEditing ? 'Edit User Group Details' : 'Create New User Group'}
@@ -217,7 +217,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
       <Dialog
         dialogId="userGroupsDelete"
         title={`Delete ${selectedUserGroup?.name}`}
-        message={`This will delete the selected user group ${selectedUserGroup?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
+        message={`This will delete the selected user group ${selectedUserGroup?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user group?`}
         showDialog={deleteDialog}
       >
         <ActionsButtons
@@ -228,7 +228,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
         />
       </Dialog>
 
-      <TopTableSection title="User Groups" filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TopTableSection title="New User Group" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}

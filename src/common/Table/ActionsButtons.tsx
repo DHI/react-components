@@ -1,4 +1,4 @@
-import { Button, DialogActions } from '@material-ui/core';
+import { Button, DialogActions, makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
 import { ActionsButtonsProps } from './types';
 
@@ -17,7 +17,8 @@ const ActionsButtons = ({
       <Button
         type="submit"
         variant="contained"
-        color={confirmButtonText === 'Delete' ? 'secondary' : 'primary'}
+        style={confirmButtonText === 'Delete' ? {background: '#DC1B4E', color: '#FFF'} : {} }
+        color='primary'
         onClick={onSubmit}
       >
         {isEditing ? 'Update' : confirmButtonText}

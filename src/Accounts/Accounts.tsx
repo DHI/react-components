@@ -175,6 +175,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
       accessor: 'action',
       width: 90,
       flexGrow: 0,
+      category: 'Action',
       Cell: ({
         cell: {
           value: [item],
@@ -239,7 +240,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
         </Dialog>
       )}
 
-      <TopTableSection title="Accounts" filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TopTableSection title="Add Account" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}
