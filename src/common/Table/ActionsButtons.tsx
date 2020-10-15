@@ -1,4 +1,4 @@
-import { Button, DialogActions, makeStyles, Theme } from '@material-ui/core';
+import { Button, DialogActions } from '@material-ui/core';
 import React from 'react';
 import { ActionsButtonsProps } from './types';
 
