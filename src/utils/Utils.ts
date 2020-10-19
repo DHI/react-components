@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns';
+import { parseISO, differenceInMinutes } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
@@ -15,6 +15,11 @@ const getObjectProperty = (objectItem: any, property: string): any => {
   const value = jp.query(objectItem, property);
 
   return value.length > 0 ? value[0] : null;
+};
+
+const setObjectProperty = (objectItem: any, property: string, newValue: any) => {
+  // Use jsonpath to apply in a deep path approach
+  jp.apply(objectItem, `$.${property}`, () => newValue);
 };
 
 const getDescriptions = (
@@ -234,9 +239,24 @@ export const passwordStrength = (password?: string) => {
   return 0;
 };
 
+const calcTimeDifference = (beginDate: string, endDate: string) => {
+  const difference = differenceInMinutes(new Date(endDate), new Date(beginDate));
+  const hour = Math.floor(difference / 60);
+  const minute = Math.floor(difference - hour * 60);
+
+  if (hour === 0 && minute === 0) {
+    return `<1m`;
+  } else if (isNaN(difference)) {
+    return '';
+  } else {
+    return `${hour}h ${minute}m`;
+  }
+};
+
 export {
   dataObjectToArray,
   getObjectProperty,
+  setObjectProperty,
   getDescriptions,
   changeObjectProperty,
   checkCondition,
@@ -244,4 +264,5 @@ export {
   utcToTz,
   queryProp,
   uniqueId,
+  calcTimeDifference,
 };

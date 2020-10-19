@@ -1,71 +1,87 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 // eslint-disable-next-line prettier/prettier
-import { AddBox, ArrowUpward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn } from '@material-ui/icons';
-import MaterialTable, { Icons } from 'material-table';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   createAccount,
   deleteAccount,
   fetchAccounts,
   updateAccount,
   updateUserGroupsForUser,
+  fetchUserGroups,
 } from '../DataServices/DataServices';
-import { EditAccountDialog } from './EditAccountDialog';
+import { Box, Paper } from '@material-ui/core';
+import { ActionsCell, ActionsButtons, DefaultTable, MetadataChipCell, Dialog, TopTableSection } from '../common/Table';
+import AccountsForm from './AccountsForm';
+import { AccountProps, AccountData, EditUser } from './types';
+import { UserGroups } from '../UserGroups/types';
 
-const tableIcons = {
-  Add: AddBox,
-  Delete: DeleteOutline,
-  DetailPanel: ChevronRight,
-  Export: SaveAlt,
-  Filter: FilterList,
-  NextPage: ChevronRight,
-  PreviousPage: ChevronLeft,
-  ResetSearch: Clear,
-  SortArrow: ArrowUpward,
-  ThirdStateCheck: Remove,
-  Edit,
-  FirstPage,
-  LastPage,
-  Search,
-  Check,
-  Clear,
-  ViewColumn,
-} as Icons;
+const Accounts = ({ host, token, metadata }: AccountProps) => {
+  const [data, setData] = useState<AccountData[]>([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [isEditing, setisEditing] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<AccountData>();
+  const [isTableWider, setIsTableWider] = useState<boolean>(false);
 
-export const Accounts = ({ host, token }: { host: string; token: string }) => {
-  const [state, setState] = useState({
-    data: [] as any[],
-    dialogTitle: '',
-    dialogMessage: '',
-    editing: false,
-    showDialog: false,
-    showModal: false,
-    selectedUser: {
-      id: '',
-      name: '',
-      email: '',
-      roles: '',
-    },
-  });
+  const openDialog = () => {
+    setIsDialogOpen(true);
+    setisEditing(false);
+  };
 
-  const fetchData = useCallback(
-    () =>
-      fetchAccounts(host, token).subscribe(
-        (users) => {
-          setState({
-            ...state,
-            data: users.map((u: any) => ({
-              id: u.id,
-              name: u.name,
-              email: u.email ? u.email : '',
-              roles: u.roles,
-            })),
-          });
-        },
-        (error) => console.log(error),
-      ),
-    [state.data],
-  );
+  const handleDialog = () => {
+    setIsDialogOpen(!isDialogOpen);
+  };
+
+  const onEdit = (item) => {
+    setIsDialogOpen(true);
+    setisEditing(true);
+    setSelectedUser(item);
+  };
+
+  const handleDeleteDialog = (item) => {
+    setDeleteDialog(true);
+    setisEditing(false);
+    setSelectedUser(item);
+  };
+
+  const handleDelete = () => {
+    deleteAccount(host, token, selectedUser.id).subscribe(
+      () => {
+        fetchData();
+        setDeleteDialog(false);
+      },
+      (error) => console.log(error),
+    );
+  };
+
+  const fetchData = () =>
+    fetchAccounts(host, token).subscribe(
+      (users) => {
+        const userData = users.map((u: AccountData) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email ? u.email : '',
+          metadata: u.metadata ? u.metadata : [],
+        }));
+
+        fetchUserGroups(host, token).subscribe(async (body: Record<any, any>) => {
+          const userGroups = body as UserGroups[];
+          const accountData = userData.map((u: AccountData) => ({
+            ...u,
+            userGroups: userGroups.filter((ug) => ug.users.indexOf(u.id) >= 0).map((ug) => ug.name),
+          }));
+
+          setData(accountData);
+        });
+      },
+      (error) => {
+        setError(true);
+        setLoading(false);
+        console.log('ACC Error: ', error);
+      },
+    );
 
   useEffect(() => {
     const subscriber = fetchData();
@@ -76,191 +92,165 @@ export const Accounts = ({ host, token }: { host: string; token: string }) => {
         subscriber.unsubscribe();
       }
     };
-  }, [state.data.length]);
+  }, []);
 
-  const handleSubmit = (userDetails: any, groups: string[]) => {
-    if (state.editing) {
-      updateAccount(host, token, userDetails).subscribe(
-        (updatedUser) =>
-          setState({
-            ...state,
-            data: [...state.data, updatedUser] as any,
-            showModal: false,
-            editing: false,
-            selectedUser: {
-              id: '',
-              name: '',
-              email: '',
-              roles: '',
-            },
-          }),
-        (error) => console.log(error),
+  const handleUserSubmit = (user: EditUser) => {
+    if (isEditing) {
+      updateAccount(host, token, user).subscribe(
+        (updatedUser) => {
+          updateUserGroupsForUser(host, token, { groups: user.userGroups, userId: updatedUser.id });
+          setIsDialogOpen(false);
+
+          fetchData();
+        },
+        (error) => {
+          setError(true);
+          setLoading(false);
+          console.log('ACC Submit Error: ', error);
+
+          console.log(error);
+        },
       );
-
-      updateUserGroupsForUser(host, token, { groups, userId: userDetails.id });
     } else {
-      createAccount(host, token, userDetails).subscribe(
+      createAccount(host, token, user).subscribe(
         (newUser) => {
-          updateUserGroupsForUser(host, token, { groups, userId: newUser.id });
+          updateUserGroupsForUser(host, token, { groups: user.userGroups, userId: newUser.id });
 
-          return setState({
-            ...state,
-            data: [...state.data, newUser] as any,
-            editing: false,
-            showModal: false,
-            selectedUser: {
-              id: '',
-              name: '',
-              email: '',
-              roles: '',
-            },
-          });
+          setIsDialogOpen(false);
+          setError(false);
+
+          fetchData();
         },
-        (error) => console.log(error),
+        (error) => {
+          setError(true);
+          console.log(error);
+        },
       );
     }
   };
 
-  const toggleModal = (rowData?: any, editing = false) => () => {
-    setState({
-      ...state,
-      editing,
-      showModal: !state.showModal,
-      selectedUser:
-        rowData !== null && editing
-          ? rowData
-          : {
-              id: '',
-              name: '',
-              email: '',
-              roles: '',
-            },
-    });
-  };
+  const metadataHeader = metadata
+    ? metadata.reduce(
+        (acc, cur) => [
+          ...acc,
+          {
+            Header: cur.label,
+            accessor: `metadata.${cur.key}`,
+            Cell: MetadataChipCell(cur),
+            flexGrow: isTableWider && 1,
+          },
+        ],
+        [],
+      )
+    : [];
 
-  const toggleDialog = (rowData: any, action: any) => () => {
-    switch (action) {
-      case 'close':
-        setState({
-          ...state,
-          showDialog: !state.showDialog,
-        });
+  const columns = [
+    {
+      Header: 'ID',
+      accessor: 'id',
+      width: 200,
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+      width: 200,
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+      width: 200,
+    },
+    {
+      Header: 'User Groups',
+      accessor: 'userGroups',
+      width: 250,
+      Cell: ({ cell: { value } }) => value.join(', '),
+    },
+  ];
 
-        break;
-      case 'delete':
-        setState({
-          ...state,
-          dialogTitle: `Delete ${rowData.name}`,
-          dialogMessage: `This will delete the selected user account ${rowData.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user ?`,
-          showDialog: !state.showDialog,
-          selectedUser: rowData,
-        });
+  const actions = [
+    {
+      Header: 'Actions',
+      accessor: 'action',
+      width: 90,
+      flexGrow: 0,
+      Cell: ({
+        cell: {
+          value: [item],
+        },
+      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={handleDeleteDialog} />,
+    },
+  ];
 
-        break;
-      case 'edit':
-        setState({
-          ...state,
-          dialogTitle: `Update ${rowData.name}`,
-          dialogMessage: `This will update the selected user account ${rowData.name}, if you confirm this will overwrite the current user data. Are you sure you want to update this user ?`,
-          showDialog: !state.showDialog,
-          selectedUser: rowData,
-        });
+  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), [isTableWider]);
 
-        break;
-      default:
-        break;
-    }
-  };
+  const searchItems = (item: AccountData) => {
+    if (filter === '') return true;
 
-  const deleteUser = () =>
-    deleteAccount(host, token, state.selectedUser.id).subscribe(
-      () => {
-        const newData = state.data;
-        const index = newData.indexOf(state.selectedUser);
+    const query = filter.toLowerCase();
+    const id = item.id.toLowerCase();
+    const name = item.name.toLowerCase();
+    const email = item.email.toLowerCase();
+    const userGroups = item.userGroups.map((ug) => ug.toLowerCase());
 
-        newData.splice(index, 1);
-
-        setState({
-          ...state,
-          data: [...newData],
-          showDialog: !state.showDialog,
-          selectedUser: null as any,
-        });
-      },
-      (error: any) => console.log(error),
+    return (
+      id.includes(query) ||
+      name.includes(query) ||
+      email.includes(query) ||
+      userGroups.some((ug) => ug.indexOf(query) >= 0)
     );
-
-  const accountsTable = (
-    <MaterialTable
-      title="Accounts List"
-      actions={[
-        {
-          icon: tableIcons.Add as any,
-          tooltip: 'Add User',
-          isFreeAction: true,
-          onClick: () => toggleModal()(),
-        },
-        {
-          icon: tableIcons.Delete as any,
-          tooltip: 'Delete User',
-          onClick: (_, rowData) => toggleDialog(rowData, 'delete')(),
-        },
-        {
-          icon: tableIcons.Edit as any,
-          tooltip: 'Edit User',
-          onClick: (_, rowData) => toggleModal(rowData, true)(),
-        },
-      ]}
-      columns={[
-        { title: 'ID', field: 'id' },
-        { title: 'Name', field: 'name' },
-        { title: 'Email', field: 'email' },
-        { title: 'Roles', field: 'roles' },
-      ]}
-      data={state.data}
-      icons={tableIcons}
-      options={{
-        actionsColumnIndex: -1,
-        exportButton: true,
-      }}
-    />
-  );
-
-  const accountModal = state.showModal && (
-    <EditAccountDialog
-      token={token}
-      host={host}
-      user={state.selectedUser}
-      editing={state.editing}
-      onSubmit={handleSubmit}
-      open={state.showModal}
-      onToggle={toggleModal}
-    />
-  );
-
-  const deleteUserModal = state.showDialog && (
-    <Dialog open={true} onClose={() => setState({ ...state, showDialog: false })}>
-      <DialogTitle>{state.dialogTitle}</DialogTitle>
-      <DialogContent></DialogContent>
-      <DialogContent>
-        <DialogContentText>{state.dialogMessage}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button variant="outlined">Cancel</Button>
-        <Button variant="contained" color="secondary" onClick={() => deleteUser()}>
-          Delete
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+  };
 
   return (
-    <div>
-      {accountsTable}
-      {deleteUserModal}
-      {accountModal}
-    </div>
+    <Box>
+      {isDialogOpen && (
+        <Dialog
+          dialogId="user"
+          title={isEditing ? 'Edit Account Details' : 'Create New Account'}
+          message=""
+          showDialog={isDialogOpen}
+        >
+          <AccountsForm
+            token={token}
+            host={host}
+            onSubmit={handleUserSubmit}
+            isEditing={isEditing}
+            selectedUser={selectedUser}
+            metadata={metadata}
+            onCancel={handleDialog}
+          />
+        </Dialog>
+      )}
+
+      {deleteDialog && (
+        <Dialog
+          dialogId="userDelete"
+          title={`Delete ${selectedUser?.name}`}
+          message={`This will delete the selected user account ${selectedUser?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
+          showDialog={deleteDialog}
+        >
+          <ActionsButtons
+            confirmButtonText="Delete"
+            isEditing={isEditing}
+            onCancel={() => setDeleteDialog(false)}
+            onSubmit={handleDelete}
+          />
+        </Dialog>
+      )}
+
+      <TopTableSection title="Accounts" filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <Paper>
+        <DefaultTable
+          error={error}
+          loading={loading}
+          tableHeaders={TableHeadersData}
+          data={data}
+          searchItems={(item) => searchItems(item)}
+          isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
+        />
+      </Paper>
+    </Box>
   );
 };
 
-export default Accounts;
+export { Accounts, AccountProps };

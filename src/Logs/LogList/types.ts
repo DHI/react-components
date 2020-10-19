@@ -13,14 +13,14 @@ interface LogListProps {
   startTimeUtc: string;
   /** Time zone to display data from the server to user time */
   timeZone: string;
-  translations: {
+  translations?: {
     /** Message when no data entries. */
     noEntriesData?: string;
     /** Message when no data entries. */
     noEntriesFilter?: string;
   };
   /** Emit event to client when jobs received from the server */
-  onReceived: (data: any) => void;
+  onReceived?: (data: any) => void;
 }
 
 interface LogData {
@@ -40,18 +40,5 @@ interface LogData {
   text: string;
 }
 
-interface BaseFilter {
-  column: {
-    /** Value that use to filter the data */
-    filterValue: string;
-    /** Function to set the filter value data */
-    setFilter: React.Dispatch<React.SetStateAction<string>>;
-    /** Row before data filtered */
-    preFilteredRows: any;
-    /** The id of column to be filtered */
-    id: string;
-  };
-}
-
 export default LogListProps;
-export { LogData, BaseFilter };
+export { LogData };

@@ -2,32 +2,29 @@ import {
   Box,
   CircularProgress,
   CssBaseline,
-  IconButton,
-  Input,
-  Menu,
-  MenuItem,
+  makeStyles,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Theme,
   Tooltip,
   Typography,
 } from '@material-ui/core';
 import { blueGrey, red, yellow } from '@material-ui/core/colors';
 import MaUTable from '@material-ui/core/Table';
-import { HelpOutline } from '@material-ui/icons';
-import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
-import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import NewReleasesIcon from '@material-ui/icons/NewReleases';
-import WarningOutlinedIcon from '@material-ui/icons/WarningOutlined';
+import {
+  HelpOutline,
+  BugReportOutlined,
+  InfoOutlined,
+  ErrorOutlineOutlined,
+  WarningOutlined,
+  NewReleases,
+} from '@material-ui/icons';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   TableInstance,
-  useAsyncDebounce,
-  useBlockLayout,
   useFilters,
   UseFiltersOptions,
   useGlobalFilter,
@@ -35,42 +32,44 @@ import {
   UseGlobalFiltersOptions,
   useTable,
   UseTableOptions,
+  useBlockLayout,
 } from 'react-table';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { fetchLogs } from '../../DataServices/DataServices';
-import LogListProps, { BaseFilter, LogData } from './types';
+import LogListProps, { LogData } from './types';
+import { DefaultColumnFilter, SelectColumnFilter, GlobalFilter } from '../../common/tableHelper';
 
 const LevelIconCell = ({ value }: { value: string }) => {
   switch (value) {
     case 'Debug':
       return (
         <Tooltip title="Debug">
-          <BugReportOutlinedIcon style={{ color: yellow[900] }} />
+          <BugReportOutlined style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Information':
       return (
         <Tooltip title="Information">
-          <InfoOutlinedIcon style={{ color: blueGrey[500] }} />
+          <InfoOutlined style={{ color: blueGrey[500] }} />
         </Tooltip>
       );
     case 'Error':
       return (
         <Tooltip title="Error">
-          <ErrorOutlineOutlinedIcon style={{ color: red[900] }} />
+          <ErrorOutlineOutlined style={{ color: red[900] }} />
         </Tooltip>
       );
     case 'Warning':
       return (
         <Tooltip title="Warning">
-          <WarningOutlinedIcon style={{ color: yellow[900] }} />
+          <WarningOutlined style={{ color: yellow[900] }} />
         </Tooltip>
       );
     case 'Critical':
       return (
         <Tooltip title="Critical">
-          <NewReleasesIcon style={{ color: red[900] }} />
+          <NewReleases style={{ color: red[900] }} />
         </Tooltip>
       );
     default:
@@ -82,108 +81,17 @@ const LevelIconCell = ({ value }: { value: string }) => {
   }
 };
 
-const DefaultColumnFilter = () => {
-  return null;
-};
-
-const getColumnWidth = (data: LogData[], accessor: string, headerText: string, minWidth: number) => {
-  if (data.length > 0) {
-    const spacing = 10;
-    const cellLength = Math.max(...data.map((row) => (`${row[accessor]}` || '').length), headerText.length);
-
-    return Math.max(minWidth, cellLength * spacing);
-  } else {
-    return minWidth;
-  }
-};
-
-const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: BaseFilter) => {
-  const options = React.useMemo(() => {
-    const options = new Set();
-
-    preFilteredRows.forEach((row: { values: { [x: string]: unknown } }) => {
-      options.add(row.values[id]);
-    });
-
-    if (options.size > 0) {
-      return [...options.values()];
-    } else {
-      return [];
-    }
-  }, [id, preFilteredRows]);
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuItemClick = (option: string) => {
-    setAnchorEl(null);
-    setFilter(option);
-  };
-
-  return (
-    <div>
-      <Tooltip title="Filter list">
-        <IconButton aria-label="Filter list" size={'small'} onClick={handleClick}>
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem
-          selected={!filterValue}
-          key={-1}
-          onClick={() => {
-            handleMenuItemClick('');
-          }}
-        >
-          All
-        </MenuItem>
-        {options.map((option, index) => (
-          <MenuItem
-            key={index}
-            selected={option === filterValue}
-            onClick={() => {
-              handleMenuItemClick(option as string);
-            }}
-          >
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
-    </div>
-  );
-};
-
-const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) => {
-  const count = preGlobalFilteredRows.length;
-  const [value, setValue] = React.useState(globalFilter);
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
-
-  return (
-    <Box display="flex" flexDirection="row">
-      <Typography variant="subtitle1" style={{ marginTop: '2px' }}>
-        Search : {''}
-      </Typography>
-      &nbsp;
-      <Input
-        value={value || ''}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`${count} records`}
-      />
-    </Box>
-  );
-};
+const useStyles = makeStyles((theme: Theme) => ({
+  td: {
+    flexGrow: '1 !important' as any,
+    flexBasis: '5px !important' as any,
+    width: 'unset !important' as any,
+    maxWidth: 'none !important' as any,
+  },
+  tdContent: {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 const Table = ({
   columns,
@@ -203,14 +111,13 @@ const Table = ({
     minWidth: 30,
     maxWidth: 1000,
   };
-
+  const classes = useStyles();
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-    totalColumnsWidth,
     state,
     visibleColumns,
     preGlobalFilteredRows,
@@ -243,8 +150,13 @@ const Table = ({
         >
           {row.cells.map((cell) => {
             return (
-              <TableCell {...cell.getCellProps()} component="div">
-                <Typography noWrap variant="body2" align={(cell.column as any).header === 'Level' ? 'center' : 'left'}>
+              <TableCell
+                {...cell.getCellProps()}
+                component="div"
+                className={classes.td}
+                style={{ minWidth: (cell.column as any).header === 'Text' && '500px' }}
+              >
+                <Typography noWrap variant="body2" className={classes.tdContent}>
                   {cell.render('Cell')}
                 </Typography>
               </TableCell>
@@ -275,9 +187,14 @@ const Table = ({
           </TableCell>
         </TableRow>
         {headerGroups.map((headerGroup) => (
-          <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
+          <TableRow {...headerGroup.getHeaderGroupProps()} component="div" className={classes.td}>
             {headerGroup.headers.map((column) => (
-              <TableCell {...column.getHeaderProps()} component="div">
+              <TableCell
+                {...column.getHeaderProps()}
+                component="div"
+                className={classes.td}
+                style={{ minWidth: (column as any).header === 'Text' && '500px' }}
+              >
                 <Box display="flex" flexDirection="row">
                   <Typography variant="subtitle1">{column.render('header')}</Typography>
                   {(column as any).canFilter ? column.render('Filter') : null}
@@ -310,7 +227,7 @@ const Table = ({
             {loading ? (
               <CircularProgress />
             ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'logLevel') > -1 ? (
-              translations.noEntriesFilter ? (
+              translations?.noEntriesFilter ? (
                 `${(state as any).filters.find((x: { id: string }) => x.id === 'logLevel').value}`
               ) : (
                 `No log entries for selected log level : ${
@@ -369,7 +286,6 @@ const LogList = (props: LogListProps) => {
       {
         header: 'Time',
         accessor: 'dateTime',
-        width: 180,
       },
       {
         header: 'Level',
@@ -377,19 +293,16 @@ const LogList = (props: LogListProps) => {
         Filter: SelectColumnFilter,
         filter: 'includes',
         Cell: LevelIconCell,
-        width: 100,
       },
       {
         header: 'Source',
         accessor: 'source',
-        width: 180,
         Filter: SelectColumnFilter,
         filter: 'includes',
       },
       {
         header: 'Text',
         accessor: 'text',
-        width: 350,
       },
     ],
     [logsData],
@@ -426,7 +339,7 @@ const LogList = (props: LogListProps) => {
   }, []);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: any;
 
     if (startDateUtc) {
       interval = setInterval(() => fetchLogsList(startDateUtc), frequency * 1000);

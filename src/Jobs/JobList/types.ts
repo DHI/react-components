@@ -13,14 +13,14 @@ interface JobListProps {
   startTimeUtc: string;
   /** Time zone to display data from the server to user time */
   timeZone: string;
-  translations: {
+  translations?: {
     /** Message when no data entries. */
     noEntriesData?: string;
     /** Message when no data entries. */
     noEntriesFilter?: string;
   };
   /** Emit event to client when jobs received from the server */
-  onReceived: (data: any) => void;
+  onReceived?: (data: any) => void;
 }
 
 interface JobData {
