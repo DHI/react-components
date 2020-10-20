@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   CircularProgress,
   makeStyles,
@@ -10,12 +9,13 @@ import {
   Theme,
   Tooltip,
   Typography,
-  Zoom,
+  Zoom
 } from '@material-ui/core';
-import { useTable, UseTableOptions, TableRowProps, TableCellProps, useBlockLayout } from 'react-table';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { TableCellProps, TableRowProps, useBlockLayout, useTable, UseTableOptions } from 'react-table';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { DefaultTableProps, TableData } from './types';
-import AutoSizer from 'react-virtualized-auto-sizer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   td: {
@@ -103,17 +103,21 @@ const DefaultTable = ({
                 className={(cell.column as any).flexGrow ? classes.td : ''}
               >
                 <Tooltip
-                  title={( (cell.column as any).category !== 'Boolean' && (cell.column as any).category !== 'Action') ? cell.render('Cell') : ''}
+                  title={
+                    (cell.column as any).category !== 'Boolean' && (cell.column as any).category !== 'Action'
+                      ? cell.render('Cell')
+                      : ''
+                  }
                   placement="bottom-start"
                   TransitionComponent={Zoom}
                 >
-                  {(cell.column as any).Header === 'Actions' ? 
-                     <>{cell.render('Cell')}</>
-                  : 
+                  {(cell.column as any).Header === 'Actions' ? (
+                    <Typography component="span">{cell.render('Cell')}</Typography>
+                  ) : (
                     <Typography noWrap variant="body2" className={classes.tdContent}>
                       {cell.render('Cell')}
                     </Typography>
-                  }
+                  )}
                 </Tooltip>
               </TableCell>
             );
