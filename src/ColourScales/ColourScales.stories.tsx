@@ -13,7 +13,7 @@ export const ColourScalesStory = () => {
     <ColourScale
       type="intensity"
       mode="blocks"
-      intervals={[1.2, 2.2, 3.2, 4.2, 5.2, 6.2]}
+      intervals={[0, 10, 20, 30, 40, 50]}
       height={24}
       markers={true}
       borderColour="transparent"

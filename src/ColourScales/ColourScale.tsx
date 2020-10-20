@@ -58,7 +58,7 @@ const ColourScale = ({
             key={index}
             style={{ display: 'inline-block', flex: 1, textAlign: 'center', marginTop: 2, fontSize: '0.9em' }}
           >
-            {index % intervalBreak === 0 ? intervals[intervalIndex - 1] : null}
+            {index === colours.length || index % intervalBreak === 0 ? intervals[intervalIndex - 1] : null}
           </div>
         );
       })}
