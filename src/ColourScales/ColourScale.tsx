@@ -94,4 +94,4 @@ const ColourScale = ({
   return <></>;
 };
 
-export default ColourScale;
+export { ColourScale, ColourScaleProps };
