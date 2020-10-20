@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core';
-import { uniq } from 'lodash';
+import { round, uniq } from 'lodash';
 import React from 'react';
 import { InterpolateIntensityColor } from './ColourScaleHelper';
 import { ColourScaleProps } from './types';
@@ -36,6 +36,9 @@ const ColourScale = ({
     }
   }
 
+  const intervalBreak = round(colours.length / intervals.length);
+  let intervalIndex = 0;
+
   const markerStrip = markers && (
     <div
       style={{
@@ -45,14 +48,20 @@ const ColourScale = ({
         justifyContent: 'center',
       }}
     >
-      {colours.map((c, index) => (
-        <div
-          key={index}
-          style={{ display: 'inline-block', flex: 1, textAlign: 'center', marginTop: 2, fontSize: '0.9em' }}
-        >
-          {intervals[index]}
-        </div>
-      ))}
+      {colours.map((c, index) => {
+        if (index % intervalBreak === 0) {
+          intervalIndex++;
+        }
+
+        return (
+          <div
+            key={index}
+            style={{ display: 'inline-block', flex: 1, textAlign: 'center', marginTop: 2, fontSize: '0.9em' }}
+          >
+            {index % intervalBreak === 0 ? intervals[intervalIndex - 1] : null}
+          </div>
+        );
+      })}
     </div>
   );
 
