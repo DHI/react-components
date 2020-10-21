@@ -14,22 +14,23 @@ const TopTableSection = ({ title, filter, setFilter, onNew }: TopTableSectionPro
   const classes = useStyles();
 
   return (
-  <Box display="flex" justifyContent="space-between" py={1}>
-    <Typography variant="h5">{title}</Typography>
-    <Box>
-      <TextField
-        placeholder="Search"
-        size="small"
-        variant="outlined"
-        value={filter}
-        classes={{ root: classes.root }}
-        onChange={({ target: { value } }: any) => setFilter(value)}
-      />
-      <Button variant="contained" color="primary" startIcon={<Add />} onClick={onNew}>
-        {title || 'New'}
-      </Button>
+    <Box display="flex" justifyContent="space-between" py={1} className="TopTableSection">
+      <Typography variant="h5">{title}</Typography>
+      <Box>
+        <TextField
+          placeholder="Search"
+          size="small"
+          variant="outlined"
+          value={filter}
+          classes={{ root: classes.root }}
+          onChange={({ target: { value } }: any) => setFilter(value)}
+        />
+        <Button variant="contained" color="primary" startIcon={<Add />} onClick={onNew}>
+          {title || 'New'}
+        </Button>
+      </Box>
     </Box>
-  </Box>
-)};
+  );
+};
 
 export default TopTableSection;
