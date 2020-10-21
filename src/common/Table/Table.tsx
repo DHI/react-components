@@ -132,9 +132,20 @@ const DefaultTable = ({
     isTableWiderThanWindow(width > totalColumnsWidth);
   };
 
+  const getTableOutterSpace = () => {
+    const tableHeader = document.getElementsByClassName('TableHeader');
+    const tableHeaderHeight = (tableHeader[0] as any).offsetHeight || 0;
+    const header = document.getElementsByTagName('header');
+    const headerHeight = (header as any).offsetHeight || 0;
+    const TopTableSection = document.getElementsByClassName('TopTableSection');
+    const TopTableSectionHeight = (TopTableSection[0] as any).offsetHeight || 0;
+
+    return tableHeaderHeight + headerHeight + TopTableSectionHeight;
+  };
+
   return (
     <Table {...getTableProps()} className="table">
-      <TableHead>
+      <TableHead className="TableHeader">
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()} component="div" className={classes.td}>
             {headerGroup.headers.map((column) => (
@@ -153,7 +164,7 @@ const DefaultTable = ({
       <TableBody {...getTableBodyProps()}>
         {rows.length > 0 ? (
           <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 130).toString()}px` }}>
+            <div style={{ flex: '1 1 auto', height: `${(windowHeight - getTableOutterSpace() - 50).toString()}px` }}>
               <AutoSizer>
                 {({ height, width }) => {
                   getTableWidth(width);
