@@ -1,9 +1,9 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
+import { UserGroupsData } from '../UserGroups/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
 import { DataSource, JobParameters, JobQuery, Options, User } from './types';
-import { UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -508,11 +508,13 @@ const fetchJobs = (
         },
       },
     ).pipe(
-      map((fc) =>
-        dataObjectToArray(fc).sort((a, b) => {
+      map((fc) => {
+        fc.forEach((item) => (item.connectionJobLog = source.connectionJobLog));
+
+        return dataObjectToArray(fc).sort((a, b) => {
           return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
-        }),
-      ),
+        });
+      }),
     ),
   );
 

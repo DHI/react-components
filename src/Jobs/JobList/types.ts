@@ -51,6 +51,8 @@ interface JobData {
   finished: string;
   /** Progress when job status still in progress */
   progress: number;
+  /** From where the connection job log is */
+  connectionJobLog: string;
 }
 
 interface FilterProps {
@@ -66,5 +68,14 @@ interface FilterProps {
   };
 }
 
+interface JobDetail {
+  detail: {
+    id: string;
+    connectionJobLog: string;
+  };
+
+  onClose: () => void;
+}
+
 export default JobListProps;
-export { JobData, FilterProps };
+export { JobData, FilterProps, JobDetail };

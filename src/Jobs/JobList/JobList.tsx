@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import { fetchJobs } from '../../DataServices/DataServices';
-import JobListProps, { JobData } from './types';
+import React, { useEffect, useMemo, useState } from 'react';
 import { SelectColumnFilter } from '../../common/tableHelper';
+import { fetchJobs } from '../../DataServices/DataServices';
 import { calcTimeDifference } from '../../utils/Utils';
-import StatusIconCell from './StatusIconCell';
 import JobListTable from './JobListTable';
+import StatusIconCell from './StatusIconCell';
+import JobListProps, { JobData } from './types';
 
 const JobList = (props: JobListProps) => {
   const {
@@ -147,6 +147,7 @@ const JobList = (props: JobListProps) => {
               : '',
             duration: calcTimeDifference(s.data.started, s.data.finished),
             delay: calcTimeDifference(s.data.requested, s.data.started),
+            connectionJobLog: s.data.connectionJobLog || '',
           };
 
           if (s.data.parameters) {
