@@ -140,12 +140,12 @@ const DefaultTable = ({
     const TopTableSection = document.getElementsByClassName('TopTableSection');
     const TopTableSectionHeight = (TopTableSection[0] as any).offsetHeight || 0;
 
-    return tableHeaderHeight + headerHeight + TopTableSectionHeight;
+    return tableHeaderHeight + headerHeight * 2 + TopTableSectionHeight;
   };
 
   return (
-    <Table {...getTableProps()} className="table">
-      <TableHead className="TableHeader">
+    <Table {...getTableProps()} className="Table" component="div">
+      <TableHead className="TableHeader" component="div">
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()} component="div" className={classes.td}>
             {headerGroup.headers.map((column) => (
@@ -160,27 +160,24 @@ const DefaultTable = ({
           </TableRow>
         ))}
       </TableHead>
-
-      <TableBody {...getTableBodyProps()}>
+      <TableBody {...getTableBodyProps()} style={{ display: 'flex' }} component="div" className="TableBody">
         {rows.length > 0 ? (
-          <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: `${(windowHeight - getTableOutterSpace() - 50).toString()}px` }}>
-              <AutoSizer>
-                {({ height, width }) => {
-                  getTableWidth(width);
+          <AutoSizer
+            style={{ flex: '1 1 auto', height: `${(windowHeight - getTableOutterSpace() - 50).toString()}px` }}
+          >
+            {({ height, width }) => {
+              getTableWidth(width);
 
-                  return (
-                    <FixedSizeList height={height} itemCount={rows.length} itemSize={60} width={width}>
-                      {RenderRow}
-                    </FixedSizeList>
-                  );
-                }}
-              </AutoSizer>
-            </div>
-          </div>
+              return (
+                <FixedSizeList height={height} itemCount={rows.length} itemSize={60} width={width}>
+                  {RenderRow}
+                </FixedSizeList>
+              );
+            }}
+          </AutoSizer>
         ) : (
-          <TableRow>
-            <TableCell style={{ textAlign: 'center' }} colSpan={9}>
+          <TableRow component="div">
+            <TableCell component="div" style={{ textAlign: 'center' }} colSpan={9}>
               {noResults()}
             </TableCell>
           </TableRow>
