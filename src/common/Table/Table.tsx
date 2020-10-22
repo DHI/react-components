@@ -140,6 +140,8 @@ const DefaultTable = ({
     const TopTableSection = document.getElementsByClassName('TopTableSection');
     const TopTableSectionHeight = (TopTableSection[0] as any).offsetHeight || 0;
 
+    console.log(headerHeight * 2);
+
     return tableHeaderHeight + headerHeight * 2 + TopTableSectionHeight;
   };
 
