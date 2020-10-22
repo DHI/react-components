@@ -1,18 +1,19 @@
 // eslint-disable-next-line prettier/prettier
+import { Box, Paper } from '@material-ui/core';
 import React, { useEffect, useMemo, useState } from 'react';
+import { ActionsButtons, ActionsCell, DefaultTable, Dialog, MetadataChipCell, TopTableSection } from '../common/Table';
 import {
   createAccount,
   deleteAccount,
   fetchAccounts,
-  updateAccount,
-  updateUserGroupsForUser,
-  fetchUserGroups,
+
+
+  fetchUserGroups, updateAccount,
+  updateUserGroupsForUser
 } from '../DataServices/DataServices';
-import { Box, Paper } from '@material-ui/core';
-import { ActionsCell, ActionsButtons, DefaultTable, MetadataChipCell, Dialog, TopTableSection } from '../common/Table';
-import AccountsForm from './AccountsForm';
-import { AccountProps, AccountData, EditUser } from './types';
 import { UserGroups } from '../UserGroups/types';
+import AccountsForm from './AccountsForm';
+import { AccountData, AccountProps, EditUser } from './types';
 
 const Accounts = ({ host, token, metadata }: AccountProps) => {
   const [data, setData] = useState<AccountData[]>([]);
@@ -249,6 +250,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
           data={data}
           searchItems={(item) => searchItems(item)}
           isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
+          hasHeader
         />
       </Paper>
     </Box>

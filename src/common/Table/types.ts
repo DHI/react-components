@@ -23,6 +23,10 @@ interface DefaultTableProps {
    * Check if table is wider then window
    */
   isTableWiderThanWindow: (size: boolean) => void;
+  /**
+   * Substract the header height if it is present
+   */
+  hasHeader?: boolean;
 }
 
 interface TableHeaders {

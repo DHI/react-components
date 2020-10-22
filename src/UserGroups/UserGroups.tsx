@@ -1,23 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Paper } from '@material-ui/core';
+import React, { useEffect, useMemo, useState } from 'react';
+import { ActionsButtons, ActionsCell, DefaultTable, Dialog, MetadataChipCell, TopTableSection } from '../common/Table';
 import {
-  fetchUserGroups,
-  updateUserGroups,
-  deleteUserGroup,
   createUserGroup,
+  deleteUserGroup,
   fetchAccounts,
+  fetchUserGroups,
+  updateUserGroups
 } from '../DataServices/DataServices';
-import {
-  Dialog,
-  ActionsButtons,
-  DefaultTable,
-  ActionsCell,
-  ChipCell,
-  MetadataChipCell,
-  TopTableSection,
-} from '../common/Table';
+import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 import UserGroupForm from './UserGroupForm';
-import { UserGroupProps, UserGroupsData, UserGroups } from './types';
 
 const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
   const [userGroups, setUserGroups] = useState<UserGroupsData[]>([]);
@@ -237,6 +229,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
           data={userGroups}
           searchItems={(item) => searchItems(item)}
           isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
+          hasHeader
         />
       </Paper>
     </Box>

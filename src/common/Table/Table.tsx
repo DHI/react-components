@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const BUFFER = 50;
+
 const DefaultTable = ({
   error,
   loading,
@@ -39,6 +41,7 @@ const DefaultTable = ({
   data,
   searchItems,
   isTableWiderThanWindow,
+  hasHeader,
 }: DefaultTableProps) => {
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const classes = useStyles();
@@ -135,14 +138,11 @@ const DefaultTable = ({
   const getTableOutterSpace = () => {
     const tableHeader = document.getElementsByClassName('TableHeader');
     const tableHeaderHeight = (tableHeader[0] as any).offsetHeight || 0;
-    const header = document.getElementsByTagName('header');
-    const headerHeight = (header as any).offsetHeight || 0;
     const TopTableSection = document.getElementsByClassName('TopTableSection');
     const TopTableSectionHeight = (TopTableSection[0] as any).offsetHeight || 0;
+    const headerHeight = hasHeader ? 64 : 0;
 
-    console.log(headerHeight * 2);
-
-    return tableHeaderHeight + headerHeight * 2 + TopTableSectionHeight;
+    return tableHeaderHeight + headerHeight * 2 + TopTableSectionHeight + BUFFER;
   };
 
   return (
@@ -164,9 +164,7 @@ const DefaultTable = ({
       </TableHead>
       <TableBody {...getTableBodyProps()} style={{ display: 'flex' }} component="div" className="TableBody">
         {rows.length > 0 ? (
-          <AutoSizer
-            style={{ flex: '1 1 auto', height: `${(windowHeight - getTableOutterSpace() - 50).toString()}px` }}
-          >
+          <AutoSizer style={{ flex: '1 1 auto', height: `${(windowHeight - getTableOutterSpace()).toString()}px` }}>
             {({ height, width }) => {
               getTableWidth(width);
 
