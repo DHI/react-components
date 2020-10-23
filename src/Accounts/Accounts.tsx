@@ -6,8 +6,6 @@ import {
   createAccount,
   deleteAccount,
   fetchAccounts,
-
-
   fetchUserGroups, updateAccount,
   updateUserGroupsForUser
 } from '../DataServices/DataServices';
@@ -132,18 +130,18 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
 
   const metadataHeader = metadata
     ? metadata.reduce(
-        (acc, cur) => [
-          ...acc,
-          {
-            Header: cur.label,
-            category: cur.type,
-            accessor: `metadata.${cur.key}`,
-            Cell: MetadataChipCell(cur),
-            flexGrow: isTableWider && 1,
-          },
-        ],
-        [],
-      )
+      (acc, cur) => [
+        ...acc,
+        {
+          Header: cur.label,
+          category: cur.type,
+          accessor: `metadata.${cur.key}`,
+          Cell: MetadataChipCell(cur),
+          flexGrow: isTableWider && 1,
+        },
+      ],
+      [],
+    )
     : [];
 
   const columns = [

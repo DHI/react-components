@@ -68,14 +68,11 @@ interface FilterProps {
   };
 }
 
-interface JobDetail {
-  detail: {
-    id: string;
-    connectionJobLog: string;
-  };
-
+interface JobDetailProps {
+  detail: JobData,
   onClose: () => void;
-}
+};
 
 export default JobListProps;
-export { JobData, FilterProps, JobDetail };
+export { JobData, FilterProps, JobDetailProps };
+

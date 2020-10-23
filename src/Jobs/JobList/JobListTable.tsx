@@ -34,9 +34,11 @@ const useStyles = (jobId) =>
     },
     tdStatus: {
       marginLeft: theme.spacing(2),
+      paddingTop: theme.spacing(1),
     },
     tdContent: {
       marginLeft: theme.spacing(1),
+      paddingTop: theme.spacing(1),
     },
   }));
 
@@ -63,11 +65,22 @@ const JobListTable = ({
     maxWidth: 1000,
   };
 
-  const [job, setJob] = useState({
+  const initialJobData = {
     id: '',
+    taskId: '',
+    status: '',
+    hostId: '',
+    duration: '',
+    delay: '',
+    requested: '',
+    started: '',
+    finished: '',
+    progress: 0,
     connectionJobLog: '',
-  });
-  const classes = useStyles(job.id)();
+  }
+
+  const [job, setJob] = useState<JobData>(initialJobData);
+  const classes = useStyles(job?.id)();
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state } = useTable(
     {
@@ -93,12 +106,10 @@ const JobListTable = ({
       return (
         <TableRow
           component="div"
-          {...row.getRowProps({
-            ...style,
-            style: {
-              cursor: 'pointer',
-            },
-          })}
+          {...tableExtraProps(row.getRowProps())}
+
+          className={classes.thead}
+          selected={job.id === row.original.id}
           onClick={() => expandWithData(row)}
         >
           {row.cells.map((cell) => {
@@ -121,15 +132,15 @@ const JobListTable = ({
                     {cell.render('Cell')}
                   </Typography>
                 ) : (
-                  <Typography
-                    noWrap
-                    className={classes.tdContent}
-                    style={{ width: cell.column.width || cell.column.minWidth }}
-                    variant="body2"
-                  >
-                    {cell.render('Cell')}
-                  </Typography>
-                )}
+                    <Typography
+                      noWrap
+                      className={classes.tdContent}
+                      style={{ width: cell.column.width || cell.column.minWidth }}
+                      variant="body2"
+                    >
+                      {cell.render('Cell')}
+                    </Typography>
+                  )}
               </TableCell>
             );
           })}
@@ -148,15 +159,28 @@ const JobListTable = ({
   };
 
   const expandWithData = (row) => {
-    console.log(row.original);
 
-    setJob({
-      id: row.original.id,
-      connectionJobLog: row.original.connectionJobLog,
-    });
+    if (job.id === row.original.id) {
+      setJob(initialJobData)
+    } else {
+      setJob({
+        id: row.original.id || '',
+        taskId: row.original.taskId || '',
+        status: row.original.status || '',
+        hostId: row.original.hostId || '',
+        duration: row.original.duration || '',
+        delay: row.original.delay || '',
+        requested: row.original.requested || '',
+        started: row.original.started || '',
+        finished: row.original.finished || '',
+        progress: row.original.progress || 0,
+        connectionJobLog: row.original.connectionJobLog || '',
+      });
+    }
+
   };
 
-  const tableHeaderProps = (props) => {
+  const tableExtraProps = (props) => {
     const { style } = props;
     const removePx = style.width.substring(0, style.width.length - 2);
     const newWidth = parseInt(removePx);
@@ -165,6 +189,7 @@ const JobListTable = ({
       ...props,
       style: {
         ...style,
+        cursor: 'pointer',
         overflow: job.id ? 'hidden' : 'visible',
         width: job.id ? newWidth / 2 : newWidth,
       },
@@ -172,7 +197,7 @@ const JobListTable = ({
   };
 
   const closeTab = () => {
-    setJob({ id: '', connectionJobLog: '' });
+    setJob(initialJobData);
   };
 
   return (
@@ -182,7 +207,7 @@ const JobListTable = ({
           <TableHead component="div">
             {headerGroups.map((headerGroup) => (
               <TableRow
-                {...tableHeaderProps(headerGroup.getHeaderGroupProps())}
+                {...tableExtraProps(headerGroup.getHeaderGroupProps())}
                 component="div"
                 className={classes.thead}
               >
@@ -220,32 +245,32 @@ const JobListTable = ({
                 </div>
               </div>
             ) : (
-              <Typography
-                align="center"
-                component="div"
-                style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
-              >
-                {loading ? (
-                  <CircularProgress />
-                ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
-                  translations?.noEntriesFilter ? (
-                    `${translations.noEntriesFilter} : ${
+                <Typography
+                  align="center"
+                  component="div"
+                  style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
+                >
+                  {loading ? (
+                    <CircularProgress />
+                  ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
+                    translations?.noEntriesFilter ? (
+                      `${translations.noEntriesFilter} : ${
                       (state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                    }`
+                      }`
+                    ) : (
+                        `No job entries for selected job status : ${
+                        (state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                        }`
+                      )
                   ) : (
-                    `No job entries for selected job status : ${
-                      (state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                    }`
-                  )
-                ) : (
-                  translations?.noEntriesData || 'No job entries'
-                )}
-              </Typography>
-            )}
+                        translations?.noEntriesData || 'No job entries'
+                      )}
+                </Typography>
+              )}
           </TableBody>
         </MaUTable>
       </div>
-      {job.id && (
+      {job?.id && (
         <div style={{ flex: 1, padding: '1rem' }}>
           <JobDetail detail={job} onClose={closeTab} />
         </div>
