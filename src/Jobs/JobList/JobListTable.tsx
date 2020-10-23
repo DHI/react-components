@@ -31,6 +31,12 @@ const useStyles = (jobId) =>
       flexBasis: '5px !important' as any,
       width: jobId ? 'auto' : ('unset !important' as any),
       maxWidth: 'none !important' as any,
+      '&.Mui-selected': {
+        backgroundColor: theme.palette.action.selected,
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+        },
+      },
     },
     tdStatus: {
       marginLeft: theme.spacing(2),
