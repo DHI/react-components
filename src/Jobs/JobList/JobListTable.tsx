@@ -15,8 +15,9 @@ import { useBlockLayout, useFilters, UseFiltersOptions, useGlobalFilter, useTabl
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { DefaultColumnFilter } from '../../common/tableHelper';
+import { fetchLogs } from '../../DataServices/DataServices';
 import JobDetail from './JobDetail';
-import { JobData } from './types';
+import { JobData, JobListTableProps } from './types';
 
 const useStyles = (jobId) =>
   makeStyles((theme: Theme) => ({
@@ -27,12 +28,12 @@ const useStyles = (jobId) =>
       maxWidth: 'none !important' as any,
     },
     thead: {
-      flexGrow: '1 !important' as any,
-      flexBasis: '5px !important' as any,
-      width: jobId ? 'auto' : ('unset !important' as any),
-      maxWidth: 'none !important' as any,
+      'flexGrow': '1 !important' as any,
+      'flexBasis': '5px !important' as any,
+      'width': jobId ? 'auto' : ('unset !important' as any),
+      'maxWidth': 'none !important' as any,
       '&.Mui-selected': {
-        backgroundColor: theme.palette.action.selected,
+        'backgroundColor': theme.palette.action.selected,
         '&:hover': {
           backgroundColor: theme.palette.action.hover,
         },
@@ -49,6 +50,10 @@ const useStyles = (jobId) =>
   }));
 
 const JobListTable = ({
+  token,
+  dataSources,
+  timeZone,
+  dateTimeFormat,
   columns,
   data,
   translations,
@@ -56,15 +61,7 @@ const JobListTable = ({
   hiddenColumns,
   windowHeight,
   isTableWiderThanWindow,
-}: {
-  columns: any;
-  data: JobData[];
-  translations: any;
-  loading: boolean;
-  hiddenColumns: string[];
-  windowHeight: number;
-  isTableWiderThanWindow: (size: boolean) => void;
-}) => {
+}: JobListTableProps) => {
   const defaultColumn = {
     Filter: DefaultColumnFilter,
     minWidth: 30,
@@ -83,7 +80,7 @@ const JobListTable = ({
     finished: '',
     progress: 0,
     connectionJobLog: '',
-  }
+  };
 
   const [job, setJob] = useState<JobData>(initialJobData);
   const classes = useStyles(job?.id)();
@@ -113,7 +110,6 @@ const JobListTable = ({
         <TableRow
           component="div"
           {...tableExtraProps(row.getRowProps())}
-
           className={classes.thead}
           selected={job.id === row.original.id}
           onClick={() => expandWithData(row)}
@@ -138,15 +134,15 @@ const JobListTable = ({
                     {cell.render('Cell')}
                   </Typography>
                 ) : (
-                    <Typography
-                      noWrap
-                      className={classes.tdContent}
-                      style={{ width: cell.column.width || cell.column.minWidth }}
-                      variant="body2"
-                    >
-                      {cell.render('Cell')}
-                    </Typography>
-                  )}
+                  <Typography
+                    noWrap
+                    className={classes.tdContent}
+                    style={{ width: cell.column.width || cell.column.minWidth }}
+                    variant="body2"
+                  >
+                    {cell.render('Cell')}
+                  </Typography>
+                )}
               </TableCell>
             );
           })}
@@ -165,25 +161,60 @@ const JobListTable = ({
   };
 
   const expandWithData = (row) => {
+    const {
+      id = '',
+      taskId = '',
+      status = '',
+      hostId = '',
+      duration = '',
+      delay = '',
+      requested = '',
+      started = '',
+      finished = '',
+      progress = 0,
+      connectionJobLog = '',
+    } = row.original;
 
-    if (job.id === row.original.id) {
-      setJob(initialJobData)
+    if (job.id === id) {
+      setJob(initialJobData);
     } else {
-      setJob({
-        id: row.original.id || '',
-        taskId: row.original.taskId || '',
-        status: row.original.status || '',
-        hostId: row.original.hostId || '',
-        duration: row.original.duration || '',
-        delay: row.original.delay || '',
-        requested: row.original.requested || '',
-        started: row.original.started || '',
-        finished: row.original.finished || '',
-        progress: row.original.progress || 0,
-        connectionJobLog: row.original.connectionJobLog || '',
-      });
-    }
+      const query = [
+        {
+          Item: 'Tag',
+          Value: id,
+          QueryOperator: 'Equal',
+        },
+      ];
 
+      const sources = dataSources.map((item) => ({
+        host: item.host,
+        connection: item.connectionJobLog,
+      }));
+
+      fetchLogs(sources, token, query).subscribe(
+        (res) => {
+          const logs = res.map((item) => item.data);
+
+          setJob({
+            id,
+            taskId,
+            status,
+            hostId,
+            duration,
+            delay,
+            requested,
+            started,
+            finished,
+            progress,
+            connectionJobLog,
+            logs,
+          });
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    }
   };
 
   const tableExtraProps = (props) => {
@@ -197,7 +228,7 @@ const JobListTable = ({
         ...style,
         cursor: 'pointer',
         overflow: job.id ? 'hidden' : 'visible',
-        width: job.id ? newWidth / 2 : newWidth,
+        width: newWidth - 30,
       },
     };
   };
@@ -251,34 +282,34 @@ const JobListTable = ({
                 </div>
               </div>
             ) : (
-                <Typography
-                  align="center"
-                  component="div"
-                  style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
-                >
-                  {loading ? (
-                    <CircularProgress />
-                  ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
-                    translations?.noEntriesFilter ? (
-                      `${translations.noEntriesFilter} : ${
+              <Typography
+                align="center"
+                component="div"
+                style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
+              >
+                {loading ? (
+                  <CircularProgress />
+                ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
+                  translations?.noEntriesFilter ? (
+                    `${translations.noEntriesFilter} : ${
                       (state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                      }`
-                    ) : (
-                        `No job entries for selected job status : ${
-                        (state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                        }`
-                      )
+                    }`
                   ) : (
-                        translations?.noEntriesData || 'No job entries'
-                      )}
-                </Typography>
-              )}
+                    `No job entries for selected job status : ${
+                      (state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                    }`
+                  )
+                ) : (
+                  translations?.noEntriesData || 'No job entries'
+                )}
+              </Typography>
+            )}
           </TableBody>
         </MaUTable>
       </div>
       {job?.id && (
         <div style={{ flex: 1, padding: '1rem' }}>
-          <JobDetail detail={job} onClose={closeTab} />
+          <JobDetail detail={job} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
         </div>
       )}
     </div>
