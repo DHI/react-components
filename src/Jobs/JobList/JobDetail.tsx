@@ -1,11 +1,13 @@
 import { Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import React from 'react';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import React, { useEffect, useState } from 'react';
 import { setUtcToZonedTime } from '../../utils/Utils';
 import { JobDetailProps } from './types';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
+    height: '100%',
   },
   paper: {
     display: 'flex',
@@ -20,10 +22,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  button: {
+    backgroundColor: 'transparent',
+    border: 'none',
+  },
+  textarea: {
+    width: '100%',
+    minHeight: 400,
+    overflow: 'scroll',
+    whiteSpace: 'nowrap',
+    height: 'calc(100% - 140px)',
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const JobDetail = ({ detail, timeZone, dateTimeFormat, onClose }: JobDetailProps) => {
   const classes = useStyles();
+  const [structuredLogs, setStructuredLogs] = useState('');
 
   const displayBlock = (detail) => {
     return (
@@ -43,37 +58,36 @@ const JobDetail = ({ detail, timeZone, dateTimeFormat, onClose }: JobDetailProps
     );
   };
 
-  const structureLog = () => {
+  const formatLog = () => {
     const log = detail?.logs
       ?.map(
         (item) =>
-          // eslint-disable-next-line prettier/prettier
-        `${setUtcToZonedTime(item.dateTime, timeZone, dateTimeFormat)} - [${item.logLevel}] - ${item.text} \n`
+          `${setUtcToZonedTime(item.dateTime, timeZone, dateTimeFormat)} - [${item.logLevel}] - ${item.text} \n`,
       )
       .join('');
 
-    return log;
+    setStructuredLogs(log);
   };
+
+  useEffect(() => {
+    formatLog();
+  }, [detail.logs]);
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Typography variant="subtitle1">Timezone: {timeZone}</Typography>
-            <Typography variant="h5">Job Detail: {detail.taskId}</Typography>
-            <Typography variant="caption">id: {detail.id}</Typography>
-            <button onClick={onClose}>x</button>
-          </Paper>
-        </Grid>
-        {displayBlock(detail)}
-
-        <textarea
-          placeholder=""
-          style={{ width: '100%', minHeight: 400, overflow: 'scroll', whiteSpace: 'nowrap' }}
-          defaultValue={structureLog()}
-        />
+      <Grid item xs={12}>
+        <Paper className={classes.paper}>
+          <Typography variant="subtitle1">Timezone: {timeZone}</Typography>
+          <Typography variant="h5">Job Detail: {detail.taskId}</Typography>
+          <Typography variant="caption">id: {detail.id}</Typography>
+          <button className={classes.button} onClick={onClose}>
+            <CancelOutlinedIcon />
+          </button>
+        </Paper>
       </Grid>
+      {displayBlock(detail)}
+
+      <textarea placeholder="" className={classes.textarea} defaultValue={structuredLogs} />
     </div>
   );
 };

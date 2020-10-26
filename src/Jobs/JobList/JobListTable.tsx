@@ -308,7 +308,7 @@ const JobListTable = ({
         </MaUTable>
       </div>
       {job?.id && (
-        <div style={{ flex: 1, padding: '1rem' }}>
+        <div style={{ flex: 1, padding: '1rem 2rem' }}>
           <JobDetail detail={job} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
         </div>
       )}
