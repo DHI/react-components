@@ -23,6 +23,10 @@ interface ChartPlotlyProps {
    * The style object to be set on the plot
    */
   style?: any;
+  /**
+   * Determine whether to show legend.
+   */
+  showLegend?: boolean;
 }
 
 interface TimeseriesData {

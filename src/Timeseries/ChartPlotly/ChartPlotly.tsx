@@ -7,7 +7,7 @@ const ChartPlotly = (props: ChartPlotlyProps) => {
   const defaultLayout = {
     autosize: true,
     title: 'Chart',
-    showlegend: false,
+    showlegend: props.showLegend,
     xaxis: {
       title: 'X Axis Title',
     },
