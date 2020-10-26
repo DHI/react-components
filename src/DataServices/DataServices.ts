@@ -1,9 +1,9 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
+import { UserGroupsData } from '../UserGroups/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
 import { DataSource, JobParameters, JobQuery, Options, User } from './types';
-import { UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -381,10 +381,14 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
           .join(',')}]`
       : '';
 
-  return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}${dataSelectors}`, {
-    method: 'GET',
+  return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/query`, {
+    method: 'POST',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
+    },
+    body: {
+      dataSelectors,
+      queryDTO: dataSource.query,
     },
   }).pipe(tap((res) => console.log('List of scenarios fetched', res)));
 };

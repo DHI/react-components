@@ -8,6 +8,7 @@ interface DataSource {
   id?: string;
   ids?: string[];
   dataSelectors?: string[];
+  query?: { Item: string; Value: string; QueryOperator: string }[];
   host: string;
   connection: string;
   from?: string;
