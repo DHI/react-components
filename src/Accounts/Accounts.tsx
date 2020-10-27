@@ -6,9 +6,8 @@ import {
   createAccount,
   deleteAccount,
   fetchAccounts,
-
-
-  fetchUserGroups, updateAccount,
+  fetchUserGroups,
+  updateAccount,
   updateUserGroupsForUser
 } from '../DataServices/DataServices';
 import { UserGroups } from '../UserGroups/types';

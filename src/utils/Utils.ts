@@ -1,4 +1,4 @@
-import { parseISO, differenceInMinutes } from 'date-fns';
+import { differenceInMinutes, parseISO } from 'date-fns';
 import { format, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
@@ -257,6 +257,9 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
   }
 };
 
+const setUtcToZonedTime = (date, timeZone, dateTimeFormat) =>
+  format(utcToZonedTime(date.replace('T', ' '), timeZone), dateTimeFormat);
+
 export {
   dataObjectToArray,
   getObjectProperty,
@@ -269,4 +272,5 @@ export {
   queryProp,
   uniqueId,
   calcTimeDifference,
+  setUtcToZonedTime,
 };

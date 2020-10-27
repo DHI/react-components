@@ -1,11 +1,11 @@
+import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useMemo, useState } from 'react';
-import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import { fetchJobs } from '../../DataServices/DataServices';
-import JobListProps, { JobData } from './types';
 import { SelectColumnFilter } from '../../common/tableHelper';
-import { calcTimeDifference } from '../../utils/Utils';
-import StatusIconCell from './StatusIconCell';
+import { fetchJobs } from '../../DataServices/DataServices';
+import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
 import JobListTable from './JobListTable';
+import StatusIconCell from './StatusIconCell';
+import JobListProps, { JobData } from './types';
 
 const JobList = (props: JobListProps) => {
   const {
@@ -136,17 +136,12 @@ const JobList = (props: JobListProps) => {
             hostId: s.data.hostId,
             status: s.data.status,
             progress: s.data.progress || 0,
-            requested: s.data.requested
-              ? format(utcToZonedTime(s.data.requested.replace('T', ' '), timeZone), dateTimeFormat)
-              : '',
-            started: s.data.started
-              ? format(utcToZonedTime(s.data.started.replace('T', ' '), timeZone), dateTimeFormat)
-              : '',
-            finished: s.data.finished
-              ? format(utcToZonedTime(s.data.finished.replace('T', ' '), timeZone), dateTimeFormat)
-              : '',
+            requested: s.data.requested ? setUtcToZonedTime(s.data.requested, timeZone, dateTimeFormat) : '',
+            started: s.data.started ? setUtcToZonedTime(s.data.started, timeZone, dateTimeFormat) : '',
+            finished: s.data.finished ? setUtcToZonedTime(s.data.finished, timeZone, dateTimeFormat) : '',
             duration: calcTimeDifference(s.data.started, s.data.finished),
             delay: calcTimeDifference(s.data.requested, s.data.started),
+            connectionJobLog: s.data.connectionJobLog || '',
           };
 
           if (s.data.parameters) {
@@ -202,6 +197,10 @@ const JobList = (props: JobListProps) => {
 
   return (
     <JobListTable
+      token={token}
+      dataSources={dataSources}
+      timeZone={timeZone}
+      dateTimeFormat={dateTimeFormat}
       columns={TableHeadersData}
       data={data}
       translations={translations}

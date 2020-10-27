@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Tooltip, IconButton, Menu, MenuItem, Box, Typography, Input } from '@material-ui/core';
+import { Box, IconButton, Input, Menu, MenuItem, Tooltip, Typography } from '@material-ui/core';
 import { FilterList } from '@material-ui/icons';
+import React, { useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
 
 export const DefaultColumnFilter = () => {
@@ -36,7 +36,7 @@ export const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilter
     const options = new Set();
 
     preFilteredRows.forEach((row: { values: { [x: string]: unknown } }) => {
-      options.add((row.values[id] as string).toLowerCase());
+      row.values[id] && options.add((row.values[id] as string).toLowerCase());
     });
 
     if (options.size > 0) {

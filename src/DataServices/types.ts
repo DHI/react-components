@@ -13,6 +13,7 @@ interface DataSource {
   from?: string;
   to?: string;
   sheetName?: string;
+  connectionJobLog?: string;
 }
 
 interface User {
