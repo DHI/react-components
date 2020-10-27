@@ -27,7 +27,9 @@ interface JobListProps {
 }
 
 interface Parameters {
+  /** Name to populate Jobs table matching the payload */
   parameter: string;
+  /** Label to populate Jobs table */
   label: string;
 }
 
@@ -77,10 +79,16 @@ interface JobDetailProps {
   timeZone: string;
   /** Date format to be converted to */
   dateTimeFormat: string;
+  /** Button to close Job Detail container */
   onClose: () => void;
 }
 
 interface JobListTableProps {
+  columns: any;
+  hiddenColumns: string[];
+  translations: any;
+  /** Job Data */
+  data: JobData[];
   /** Authorization header to backend call */
   token: string;
   /** Data source to get the logs data */
@@ -89,12 +97,8 @@ interface JobListTableProps {
   timeZone: string;
   /** Date format to be converted to */
   dateTimeFormat: string;
-  columns: any;
-  data: JobData[];
-  translations: any;
   /**  Boolean to inform is the data fetched. */
   loading: boolean;
-  hiddenColumns: string[];
   /** Current window height in pixels */
   windowHeight: number;
   /** check if table is wider than the current window width */
