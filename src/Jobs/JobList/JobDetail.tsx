@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   item: {
     display: 'flex',
     flexDirection: 'column',
+    fontFamily: theme.typography.fontFamily,
+    fontSize: 12,
   },
   button: {
     backgroundColor: 'transparent',
@@ -49,7 +51,7 @@ const JobDetail = ({ detail, timeZone, dateTimeFormat, onClose }: JobDetailProps
         {Object.entries(detail).map(([key, value], i) => {
           if (key !== 'taskId' && key !== 'id' && key !== 'logs') {
             return (
-              <span className={classes.item}>
+              <span key={i} className={classes.item}>
                 {key}: <strong>{value}</strong>
               </span>
             );
