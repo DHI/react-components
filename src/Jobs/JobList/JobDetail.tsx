@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: 'none',
     position: 'absolute',
     right: '0',
+    cursor: 'pointer',
   },
   textarea: {
     width: '100%',

@@ -30,7 +30,7 @@ const useStyles = (jobId) =>
     thead: {
       'flexGrow': '1 !important' as any,
       'flexBasis': '5px !important' as any,
-      'width': jobId ? 'auto' : ('unset !important' as any),
+      'width': 'unset !important' as any,
       'maxWidth': 'none !important' as any,
       '&.Mui-selected': {
         'backgroundColor': theme.palette.action.selected,
@@ -46,6 +46,18 @@ const useStyles = (jobId) =>
     tdContent: {
       marginLeft: theme.spacing(1),
       paddingTop: theme.spacing(1),
+    },
+    jobDetail: {
+      padding: '1rem 2rem',
+      position: 'absolute',
+      background: '#FFF',
+      top: 0,
+      bottom: 0,
+      right: 0,
+      width: '50%',
+      transition: 'all, .5s',
+      transform: jobId ? 'translate3d(0, 0, 0)' : 'translate3d(100%, 0, 0)',
+      boxShadow: jobId ? '-20px 0px 19px -12px rgba(0,0,0,0.3)' : 'none',
     },
   }));
 
@@ -219,16 +231,12 @@ const JobListTable = ({
 
   const tableExtraProps = (props) => {
     const { style } = props;
-    const removePx = style.width.substring(0, style.width.length - 2);
-    const newWidth = parseInt(removePx);
 
     return {
       ...props,
       style: {
         ...style,
         cursor: 'pointer',
-        overflow: job.id ? 'hidden' : 'visible',
-        width: newWidth - 30,
       },
     };
   };
@@ -238,7 +246,7 @@ const JobListTable = ({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div style={{ display: 'flex', position: 'relative', overflow: 'hidden' }}>
       <div style={{ flex: 1 }}>
         <MaUTable {...getTableProps()} component="div" size="small">
           <TableHead component="div">
@@ -307,11 +315,10 @@ const JobListTable = ({
           </TableBody>
         </MaUTable>
       </div>
-      {job?.id && (
-        <div style={{ flex: 1, padding: '1rem 2rem' }}>
-          <JobDetail detail={job} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
-        </div>
-      )}
+
+      <div className={classes.jobDetail}>
+        <JobDetail detail={job} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
+      </div>
     </div>
   );
 };
