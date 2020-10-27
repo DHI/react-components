@@ -11,10 +11,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   paper: {
     display: 'flex',
-    padding: theme.spacing(2),
+    padding: '16px 0',
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
+    position: 'relative',
     width: '100%',
     alignItems: 'center',
   },
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   button: {
     backgroundColor: 'transparent',
     border: 'none',
+    position: 'absolute',
+    right: '0',
   },
   textarea: {
     width: '100%',
