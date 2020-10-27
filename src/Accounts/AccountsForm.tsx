@@ -1,15 +1,15 @@
-import { Button, DialogActions, DialogContent, InputAdornment, TextField } from '@material-ui/core';
+import { DialogContent, InputAdornment, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { FiberManualRecord } from '@material-ui/icons';
-import React, { FormEvent, useEffect, useState } from 'react';
-import { passwordStrength } from '../utils/Utils';
-import { fetchUserGroups } from '../DataServices/DataServices';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Metadata } from '../common/Metadata/Metadata';
-import { EditUser, AccountsFormProps } from './types';
-import { UserGroups } from '../UserGroups/types';
 import { MetadataDefault } from '../common/Metadata/types';
 import { ActionsButtons } from '../common/Table';
+import { fetchUserGroups } from '../DataServices/DataServices';
+import { UserGroups } from '../UserGroups/types';
+import { passwordStrength } from '../utils/Utils';
+import { AccountsFormProps, EditUser } from './types';
 
 const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, token, host }: AccountsFormProps) => {
   const [state, setState] = useState({
@@ -168,7 +168,7 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
             label="Username"
             variant="standard"
             value={form.id}
-            onChange={(e) => handleChange('id', e.target.value)}
+            onChange={(e) => handleChange('id', e.target.value.trim())}
           />
         ) : (
           <NoBorderTextField
@@ -224,7 +224,7 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
           margin="dense"
           variant="standard"
           value={form.email}
-          onChange={(e) => handleChange('email', e.target.value)}
+          onChange={(e) => handleChange('email', e.target.value.trim())}
         />
         <UserGroupsInput
           userId={selectedUser.id}

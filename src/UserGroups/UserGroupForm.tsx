@@ -1,19 +1,9 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
-import {
-  Button,
-  Chip,
-  DialogActions,
-  DialogContent,
-  makeStyles,
-  TextField,
-  Theme,
-  Typography,
-  withStyles,
-} from '@material-ui/core';
+import { DialogContent, makeStyles, TextField, Theme, withStyles } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { Metadata } from '../common/Metadata/Metadata';
-import { UserGroupFormProps } from './types';
 import { ActionsButtons } from '../common/Table';
+import { UserGroupFormProps } from './types';
 
 const useStyles = makeStyles((theme: Theme) => ({
   users: {
@@ -126,7 +116,7 @@ const UserGroupForm = ({
             label="ID"
             variant="standard"
             value={form?.id}
-            onChange={(e) => handleChange('id', e.target.value)}
+            onChange={(e) => handleChange('id', e.target.value.trim())}
           />
         ) : (
           <NoBorderTextField
