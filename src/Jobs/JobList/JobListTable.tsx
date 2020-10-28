@@ -114,15 +114,18 @@ const JobListTable = ({
 
   const RenderRow = useCallback(
     ({ index, style }) => {
+      style.cursor = 'pointer';
       const row = rows[index];
 
       prepareRow(row);
 
       return (
         <TableRow
-          component="div"
-          {...tableExtraProps(row.getRowProps())}
           className={classes.thead}
+          component="div"
+          {...row.getRowProps({
+            style,
+          })}
           selected={job.id === row.original.id}
           onClick={() => expandWithData(row)}
         >
@@ -281,7 +284,7 @@ const JobListTable = ({
                       getTableWidth(width);
 
                       return (
-                        <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
+                        <FixedSizeList height={height} itemCount={rows.length} itemSize={50} width={width}>
                           {RenderRow}
                         </FixedSizeList>
                       );
