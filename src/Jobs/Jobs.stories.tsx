@@ -12,14 +12,15 @@ export const JobListStory = () => {
 
   const dataSources = [
     {
-      host: '',
-      connection: '',
+      host: 'https://domainservices.dhigroup.com',
+      connection: 'wf-jobs',
+      connectionJobLog: 'postgres-workflowLogging',
     },
   ];
   const parameters = [
     {
-      parameter: 'string',
-      label: 'String Label',
+      parameter: 'Area',
+      label: 'Area',
     },
   ];
 
