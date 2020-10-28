@@ -1,12 +1,12 @@
 import {
   Box,
   CircularProgress,
-  makeStyles,
+
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Theme,
+
   Typography
 } from '@material-ui/core';
 import MaUTable from '@material-ui/core/Table';
@@ -17,37 +17,8 @@ import { FixedSizeList } from 'react-window';
 import { DefaultColumnFilter } from '../../common/tableHelper';
 import { fetchLogs } from '../../DataServices/DataServices';
 import JobDetail from './JobDetail';
+import { jobListTableStyles } from './styles';
 import { JobData, JobListTableProps } from './types';
-
-const useStyles = (jobId) =>
-  makeStyles((theme: Theme) => ({
-    td: {
-      flexGrow: '1 !important' as any,
-      flexBasis: '5px !important' as any,
-      width: 'unset !important' as any,
-      maxWidth: 'none !important' as any,
-    },
-    thead: {
-      'flexGrow': '1 !important' as any,
-      'flexBasis': '5px !important' as any,
-      'width': jobId ? 'auto' : ('unset !important' as any),
-      'maxWidth': 'none !important' as any,
-      '&.Mui-selected': {
-        'backgroundColor': theme.palette.action.selected,
-        '&:hover': {
-          backgroundColor: theme.palette.action.hover,
-        },
-      },
-    },
-    tdStatus: {
-      marginLeft: theme.spacing(2),
-      paddingTop: theme.spacing(1),
-    },
-    tdContent: {
-      marginLeft: theme.spacing(1),
-      paddingTop: theme.spacing(1),
-    },
-  }));
 
 const JobListTable = ({
   token,
@@ -83,7 +54,9 @@ const JobListTable = ({
   };
 
   const [job, setJob] = useState<JobData>(initialJobData);
-  const classes = useStyles(job?.id)();
+  const [tableBodyResponsive, setTableBodyResponsive] = useState<boolean>(false);
+  const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
+  const classes = jobListTableStyles(job?.id, tableBodyResponsive)();
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state } = useTable(
     {
@@ -102,19 +75,24 @@ const JobListTable = ({
 
   const RenderRow = useCallback(
     ({ index, style }) => {
+      style.cursor = 'pointer';
       const row = rows[index];
 
       prepareRow(row);
 
       return (
         <TableRow
+          className={classes.row}
           component="div"
-          {...tableExtraProps(row.getRowProps())}
-          className={classes.thead}
+          {...row.getRowProps({
+            style,
+          })}
           selected={job.id === row.original.id}
           onClick={() => expandWithData(row)}
         >
           {row.cells.map((cell) => {
+            setTableBodyResponsive((cell.column as any).flexGrow === 1);
+
             return (
               <TableCell
                 {...cell.getCellProps()}
@@ -178,6 +156,7 @@ const JobListTable = ({
     if (job.id === id) {
       setJob(initialJobData);
     } else {
+      setLoadingDetail(true);
       const query = [
         {
           Item: 'Tag',
@@ -209,6 +188,8 @@ const JobListTable = ({
             connectionJobLog,
             logs,
           });
+
+          setLoadingDetail(false);
         },
         (error) => {
           console.log(error);
@@ -219,16 +200,12 @@ const JobListTable = ({
 
   const tableExtraProps = (props) => {
     const { style } = props;
-    const removePx = style.width.substring(0, style.width.length - 2);
-    const newWidth = parseInt(removePx);
 
     return {
       ...props,
       style: {
         ...style,
         cursor: 'pointer',
-        overflow: job.id ? 'hidden' : 'visible',
-        width: newWidth - 30,
       },
     };
   };
@@ -238,15 +215,20 @@ const JobListTable = ({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div style={{ display: 'flex', position: 'relative', overflow: 'hidden' }}>
       <div style={{ flex: 1 }}>
+        {loadingDetail && (
+          <div className={classes.loadJobDetail}>
+            <CircularProgress />
+          </div>
+        )}
         <MaUTable {...getTableProps()} component="div" size="small">
           <TableHead component="div">
             {headerGroups.map((headerGroup) => (
               <TableRow
                 {...tableExtraProps(headerGroup.getHeaderGroupProps())}
                 component="div"
-                className={classes.thead}
+                className={tableBodyResponsive ? classes.td : classes.row}
               >
                 {headerGroup.headers.map((column) => (
                   <TableCell
@@ -273,7 +255,7 @@ const JobListTable = ({
                       getTableWidth(width);
 
                       return (
-                        <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
+                        <FixedSizeList height={height} itemCount={rows.length} itemSize={50} width={width}>
                           {RenderRow}
                         </FixedSizeList>
                       );
@@ -307,11 +289,10 @@ const JobListTable = ({
           </TableBody>
         </MaUTable>
       </div>
-      {job?.id && (
-        <div style={{ flex: 1, padding: '1rem 2rem' }}>
-          <JobDetail detail={job} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
-        </div>
-      )}
+
+      <div className={classes.jobDetail}>
+        <JobDetail detail={job} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
+      </div>
     </div>
   );
 };
