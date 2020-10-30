@@ -1,14 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-
-  Typography
-} from '@material-ui/core';
+import { Box, CircularProgress, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import MaUTable from '@material-ui/core/Table';
 import React, { useCallback, useState } from 'react';
 import { useBlockLayout, useFilters, UseFiltersOptions, useGlobalFilter, useTable, UseTableOptions } from 'react-table';
@@ -42,6 +32,7 @@ const JobListTable = ({
   const initialJobData = {
     id: '',
     taskId: '',
+    accountId: '',
     status: '',
     hostId: '',
     duration: '',
@@ -142,6 +133,7 @@ const JobListTable = ({
     const {
       id = '',
       taskId = '',
+      accountId = '',
       status = '',
       hostId = '',
       duration = '',
@@ -177,6 +169,7 @@ const JobListTable = ({
           setJob({
             id,
             taskId,
+            accountId,
             status,
             hostId,
             duration,
