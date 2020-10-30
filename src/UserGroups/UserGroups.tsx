@@ -220,7 +220,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
         />
       </Dialog>
 
-      <TopTableSection title="New User Group" filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TopTableSection title="User Groups" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}
