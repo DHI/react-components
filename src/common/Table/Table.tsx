@@ -9,7 +9,7 @@ import {
   Theme,
   Tooltip,
   Typography,
-  Zoom
+  Zoom,
 } from '@material-ui/core';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { TableCellProps, TableRowProps, useBlockLayout, useTable, UseTableOptions } from 'react-table';

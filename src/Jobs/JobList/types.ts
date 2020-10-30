@@ -6,6 +6,8 @@ interface JobListProps {
   frequency: number;
   /** Data source to get the logs data */
   dataSources: DataSource[];
+  /** Hide or show columns */
+  disabledColumns?: string[];
   /** Data source to get the logs specific parameters */
   parameters?: Parameters[];
   /** Authorization header to backend call */
@@ -38,6 +40,8 @@ interface JobData {
   id: string;
   /** Task Id of job */
   taskId: string;
+  /** Account ID of the job */
+  accountId: string;
   /** Status of job */
   status: string;
   /** Host of job  */

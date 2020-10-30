@@ -6,7 +6,7 @@ import {
   deleteUserGroup,
   fetchAccounts,
   fetchUserGroups,
-  updateUserGroups
+  updateUserGroups,
 } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 import UserGroupForm from './UserGroupForm';
@@ -220,7 +220,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
         />
       </Dialog>
 
-      <TopTableSection title="New User Group" filter={filter} setFilter={setFilter} onNew={openDialog} />
+      <TopTableSection title="User Groups" filter={filter} setFilter={setFilter} onNew={openDialog} />
       <Paper>
         <DefaultTable
           error={error}

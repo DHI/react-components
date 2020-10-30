@@ -1,13 +1,13 @@
 import {
   Box,
   CircularProgress,
-
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-
-  Typography
+  Tooltip,
+  Typography,
+  Zoom,
 } from '@material-ui/core';
 import MaUTable from '@material-ui/core/Table';
 import React, { useCallback, useState } from 'react';
@@ -42,6 +42,7 @@ const JobListTable = ({
   const initialJobData = {
     id: '',
     taskId: '',
+    accountId: '',
     status: '',
     hostId: '',
     duration: '',
@@ -99,28 +100,34 @@ const JobListTable = ({
                 component="div"
                 className={(cell.column as any).flexGrow ? classes.td : ''}
               >
-                {(cell.column as any).header === 'Status' ? (
-                  <Typography
-                    className={classes.tdStatus}
-                    component="div"
-                    style={
-                      (cell.column as any).header === 'Task Id'
-                        ? { width: 'auto' }
-                        : { width: cell.column.width || cell.column.minWidth }
-                    }
-                  >
-                    {cell.render('Cell')}
-                  </Typography>
-                ) : (
-                  <Typography
-                    noWrap
-                    className={classes.tdContent}
-                    style={{ width: cell.column.width || cell.column.minWidth }}
-                    variant="body2"
-                  >
-                    {cell.render('Cell')}
-                  </Typography>
-                )}
+                <Tooltip
+                  title={(cell.column as any).category !== 'Status' ? cell.render('Cell') : ''}
+                  placement="bottom-start"
+                  TransitionComponent={Zoom}
+                >
+                  {(cell.column as any).header === 'Status' ? (
+                    <Typography
+                      className={classes.tdStatus}
+                      component="div"
+                      style={
+                        (cell.column as any).header === 'Task Id'
+                          ? { width: 'auto' }
+                          : { width: cell.column.width || cell.column.minWidth }
+                      }
+                    >
+                      {cell.render('Cell')}
+                    </Typography>
+                  ) : (
+                    <Typography
+                      noWrap
+                      className={classes.tdContent}
+                      style={{ width: cell.column.width || cell.column.minWidth }}
+                      variant="body2"
+                    >
+                      {cell.render('Cell')}
+                    </Typography>
+                  )}
+                </Tooltip>
               </TableCell>
             );
           })}
@@ -142,6 +149,7 @@ const JobListTable = ({
     const {
       id = '',
       taskId = '',
+      accountId = '',
       status = '',
       hostId = '',
       duration = '',
@@ -177,6 +185,7 @@ const JobListTable = ({
           setJob({
             id,
             taskId,
+            accountId,
             status,
             hostId,
             duration,

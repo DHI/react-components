@@ -17,6 +17,8 @@ export const JobListStory = () => {
       connectionJobLog: 'postgres-workflowLogging',
     },
   ];
+  const disabledColumns = ['accountId'];
+
   const parameters = [
     {
       parameter: 'Area',
@@ -45,6 +47,7 @@ export const JobListStory = () => {
         frequency={10}
         token={token}
         dataSources={dataSources}
+        disabledColumns={disabledColumns}
         parameters={parameters}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
         startTimeUtc={'2020-06-30T01:45:34'}

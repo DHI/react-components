@@ -11,6 +11,7 @@ const JobList = (props: JobListProps) => {
   const {
     frequency,
     dataSources,
+    disabledColumns,
     parameters,
     token,
     startTimeUtc,
@@ -77,10 +78,16 @@ const JobList = (props: JobListProps) => {
       width: 220,
     },
     {
+      category: 'Status',
       header: 'Status',
       accessor: 'status',
       Cell: StatusIconCell,
       Filter: SelectColumnFilter,
+      width: 120,
+    },
+    {
+      header: 'Account ID',
+      accessor: 'accountId',
       width: 120,
     },
     {
@@ -134,6 +141,7 @@ const JobList = (props: JobListProps) => {
             id: s.data.id,
             taskId: s.data.taskId,
             hostId: s.data.hostId,
+            accountId: s.data.accountId,
             status: s.data.status,
             progress: s.data.progress || 0,
             requested: s.data.requested ? setUtcToZonedTime(s.data.requested, timeZone, dateTimeFormat) : '',
@@ -187,14 +195,6 @@ const JobList = (props: JobListProps) => {
     };
   }, [startDateUtc]);
 
-  /** Function and variable to select display column */
-  // const [open, setOpen] = useState(false);
-  const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
-
-  const hiddenColumnsData = useMemo(() => {
-    return hiddenColumns;
-  }, [hiddenColumns]);
-
   return (
     <JobListTable
       token={token}
@@ -205,7 +205,7 @@ const JobList = (props: JobListProps) => {
       data={data}
       translations={translations}
       loading={loading}
-      hiddenColumns={hiddenColumnsData}
+      hiddenColumns={disabledColumns}
       windowHeight={windowHeight}
       isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
     />
