@@ -1,4 +1,14 @@
-import { Box, CircularProgress, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+  Zoom
+} from '@material-ui/core';
 import MaUTable from '@material-ui/core/Table';
 import React, { useCallback, useState } from 'react';
 import { useBlockLayout, useFilters, UseFiltersOptions, useGlobalFilter, useTable, UseTableOptions } from 'react-table';
@@ -90,28 +100,34 @@ const JobListTable = ({
                 component="div"
                 className={(cell.column as any).flexGrow ? classes.td : ''}
               >
-                {(cell.column as any).header === 'Status' ? (
-                  <Typography
-                    className={classes.tdStatus}
-                    component="div"
-                    style={
-                      (cell.column as any).header === 'Task Id'
-                        ? { width: 'auto' }
-                        : { width: cell.column.width || cell.column.minWidth }
-                    }
-                  >
-                    {cell.render('Cell')}
-                  </Typography>
-                ) : (
-                  <Typography
-                    noWrap
-                    className={classes.tdContent}
-                    style={{ width: cell.column.width || cell.column.minWidth }}
-                    variant="body2"
-                  >
-                    {cell.render('Cell')}
-                  </Typography>
-                )}
+                <Tooltip
+                  title={(cell.column as any).category !== 'Status' ? cell.render('Cell') : ''}
+                  placement="bottom-start"
+                  TransitionComponent={Zoom}
+                >
+                  {(cell.column as any).header === 'Status' ? (
+                    <Typography
+                      className={classes.tdStatus}
+                      component="div"
+                      style={
+                        (cell.column as any).header === 'Task Id'
+                          ? { width: 'auto' }
+                          : { width: cell.column.width || cell.column.minWidth }
+                      }
+                    >
+                      {cell.render('Cell')}
+                    </Typography>
+                  ) : (
+                    <Typography
+                      noWrap
+                      className={classes.tdContent}
+                      style={{ width: cell.column.width || cell.column.minWidth }}
+                      variant="body2"
+                    >
+                      {cell.render('Cell')}
+                    </Typography>
+                  )}
+                </Tooltip>
               </TableCell>
             );
           })}

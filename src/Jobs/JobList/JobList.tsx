@@ -78,6 +78,7 @@ const JobList = (props: JobListProps) => {
       width: 220,
     },
     {
+      category: 'Status',
       header: 'Status',
       accessor: 'status',
       Cell: StatusIconCell,
