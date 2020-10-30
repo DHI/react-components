@@ -6,7 +6,7 @@ import {
   deleteUserGroup,
   fetchAccounts,
   fetchUserGroups,
-  updateUserGroups
+  updateUserGroups,
 } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 import UserGroupForm from './UserGroupForm';

@@ -7,7 +7,7 @@ import {
   TableRow,
   Tooltip,
   Typography,
-  Zoom
+  Zoom,
 } from '@material-ui/core';
 import MaUTable from '@material-ui/core/Table';
 import React, { useCallback, useState } from 'react';

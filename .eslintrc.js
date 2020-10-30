@@ -11,7 +11,7 @@ module.exports = {
     'no-unused-vars': 0, // Provided by TypeScript
     'no-undef': 0, // Provided by TypeScript
     'no-void': 0,
-    'comma-dangle': 0,
+    'comma-dangle': ['error', 'always-multiline'],
 
     //
     // Disable opinionated rules from @typescript-eslint
