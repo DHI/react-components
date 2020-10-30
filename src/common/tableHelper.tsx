@@ -33,17 +33,17 @@ interface BaseFilter {
 
 export const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilteredRows, id } }: BaseFilter) => {
   const options = React.useMemo(() => {
-    const options = new Set();
+    const filteredOptions = [];
 
     preFilteredRows.forEach((row: { values: { [x: string]: unknown } }) => {
-      row.values[id] && options.add((row.values[id] as string).toLowerCase());
+      row.values[id] && filteredOptions.push((row.values[id] as string).toLowerCase());
     });
 
-    if (options.size > 0) {
-      return [...options.values()];
-    } else {
-      return [];
-    }
+    if (!filteredOptions.length) return [];
+
+    const unique = filteredOptions.filter((v, i, a) => a.indexOf(v) === i);
+
+    return unique;
   }, [id, preFilteredRows]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -78,7 +78,7 @@ export const SelectColumnFilter = ({ column: { filterValue, setFilter, preFilter
         >
           All
         </MenuItem>
-        {options.map((option, index) => (
+        {options?.map((option, index) => (
           <MenuItem
             key={index}
             selected={option === filterValue}
