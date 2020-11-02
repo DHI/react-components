@@ -1,5 +1,5 @@
 import { fetchAccount, fetchToken } from '../DataServices/DataServices';
-import { Form, Token, User, OtpInfo } from './types';
+import { Form, OtpInfo, Token, User } from './types';
 
 export default class AuthService {
   host: string;
@@ -81,8 +81,9 @@ export default class AuthService {
   isAuthenticated = (): boolean => {
     const storage = localStorage.getItem('accessToken') != null ? localStorage : sessionStorage;
     const expirationStorage = storage.getItem('expiration');
+    const accessToken = storage.getItem('accessToken');
 
-    if (expirationStorage) {
+    if (expirationStorage && accessToken) {
       // Check whether the current time is past the
       // access token's expiry time (in UTC, but once it goes into new Date() it will be converted to local time)
       const expiresAt = new Date(expirationStorage);
