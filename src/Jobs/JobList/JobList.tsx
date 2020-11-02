@@ -1,7 +1,7 @@
 import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useMemo, useState } from 'react';
 import { SelectColumnFilter } from '../../common/tableHelper';
-import { fetchJobs } from '../../DataServices/DataServices';
+import { executeJobQuery } from '../../DataServices/DataServices';
 import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
 import JobListTable from './JobListTable';
 import StatusIconCell from './StatusIconCell';
@@ -58,16 +58,16 @@ const JobList = (props: JobListProps) => {
 
   const parameterHeader = parameters
     ? parameters.reduce(
-        (acc, cur) => [
-          ...acc,
-          {
-            header: cur.label,
-            accessor: cur.parameter,
-            flexGrow: isTableWider && 1,
-          },
-        ],
-        [],
-      )
+      (acc, cur) => [
+        ...acc,
+        {
+          header: cur.label,
+          accessor: cur.parameter,
+          flexGrow: isTableWider && 1,
+        },
+      ],
+      [],
+    )
     : [];
 
   const columns = [
@@ -130,10 +130,22 @@ const JobList = (props: JobListProps) => {
 
   const fetchJobList = (dateTimeValue: string) => {
     setLoading(true);
-    const query = { since: dateTimeValue };
+    // const query = { since: dateTimeValue };
     const oldJobsData = jobsData;
-
-    fetchJobs(dataSources, token, query).subscribe(
+    console.log(dataSources)
+    const query = [
+      {
+        item: "Requested",
+        queryOperator: "GreaterThan",
+        value: "2020-11-01T04:49:12.907Z"
+      },
+      {
+        item: "Requested",
+        queryOperator: "LessThan",
+        value: "2020-11-02T04:49:12.907Z"
+      }
+    ]
+    executeJobQuery(dataSources[0], token, query).subscribe(
       (res) => {
         const rawJobs = res.map((s: { data }) => {
           // Mapping to JobData.

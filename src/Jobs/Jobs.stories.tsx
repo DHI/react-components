@@ -15,7 +15,13 @@ export const JobListStory = () => {
       host: 'https://domainservices.dhigroup.com',
       connection: 'wf-jobs',
       connectionJobLog: 'postgres-workflowLogging',
+
     },
+    // {
+    //   host: "https://api-dev.seaportopx.com",
+    //   connection: "MarineAid-Jobs-AdHoc",
+    //   connectionJobLog: "MarineAid-Logs-AdHoc"
+    // }
   ];
   const disabledColumns = ['accountId'];
 
