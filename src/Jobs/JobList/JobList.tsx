@@ -225,6 +225,7 @@ const JobList = (props: JobListProps) => {
         <Grid item>
           <DateInput
             label='From'
+            dateFormat={dateTimeFormat}
             timeZone={timeZone}
             defaultDate={fromDate ? fromDate : new Date(startTimeUtc).toISOString()}
             dateSelected={(value) => setFromDate(value)}
@@ -233,6 +234,7 @@ const JobList = (props: JobListProps) => {
         <Grid item>
           <DateInput
             label='To'
+            dateFormat={dateTimeFormat}
             timeZone={timeZone}
             defaultDate={toDate ? toDate : new Date().toISOString()}
             dateSelected={(value) => setToDate(value)}
