@@ -1,11 +1,14 @@
+import { Button, Grid } from '@material-ui/core';
 import { zonedTimeToUtc } from 'date-fns-tz';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { SelectColumnFilter } from '../../common/tableHelper';
 import { executeJobQuery } from '../../DataServices/DataServices';
 import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
+import DateInput from './DateInput';
 import JobListTable from './JobListTable';
 import StatusIconCell from './StatusIconCell';
 import JobListProps, { JobData } from './types';
+
 
 const JobList = (props: JobListProps) => {
   const {
@@ -25,6 +28,9 @@ const JobList = (props: JobListProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [isTableWider, setIsTableWider] = useState<boolean>(false);
+  const [fromDate, setFromDate] = useState<string>('')
+  const [toDate, setToDate] = useState<string>('')
+  const [isFiltered, setIsFiltered] = useState<boolean>(false)
 
   useEffect(() => {
     function handleResize() {
@@ -128,24 +134,24 @@ const JobList = (props: JobListProps) => {
 
   const TableHeadersData = useMemo(() => columns.concat(parameterHeader), [isTableWider]);
 
-  const fetchJobList = (dateTimeValue: string) => {
+  const fetchJobList = () => {
     setLoading(true);
-    // const query = { since: dateTimeValue };
     const oldJobsData = jobsData;
-    console.log(dataSources)
+
     const query = [
       {
         item: "Requested",
         queryOperator: "GreaterThan",
-        value: "2020-11-01T04:49:12.907Z"
+        value: fromDate ? fromDate : new Date(startTimeUtc).toISOString()
       },
       {
         item: "Requested",
         queryOperator: "LessThan",
-        value: "2020-11-02T04:49:12.907Z"
+        value: toDate ? toDate : new Date().toISOString()
       }
-    ]
-    executeJobQuery(dataSources[0], token, query).subscribe(
+    ];
+
+    executeJobQuery(dataSources, token, query).subscribe(
       (res) => {
         const rawJobs = res.map((s: { data }) => {
           // Mapping to JobData.
@@ -184,6 +190,7 @@ const JobList = (props: JobListProps) => {
         const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
         setStartDateUtc(utcDate);
+        setIsFiltered(false);
       },
       (error) => {
         console.log(error);
@@ -191,15 +198,20 @@ const JobList = (props: JobListProps) => {
     );
   };
 
+  const setFilter = () => {
+    setIsFiltered(true);
+    fetchJobList();
+  }
+
   useEffect(() => {
-    fetchJobList(startTimeUtc);
+    fetchJobList();
   }, []);
 
   useEffect(() => {
     let interval: any;
 
     if (startDateUtc) {
-      interval = setInterval(() => fetchJobList(startDateUtc), frequency * 1000);
+      interval = setInterval(() => fetchJobList(), frequency * 1000);
     }
 
     return () => {
@@ -208,19 +220,42 @@ const JobList = (props: JobListProps) => {
   }, [startDateUtc]);
 
   return (
-    <JobListTable
-      token={token}
-      dataSources={dataSources}
-      timeZone={timeZone}
-      dateTimeFormat={dateTimeFormat}
-      columns={TableHeadersData}
-      data={data}
-      translations={translations}
-      loading={loading}
-      hiddenColumns={disabledColumns}
-      windowHeight={windowHeight}
-      isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
-    />
+    <Fragment>
+      <Grid container direction='row' alignItems='center' justify='flex-end' spacing={3} style={{ padding: 20 }}>
+        <Grid item>
+          <DateInput
+            label='From'
+            timeZone={timeZone}
+            defaultDate={fromDate ? fromDate : new Date(startTimeUtc).toISOString()}
+            dateSelected={(value) => setFromDate(value)}
+          />
+        </Grid>
+        <Grid item>
+          <DateInput
+            label='To'
+            timeZone={timeZone}
+            defaultDate={toDate ? toDate : new Date().toISOString()}
+            dateSelected={(value) => setToDate(value)}
+          />
+        </Grid>
+        <Grid item> <Button variant="contained" color="primary" onClick={() => setFilter()}>Filter</Button></Grid>
+      </Grid>
+
+      <JobListTable
+        token={token}
+        dataSources={dataSources}
+        timeZone={timeZone}
+        dateTimeFormat={dateTimeFormat}
+        columns={TableHeadersData}
+        data={data}
+        translations={translations}
+        isFiltered={isFiltered}
+        loading={loading}
+        hiddenColumns={disabledColumns}
+        windowHeight={windowHeight}
+        isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
+      />
+    </Fragment>
   );
 };
 

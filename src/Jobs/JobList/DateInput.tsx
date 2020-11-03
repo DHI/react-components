@@ -6,18 +6,17 @@ import { format, isValid } from 'date-fns';
 import React, { useState } from 'react';
 import { tzToUtc } from '../../utils/Utils';
 
-const DateInput = ({ label, timeZone, dateSelected }: { label: string, timeZone: string, dateSelected: (value) => void, }) => {
+const DateInput = ({ label, timeZone, dateSelected, defaultDate }: { label: string, timeZone: string, dateSelected: (value) => void, defaultDate?: string }) => {
   const [value, setValue] = useState('')
   const handleInputChange = (value) => {
     setValue(value)
     dateSelected(value)
-    console.log(value)
   }
   return (<MuiPickersUtilsProvider utils={DateFnsUtils}>
     <KeyboardDatePicker
       variant="inline"
       label={label}
-      value={value}
+      value={value || defaultDate}
       strictCompareDates={true}
       autoOk
       onChange={(newDate: MaterialUiPickersDate, newValue?: string | null | undefined): void => {
@@ -27,8 +26,6 @@ const DateInput = ({ label, timeZone, dateSelected }: { label: string, timeZone:
           handleInputChange(tzToUtc(formattedDate, timeZone));
         }
       }}
-
-
       style={
         {
           display: 'flex',

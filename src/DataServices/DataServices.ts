@@ -453,7 +453,7 @@ const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, 
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify(query),
     }).pipe(
       tap(
         (res) => {

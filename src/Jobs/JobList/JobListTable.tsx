@@ -1,7 +1,7 @@
 import {
   Box,
   CircularProgress,
-  Grid,
+
   TableBody,
   TableCell,
   TableHead,
@@ -17,10 +17,10 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import { DefaultColumnFilter } from '../../common/tableHelper';
 import { fetchLogs } from '../../DataServices/DataServices';
-import DateInput from './DateInput';
 import JobDetail from './JobDetail';
 import { jobListTableStyles } from './styles';
 import { JobData, JobListTableProps } from './types';
+
 
 const JobListTable = ({
   token,
@@ -31,6 +31,7 @@ const JobListTable = ({
   data,
   translations,
   loading,
+  isFiltered,
   hiddenColumns,
   windowHeight,
   isTableWiderThanWindow,
@@ -59,8 +60,7 @@ const JobListTable = ({
   const [job, setJob] = useState<JobData>(initialJobData);
   const [tableBodyResponsive, setTableBodyResponsive] = useState<boolean>(false);
   const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
-  const [fromDate, setFromDate] = useState<string>('')
-  const [toDate, setToDate] = useState<string>('')
+
   const classes = jobListTableStyles(job?.id, tableBodyResponsive)();
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state } = useTable(
@@ -235,12 +235,6 @@ const JobListTable = ({
             <CircularProgress />
           </div>
         )}
-        <Grid>
-          <DateInput label='From' timeZone="Australia/Brisbane" dateSelected={(value) => setFromDate(value)} />
-          <DateInput label='To' timeZone="Australia/Brisbane" dateSelected={(value) => setToDate(value)} />
-        </Grid>
-
-
 
         <MaUTable {...getTableProps()} component="div" size="small">
           <TableHead component="div">
@@ -265,7 +259,14 @@ const JobListTable = ({
               </TableRow>
             ))}
           </TableHead>
-
+          {isFiltered && (
+            <Typography
+              align="center"
+              component="div"
+              style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
+            >
+              <CircularProgress />
+            </Typography>)}
           <TableBody {...getTableBodyProps()} component="div">
             {rows.length > 0 ? (
               <div style={{ display: 'flex' }}>
