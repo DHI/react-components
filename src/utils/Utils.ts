@@ -292,7 +292,7 @@ const toISOLocal = (d: Date) => {
     z(d.getHours()) + ':' +
     z(d.getMinutes()) + ':' +
     z(d.getSeconds()) + '.' +
-    zz(d.getMilliseconds()) + 'Z';
+    zz(d.getMilliseconds());
 }
 
 export {
