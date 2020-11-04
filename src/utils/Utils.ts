@@ -280,6 +280,21 @@ const tzToUtc = (date: string | Date, timeZone: string) =>
     ? format(utcToZonedTime(toDate(date, { timeZone }), 'UTC'), 'yyyy-MM-dd HH:mm:ss')
     : format(utcToZonedTime(toDate(utcNow(), { timeZone }), 'UTC'), 'yyyy-MM-dd HH:mm:ss');
 
+const toISOLocal = (d: Date) => {
+  const z = n => ('0' + n).slice(-2);
+  const zz = n => ('00' + n).slice(-3);
+  let off = d.getTimezoneOffset();
+  off = Math.abs(off);
+
+  return d.getFullYear() + '-'
+    + z(d.getMonth() + 1) + '-' +
+    z(d.getDate()) + 'T' +
+    z(d.getHours()) + ':' +
+    z(d.getMinutes()) + ':' +
+    z(d.getSeconds()) + '.' +
+    zz(d.getMilliseconds()) + 'Z';
+}
+
 export {
   dataObjectToArray,
   getObjectProperty,
@@ -294,4 +309,5 @@ export {
   calcTimeDifference,
   setUtcToZonedTime,
   tzToUtc,
+  toISOLocal,
 };

@@ -4,7 +4,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { format, isValid } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { tzToUtc } from '../../utils/Utils';
+import { toISOLocal, tzToUtc, utcToTz } from '../../utils/Utils';
 
 const DateInput = ({
   label,
@@ -19,12 +19,12 @@ const DateInput = ({
   dateSelected: (value) => void,
   defaultDate?: string
 }) => {
-  const [value, setValue] = useState('')
-  const handleInputChange = (value) => {
-    setValue(value)
-    dateSelected(new Date(value).toISOString())
-    console.log('tzToUtc: ', value);
+  const [value, setValue] = useState<Date | string>()
 
+  const handleInputChange = (value) => {
+    const date = utcToTz(value, timeZone);
+    setValue(date);
+    dateSelected(toISOLocal(date));
   }
 
   useEffect(() => {
@@ -44,8 +44,6 @@ const DateInput = ({
 
           if (isValid(newDate)) {
             const formattedDate = format(newDate, 'yyyy-MM-dd HH:mm:ss');
-            console.log('formattedDate: ', formattedDate);
-
             handleInputChange(tzToUtc(formattedDate, timeZone));
           }
         }}
