@@ -1,6 +1,6 @@
 import { Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { setUtcToZonedTime } from '../../utils/Utils';
 import { JobDetailProps } from './types';
 
@@ -42,8 +42,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const JobDetail = ({ detail, timeZone, dateTimeFormat, onClose }: JobDetailProps) => {
+const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose }: JobDetailProps) => {
   const classes = useStyles();
+  const textareaInput = useRef(null);
   const [structuredLogs, setStructuredLogs] = useState('');
 
   const displayBlock = (detail) => {
@@ -79,6 +80,13 @@ const JobDetail = ({ detail, timeZone, dateTimeFormat, onClose }: JobDetailProps
     formatLog();
   }, [detail.logs]);
 
+  useEffect(() => {
+    if (textareaScrolled) {
+      textareaInput.current.scrollTop = textareaInput.current.scrollHeight;
+    }
+
+  }, [textareaScrolled, detail.logs])
+
   return (
     <div className={classes.root}>
       <Grid item xs={12}>
@@ -93,7 +101,7 @@ const JobDetail = ({ detail, timeZone, dateTimeFormat, onClose }: JobDetailProps
       </Grid>
       {displayBlock(detail)}
 
-      <textarea placeholder="" className={classes.textarea} defaultValue={structuredLogs} />
+      <textarea placeholder="" ref={textareaInput} className={classes.textarea} defaultValue={structuredLogs} />
     </div>
   );
 };
