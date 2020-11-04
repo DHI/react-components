@@ -38,6 +38,7 @@ const DateInput = ({
         label={label}
         value={value || null}
         format={dateFormat}
+        maxDate={new Date()}
         strictCompareDates
         autoOk
         onChange={(newDate: MaterialUiPickersDate, newValue?: string | null | undefined): void => {
