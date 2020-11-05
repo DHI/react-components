@@ -1,13 +1,14 @@
 import {
   Box,
   CircularProgress,
+
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   Tooltip,
   Typography,
-  Zoom,
+  Zoom
 } from '@material-ui/core';
 import MaUTable from '@material-ui/core/Table';
 import React, { useCallback, useState } from 'react';
@@ -20,6 +21,7 @@ import JobDetail from './JobDetail';
 import { jobListTableStyles } from './styles';
 import { JobData, JobListTableProps } from './types';
 
+
 const JobListTable = ({
   token,
   dataSources,
@@ -29,6 +31,7 @@ const JobListTable = ({
   data,
   translations,
   loading,
+  isFiltered,
   hiddenColumns,
   windowHeight,
   isTableWiderThanWindow,
@@ -57,6 +60,7 @@ const JobListTable = ({
   const [job, setJob] = useState<JobData>(initialJobData);
   const [tableBodyResponsive, setTableBodyResponsive] = useState<boolean>(false);
   const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
+
   const classes = jobListTableStyles(job?.id, tableBodyResponsive)();
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state } = useTable(
@@ -118,15 +122,15 @@ const JobListTable = ({
                       {cell.render('Cell')}
                     </Typography>
                   ) : (
-                    <Typography
-                      noWrap
-                      className={classes.tdContent}
-                      style={{ width: cell.column.width || cell.column.minWidth }}
-                      variant="body2"
-                    >
-                      {cell.render('Cell')}
-                    </Typography>
-                  )}
+                      <Typography
+                        noWrap
+                        className={classes.tdContent}
+                        style={{ width: cell.column.width || cell.column.minWidth }}
+                        variant="body2"
+                      >
+                        {cell.render('Cell')}
+                      </Typography>
+                    )}
                 </Tooltip>
               </TableCell>
             );
@@ -231,6 +235,7 @@ const JobListTable = ({
             <CircularProgress />
           </div>
         )}
+
         <MaUTable {...getTableProps()} component="div" size="small">
           <TableHead component="div">
             {headerGroups.map((headerGroup) => (
@@ -254,11 +259,18 @@ const JobListTable = ({
               </TableRow>
             ))}
           </TableHead>
-
+          {isFiltered && (
+            <Typography
+              align="center"
+              component="div"
+              style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
+            >
+              <CircularProgress />
+            </Typography>)}
           <TableBody {...getTableBodyProps()} component="div">
             {rows.length > 0 ? (
               <div style={{ display: 'flex' }}>
-                <div style={{ flex: '1 1 auto', height: `${(windowHeight - 130).toString()}px` }}>
+                <div style={{ flex: '1 1 auto', height: `${(windowHeight - 170).toString()}px` }}>
                   <AutoSizer>
                     {({ height, width }) => {
                       getTableWidth(width);
@@ -273,28 +285,26 @@ const JobListTable = ({
                 </div>
               </div>
             ) : (
-              <Typography
-                align="center"
-                component="div"
-                style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
-              >
-                {loading ? (
-                  <CircularProgress />
-                ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
-                  translations?.noEntriesFilter ? (
-                    `${translations.noEntriesFilter} : ${
-                      (state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                    }`
+                <Typography
+                  align="center"
+                  component="div"
+                  style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
+                >
+                  {loading ? (
+                    <CircularProgress />
+                  ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
+                    translations?.noEntriesFilter ? (
+                      `${translations.noEntriesFilter} : ${(state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                      }`
+                    ) : (
+                        `No job entries for selected job status : ${(state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                        }`
+                      )
                   ) : (
-                    `No job entries for selected job status : ${
-                      (state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                    }`
-                  )
-                ) : (
-                  translations?.noEntriesData || 'No job entries'
-                )}
-              </Typography>
-            )}
+                        translations?.noEntriesData || 'No job entries'
+                      )}
+                </Typography>
+              )}
           </TableBody>
         </MaUTable>
       </div>

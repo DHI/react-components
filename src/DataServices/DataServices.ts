@@ -377,8 +377,8 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
       ? `?dataSelectors=[${dataSource.dataSelectors
-          .map((dataSelector) => dataSelector.replace('data.', ''))
-          .join(',')}]`
+        .map((dataSelector) => dataSelector.replace('data.', ''))
+        .join(',')}]`
       : '';
 
   return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}${dataSelectors}`, {
@@ -393,8 +393,8 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
       ? `?dataSelectors=[${dataSource.dataSelectors
-          .map((dataSelector) => dataSelector.replace('data.', ''))
-          .join(',')}]`
+        .map((dataSelector) => dataSelector.replace('data.', ''))
+        .join(',')}]`
       : '';
 
   return fetchUrl(
@@ -435,6 +435,44 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
   }).pipe(tap((res) => console.log('scenario updated', res)));
 
 // JOBS
+
+/**
+ * /api/jobs/{connectionId}/query
+ * @param dataSource
+ * @param token 
+ * @param query array of objects { item: string, queryOperator: string, value: string}
+ * 
+ *  Gets all the jobs meeting the criteria specified by the given query.
+ */
+const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, query: JobParameters[]) => {
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
+
+  const requests = dataSourcesArray.map((source: DataSource) =>
+    fetchUrl(`${source.host}/api/jobs/${source.connection}/query`, {
+      method: 'POST',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(query),
+    }).pipe(
+      tap(
+        (res) => {
+          console.log('job executed', res);
+        },
+        (error) => {
+          console.log(error);
+        },
+      ),
+      map((job) => {
+        return dataObjectToArray(job).sort((a, b) => {
+          return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
+        });
+      })
+    ),
+  );
+
+  return forkJoin(requests).pipe(map((job) => job.flat()));
+};
 
 const executeJob = (dataSource: DataSource, token: string, taskId: any, parameters: JobParameters) => {
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
@@ -499,8 +537,8 @@ const fetchJobs = (
       !query
         ? `${source.host}/api/jobs/${source.connection}`
         : `${source.host}/api/jobs/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
-            query.since,
-          )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
+          query.since,
+        )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
       {
         method: 'GET',
         additionalHeaders: {
@@ -621,6 +659,7 @@ export {
   deleteScenario,
   postScenario,
   updateScenario,
+  executeJobQuery,
   executeJob,
   cancelJob,
   cancelJobs,

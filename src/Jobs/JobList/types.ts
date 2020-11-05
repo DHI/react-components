@@ -103,11 +103,18 @@ interface JobListTableProps {
   dateTimeFormat: string;
   /**  Boolean to inform is the data fetched. */
   loading: boolean;
+  /**  Boolean to inform is the filter is set. */
+  isFiltered: boolean;
   /** Current window height in pixels */
   windowHeight: number;
   /** check if table is wider than the current window width */
   isTableWiderThanWindow: (size: boolean) => void;
 }
 
+interface DateProps {
+  from: string;
+  to: string;
+}
+
 export default JobListProps;
-export { JobData, FilterProps, JobDetailProps, JobListTableProps };
+export { JobData, FilterProps, JobDetailProps, JobListTableProps, DateProps };

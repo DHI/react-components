@@ -1,11 +1,14 @@
+import { Button, Grid } from '@material-ui/core';
 import { zonedTimeToUtc } from 'date-fns-tz';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { SelectColumnFilter } from '../../common/tableHelper';
-import { fetchJobs } from '../../DataServices/DataServices';
+import { executeJobQuery } from '../../DataServices/DataServices';
 import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
+import DateInput from './DateInput';
 import JobListTable from './JobListTable';
 import StatusIconCell from './StatusIconCell';
-import JobListProps, { JobData } from './types';
+import JobListProps, { DateProps, JobData } from './types';
+
 
 const JobList = (props: JobListProps) => {
   const {
@@ -20,11 +23,17 @@ const JobList = (props: JobListProps) => {
     translations,
     onReceived,
   } = props;
+  const initialDateState = {
+    from: '',
+    to: ''
+  }
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [isTableWider, setIsTableWider] = useState<boolean>(false);
+  const [date, setDate] = useState<DateProps>(initialDateState);
+  const [isFiltered, setIsFiltered] = useState<boolean>(false);
 
   useEffect(() => {
     function handleResize() {
@@ -58,16 +67,16 @@ const JobList = (props: JobListProps) => {
 
   const parameterHeader = parameters
     ? parameters.reduce(
-        (acc, cur) => [
-          ...acc,
-          {
-            header: cur.label,
-            accessor: cur.parameter,
-            flexGrow: isTableWider && 1,
-          },
-        ],
-        [],
-      )
+      (acc, cur) => [
+        ...acc,
+        {
+          header: cur.label,
+          accessor: cur.parameter,
+          flexGrow: isTableWider && 1,
+        },
+      ],
+      [],
+    )
     : [];
 
   const columns = [
@@ -128,12 +137,24 @@ const JobList = (props: JobListProps) => {
 
   const TableHeadersData = useMemo(() => columns.concat(parameterHeader), [isTableWider]);
 
-  const fetchJobList = (dateTimeValue: string) => {
+  const fetchJobList = () => {
     setLoading(true);
-    const query = { since: dateTimeValue };
     const oldJobsData = jobsData;
 
-    fetchJobs(dataSources, token, query).subscribe(
+    const query = [
+      {
+        item: "Requested",
+        queryOperator: "GreaterThan",
+        value: date.from ? date.from : new Date(startTimeUtc).toISOString()
+      },
+      {
+        item: "Requested",
+        queryOperator: "LessThan",
+        value: date.to ? date.to : new Date().toISOString()
+      }
+    ];
+
+    executeJobQuery(dataSources, token, query).subscribe(
       (res) => {
         const rawJobs = res.map((s: { data }) => {
           // Mapping to JobData.
@@ -158,7 +179,7 @@ const JobList = (props: JobListProps) => {
             }
           }
 
-          const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.Id);
+          const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.id);
 
           // Remove duplicate data
           if (duplicateIndex > -1) {
@@ -167,7 +188,13 @@ const JobList = (props: JobListProps) => {
 
           return dataMapping;
         });
-        setJobsData(rawJobs.concat(oldJobsData));
+
+        if (isFiltered) {
+          setJobsData(rawJobs);
+          setIsFiltered(false);
+        } else {
+          setJobsData(rawJobs.concat(oldJobsData));
+        }
 
         const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
@@ -179,15 +206,25 @@ const JobList = (props: JobListProps) => {
     );
   };
 
+  const setFilter = () => {
+    setIsFiltered(true);
+    fetchJobList();
+  }
+
+  const clearFilter = () => {
+    setDate(initialDateState)
+  }
+
   useEffect(() => {
-    fetchJobList(startTimeUtc);
+    fetchJobList();
   }, []);
 
   useEffect(() => {
+
     let interval: any;
 
     if (startDateUtc) {
-      interval = setInterval(() => fetchJobList(startDateUtc), frequency * 1000);
+      interval = setInterval(() => fetchJobList(), frequency * 1000);
     }
 
     return () => {
@@ -196,19 +233,49 @@ const JobList = (props: JobListProps) => {
   }, [startDateUtc]);
 
   return (
-    <JobListTable
-      token={token}
-      dataSources={dataSources}
-      timeZone={timeZone}
-      dateTimeFormat={dateTimeFormat}
-      columns={TableHeadersData}
-      data={data}
-      translations={translations}
-      loading={loading}
-      hiddenColumns={disabledColumns}
-      windowHeight={windowHeight}
-      isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
-    />
+    <Fragment>
+      <Grid container direction='row' alignItems='center' justify='flex-end' spacing={3} style={{ padding: 20 }}>
+        <Grid item>
+          <DateInput
+            label='From'
+            dateFormat={dateTimeFormat}
+            timeZone={timeZone}
+            defaultDate={date.from ? date.from : new Date(startTimeUtc).toISOString()}
+            dateSelected={(value) => setDate({ ...date, from: value })}
+          />
+        </Grid>
+        <Grid item>
+          <DateInput
+            label='To'
+            dateFormat={dateTimeFormat}
+            timeZone={timeZone}
+            defaultDate={date.to ? date.to : new Date().toISOString()}
+            dateSelected={(value) => setDate({ ...date, to: value })}
+          />
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="primary" onClick={() => setFilter()}>Filter</Button>
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="secondary" onClick={() => clearFilter()}>Clear</Button>
+        </Grid>
+      </Grid>
+
+      <JobListTable
+        token={token}
+        dataSources={dataSources}
+        timeZone={timeZone}
+        dateTimeFormat={dateTimeFormat}
+        columns={TableHeadersData}
+        data={data || []}
+        translations={translations}
+        isFiltered={isFiltered}
+        loading={loading}
+        hiddenColumns={disabledColumns}
+        windowHeight={windowHeight}
+        isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
+      />
+    </Fragment>
   );
 };
 

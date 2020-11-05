@@ -1,5 +1,5 @@
-import { differenceInMinutes, parseISO } from 'date-fns';
-import { format, utcToZonedTime } from 'date-fns-tz';
+import { addHours, differenceInMinutes, parseISO } from 'date-fns';
+import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
 import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
@@ -260,6 +260,41 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
 const setUtcToZonedTime = (date, timeZone, dateTimeFormat) =>
   format(utcToZonedTime(date.replace('T', ' '), timeZone), dateTimeFormat);
 
+/**
+ * This the current utc time possibly offset by a number of hours. The returned string is without time zone
+ * @param offsetHours An optional number of hours to offset the time
+ */
+const utcNow = (offsetHours?: number | null) =>
+  format(
+    addHours(utcToZonedTime(new Date(), 'UTC'), offsetHours == null ? 0 : offsetHours),
+    'yyyy-MM-dd HH:mm:ss',
+  );
+
+/**
+ * This converts the date provided in a specific IANA time zone to UTC
+ * @param date The date in a time zone to convert. No time zone provided
+ * @param timeZone The time zone its in
+ */
+const tzToUtc = (date: string | Date, timeZone: string) =>
+  date
+    ? format(utcToZonedTime(toDate(date, { timeZone }), 'UTC'), 'yyyy-MM-dd HH:mm:ss')
+    : format(utcToZonedTime(toDate(utcNow(), { timeZone }), 'UTC'), 'yyyy-MM-dd HH:mm:ss');
+
+const toISOLocal = (d: Date) => {
+  const z = n => ('0' + n).slice(-2);
+  const zz = n => ('00' + n).slice(-3);
+  let off = d.getTimezoneOffset();
+  off = Math.abs(off);
+
+  return d.getFullYear() + '-'
+    + z(d.getMonth() + 1) + '-' +
+    z(d.getDate()) + 'T' +
+    z(d.getHours()) + ':' +
+    z(d.getMinutes()) + ':' +
+    z(d.getSeconds()) + '.' +
+    zz(d.getMilliseconds());
+}
+
 export {
   dataObjectToArray,
   getObjectProperty,
@@ -273,4 +308,6 @@ export {
   uniqueId,
   calcTimeDifference,
   setUtcToZonedTime,
+  tzToUtc,
+  toISOLocal,
 };
