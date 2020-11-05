@@ -79,6 +79,8 @@ interface FilterProps {
 
 interface JobDetailProps {
   detail: JobData;
+  /**  Boolean to scroll the Jobdetail textarea down on load. */
+  textareaScrolled: boolean;
   /** Location timezone */
   timeZone: string;
   /** Date format to be converted to */
@@ -101,13 +103,15 @@ interface JobListTableProps {
   timeZone: string;
   /** Date format to be converted to */
   dateTimeFormat: string;
-  /**  Boolean to inform is the data fetched. */
+  /** Boolean to inform is the data fetched. */
   loading: boolean;
-  /**  Boolean to inform is the filter is set. */
+  /** Boolean to inform is the filter is set. */
   isFiltered: boolean;
+  /** Boolean to scroll the Jobdetail textarea down on load. */
+  textareaScrolled: boolean;
   /** Current window height in pixels */
   windowHeight: number;
-  /** check if table is wider than the current window width */
+  /** Check if table is wider than the current window width */
   isTableWiderThanWindow: (size: boolean) => void;
 }
 

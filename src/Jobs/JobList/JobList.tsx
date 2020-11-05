@@ -1,4 +1,4 @@
-import { Button, Grid } from '@material-ui/core';
+import { Button, Divider, FormControlLabel, Grid, Switch } from '@material-ui/core';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { SelectColumnFilter } from '../../common/tableHelper';
@@ -32,6 +32,7 @@ const JobList = (props: JobListProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [isTableWider, setIsTableWider] = useState<boolean>(false);
+  const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false)
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
 
@@ -211,6 +212,10 @@ const JobList = (props: JobListProps) => {
     fetchJobList();
   }
 
+  const handleSwitchChange = () => {
+    setTextareaScrolled(!textareaScrolled);
+  }
+
   const clearFilter = () => {
     setDate(initialDateState)
   }
@@ -259,6 +264,19 @@ const JobList = (props: JobListProps) => {
         <Grid item>
           <Button variant="contained" color="secondary" onClick={() => clearFilter()}>Clear</Button>
         </Grid>
+        <Divider />
+        <Grid item>
+          <FormControlLabel
+            control={<Switch
+              checked={textareaScrolled}
+              onChange={handleSwitchChange}
+              color="primary"
+              name="textareaView"
+              inputProps={{ 'aria-label': 'textareaView checkbox' }}
+            />}
+            label="Textarea scrolled down"
+          />
+        </Grid>
       </Grid>
 
       <JobListTable
@@ -270,6 +288,7 @@ const JobList = (props: JobListProps) => {
         data={data || []}
         translations={translations}
         isFiltered={isFiltered}
+        textareaScrolled={textareaScrolled}
         loading={loading}
         hiddenColumns={disabledColumns}
         windowHeight={windowHeight}

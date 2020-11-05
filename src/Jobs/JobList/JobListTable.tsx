@@ -32,6 +32,7 @@ const JobListTable = ({
   translations,
   loading,
   isFiltered,
+  textareaScrolled,
   hiddenColumns,
   windowHeight,
   isTableWiderThanWindow,
@@ -310,7 +311,7 @@ const JobListTable = ({
       </div>
 
       <div className={classes.jobDetail}>
-        <JobDetail detail={job} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
+        <JobDetail detail={job} textareaScrolled={textareaScrolled} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
       </div>
     </div>
   );
