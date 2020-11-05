@@ -7,7 +7,7 @@ import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
 import DateInput from './DateInput';
 import JobListTable from './JobListTable';
 import StatusIconCell from './StatusIconCell';
-import JobListProps, { JobData } from './types';
+import JobListProps, { DateProps, JobData } from './types';
 
 
 const JobList = (props: JobListProps) => {
@@ -23,16 +23,18 @@ const JobList = (props: JobListProps) => {
     translations,
     onReceived,
   } = props;
+  const initialDateState = {
+    from: '',
+    to: ''
+  }
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [isTableWider, setIsTableWider] = useState<boolean>(false);
-  const [fromDate, setFromDate] = useState<string>('')
-  const [toDate, setToDate] = useState<string>('')
-  const [isFiltered, setIsFiltered] = useState<boolean>(false)
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false)
-
+  const [date, setDate] = useState<DateProps>(initialDateState);
+  const [isFiltered, setIsFiltered] = useState<boolean>(false);
 
   useEffect(() => {
     function handleResize() {
@@ -144,12 +146,12 @@ const JobList = (props: JobListProps) => {
       {
         item: "Requested",
         queryOperator: "GreaterThan",
-        value: fromDate ? fromDate : new Date(startTimeUtc).toISOString()
+        value: date.from ? date.from : new Date(startTimeUtc).toISOString()
       },
       {
         item: "Requested",
         queryOperator: "LessThan",
-        value: toDate ? toDate : new Date().toISOString()
+        value: date.to ? date.to : new Date().toISOString()
       }
     ];
 
@@ -178,7 +180,7 @@ const JobList = (props: JobListProps) => {
             }
           }
 
-          const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.Id);
+          const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.id);
 
           // Remove duplicate data
           if (duplicateIndex > -1) {
@@ -187,12 +189,17 @@ const JobList = (props: JobListProps) => {
 
           return dataMapping;
         });
-        setJobsData(rawJobs.concat(oldJobsData));
+
+        if (isFiltered) {
+          setJobsData(rawJobs);
+          setIsFiltered(false);
+        } else {
+          setJobsData(rawJobs.concat(oldJobsData));
+        }
 
         const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
         setStartDateUtc(utcDate);
-        setIsFiltered(false);
       },
       (error) => {
         console.log(error);
@@ -209,11 +216,16 @@ const JobList = (props: JobListProps) => {
     setTextareaScrolled(!textareaScrolled);
   }
 
+  const clearFilter = () => {
+    setDate(initialDateState)
+  }
+
   useEffect(() => {
     fetchJobList();
   }, []);
 
   useEffect(() => {
+
     let interval: any;
 
     if (startDateUtc) {
@@ -233,8 +245,8 @@ const JobList = (props: JobListProps) => {
             label='From'
             dateFormat={dateTimeFormat}
             timeZone={timeZone}
-            defaultDate={fromDate ? fromDate : new Date(startTimeUtc).toISOString()}
-            dateSelected={(value) => setFromDate(value)}
+            defaultDate={date.from ? date.from : new Date(startTimeUtc).toISOString()}
+            dateSelected={(value) => setDate({ ...date, from: value })}
           />
         </Grid>
         <Grid item>
@@ -242,11 +254,16 @@ const JobList = (props: JobListProps) => {
             label='To'
             dateFormat={dateTimeFormat}
             timeZone={timeZone}
-            defaultDate={toDate ? toDate : new Date().toISOString()}
-            dateSelected={(value) => setToDate(value)}
+            defaultDate={date.to ? date.to : new Date().toISOString()}
+            dateSelected={(value) => setDate({ ...date, to: value })}
           />
         </Grid>
-        <Grid item> <Button variant="contained" color="primary" onClick={() => setFilter()}>Filter</Button></Grid>
+        <Grid item>
+          <Button variant="contained" color="primary" onClick={() => setFilter()}>Filter</Button>
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="secondary" onClick={() => clearFilter()}>Clear</Button>
+        </Grid>
         <Divider />
         <Grid item>
           <FormControlLabel
@@ -268,7 +285,7 @@ const JobList = (props: JobListProps) => {
         timeZone={timeZone}
         dateTimeFormat={dateTimeFormat}
         columns={TableHeadersData}
-        data={data}
+        data={data || []}
         translations={translations}
         isFiltered={isFiltered}
         textareaScrolled={textareaScrolled}
