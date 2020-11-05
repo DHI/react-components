@@ -111,5 +111,10 @@ interface JobListTableProps {
   isTableWiderThanWindow: (size: boolean) => void;
 }
 
+interface DateProps {
+  from: string;
+  to: string;
+}
+
 export default JobListProps;
-export { JobData, FilterProps, JobDetailProps, JobListTableProps };
+export { JobData, FilterProps, JobDetailProps, JobListTableProps, DateProps };
