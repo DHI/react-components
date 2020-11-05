@@ -260,53 +260,56 @@ const JobListTable = ({
               </TableRow>
             ))}
           </TableHead>
-          {isFiltered && (
+          {isFiltered ? (
             <Typography
               align="center"
               component="div"
-              style={{ lineHeight: `${(windowHeight - 230).toString()}px`, color: '#999999' }}
+              style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
             >
               <CircularProgress />
-            </Typography>)}
-          <TableBody {...getTableBodyProps()} component="div">
-            {rows.length > 0 ? (
-              <div style={{ display: 'flex' }}>
-                <div style={{ flex: '1 1 auto', height: `${(windowHeight - 270).toString()}px` }}>
-                  <AutoSizer>
-                    {({ height, width }) => {
-                      getTableWidth(width);
+            </Typography>) : (
 
-                      return (
-                        <FixedSizeList height={height} itemCount={rows.length} itemSize={50} width={width}>
-                          {RenderRow}
-                        </FixedSizeList>
-                      );
-                    }}
-                  </AutoSizer>
-                </div>
-              </div>
-            ) : (
-                <Typography
-                  align="center"
-                  component="div"
-                  style={{ lineHeight: `${(windowHeight - 230).toString()}px`, color: '#999999' }}
-                >
-                  {loading ? (
-                    <CircularProgress />
-                  ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
-                    translations?.noEntriesFilter ? (
-                      `${translations.noEntriesFilter} : ${(state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                      }`
-                    ) : (
-                        `No job entries for selected job status : ${(state as any).filters.find((x: { id: string }) => x.id === 'status').value
-                        }`
-                      )
-                  ) : (
-                        translations?.noEntriesData || 'No job entries'
-                      )}
-                </Typography>
-              )}
-          </TableBody>
+
+              <TableBody {...getTableBodyProps()} component="div">
+                {rows.length > 0 ? (
+                  <div style={{ display: 'flex' }}>
+                    <div style={{ flex: '1 1 auto', height: `${(windowHeight - 270).toString()}px` }}>
+                      <AutoSizer>
+                        {({ height, width }) => {
+                          getTableWidth(width);
+
+                          return (
+                            <FixedSizeList height={height} itemCount={rows.length} itemSize={50} width={width}>
+                              {RenderRow}
+                            </FixedSizeList>
+                          );
+                        }}
+                      </AutoSizer>
+                    </div>
+                  </div>
+                ) : (
+                    <Typography
+                      align="center"
+                      component="div"
+                      style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
+                    >
+                      {loading ? (
+                        <CircularProgress />
+                      ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'status') > -1 ? (
+                        translations?.noEntriesFilter ? (
+                          `${translations.noEntriesFilter} : ${(state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                          }`
+                        ) : (
+                            `No job entries for selected job status : ${(state as any).filters.find((x: { id: string }) => x.id === 'status').value
+                            }`
+                          )
+                      ) : (
+                            translations?.noEntriesData || 'No job entries'
+                          )}
+                    </Typography>
+                  )}
+              </TableBody>
+            )}
         </MaUTable>
       </div>
 
