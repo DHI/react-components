@@ -264,7 +264,7 @@ const JobListTable = ({
             <Typography
               align="center"
               component="div"
-              style={{ lineHeight: `${(windowHeight - 130).toString()}px`, color: '#999999' }}
+              style={{ lineHeight: `${(windowHeight - 230).toString()}px`, color: '#999999' }}
             >
               <CircularProgress />
             </Typography>)}
