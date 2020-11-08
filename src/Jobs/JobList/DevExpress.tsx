@@ -1,9 +1,9 @@
 import { FilteringState, GroupingState, IntegratedFiltering, IntegratedGrouping } from '@devexpress/dx-react-grid';
-import { ColumnChooser, Grid, TableColumnVisibility, TableFilterRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
+import { ColumnChooser, Grid, TableColumnVisibility, TableFilterRow, TableGroupRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
 import { FormControlLabel, Switch } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { zonedTimeToUtc } from 'date-fns-tz';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { executeJobQuery } from '../../DataServices/DataServices';
 import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
 import StatusCell from './DevX/StatusCell';
@@ -42,7 +42,7 @@ const DevExpress = (props: JobListProps) => {
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-  const [isTableWider, setIsTableWider] = useState<boolean>(false);
+
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false)
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
@@ -202,7 +202,8 @@ const DevExpress = (props: JobListProps) => {
 
   const GroupCellContent = (props: any) => (
     <span>
-      <strong>{props.row.value}</strong> ({jobsData.filter((row: any) => row.taskId === props.row.value).length} /{' '}
+      <strong>{props.row.value}</strong>
+      {` ${jobsData.filter((row: any) => row.taskId === props.row.value).length} / `}
       {/* {selectedRows.filter((row: any) => row.GroupId === props.row.value).length}) */}
     </span>
   );
@@ -216,6 +217,10 @@ const DevExpress = (props: JobListProps) => {
         <FilteringState defaultFilters={[]} />
         <IntegratedFiltering />
 
+        {isGrouped && (<GroupingState grouping={[{ columnName: 'taskId' }]} />)}
+        {isGrouped && (<IntegratedGrouping />)}
+
+
         <VirtualTable
           height={windowHeight - 150}
           rowComponent={TableRow}
@@ -223,18 +228,10 @@ const DevExpress = (props: JobListProps) => {
           columnExtensions={tableColumnExtensions}
         />
 
-        {isGrouped && (
-          <Fragment>
-            <GroupingState grouping={[{ columnName: 'taskId' }]} />
-
-            {/* <TableGroupRow contentComponent={GroupCellContent} /> */}
-          </Fragment>
-        )}
-        {isGrouped && (<IntegratedGrouping />)}
-
         <TableHeaderRow />
         <TableFilterRow />
 
+        {isGrouped && (<TableGroupRow contentComponent={GroupCellContent} />)}
         <Toolbar rootComponent={ToolbarRootComponent} />
         <TableColumnVisibility defaultHiddenColumnNames={defaultHiddenColumnNames} />
         <ColumnChooser />
