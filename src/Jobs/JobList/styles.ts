@@ -86,7 +86,7 @@ export const JobDetailStyles = makeStyles((theme: Theme) => ({
     minHeight: 400,
     overflow: 'scroll',
     whiteSpace: 'nowrap',
-    height: 'calc(100% - 140px)',
+    height: 'calc(100% - 180px)',
     marginTop: theme.spacing(2),
   },
 }));

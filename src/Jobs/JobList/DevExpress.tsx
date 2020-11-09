@@ -308,7 +308,7 @@ const DevExpress = (props: JobListProps) => {
   }, [startDateUtc]);
 
   return (
-    <div style={{ display: 'flex', position: 'relative', overflow: 'hidden' }}>
+    <div className={classes.wrapper}>
       <Paper style={{ position: 'relative' }}>
         {loading && <Loading />}
 
