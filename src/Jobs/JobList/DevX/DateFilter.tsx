@@ -1,17 +1,18 @@
 import { Button, Grid } from '@material-ui/core';
-import React from 'react';
+import React, { FC } from 'react';
 import DateInput from '../DateInput';
 import { DateFilterProps } from './types';
 
-const DateFilter = ({
+const DateFilter: FC<DateFilterProps> = ({
   dateTimeFormat,
   startTimeUtc,
   timeZone,
   date,
   onSetDate,
   onSetDateFilter,
-  onClearDateFilter
-}: DateFilterProps) => {
+  onClearDateFilter,
+  children,
+}) => {
 
   return (
     <Grid container direction='row' alignItems='center' justify='flex-end' spacing={3} >
@@ -39,6 +40,7 @@ const DateFilter = ({
       <Grid item>
         <Button variant="contained" color="secondary" onClick={() => onClearDateFilter()}>Clear</Button>
       </Grid>
+      {children}
     </Grid>
   );
 }

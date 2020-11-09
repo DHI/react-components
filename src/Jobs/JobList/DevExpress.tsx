@@ -1,6 +1,6 @@
 import { FilteringState, GroupingState, IntegratedFiltering, IntegratedGrouping, IntegratedSorting, SortingState } from '@devexpress/dx-react-grid';
 import { ColumnChooser, DragDropProvider, Grid, GroupingPanel, TableColumnVisibility, TableFilterRow, TableGroupRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { Paper } from '@material-ui/core';
+import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useState } from 'react';
 import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
@@ -260,7 +260,21 @@ const DevExpress = (props: JobListProps) => {
         onSetDate={(date) => setDate(date)}
         onSetDateFilter={setDateFilter}
         onClearDateFilter={clearDateFilter}
-      />
+      >
+
+        <MUIGrid item>
+          <FormControlLabel
+            control={<Switch
+              checked={textareaScrolled}
+              onChange={() => setTextareaScrolled(!textareaScrolled)}
+              color="primary"
+              name="textareaView"
+              inputProps={{ 'aria-label': 'textareaView checkbox' }}
+            />}
+            label="Textarea scrolled down"
+          />
+        </MUIGrid>
+      </DateFilter>
     </div >
   );
 
