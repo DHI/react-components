@@ -1,11 +1,12 @@
-import { FilteringState, GroupingState, IntegratedFiltering, IntegratedGrouping } from '@devexpress/dx-react-grid';
-import { ColumnChooser, Grid, TableColumnVisibility, TableFilterRow, TableGroupRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { FormControlLabel, Switch } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
+import { FilteringState, GroupingState, IntegratedFiltering, IntegratedGrouping, IntegratedSorting, SortingState } from '@devexpress/dx-react-grid';
+import { ColumnChooser, DragDropProvider, Grid, GroupingPanel, TableColumnVisibility, TableFilterRow, TableGroupRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
+import { Button, Grid as MUIGrid, Paper } from '@material-ui/core';
+import { format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useState } from 'react';
 import { executeJobQuery } from '../../DataServices/DataServices';
 import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
+import DateInput from './DateInput';
 import StatusCell from './DevX/StatusCell';
 import JobListProps, { DateProps, JobData } from './types';
 
@@ -46,13 +47,28 @@ const DevExpress = (props: JobListProps) => {
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false)
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
-  const [isGrouped, setIsGrouped] = useState<boolean>(false);
 
   const [tableColumnExtensions] = useState([
-    { columnName: 'status', width: 80 },
+    { columnName: 'status', width: 120 },
+  ]);
+
+  const [tableGroupColumnExtension] = useState([
+    { columnName: 'requested', showWhenGrouped: true },
+    { columnName: 'started', showWhenGrouped: true },
+    { columnName: 'finished', showWhenGrouped: true },
   ]);
 
   const [defaultHiddenColumnNames] = useState(["accountId", "delay", "Area"]);
+
+  const dateGroupCriteria = value => {
+    return { key: format(new Date(value), 'yyyy-MM-dd - HH:00') }
+  };
+  const [integratedGroupingColumnExtensions] = useState([
+    { columnName: 'requested', criteria: dateGroupCriteria },
+    { columnName: 'started', criteria: dateGroupCriteria },
+    { columnName: 'finished', criteria: dateGroupCriteria },
+  ]);
+
 
   const fetchJobList = () => {
     setLoading(true);
@@ -108,7 +124,6 @@ const DevExpress = (props: JobListProps) => {
 
         if (isFiltered) {
           setJobsData(rawJobs);
-          setIsFiltered(false);
         } else {
           setJobsData(rawJobs.concat(oldJobsData));
         }
@@ -125,7 +140,7 @@ const DevExpress = (props: JobListProps) => {
 
   useEffect(() => {
     fetchJobList();
-  }, [])
+  }, [isFiltered])
 
   useEffect(() => {
     const handleResize = () => {
@@ -167,7 +182,6 @@ const DevExpress = (props: JobListProps) => {
 
 
   const [columns] = useState(DEFAULT_COLUMNS.concat(parameterHeader))
-  // useEffect(() => setColumns(DEFAULT_COLUMNS.concat(parameterHeader)), []);
 
   const TableRow = (props: any) => {
     return <VirtualTable.Row {...props} style={{ cursor: 'pointer' }} onClick={() => console.log(JSON.stringify(props.row))} />
@@ -182,29 +196,54 @@ const DevExpress = (props: JobListProps) => {
     return <VirtualTable.Cell {...props} />
   }
 
+  const setDateFilter = () => {
+    setIsFiltered(true);
+    fetchJobList();
+  }
+
+  const clearDateFilter = () => {
+    setIsFiltered(false);
+    setDate(initialDateState)
+  }
+
   const ToolbarRootComponent = (props: any) => (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      { props.children}
-      <FormControlLabel
-        control={<Switch
-          checked={isGrouped}
-          onChange={(e: any, newValue: boolean) => {
-            setIsGrouped(newValue);
-          }}
-          color="primary"
-          name="groupedCells"
-          inputProps={{ 'aria-label': 'Grouped checkbox' }}
-        />}
-        label="Grouped"
-      />
-    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
+      <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>
+        {props.children}
+      </div>
+      <MUIGrid container direction='row' alignItems='center' justify='flex-end' spacing={3} >
+        <MUIGrid item>
+          <DateInput
+            label='From'
+            dateFormat={dateTimeFormat}
+            timeZone={timeZone}
+            defaultDate={date.from ? date.from : new Date(startTimeUtc).toISOString()}
+            dateSelected={(value) => setDate({ ...date, from: value })}
+          />
+        </MUIGrid>
+        <MUIGrid item>
+          <DateInput
+            label='To'
+            dateFormat={dateTimeFormat}
+            timeZone={timeZone}
+            defaultDate={date.to ? date.to : new Date().toISOString()}
+            dateSelected={(value) => setDate({ ...date, to: value })}
+          />
+        </MUIGrid>
+        <MUIGrid item>
+          <Button variant="contained" color="primary" onClick={() => setDateFilter()}>Filter</Button>
+        </MUIGrid>
+        <MUIGrid item>
+          <Button variant="contained" color="secondary" onClick={() => clearDateFilter()}>Clear</Button>
+        </MUIGrid>
+      </MUIGrid>
+
+    </div >
   );
 
   const GroupCellContent = (props: any) => (
     <span>
       <strong>{props.row.value}</strong>
-      {` ${jobsData.filter((row: any) => row.taskId === props.row.value).length} / `}
-      {/* {selectedRows.filter((row: any) => row.GroupId === props.row.value).length}) */}
     </span>
   );
 
@@ -217,9 +256,14 @@ const DevExpress = (props: JobListProps) => {
         <FilteringState defaultFilters={[]} />
         <IntegratedFiltering />
 
-        {isGrouped && (<GroupingState grouping={[{ columnName: 'taskId' }]} />)}
-        {isGrouped && (<IntegratedGrouping />)}
+        <SortingState defaultSorting={[{ columnName: 'requested', direction: 'desc' }]} />
+        <IntegratedSorting />
 
+        <DragDropProvider />
+        <GroupingState />
+        <IntegratedGrouping
+          columnExtensions={integratedGroupingColumnExtensions}
+        />
 
         <VirtualTable
           height={windowHeight - 150}
@@ -228,11 +272,16 @@ const DevExpress = (props: JobListProps) => {
           columnExtensions={tableColumnExtensions}
         />
 
-        <TableHeaderRow />
+        <TableHeaderRow showSortingControls />
         <TableFilterRow />
 
-        {isGrouped && (<TableGroupRow contentComponent={GroupCellContent} />)}
+        <TableGroupRow
+          contentComponent={GroupCellContent}
+          columnExtensions={tableGroupColumnExtension}
+        />
         <Toolbar rootComponent={ToolbarRootComponent} />
+        <GroupingPanel showGroupingControls />
+
         <TableColumnVisibility defaultHiddenColumnNames={defaultHiddenColumnNames} />
         <ColumnChooser />
       </Grid>
