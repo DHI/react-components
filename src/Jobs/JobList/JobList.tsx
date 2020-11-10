@@ -337,7 +337,7 @@ const JobList = (props: JobListProps) => {
           />
 
           <VirtualTable
-            height={windowHeight - 150}
+            height={windowHeight - 230}
             rowComponent={TableRow}
             cellComponent={Cell}
             columnExtensions={tableColumnExtensions}
