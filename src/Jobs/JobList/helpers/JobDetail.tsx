@@ -1,9 +1,9 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import React, { useCallback, useEffect, useState } from 'react';
-import { setUtcToZonedTime } from '../../utils/Utils';
-import { JobDetailStyles } from './styles';
-import { JobDetailProps } from './types';
+import { setUtcToZonedTime } from '../../../utils/Utils';
+import { JobDetailStyles } from '../styles';
+import { JobDetailProps } from '../types';
 
 const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose }: JobDetailProps) => {
   const classes = JobDetailStyles();

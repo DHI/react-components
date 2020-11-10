@@ -1,14 +1,28 @@
-import { Button, Divider, FormControlLabel, Grid, Switch } from '@material-ui/core';
+import { FilteringState, GroupingState, IntegratedFiltering, IntegratedGrouping, IntegratedSorting, SortingState } from '@devexpress/dx-react-grid';
+import { ColumnChooser, DragDropProvider, Grid, GroupingPanel, TableColumnVisibility, TableFilterRow, TableGroupRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
+import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { zonedTimeToUtc } from 'date-fns-tz';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import { SelectColumnFilter } from '../../common/tableHelper';
-import { executeJobQuery } from '../../DataServices/DataServices';
+import React, { useEffect, useState } from 'react';
+import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
 import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
-import DateInput from './DateInput';
-import JobListTable from './JobListTable';
-import StatusIconCell from './StatusIconCell';
+import { DateFilter } from './helpers/DateFilter';
+import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
+import JobDetail from './helpers/JobDetail';
+import { Loading } from './helpers/Loading';
+import { JobPanelStyles } from './styles';
 import JobListProps, { DateProps, JobData } from './types';
 
+const DEFAULT_COLUMNS = [
+  { title: 'Task Id', name: 'taskId' },
+  { title: 'Status', name: 'status', width: 80 },
+  { title: 'Account ID', name: 'accountId' },
+  { title: 'Host Id', name: 'hostId' },
+  { title: 'Duration', name: 'duration' },
+  { title: 'Delay', name: 'delay' },
+  { title: 'Requested', name: 'requested' },
+  { title: 'Started', name: 'started' },
+  { title: 'Finished', name: 'finished' },
+];
 
 const JobList = (props: JobListProps) => {
   const {
@@ -20,123 +34,52 @@ const JobList = (props: JobListProps) => {
     startTimeUtc,
     dateTimeFormat,
     timeZone,
-    translations,
-    onReceived,
   } = props;
   const initialDateState = {
     from: '',
     to: ''
   }
+  const initialJobData = {
+    id: '',
+    taskId: '',
+    accountId: '',
+    status: '',
+    hostId: '',
+    duration: '',
+    delay: '',
+    requested: '',
+    started: '',
+    finished: '',
+    progress: 0,
+    connectionJobLog: '',
+  };
+
+  const [job, setJob] = useState<JobData>(initialJobData);
+  const classes = JobPanelStyles(job?.id)();
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [jobsData, setJobsData] = useState<JobData[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-  const [isTableWider, setIsTableWider] = useState<boolean>(false);
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false)
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState<string>('');
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowHeight(window.innerHeight);
-    }
+  const [tableColumnExtensions] = useState([
+    { columnName: 'status', width: 120 },
+  ]);
 
-    window.addEventListener('resize', handleResize);
+  const [tableGroupColumnExtension] = useState([
+    { columnName: 'requested', showWhenGrouped: true },
+    { columnName: 'started', showWhenGrouped: true },
+    { columnName: 'finished', showWhenGrouped: true },
+  ]);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
-
-  const onJobsRecieved = (data: JobData[]) => {
-    return data.reduce(function (obj, v) {
-      obj[v.status] = (obj[v.status] || 0) + 1;
-
-      return obj;
-    }, {});
-  };
-
-  const data = useMemo(() => {
-    setLoading(false);
-
-    if (onReceived) {
-      onReceived(onJobsRecieved(jobsData));
-    }
-
-    return jobsData;
-  }, [jobsData]);
-
-  const parameterHeader = parameters
-    ? parameters.reduce(
-      (acc, cur) => [
-        ...acc,
-        {
-          header: cur.label,
-          accessor: cur.parameter,
-          flexGrow: isTableWider && 1,
-        },
-      ],
-      [],
-    )
-    : [];
-
-  const columns = [
-    {
-      header: 'Task Id',
-      accessor: 'taskId',
-      Filter: SelectColumnFilter,
-      width: 220,
-    },
-    {
-      category: 'Status',
-      header: 'Status',
-      accessor: 'status',
-      Cell: StatusIconCell,
-      Filter: SelectColumnFilter,
-      width: 120,
-    },
-    {
-      header: 'Account ID',
-      accessor: 'accountId',
-      width: 120,
-    },
-    {
-      header: 'Host Id',
-      accessor: 'hostId',
-      Filter: SelectColumnFilter,
-      width: 150,
-    },
-    {
-      header: 'Duration',
-      accessor: 'duration',
-      width: 120,
-    },
-    {
-      header: 'Delay',
-      accessor: 'delay',
-      width: 120,
-    },
-    {
-      header: 'Requested',
-      accessor: 'requested',
-      width: 200,
-      flexGrow: isTableWider && 1,
-    },
-    {
-      header: 'Started',
-      accessor: 'started',
-      width: 200,
-      flexGrow: isTableWider && 1,
-    },
-    {
-      header: 'Finished',
-      accessor: 'finished',
-      width: 200,
-      flexGrow: isTableWider && 1,
-    },
-  ];
-
-  const TableHeadersData = useMemo(() => columns.concat(parameterHeader), [isTableWider]);
+  const [integratedGroupingColumnExtensions] = useState([
+    { columnName: 'requested', criteria: dateGroupCriteria },
+    { columnName: 'started', criteria: dateGroupCriteria },
+    { columnName: 'finished', criteria: dateGroupCriteria },
+  ]);
 
   const fetchJobList = () => {
     setLoading(true);
@@ -192,7 +135,6 @@ const JobList = (props: JobListProps) => {
 
         if (isFiltered) {
           setJobsData(rawJobs);
-          setIsFiltered(false);
         } else {
           setJobsData(rawJobs.concat(oldJobsData));
         }
@@ -200,6 +142,7 @@ const JobList = (props: JobListProps) => {
         const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
         setStartDateUtc(utcDate);
+        setLoading(false)
       },
       (error) => {
         console.log(error);
@@ -207,22 +150,157 @@ const JobList = (props: JobListProps) => {
     );
   };
 
-  const setFilter = () => {
+  const parameterHeader = parameters
+    ? parameters.reduce(
+      (acc, cur) => [
+        ...acc,
+        {
+          title: cur.label,
+          name: cur.parameter,
+        },
+      ],
+      [],
+    )
+    : [];
+
+  const [columns] = useState(DEFAULT_COLUMNS.concat(parameterHeader))
+
+  const expandWithData = (row) => {
+
+    const {
+      id = '',
+      taskId = '',
+      accountId = '',
+      status = '',
+      hostId = '',
+      duration = '',
+      delay = '',
+      requested = '',
+      started = '',
+      finished = '',
+      progress = 0,
+      connectionJobLog = '',
+    } = row;
+
+    if (job.id === id) {
+      setJob(initialJobData);
+      setSelectedRow('');
+    } else {
+      setLoading(true);
+      setSelectedRow(id);
+      const query = [
+        {
+          Item: 'Tag',
+          Value: id,
+          QueryOperator: 'Equal',
+        },
+      ];
+
+      const sources = dataSources.map((item) => ({
+        host: item.host,
+        connection: item.connectionJobLog,
+      }));
+
+      fetchLogs(sources, token, query).subscribe(
+        (res) => {
+          const logs = res.map((item) => item.data);
+
+          setJob({
+            id,
+            taskId,
+            accountId,
+            status,
+            hostId,
+            duration,
+            delay,
+            requested,
+            started,
+            finished,
+            progress,
+            connectionJobLog,
+            logs,
+          });
+
+          setLoading(false);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    }
+  };
+
+  const closeTab = () => {
+    setJob(initialJobData);
+  };
+
+  const setDateFilter = () => {
     setIsFiltered(true);
     fetchJobList();
   }
 
-  const handleSwitchChange = () => {
-    setTextareaScrolled(!textareaScrolled);
-  }
-
-  const clearFilter = () => {
+  const clearDateFilter = () => {
+    setIsFiltered(false);
     setDate(initialDateState)
   }
 
+  const TableRow = (props: any) => (
+    <VirtualTable.Row
+      {...props}
+      style={{
+        cursor: 'pointer',
+        backgroundColor: selectedRow === props.row.id ? '#f5f5f5' : 'transparent'
+      }}
+      onClick={() => expandWithData(props.tableRow.row)}
+    />
+  );
+
+  const ToolbarRootComponent = (props: any) => (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
+      <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>
+        {props.children}
+      </div>
+      <DateFilter
+        dateTimeFormat={dateTimeFormat}
+        startTimeUtc={startTimeUtc}
+        timeZone={timeZone}
+        date={date}
+        onSetDate={(date) => setDate(date)}
+        onSetDateFilter={setDateFilter}
+        onClearDateFilter={clearDateFilter}
+      >
+
+        <MUIGrid item>
+          <FormControlLabel
+            control={<Switch
+              checked={textareaScrolled}
+              onChange={() => setTextareaScrolled(!textareaScrolled)}
+              color="primary"
+              name="textareaView"
+              inputProps={{ 'aria-label': 'textareaView checkbox' }}
+            />}
+            label="Textarea scrolled down"
+          />
+        </MUIGrid>
+      </DateFilter>
+    </div >
+  );
+
   useEffect(() => {
     fetchJobList();
-  }, []);
+  }, [isFiltered])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }), [];
 
   useEffect(() => {
 
@@ -238,64 +316,53 @@ const JobList = (props: JobListProps) => {
   }, [startDateUtc]);
 
   return (
-    <Fragment>
-      <Grid container direction='row' alignItems='center' justify='flex-end' spacing={3} style={{ padding: 20 }}>
-        <Grid item>
-          <DateInput
-            label='From'
-            dateFormat={dateTimeFormat}
-            timeZone={timeZone}
-            defaultDate={date.from ? date.from : new Date(startTimeUtc).toISOString()}
-            dateSelected={(value) => setDate({ ...date, from: value })}
-          />
-        </Grid>
-        <Grid item>
-          <DateInput
-            label='To'
-            dateFormat={dateTimeFormat}
-            timeZone={timeZone}
-            defaultDate={date.to ? date.to : new Date().toISOString()}
-            dateSelected={(value) => setDate({ ...date, to: value })}
-          />
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="primary" onClick={() => setFilter()}>Filter</Button>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="secondary" onClick={() => clearFilter()}>Clear</Button>
-        </Grid>
-        <Divider />
-        <Grid item>
-          <FormControlLabel
-            control={<Switch
-              checked={textareaScrolled}
-              onChange={handleSwitchChange}
-              color="primary"
-              name="textareaView"
-              inputProps={{ 'aria-label': 'textareaView checkbox' }}
-            />}
-            label="Textarea scrolled down"
-          />
-        </Grid>
-      </Grid>
+    <div className={classes.wrapper}>
+      <Paper style={{ position: 'relative' }}>
+        {loading && <Loading />}
 
-      <JobListTable
-        token={token}
-        dataSources={dataSources}
-        timeZone={timeZone}
-        dateTimeFormat={dateTimeFormat}
-        columns={TableHeadersData}
-        data={data || []}
-        translations={translations}
-        isFiltered={isFiltered}
-        textareaScrolled={textareaScrolled}
-        loading={loading}
-        hiddenColumns={disabledColumns}
-        windowHeight={windowHeight}
-        isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
-      />
-    </Fragment>
-  );
-};
+        <Grid
+          rows={jobsData}
+          columns={columns}
+        >
+          <FilteringState defaultFilters={[]} />
+          <IntegratedFiltering />
 
-export { JobListProps, JobList };
+          <SortingState defaultSorting={[{ columnName: 'requested', direction: 'desc' }]} />
+          <IntegratedSorting />
+
+          <DragDropProvider />
+          <GroupingState />
+          <IntegratedGrouping
+            columnExtensions={integratedGroupingColumnExtensions}
+          />
+
+          <VirtualTable
+            height={windowHeight - 150}
+            rowComponent={TableRow}
+            cellComponent={Cell}
+            columnExtensions={tableColumnExtensions}
+          />
+
+          <TableHeaderRow showSortingControls />
+          <TableFilterRow />
+
+          <TableGroupRow
+            contentComponent={GroupCellContent}
+            columnExtensions={tableGroupColumnExtension}
+          />
+          <Toolbar rootComponent={ToolbarRootComponent} />
+          <GroupingPanel showGroupingControls />
+
+          <TableColumnVisibility defaultHiddenColumnNames={disabledColumns} />
+          <ColumnChooser />
+        </Grid>
+
+      </Paper>
+      <div className={classes.jobPanel}>
+        <JobDetail detail={job} textareaScrolled={textareaScrolled} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
+      </div>
+    </div>
+  )
+}
+
+export { JobList, JobListProps };

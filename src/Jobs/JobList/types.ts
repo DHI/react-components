@@ -89,36 +89,21 @@ interface JobDetailProps {
   onClose: () => void;
 }
 
-interface JobListTableProps {
-  columns: any;
-  hiddenColumns: string[];
-  translations: any;
-  /** Job Data */
-  data: JobData[];
-  /** Authorization header to backend call */
-  token: string;
-  /** Data source to get the logs data */
-  dataSources: DataSource[];
-  /** Location timezone */
-  timeZone: string;
-  /** Date format to be converted to */
-  dateTimeFormat: string;
-  /** Boolean to inform is the data fetched. */
-  loading: boolean;
-  /** Boolean to inform is the filter is set. */
-  isFiltered: boolean;
-  /** Boolean to scroll the Jobdetail textarea down on load. */
-  textareaScrolled: boolean;
-  /** Current window height in pixels */
-  windowHeight: number;
-  /** Check if table is wider than the current window width */
-  isTableWiderThanWindow: (size: boolean) => void;
-}
-
 interface DateProps {
   from: string;
   to: string;
 }
 
+interface DateFilterProps {
+  dateTimeFormat: string;
+  startTimeUtc: string;
+  timeZone: string;
+  date: DateProps;
+  onSetDate: (date: DateProps) => void;
+  onSetDateFilter: () => void;
+  onClearDateFilter: () => void;
+}
+
+
 export default JobListProps;
-export { JobData, FilterProps, JobDetailProps, JobListTableProps, DateProps };
+export { JobData, FilterProps, JobDetailProps, DateFilterProps, DateProps };
