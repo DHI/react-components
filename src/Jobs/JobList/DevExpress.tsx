@@ -65,6 +65,7 @@ const DevExpress = (props: JobListProps) => {
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false)
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState<string>('');
 
   const [tableColumnExtensions] = useState([
     { columnName: 'status', width: 120 },
@@ -185,8 +186,10 @@ const DevExpress = (props: JobListProps) => {
 
     if (job.id === id) {
       setJob(initialJobData);
+      setSelectedRow('');
     } else {
       setLoading(true);
+      setSelectedRow(id);
       const query = [
         {
           Item: 'Tag',
@@ -243,9 +246,16 @@ const DevExpress = (props: JobListProps) => {
     setDate(initialDateState)
   }
 
-  const TableRow = (props: any) => {
-    return <VirtualTable.Row {...props} style={{ cursor: 'pointer' }} onClick={() => expandWithData(props.row)} />
-  };
+  const TableRow = (props: any) => (
+    <VirtualTable.Row
+      {...props}
+      style={{
+        cursor: 'pointer',
+        backgroundColor: selectedRow === props.row.id ? '#f5f5f5' : 'transparent'
+      }}
+      onClick={() => expandWithData(props.tableRow.row)}
+    />
+  );
 
   const ToolbarRootComponent = (props: any) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
