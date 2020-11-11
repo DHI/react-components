@@ -1,11 +1,12 @@
+import { Meta } from '@storybook/react/types-6-0';
 import React from 'react';
 import { Login } from '..';
 import { Token, User } from './types';
 
 export default {
   title: 'Auth',
-  component: [Login],
-};
+  component: Login,
+} as Meta;
 
 export const LoginStory = () => {
   const [state, setState] = React.useState<{

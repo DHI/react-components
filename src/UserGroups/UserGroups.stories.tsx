@@ -1,12 +1,13 @@
-import * as React from 'react';
+import { Meta } from '@storybook/react/types-6-0';
+import React from 'react';
 import { LoginGate } from '../Auth/LoginGate';
-import { UserGroups } from './UserGroups';
 import { MetadataProps } from '../common/Metadata/types';
+import { UserGroups } from './UserGroups';
 
 export default {
   title: 'User Groups',
-  component: [UserGroups],
-};
+  component: UserGroups,
+} as Meta;
 
 const host = process.env.ENDPOINT_URL;
 

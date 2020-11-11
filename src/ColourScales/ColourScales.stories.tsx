@@ -1,12 +1,13 @@
 import { withKnobs } from '@storybook/addon-knobs';
+import { Meta } from '@storybook/react/types-6-0';
 import React from 'react';
 import { ColourScale } from './ColourScale';
 
 export default {
   title: 'Colour Scale Components',
-  component: [ColourScale],
+  component: ColourScale,
   decorators: [withKnobs],
-};
+} as Meta;
 
 export const ColourScalesStory = () => {
   return (

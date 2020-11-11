@@ -1,12 +1,13 @@
+import { Meta } from '@storybook/react/types-6-0';
 import * as React from 'react';
 import { LoginGate } from '../Auth/LoginGate';
-import { Accounts } from './Accounts';
 import { MetadataProps } from '../common/Metadata/types';
+import { Accounts } from './Accounts';
 
 export default {
   title: 'Accounts',
-  component: [Accounts],
-};
+  component: Accounts,
+} as Meta;
 
 const host = process.env.ENDPOINT_URL;
 
