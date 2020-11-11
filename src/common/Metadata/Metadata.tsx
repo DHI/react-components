@@ -1,6 +1,7 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
 import {
+  Box,
   Button,
+  Chip,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -8,12 +9,11 @@ import {
   Select,
   Switch,
   TextField,
-  Typography,
-  Box,
-  Chip,
+  Typography
 } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Autocomplete } from '@material-ui/lab';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { MetadataProps } from './types';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -53,12 +53,9 @@ const Metadata = ({
     onChange(key, [...list, multiText]);
   };
 
-  const handleText = (value) => {
-    setMultiText(value);
-  };
-
   const handleChipDelete = (key, item) => {
     const newList = list.filter((value) => value !== item);
+    setList(newList)
     onChange(key, newList);
   };
 
@@ -83,6 +80,14 @@ const Metadata = ({
   useEffect(() => {
     onError(Object.keys(error).some((v) => error[v] === true));
   }, [error]);
+
+  useEffect(() => {
+    metadata.map(meta => {
+      if (meta.type === 'MultiText') {
+        setList(data[meta.key])
+      }
+    })
+  }, [list])
 
   return (
     <Fragment>
@@ -186,7 +191,7 @@ const Metadata = ({
                 inputRef={multiTextField}
                 variant="standard"
                 value={multiText}
-                onChange={(e) => handleText(e.target.value)}
+                onChange={(e) => setMultiText(e.target.value)}
                 error={error[meta.key]}
                 helperText={error[meta.key] && meta.regExError}
                 InputProps={{
