@@ -1,11 +1,12 @@
+import { Meta } from '@storybook/react/types-6-0';
 import React, { useEffect, useState } from 'react';
 import { fetchToken } from '../DataServices/DataServices';
 import { LogList } from './LogList/LogList';
 
 export default {
   title: 'Logs Components',
-  component: [LogList],
-};
+  component: LogList,
+} as Meta;
 
 export const LogListStory = () => {
   const [token, setToken] = useState<string>();

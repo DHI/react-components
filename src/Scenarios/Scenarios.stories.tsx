@@ -1,5 +1,6 @@
 import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import { Meta } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
 import { LoginGate } from '../Auth/LoginGate';
 import { Scenarios } from './Scenarios/Scenarios';
@@ -7,8 +8,8 @@ import { MenuItem, Scenario } from './types';
 
 export default {
   title: 'Scenarios Components',
-  component: [Scenarios],
-};
+  component: Scenarios,
+} as Meta;
 
 export const ScenariosStory = () => {
   const [newScenario, setNewScenario] = useState<Scenario>();

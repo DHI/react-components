@@ -1,11 +1,12 @@
+import { Meta } from '@storybook/react/types-6-0';
 import React, { useEffect, useState } from 'react';
 import { fetchToken } from '../DataServices/DataServices';
 import { JobList } from './JobList/JobList';
 
 export default {
   title: 'Jobs Components',
-  component: [JobList],
-};
+  component: JobList,
+} as Meta;
 
 export const JobListStory = () => {
   const [token, setToken] = useState<string>();
