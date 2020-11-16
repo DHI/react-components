@@ -37,8 +37,8 @@ const ScenarioList = (props: ScenarioListProps) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
-            return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
-          })
+          return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
+        })
         : groupBy(scenarios, (scenario) => scenario.dateTime),
     );
   };
@@ -106,10 +106,9 @@ const ScenarioList = (props: ScenarioListProps) => {
   const onScenarioClick = (scenario: Scenario) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id'));
-
-      if (onScenarioSelected) {
-        onScenarioSelected(scenario);
-      }
+    }
+    if (onScenarioSelected) {
+      onScenarioSelected(scenario);
     }
   };
 
@@ -134,3 +133,4 @@ const ScenarioList = (props: ScenarioListProps) => {
 };
 
 export { ScenarioListProps, ScenarioList };
+
