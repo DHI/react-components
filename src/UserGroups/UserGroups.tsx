@@ -6,7 +6,7 @@ import {
   deleteUserGroup,
   fetchAccounts,
   fetchUserGroups,
-  updateUserGroups,
+  updateUserGroups
 } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 import UserGroupForm from './UserGroupForm';
@@ -70,24 +70,24 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
 
     return isEditing
       ? (updateUserGroups(host, token, {
-          id: user.id,
-          name: user.name,
-          users: user.users,
-          metadata: user.metadata,
-        }).subscribe(() => {
-          fetchData();
-        }),
+        id: user.id,
+        name: user.name,
+        users: user.users,
+        metadata: user.metadata,
+      }).subscribe(() => {
+        fetchData();
+      }),
         (error) => {
           console.log(error);
         })
       : (createUserGroup(host, token, {
-          id: user.id,
-          name: user.name,
-          users: user.users,
-          metadata: user.metadata,
-        }).subscribe(() => {
-          fetchData();
-        }),
+        id: user.id,
+        name: user.name,
+        users: user.users,
+        metadata: user.metadata,
+      }).subscribe(() => {
+        fetchData();
+      }),
         (error) => {
           console.log(error);
         });
@@ -95,18 +95,18 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
 
   const metadataHeader = metadata
     ? metadata.reduce(
-        (acc, cur) => [
-          ...acc,
-          {
-            Header: cur.label,
-            category: cur.type,
-            accessor: `metadata.${cur.key}`,
-            Cell: MetadataChipCell(cur),
-            flexGrow: isTableWider && 1,
-          },
-        ],
-        [],
-      )
+      (acc, cur) => [
+        ...acc,
+        {
+          Header: cur.label,
+          category: cur.type,
+          accessor: `metadata.${cur.key}`,
+          Cell: MetadataChipCell(cur),
+          flexGrow: isTableWider && 1,
+        },
+      ],
+      [],
+    )
     : [];
 
   const columns = [
@@ -124,7 +124,7 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
       Header: 'Users',
       accessor: 'users',
       width: 300,
-      Cell: ({ cell: { value } }) => value.join(', '),
+      Cell: ({ cell: { value } }) => value ? value.join(', ') : '',
     },
   ];
 
@@ -237,3 +237,4 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
 };
 
 export { UserGroupProps, UserGroups };
+

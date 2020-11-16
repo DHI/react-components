@@ -131,18 +131,18 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
 
   const metadataHeader = metadata
     ? metadata.reduce(
-        (acc, cur) => [
-          ...acc,
-          {
-            Header: cur.label,
-            category: cur.type,
-            accessor: `metadata.${cur.key}`,
-            Cell: MetadataChipCell(cur),
-            flexGrow: isTableWider && 1,
-          },
-        ],
-        [],
-      )
+      (acc, cur) => [
+        ...acc,
+        {
+          Header: cur.label,
+          category: cur.type,
+          accessor: `metadata.${cur.key}`,
+          Cell: MetadataChipCell(cur),
+          flexGrow: isTableWider && 1,
+        },
+      ],
+      [],
+    )
     : [];
 
   const columns = [
@@ -165,7 +165,7 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
       Header: 'User Groups',
       accessor: 'userGroups',
       width: 250,
-      Cell: ({ cell: { value } }) => value.join(', '),
+      Cell: ({ cell: { value } }) => value ? value.join(', ') : '',
     },
   ];
 
@@ -257,3 +257,4 @@ const Accounts = ({ host, token, metadata }: AccountProps) => {
 };
 
 export { Accounts, AccountProps };
+
