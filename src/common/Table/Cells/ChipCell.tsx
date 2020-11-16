@@ -1,4 +1,4 @@
-import { Box, Chip, Avatar, Switch, makeStyles, Theme } from '@material-ui/core';
+import { Avatar, Box, Chip, makeStyles, Switch, Theme } from '@material-ui/core';
 import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -48,11 +48,7 @@ export const MetadataChipCell = ({ type }: { type: string }) => ({ value }: { va
       />
     );
   }
-  if (type === 'MultiChoice' && value !== undefined) {
-    return value.join(', ');
-  }
-
-  if (type === 'MultiText' && Array.isArray(value) && value !== undefined) {
+  if ((type === 'MultiChoice' || type === 'MultiText') && Array.isArray(value) && value !== undefined) {
     return value.join(', ');
   }
 
