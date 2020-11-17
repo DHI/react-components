@@ -1,5 +1,5 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
-import { catchError, flatMap, map, tap } from 'rxjs/operators';
+import { catchError, flatMap, map, retryWhen, scan, switchMap, takeWhile, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
 import { UserGroupsData } from '../UserGroups/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
@@ -30,6 +30,29 @@ const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
         return response;
       }
     }),
+    retryWhen((errors) => {
+      console.log(errors);
+
+      return errors.pipe(
+        switchMap((errors: any) => {
+          if (errors.status === 401) {
+            return of(errors);
+          }
+
+          throw errors;
+        }),
+        scan((acc) => {
+          return acc + 1;
+        }, 0),
+
+        takeWhile((acc) => acc < 3),
+
+        // flatMap(() => {
+        //   return console.log('Token refresh retry');
+        // }),
+      );
+    }),
+
     flatMap((response) => checkStatus(response)),
     catchError((error) => throwError(error)),
   );
@@ -377,8 +400,8 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
       ? `?dataSelectors=[${dataSource.dataSelectors
-        .map((dataSelector) => dataSelector.replace('data.', ''))
-        .join(',')}]`
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
       : '';
 
   return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}${dataSelectors}`, {
@@ -393,8 +416,8 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
       ? `?dataSelectors=[${dataSource.dataSelectors
-        .map((dataSelector) => dataSelector.replace('data.', ''))
-        .join(',')}]`
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
       : '';
 
   return fetchUrl(
@@ -439,9 +462,9 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
 /**
  * /api/jobs/{connectionId}/query
  * @param dataSource
- * @param token 
+ * @param token
  * @param query array of objects { item: string, queryOperator: string, value: string}
- * 
+ *
  *  Gets all the jobs meeting the criteria specified by the given query.
  */
 const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, query: JobParameters[]) => {
@@ -467,7 +490,7 @@ const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, 
         return dataObjectToArray(job).sort((a, b) => {
           return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
         });
-      })
+      }),
     ),
   );
 
@@ -537,8 +560,8 @@ const fetchJobs = (
       !query
         ? `${source.host}/api/jobs/${source.connection}`
         : `${source.host}/api/jobs/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
-          query.since,
-        )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
+            query.since,
+          )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
       {
         method: 'GET',
         additionalHeaders: {
