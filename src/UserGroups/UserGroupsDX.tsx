@@ -29,9 +29,26 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [rows, setRows] = useState<UserGroupsData[]>([]);
   const [users, setUsers] = useState<string[]>([]);
 
-  const getRowId = row => row.id;
-  const columns = DEFAULT_COLUMNS;
 
+  const getRowId = row => row.id;
+
+
+  const metadataHeader = metadata
+    ? metadata.reduce(
+      (acc, cur) => [
+        ...acc,
+        {
+          title: cur.label,
+          type: cur.type,
+          name: `metadata.${cur.key}`,
+        },
+      ],
+      [],
+    )
+    : [];
+
+  // const columns = DEFAULT_COLUMNS.concat(metadataHeader);
+  const [columns] = useState(DEFAULT_COLUMNS.concat(metadataHeader))
 
   const fetchData = () => {
     fetchUserGroups(host, token).subscribe(
@@ -40,9 +57,6 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         setRows(userGroups);
       },
       (error) => {
-        // setError(true);
-        // setLoading(false);
-
         console.error('UG Error: ', error);
       },
     );
@@ -53,9 +67,6 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         setUsers(usersOnly);
       },
       (error) => {
-        // setError(true);
-        // setLoading(false);
-
         console.error('UGU Error: ', error);
       },
     );
@@ -106,6 +117,8 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         columns={columns}
         getRowId={getRowId}
       >
+        {console.log(columns)}
+        {console.log(rows)}
         <EditingState
           onCommitChanges={commitChanges as any}
         />

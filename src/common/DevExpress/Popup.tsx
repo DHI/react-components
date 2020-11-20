@@ -47,7 +47,6 @@ const Popup: React.FC<PopupProps> = ({
                 value={row.name || ''}
                 onChange={onChange}
               />
-              {console.log(row)}
               <Autocomplete
                 id='users'
                 disabled={!users}
