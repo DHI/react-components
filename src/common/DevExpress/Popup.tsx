@@ -1,29 +1,34 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, Grid, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React from 'react';
+import MetadataEditor from './MetadataEditor';
 
 interface PopupProps {
   row: any;
   onChange: any;
   onApplyChanges: any;
+  onMetadataChange: any;
   onCancelChanges: any;
-  onListChagne: any;
+  onListChange: any;
   open: boolean,
   title: string;
   users: string[];
   isNew: boolean;
+  metadata: any;
 }
 
 const Popup: React.FC<PopupProps> = ({
   row,
   onChange,
-  onListChagne,
+  onListChange,
+  onMetadataChange,
   onApplyChanges,
   onCancelChanges,
   open,
   title,
   users,
   isNew,
+  metadata,
 }) => (
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{title || ''}</DialogTitle>
@@ -53,7 +58,7 @@ const Popup: React.FC<PopupProps> = ({
                 placeholder={!users ? 'Loading users...' : 'Select user(s)'}
                 options={users || []}
                 value={row.users || []}
-                onChange={(e, values) => onListChagne('users', values)}
+                onChange={(e, values) => onListChange('users', values)}
                 multiple
                 renderInput={(props) => (
                   <TextField
@@ -68,24 +73,17 @@ const Popup: React.FC<PopupProps> = ({
               />
             </FormGroup>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <FormGroup>
-              <TextField
-                margin="normal"
-                name="lastName"
-                label="Last Name"
-                value={row.lastName || ''}
-                onChange={onChange}
+              {row && <MetadataEditor
+                metadata={metadata}
+                row={row}
+                onChange={onMetadataChange}
+                onListChange={onListChange}
               />
-
-              <TextField
-                margin="normal"
-                name="phone"
-                label="Phone"
-                value={row.phone || ''}
-                onChange={onChange}
-              />
+              }
             </FormGroup>
+
           </Grid>
         </Grid>
       </DialogContent>

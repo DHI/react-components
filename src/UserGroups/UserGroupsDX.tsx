@@ -9,7 +9,7 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
-import { Command, Popup, PopupEditing } from '../common/DevExpress';
+import { Command, MetadataTypeProvider, Popup, PopupEditing } from '../common/DevExpress';
 import { fetchAccounts, fetchUserGroups } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 
@@ -40,15 +40,23 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         {
           title: cur.label,
           type: cur.type,
-          name: `metadata.${cur.key}`,
+          name: cur.key,
         },
       ],
       [],
     )
     : [];
 
-  // const columns = DEFAULT_COLUMNS.concat(metadataHeader);
   const [columns] = useState(DEFAULT_COLUMNS.concat(metadataHeader))
+
+  const metadataColumnsArray = metadata
+    ? metadata.reduce(
+      (acc, cur) => [...acc, cur.key],
+      [],
+    )
+    : [];
+
+  const [metadataColumns] = useState<string[]>(metadataColumnsArray);
 
   const fetchData = () => {
     fetchUserGroups(host, token).subscribe(
@@ -71,7 +79,6 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
       },
     );
   };
-
 
   const commitChanges = ({ added, changed, deleted }) => {
     let changedRows;
@@ -123,6 +130,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           onCommitChanges={commitChanges as any}
         />
         <VirtualTable height={window.innerHeight - 230} />
+        <MetadataTypeProvider for={metadataColumns} />
         <UsersTypeProvider for={usersColumn} />
         <TableHeaderRow />
         <TableEditColumn
@@ -131,7 +139,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           showDeleteCommand
           commandComponent={Command}
         />
-        <PopupEditing popupComponent={Popup} title='User Groups' allUsers={users || []} />
+        <PopupEditing popupComponent={Popup} title='User Groups' allUsers={users || []} metadata={metadata} />
       </Grid>
     </Paper>
   );

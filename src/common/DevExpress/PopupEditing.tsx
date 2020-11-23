@@ -4,7 +4,7 @@ import {
 import React from 'react';
 
 
-const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers }: any) => (
+const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metadata }: any) => (
   <Plugin>
     <Template name="popupEditing">
       <TemplateConnector>
@@ -46,13 +46,54 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers }: any
             }
           };
 
-          const processListChange = (name, values) => {
+          const processListChange = (name, values, isMetadata = false) => {
+            let changeData = {};
+
+            if (isMetadata) {
+              changeData = {
+                ...editedRow,
+                metadata: {
+                  ...editedRow.metadata,
+                  [name]: values
+                }
+              }
+            } else {
+              changeData = {
+                ...editedRow,
+                [name]: values
+              }
+            }
+
             const changeArgs = {
               rowId,
-              change: createRowChange(editedRow, values, name),
+              change: changeData
+            }
+
+            if (isNew) {
+              changeAddedRow(changeArgs);
+            } else {
+              changeRow(changeArgs);
+            }
+          };
+
+          const processMetadataChange = ({ target: { name, value, checked } }) => {
+            let newValue;
+            if (value) {
+              newValue = value;
+            } else {
+              newValue = checked;
+            }
+
+            const changeArgs = {
+              rowId,
+              change: {
+                metadata: {
+                  ...editedRow.metadata,
+                  [name]: newValue
+                }
+              },
             };
-            console.log('changeArgs: ', changeArgs);
-            console.log('isNew: ', isNew);
+
             if (isNew) {
               changeAddedRow(changeArgs);
             } else {
@@ -85,12 +126,14 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers }: any
               open={open}
               row={editedRow}
               onChange={processValueChange}
-              onListChagne={processListChange}
+              onListChange={processListChange}
+              onMetadataChange={processMetadataChange}
               onApplyChanges={applyChanges}
               onCancelChanges={cancelChanges}
               isNew={isNew}
               title={title}
               users={allUsers}
+              metadata={metadata}
             />
           );
         }}
