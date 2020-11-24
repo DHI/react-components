@@ -23,15 +23,7 @@ const EditButton = ({ onExecute }) => (
 );
 
 const DeleteButton = ({ onExecute }) => (
-  <IconButton
-    onClick={() => {
-      // eslint-disable-next-line
-      if (window.confirm('Are you sure you want to delete this row?')) {
-        onExecute();
-      }
-    }}
-    title="Delete row"
-  >
+  <IconButton onClick={onExecute} title="Delete row">
     <DeleteForeverIcon />
   </IconButton>
 );
@@ -49,8 +41,10 @@ const Command = ({ id, onExecute }) => {
   return (
     <CommandButton
       onExecute={onExecute}
+
     />
   );
 };
 
 export { AddButton, EditButton, DeleteButton, Command };
+

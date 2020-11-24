@@ -2,9 +2,10 @@ import {
   Plugin, Template, TemplateConnector, TemplatePlaceholder
 } from '@devexpress/dx-react-core';
 import React from 'react';
+import { PopupEditingProps } from './types';
 
 
-const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metadata, onSave }: any) => (
+const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metadata, onSave }: PopupEditingProps) => (
   <Plugin>
     <Template name="popupEditing">
       <TemplateConnector>
@@ -103,6 +104,14 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
 
           const rowIds = isNew ? [0] : editingRowIds;
           const applyChanges = () => {
+            metadata?.forEach((item, index) => {
+              if (editedRow.metadata === undefined || editedRow.metadata[metadata[index].key] === undefined) {
+                editedRow.metadata = {
+                  ...editedRow.metadata,
+                  [metadata[index].key]: metadata[index].default,
+                };
+              }
+            });
             if (isNew) {
               commitAddedRows({ rowIds });
               onSave(editedRow, isNew)

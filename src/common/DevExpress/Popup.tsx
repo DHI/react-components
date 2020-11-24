@@ -1,21 +1,19 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, Grid, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, Grid, TextField, withStyles } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React from 'react';
 import MetadataEditor from './MetadataEditor';
+import { PopupProps } from './types';
 
-interface PopupProps {
-  row: any;
-  onChange: any;
-  onApplyChanges: any;
-  onMetadataChange: any;
-  onCancelChanges: any;
-  onListChange: any;
-  open: boolean,
-  title: string;
-  users: string[];
-  isNew: boolean;
-  metadata: any;
-}
+const NoBorderTextField = withStyles({
+  root: {
+    '& .MuiOutlinedInput-root': {
+      'color': 'rgba(0, 0, 0, 0.87); !important',
+      '& fieldset': {
+        border: 'none',
+      },
+    },
+  },
+})(TextField);
 
 const Popup: React.FC<PopupProps> = ({
   row,
@@ -36,7 +34,7 @@ const Popup: React.FC<PopupProps> = ({
         <Grid container >
           <Grid item xs={12}>
             <FormGroup>
-              {isNew && (
+              {isNew ? (
                 <TextField
                   margin="normal"
                   name="id"
@@ -44,7 +42,17 @@ const Popup: React.FC<PopupProps> = ({
                   value={row.id || ''}
                   onChange={onChange}
                 />
-              )}
+              ) : (
+                  <NoBorderTextField
+                    fullWidth
+                    label="ID"
+                    margin="dense"
+                    variant="standard"
+                    value={row?.id}
+                    disabled={true}
+                  />
+                )}
+
               <TextField
                 margin="normal"
                 name="name"
@@ -81,9 +89,7 @@ const Popup: React.FC<PopupProps> = ({
                 onChange={onMetadataChange}
                 onListChange={onListChange}
               />
-
             </FormGroup>
-
           </Grid>
         </Grid>
       </DialogContent>

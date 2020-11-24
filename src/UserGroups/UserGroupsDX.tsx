@@ -3,7 +3,8 @@ import { Grid, TableEditColumn, TableHeaderRow, VirtualTable } from '@devexpress
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
 import { Command, MetadataTypeProvider, Popup, PopupEditing, UsersTypeProvider } from '../common/DevExpress';
-import { createUserGroup, fetchAccounts, fetchUserGroups, updateUserGroups } from '../DataServices/DataServices';
+import DeleteDialog from '../common/DevExpress/DeleteDialog';
+import { createUserGroup, deleteUserGroup, fetchAccounts, fetchUserGroups, updateUserGroups } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 
 const DEFAULT_COLUMNS = [
@@ -21,6 +22,8 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
 
   const [rows, setRows] = useState<UserGroupsData[]>([]);
   const [users, setUsers] = useState<string[]>([]);
+  const [deletedDialog, setDeletedDialog] = useState(false);
+  const [deleteRow, setDeleteRow] = useState({});
 
   const getRowId = row => row.id;
 
@@ -85,12 +88,17 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
       ];
     }
     if (changed) {
-      console.log(changed)
       changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
     }
     if (deleted) {
+      setDeletedDialog(true)
       const deletedSet = new Set(deleted);
-      changedRows = rows.filter(row => !deletedSet.has(row.id));
+      const selectedRow = rows.filter(row => deletedSet.has(row.id))
+      setDeleteRow(selectedRow)
+
+      // return the same rows and let the handleDelete deal with the data, otherwise it will be undefined and crash with no rows
+      changedRows = rows;
+
     }
 
     setRows(changedRows);
@@ -125,12 +133,29 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     }
   }
 
+  const handleDelete = (row) => {
+    deleteUserGroup(host, token, row.id).subscribe(
+      () => {
+        fetchData();
+        setDeletedDialog(false);
+      },
+      (error) => console.log(error),
+    );
+  };
+
+
   useEffect(() => {
     fetchData();
   }, []);
 
   return (
     <Paper>
+      <DeleteDialog
+        selectedRow={deleteRow}
+        showDialog={deletedDialog}
+        closeDialog={() => setDeletedDialog(false)}
+        handleDelete={handleDelete}
+      />
       <Grid
         rows={rows}
         columns={columns}
