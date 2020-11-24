@@ -1,5 +1,5 @@
-import { EditingState } from '@devexpress/dx-react-grid';
-import { Grid, TableEditColumn, TableHeaderRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
+import { EditingState, FilteringState, IntegratedFiltering, IntegratedSorting, SortingState } from '@devexpress/dx-react-grid';
+import { ColumnChooser, Grid, TableColumnVisibility, TableEditColumn, TableFilterRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
 import { Command, MetadataTypeProvider, Popup, PopupEditing, UsersTypeProvider } from '../common/DevExpress';
@@ -143,6 +143,74 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     );
   };
 
+  const [filteringColumnExtensions] = useState([
+    {
+      columnName: 'myChoice',
+      predicate: (value, filter, row) => {
+        const { columnName } = filter;
+
+        if (!row.metadata) return false;
+
+        return row.metadata[columnName].toLowerCase().includes(filter.value.toLowerCase());
+
+      },
+    },
+    {
+      columnName: 'myText',
+      predicate: (value, filter, row) => {
+        const { columnName } = filter
+
+        if (!row.metadata) return false
+
+        return row.metadata[columnName].toLowerCase().includes(filter.value.toLowerCase())
+
+
+      },
+    },
+    {
+      columnName: 'myOptions',
+      predicate: (value, filter, row) => {
+        const { columnName } = filter
+
+        if (!row.metadata) return false
+
+        const arrayToLowerCase = row.metadata[columnName].map(item => item.toLowerCase())
+
+        return arrayToLowerCase.includes(filter.value.toLowerCase())
+
+      },
+    },
+    {
+      columnName: 'myMultiText',
+      predicate: (value, filter, row) => {
+        const { columnName } = filter
+        console.group();
+
+        console.log('Filter: ', filter)
+        console.log('Row: ', row)
+
+        if (!row.metadata) return false
+
+        console.log('Metadata :', row.metadata[columnName]);
+        console.log('Filter lower: ', filter.value.toLowerCase())
+        console.groupEnd();
+
+        const arrayToLowerCase = row.metadata[columnName].map(item => item.toLowerCase())
+
+        return arrayToLowerCase.includes(filter.value.toLowerCase())
+
+      },
+    },
+  ]);
+
+  const MyCellComponent = ({ filter, column }) => {
+    console.log('filter', filter)
+    console.log('column', column)
+    if (column.type === 'Boolean') {
+
+    }
+    return null;
+  }
 
   useEffect(() => {
     fetchData();
@@ -161,13 +229,25 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         columns={columns}
         getRowId={getRowId}
       >
+        {console.log(columns)}
+        {console.log(rows)}
+        <FilteringState defaultFilters={[]} />
+        <IntegratedFiltering columnExtensions={filteringColumnExtensions} />
+
+        <SortingState defaultSorting={[{ columnName: 'name', direction: 'asc' }]} />
+        <IntegratedSorting />
+
         <EditingState
           onCommitChanges={commitChanges as any}
         />
         <VirtualTable height={window.innerHeight - 230} />
+
         <MetadataTypeProvider for={metadataColumns} />
         <UsersTypeProvider for={usersColumn} />
-        <TableHeaderRow />
+
+        <TableHeaderRow showSortingControls />
+        <TableFilterRow />
+
         <TableEditColumn
           showAddCommand
           showEditCommand
@@ -175,6 +255,9 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           commandComponent={Command}
         />
         <PopupEditing popupComponent={Popup} title='User Groups' allUsers={users || []} metadata={metadata} onSave={handleSubmit} />
+        <Toolbar />
+        <TableColumnVisibility />
+        <ColumnChooser />
       </Grid>
     </Paper>
   );
