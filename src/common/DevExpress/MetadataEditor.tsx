@@ -1,18 +1,20 @@
 import { Box, Button, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, Typography } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React, { useRef, useState } from 'react';
+import { MetadataProps } from '../Metadata/types';
 
 export interface MetadataEditorProps {
-  metadata: any;
+  metadata: MetadataProps[];
   row: any;
-  onChange: any;
-  onListChange: any
+  onChange: (e) => void;
+  onListChange: (key, values, isMetadata) => void
 }
 
-const MetadataEditor: React.FC<MetadataEditorProps> = ({ metadata, row, onChange, onListChange }) => {
+const MetadataEditor = ({ metadata, row, onChange, onListChange }: MetadataEditorProps) => {
 
   const [list, setList] = useState([]);
   const [multiText, setMultiText] = useState('');
+  const [error, setError] = useState({});
   const multiTextField = useRef(null);
 
   const handleMultiText = (key) => {
@@ -28,29 +30,49 @@ const MetadataEditor: React.FC<MetadataEditorProps> = ({ metadata, row, onChange
     onListChange(key, newList, true);
   };
 
+  const handleChange = (e: any, regex: string) => {
+    const re = new RegExp(regex);
+    const { value, name } = e.target;
+
+    if (re.test(value)) {
+      setError({
+        ...error,
+        [name]: false,
+      });
+    } else {
+      setError({
+        ...error,
+        [name]: true,
+      });
+    }
+
+    onChange(e);
+  };
+
   return metadata && metadata.map((item, i) => {
     const { type, label, key } = item;
 
-    if (type === 'Text' && row.metadata) {
+    if (type === 'Text') {
       return (
         <TextField
           key={i}
           margin="normal"
           name={key}
           label={label}
-          defaultValue={item.default || ''}
-          value={row.metadata[key] || ''}
-          onChange={onChange}
+          value={row.metadata && row.metadata[key] ? row.metadata[key] : item.default}
+          error={error[key]}
+          helperText={error[key] && item.regExError}
+          onChange={(e) => handleChange(e, item.regEx)}
         />
       );
-    } else if (type === 'SingleChoice' && row.metadata) {
+    } else if (type === 'SingleChoice') {
+
       return (
         <FormControl key={i}>
           <InputLabel>{label}</InputLabel>
           <Select
             fullWidth
-            defaultValue={item?.default}
-            value={row.metadata[key]}
+            value={row.metadata && row.metadata[key] ? row.metadata[key] : item.default}
             id={key}
             name={key}
             onChange={onChange}
@@ -61,16 +83,16 @@ const MetadataEditor: React.FC<MetadataEditorProps> = ({ metadata, row, onChange
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </FormControl >
       );
-    } else if (type === 'Boolean' && row.metadata) {
+    } else if (type === 'Boolean') {
       return (
         <FormControlLabel
           key={i}
           control={
             <Switch
               color="primary"
-              checked={row && row.metadata[key] !== undefined ? row.metadata[key] : item.default}
+              checked={row.metadata === undefined || row.metadata[key] === undefined ? item.default : row.metadata[key]}
               onChange={onChange}
               name={key}
               inputProps={{ 'aria-label': label }}
@@ -79,14 +101,14 @@ const MetadataEditor: React.FC<MetadataEditorProps> = ({ metadata, row, onChange
           label={label}
         />
       );
-    } else if (type === 'MultiChoice' && row.metadata) {
+    } else if (type === 'MultiChoice') {
+      const optionsSorted = item.options.sort();
       return (
         <Autocomplete
           key={i}
           placeholder={`Select ${label}`}
-          options={item.options}
-          defaultValue={item?.default}
-          value={row.metadata[key]}
+          options={optionsSorted}
+          value={row.metadata && row.metadata[key] ? row.metadata[key] : item.default}
           onChange={(e, values) => onListChange(key, values, true)}
           multiple={true as any}
           renderInput={(props) => (
@@ -104,14 +126,13 @@ const MetadataEditor: React.FC<MetadataEditorProps> = ({ metadata, row, onChange
           }}
         />
       );
-    } else if (type === 'MultiText' && row.metadata) {
+    } else if (type === 'MultiText') {
       return (
         <>
-          {row.metadata[key]?.length > 0 && <Typography>{label} list</Typography>}
-          {row.metadata[key]?.map((item, i) => (
-            <Box alignItems="center" key={i}>
+          {row.metadata && row.metadata[key]?.length > 0 && <Typography>{label} list</Typography>}
+          {row.metadata && row.metadata[key]?.map((item, i) => (
+            <Box alignItems="center" key={`${item}_${i}`}>
               <Chip
-                // className={classes.chip}
                 key={item}
                 label={item}
                 style={{ marginRight: 4 }}
@@ -127,13 +148,13 @@ const MetadataEditor: React.FC<MetadataEditorProps> = ({ metadata, row, onChange
             label={label}
             inputRef={multiTextField}
             variant="standard"
-            value={multiText}
+            value={multiText || ''}
             onChange={(e) => setMultiText(e.target.value)}
-            // error={error[key]}
-            // helperText={error[key] && regExError}
+            error={error[key]}
+            helperText={error[key] && item.regExError}
             InputProps={{
               endAdornment: (
-                <Button color="primary" onClick={() => handleMultiText(key)}>
+                <Button color="primary" disabled={multiText === ''} onClick={() => handleMultiText(key)}>
                   Add
                 </Button>
               ),

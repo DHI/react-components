@@ -1,16 +1,9 @@
-import { DataTypeProvider, DataTypeProviderProps, EditingState } from '@devexpress/dx-react-grid';
-import {
-  Grid,
-
-
-  TableEditColumn,
-
-  TableHeaderRow, VirtualTable
-} from '@devexpress/dx-react-grid-material-ui';
+import { EditingState } from '@devexpress/dx-react-grid';
+import { Grid, TableEditColumn, TableHeaderRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
-import { Command, MetadataTypeProvider, Popup, PopupEditing } from '../common/DevExpress';
-import { fetchAccounts, fetchUserGroups } from '../DataServices/DataServices';
+import { Command, MetadataTypeProvider, Popup, PopupEditing, UsersTypeProvider } from '../common/DevExpress';
+import { createUserGroup, fetchAccounts, fetchUserGroups, updateUserGroups } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 
 const DEFAULT_COLUMNS = [
@@ -29,9 +22,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [rows, setRows] = useState<UserGroupsData[]>([]);
   const [users, setUsers] = useState<string[]>([]);
 
-
   const getRowId = row => row.id;
-
 
   const metadataHeader = metadata
     ? metadata.reduce(
@@ -57,6 +48,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     : [];
 
   const [metadataColumns] = useState<string[]>(metadataColumnsArray);
+  const [usersColumn] = useState<string[]>(['users']);
 
   const fetchData = () => {
     fetchUserGroups(host, token).subscribe(
@@ -104,14 +96,34 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     setRows(changedRows);
   };
 
-  const [usersColumn] = React.useState<string[]>(['users']);
-  const UsersFormatter = ({ value }) => (value.join(', '));
-  const UsersTypeProvider: React.ComponentType<DataTypeProviderProps> = (props: DataTypeProviderProps) => (
-    <DataTypeProvider
-      formatterComponent={UsersFormatter}
-      {...props}
-    />
-  );
+  const handleSubmit = (row, isNew = false) => {
+    if (isNew) {
+      createUserGroup(host, token, {
+        id: row.id,
+        name: row.name,
+        users: row.users,
+        metadata: row.metadata,
+      }).subscribe(() => {
+        fetchData();
+      }),
+        (error) => {
+          console.log(error);
+        }
+
+    } else {
+      updateUserGroups(host, token, {
+        id: row.id,
+        name: row.name,
+        users: row.users,
+        metadata: row.metadata,
+      }).subscribe(() => {
+        fetchData();
+      }),
+        (error) => {
+          console.log(error);
+        }
+    }
+  }
 
   useEffect(() => {
     fetchData();
@@ -124,8 +136,6 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         columns={columns}
         getRowId={getRowId}
       >
-        {console.log(columns)}
-        {console.log(rows)}
         <EditingState
           onCommitChanges={commitChanges as any}
         />
@@ -139,7 +149,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           showDeleteCommand
           commandComponent={Command}
         />
-        <PopupEditing popupComponent={Popup} title='User Groups' allUsers={users || []} metadata={metadata} />
+        <PopupEditing popupComponent={Popup} title='User Groups' allUsers={users || []} metadata={metadata} onSave={handleSubmit} />
       </Grid>
     </Paper>
   );

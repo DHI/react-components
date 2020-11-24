@@ -1,4 +1,5 @@
 import { Column, DataTypeProvider, DataTypeProviderProps } from '@devexpress/dx-react-grid';
+import { Box, Chip } from '@material-ui/core';
 import React from 'react';
 
 interface MetadataFormatterProps extends Column {
@@ -22,36 +23,31 @@ export const MetadataFormatter = (
 
   if (metadata && metadata[name] !== undefined) {
 
-    if (type === 'SingleChoice') {
-      return metadata[name];
-    }
+    switch (type) {
+      case 'SingleChoice':
+      case 'Text':
+        return metadata[name];
 
-    if (type === "MultiText") {
-      return metadata[name].join(', ') || metadata[type].join(', ')
-    }
+      case 'MultiText':
+      case 'MultiChoice':
+        return metadata[name].join(', ');
 
-    if (type === 'MultiChoice') {
-      return metadata[name].join(', ')
-    }
+      case 'Boolean':
+        return (
+          <Box alignItems="center">
+            <Chip
+              label={metadata[name] ? 'Yes' : 'No'}
+              style={{ marginRight: 4 }}
+            />
+          </Box>
+        );
 
-    if (type === 'Text') {
-      return metadata[name]
+      default:
+        return null;
     }
-
-    if (type === 'Boolean') {
-      if (metadata[name]) {
-        return 'yes'
-      } else {
-        return 'no'
-      }
-    }
-
-  } else {
-    return null;
   }
 
-  return value;
-
+  return null;
 }
 
 export const MetadataTypeProvider: React.ComponentType<DataTypeProviderProps> = (props: DataTypeProviderProps) => (

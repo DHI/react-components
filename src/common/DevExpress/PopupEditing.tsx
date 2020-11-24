@@ -4,7 +4,7 @@ import {
 import React from 'react';
 
 
-const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metadata }: any) => (
+const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metadata, onSave }: any) => (
   <Plugin>
     <Template name="popupEditing">
       <TemplateConnector>
@@ -101,14 +101,15 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
             }
           };
 
-
           const rowIds = isNew ? [0] : editingRowIds;
           const applyChanges = () => {
             if (isNew) {
               commitAddedRows({ rowIds });
+              onSave(editedRow, isNew)
             } else {
               stopEditRows({ rowIds });
               commitChangedRows({ rowIds });
+              onSave(editedRow);
             }
           };
           const cancelChanges = () => {

@@ -33,7 +33,7 @@ const Popup: React.FC<PopupProps> = ({
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{title || ''}</DialogTitle>
       <DialogContent>
-        <Grid container spacing={3}>
+        <Grid container >
           <Grid item xs={12}>
             <FormGroup>
               {isNew && (
@@ -56,7 +56,7 @@ const Popup: React.FC<PopupProps> = ({
                 id='users'
                 disabled={!users}
                 placeholder={!users ? 'Loading users...' : 'Select user(s)'}
-                options={users || []}
+                options={users.sort() || []}
                 value={row.users || []}
                 onChange={(e, values) => onListChange('users', values)}
                 multiple
@@ -75,13 +75,13 @@ const Popup: React.FC<PopupProps> = ({
           </Grid>
           <Grid item xs={12}>
             <FormGroup>
-              {row && <MetadataEditor
+              <MetadataEditor
                 metadata={metadata}
                 row={row}
                 onChange={onMetadataChange}
                 onListChange={onListChange}
               />
-              }
+
             </FormGroup>
 
           </Grid>
