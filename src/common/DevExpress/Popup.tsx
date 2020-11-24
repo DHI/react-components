@@ -31,7 +31,7 @@ const Popup: React.FC<PopupProps> = ({
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{title || ''}</DialogTitle>
       <DialogContent>
-        <Grid container >
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             <FormGroup>
               {isNew ? (
@@ -93,11 +93,11 @@ const Popup: React.FC<PopupProps> = ({
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions style={{ padding: 20 }}>
         <Button onClick={onCancelChanges} color="primary">
           Cancel
       </Button>
-        <Button onClick={onApplyChanges} color="primary">
+        <Button onClick={onApplyChanges} variant="contained" color="primary">
           Save
       </Button>
       </DialogActions>

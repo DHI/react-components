@@ -83,6 +83,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange }: MetadataEdito
         } else if (type === 'Boolean') {
           return (
             <FormControlLabel
+              style={{ marginTop: 10 }}
               key={i}
               control={
                 <Switch
@@ -123,7 +124,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange }: MetadataEdito
         } else if (type === 'MultiText') {
           return (
             <>
-              {row.metadata && row.metadata[key]?.length > 0 && <Typography>{label} list</Typography>}
+              {row.metadata && row.metadata[key]?.length > 0 && <Typography style={{ marginTop: 10 }}>{label} list</Typography>}
               {row.metadata && row.metadata[key]?.map((item, i) => (
                 <Box alignItems="center" key={`${item}_${i}`}>
                   <Chip
