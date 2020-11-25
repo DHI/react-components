@@ -15,7 +15,7 @@ import {
   Toolbar,
   VirtualTable
 } from '@devexpress/dx-react-grid-material-ui';
-import { FormControl, InputLabel, MenuItem, Select, TableCell } from '@material-ui/core';
+import { FormControl, Input, InputLabel, MenuItem, Select, TableCell } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
 import { Command, MetadataTypeProvider, Popup, PopupEditing, UsersTypeProvider } from '../common/DevExpress';
@@ -213,12 +213,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
       columnName: 'myBoolean',
       predicate: (value, filter, row) => {
         const { columnName } = filter;
-
-        // console.group();
-        // console.log('value: ', value);
-        // console.log('filter: ', filter);
-        // console.log('row: ', row);
-        // console.groupEnd();
+        console.log(filter);
 
         if (!row.metadata) return false;
 
@@ -238,16 +233,19 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     },
   ]);
 
-  const BooleanFilterCell = ({ filter, onFilter }) => (
+  const BooleanFilterCell = ({ filter, onFilter, column }) => (
     <TableCell>
       <FormControl>
         <InputLabel id="select-label">Select</InputLabel>
+        {console.log(column)}
         <Select
           fullWidth
           labelId="select-label"
           value={filter ? filter.value : ''}
           id="filter"
-          onChange={(e) => onFilter(e.target.value ? { value: e.target.value, operation: 'contains' } : null)}
+          onChange={(e) =>
+            onFilter(e.target.value ? { value: e.target.value, operation: 'contains', columnType: column.type } : null)
+          }
         >
           <MenuItem value="">All</MenuItem>
           <MenuItem value="Yes">Yes</MenuItem>
@@ -257,11 +255,34 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     </TableCell>
   );
 
+  const InputFilterCell = ({ filter, onFilter }) => (
+    <TableCell>
+      <Input
+        value={filter ? filter.value : ''}
+        onChange={(e) => onFilter(e.target.value ? { value: e.target.value, operation: 'contains' } : null)}
+        placeholder="search..."
+        inputProps={{
+          style: { textAlign: 'right', height: 'inherit' },
+          min: 1,
+          max: 4,
+        }}
+      />
+    </TableCell>
+  );
+
   const MyCellComponent = (props) => {
     const { column } = props;
 
     if (column.type === 'Boolean') {
       return <BooleanFilterCell {...props} />;
+    }
+    if (
+      column.type === 'Text' ||
+      column.type === 'SingleChoice' ||
+      column.type === 'MultiChoice' ||
+      column.type === 'MultiText'
+    ) {
+      return <InputFilterCell {...props} />;
     }
 
     return <TableFilterRow.Cell {...props} />;
