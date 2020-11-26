@@ -1,4 +1,6 @@
 import { AddButton, Command, DeleteButton, EditButton } from './Buttons';
+import DeleteDialog from './DeleteDialog';
+import { BooleanFilterCell, FilterCellRow, filterRules, InputFilterCell } from './MetadataFilter';
 import { MetadataTypeProvider } from './MetatadaFormatter';
 import Popup from './Popup';
 import PopupEditing from './PopupEditing';
@@ -12,6 +14,10 @@ export {
   AddButton,
   EditButton,
   DeleteButton,
-  Command
+  DeleteDialog,
+  Command,
+  BooleanFilterCell,
+  InputFilterCell,
+  FilterCellRow,
+  filterRules,
 };
-

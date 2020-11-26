@@ -15,11 +15,18 @@ import {
   Toolbar,
   VirtualTable
 } from '@devexpress/dx-react-grid-material-ui';
-import { FormControl, Input, InputLabel, MenuItem, Select, TableCell } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
-import { Command, MetadataTypeProvider, Popup, PopupEditing, UsersTypeProvider } from '../common/DevExpress';
-import DeleteDialog from '../common/DevExpress/DeleteDialog';
+import {
+  Command,
+  DeleteDialog,
+  FilterCellRow,
+  filterRules,
+  MetadataTypeProvider,
+  Popup,
+  PopupEditing,
+  UsersTypeProvider
+} from '../common/DevExpress';
 import {
   createUserGroup,
   deleteUserGroup,
@@ -33,10 +40,12 @@ const DEFAULT_COLUMNS = [
   {
     title: 'Name',
     name: 'name',
+    type: '',
   },
   {
     title: 'Users',
     name: 'users',
+    type: '',
   },
 ];
 
@@ -45,6 +54,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [users, setUsers] = useState<string[]>([]);
   const [deletedDialog, setDeletedDialog] = useState(false);
   const [deleteRow, setDeleteRow] = useState({});
+  const [filteringColumnExtensions, setFilteringColumnExtensions] = useState([]);
   const getRowId = (row) => row.id;
 
   const metadataHeader = metadata
@@ -160,140 +170,9 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     );
   };
 
-  const [filteringColumnExtensions] = useState([
-    {
-      columnName: 'myChoice',
-      predicate: (value, filter, row) => {
-        const { columnName } = filter;
-
-        if (!row.metadata) return false;
-
-        return row.metadata[columnName].toLowerCase().includes(filter.value.toLowerCase());
-      },
-    },
-    {
-      columnName: 'myText',
-      predicate: (value, filter, row) => {
-        const { columnName } = filter;
-
-        if (!row.metadata) return false;
-
-        return row.metadata[columnName].toLowerCase().includes(filter.value.toLowerCase());
-      },
-    },
-    {
-      columnName: 'myOptions',
-      predicate: (value, filter, row) => {
-        const { columnName } = filter;
-
-        if (!row.metadata) return false;
-
-        const regex = new RegExp(filter.value.toLowerCase(), 'g');
-        const arrayToLowerCase = row.metadata[columnName].map((item) => item.toLowerCase());
-        const result = regex.test(arrayToLowerCase);
-
-        return result;
-      },
-    },
-    {
-      columnName: 'myMultiText',
-      predicate: (value, filter, row) => {
-        const { columnName } = filter;
-
-        if (!row.metadata) return false;
-
-        const regex = new RegExp(filter.value.toLowerCase(), 'g');
-        const arrayToLowerCase = row.metadata[columnName].map((item) => item.toLowerCase());
-        const result = regex.test(arrayToLowerCase);
-
-        return result;
-      },
-    },
-    {
-      columnName: 'myBoolean',
-      predicate: (value, filter, row) => {
-        const { columnName } = filter;
-        console.log(filter);
-
-        if (!row.metadata) return false;
-
-        let result;
-        const myBooleanValue = filter.value === 'Yes';
-
-        if (filter) {
-          if (filter.value) {
-            result = row.metadata[columnName] === myBooleanValue;
-          } else {
-            result = false;
-          }
-        }
-
-        return result;
-      },
-    },
-  ]);
-
-  const BooleanFilterCell = ({ filter, onFilter, column }) => (
-    <TableCell>
-      <FormControl>
-        <InputLabel id="select-label">Select</InputLabel>
-        {console.log(column)}
-        <Select
-          fullWidth
-          labelId="select-label"
-          value={filter ? filter.value : ''}
-          id="filter"
-          onChange={(e) =>
-            onFilter(e.target.value ? { value: e.target.value, operation: 'contains', columnType: column.type } : null)
-          }
-        >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="Yes">Yes</MenuItem>
-          <MenuItem value="No">No</MenuItem>
-        </Select>
-      </FormControl>
-    </TableCell>
-  );
-
-  const InputFilterCell = ({ filter, onFilter }) => (
-    <TableCell>
-      <Input
-        value={filter ? filter.value : ''}
-        onChange={(e) => onFilter(e.target.value ? { value: e.target.value, operation: 'contains' } : null)}
-        placeholder="search..."
-        inputProps={{
-          style: { textAlign: 'right', height: 'inherit' },
-          min: 1,
-          max: 4,
-        }}
-      />
-    </TableCell>
-  );
-
-  const MyCellComponent = (props) => {
-    const { column } = props;
-
-    if (column.type === 'Boolean') {
-      return <BooleanFilterCell {...props} />;
-    }
-    if (
-      column.type === 'Text' ||
-      column.type === 'SingleChoice' ||
-      column.type === 'MultiChoice' ||
-      column.type === 'MultiText'
-    ) {
-      return <InputFilterCell {...props} />;
-    }
-
-    return <TableFilterRow.Cell {...props} />;
-  };
-
-  const changeFilter = (props) => {
-    console.log('Props: ', props);
-  };
-
   useEffect(() => {
     fetchData();
+    setFilteringColumnExtensions(filterRules(metadata));
   }, []);
 
   return (
@@ -305,9 +184,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         handleDelete={handleDelete}
       />
       <Grid rows={rows} columns={columns} getRowId={getRowId}>
-        {console.log(columns)}
-        {console.log(rows)}
-        <FilteringState onFiltersChange={changeFilter} />
+        <FilteringState />
         <IntegratedFiltering columnExtensions={filteringColumnExtensions} />
 
         <SortingState defaultSorting={[{ columnName: 'name', direction: 'asc' }]} />
@@ -320,7 +197,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         <UsersTypeProvider for={usersColumn} />
 
         <TableHeaderRow showSortingControls />
-        <TableFilterRow cellComponent={MyCellComponent} />
+        <TableFilterRow cellComponent={FilterCellRow} />
 
         <TableEditColumn showAddCommand showEditCommand showDeleteCommand commandComponent={Command} />
         <PopupEditing
