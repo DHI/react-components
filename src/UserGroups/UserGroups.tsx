@@ -1,171 +1,88 @@
-import { Box, Paper } from '@material-ui/core';
-import React, { useEffect, useMemo, useState } from 'react';
-import { ActionsButtons, ActionsCell, DefaultTable, Dialog, MetadataChipCell, TopTableSection } from '../common/Table';
+import {
+  EditingState,
+  FilteringState,
+  IntegratedFiltering,
+  IntegratedSorting,
+  SortingState,
+} from '@devexpress/dx-react-grid';
+import {
+  ColumnChooser,
+  Grid,
+  TableColumnVisibility,
+  TableEditColumn,
+  TableFilterRow,
+  TableHeaderRow,
+  Toolbar,
+  VirtualTable,
+} from '@devexpress/dx-react-grid-material-ui';
+import Paper from '@material-ui/core/Paper';
+import React, { useEffect, useState } from 'react';
+import {
+  Command,
+  DeleteDialog,
+  FilterCellRow,
+  filterRules,
+  MetadataTypeProvider,
+  Popup,
+  PopupEditing,
+  UsersTypeProvider,
+} from '../common/DevExpress';
 import {
   createUserGroup,
   deleteUserGroup,
   fetchAccounts,
   fetchUserGroups,
-  updateUserGroups
+  updateUserGroups,
 } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
-import UserGroupForm from './UserGroupForm';
 
-const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
-  const [userGroups, setUserGroups] = useState<UserGroupsData[]>([]);
+const DEFAULT_COLUMNS = [
+  {
+    title: 'Name',
+    name: 'name',
+    type: '',
+  },
+  {
+    title: 'Users',
+    name: 'users',
+    type: '',
+  },
+];
+
+const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
+  const [rows, setRows] = useState<UserGroupsData[]>([]);
   const [users, setUsers] = useState<string[]>([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false);
-  const [isEditing, setisEditing] = useState(false);
-  const [selectedUserGroup, setSelectedUserGroup] = useState<UserGroupsData>();
-  const [isTableWider, setIsTableWider] = useState<boolean>(false);
-
-  const openDialog = () => {
-    setIsDialogOpen(true);
-    setisEditing(false);
-  };
-
-  const handleDialog = () => {
-    setIsDialogOpen(!isDialogOpen);
-  };
-
-  const onEdit = (item) => {
-    setIsDialogOpen(true);
-    setisEditing(true);
-    setSelectedUserGroup(item);
-  };
-
-  const handleDeleteDialog = (item) => {
-    setDeleteDialog(true);
-    setisEditing(false);
-    setSelectedUserGroup(item);
-  };
-
-  const handleDelete = () => {
-    deleteUserGroup(host, token, selectedUserGroup.id).subscribe(
-      () => {
-        fetchData();
-        setDeleteDialog(false);
-      },
-      (error) => console.log(error),
-    );
-  };
-
-  const handleSubmit = (user) => {
-    const newGroups = [...userGroups];
-
-    for (const key in newGroups) {
-      const group = newGroups[key];
-
-      if (group.id === user.id) {
-        newGroups[key] = user;
-      }
-    }
-
-    setUserGroups(newGroups);
-    setIsDialogOpen(false);
-
-    return isEditing
-      ? (updateUserGroups(host, token, {
-        id: user.id,
-        name: user.name,
-        users: user.users,
-        metadata: user.metadata,
-      }).subscribe(() => {
-        fetchData();
-      }),
-        (error) => {
-          console.log(error);
-        })
-      : (createUserGroup(host, token, {
-        id: user.id,
-        name: user.name,
-        users: user.users,
-        metadata: user.metadata,
-      }).subscribe(() => {
-        fetchData();
-      }),
-        (error) => {
-          console.log(error);
-        });
-  };
+  const [deletedDialog, setDeletedDialog] = useState(false);
+  const [deleteRow, setDeleteRow] = useState({});
+  const [filteringColumnExtensions, setFilteringColumnExtensions] = useState([]);
+  const getRowId = (row) => row.id;
 
   const metadataHeader = metadata
     ? metadata.reduce(
-      (acc, cur) => [
-        ...acc,
-        {
-          Header: cur.label,
-          category: cur.type,
-          accessor: `metadata.${cur.key}`,
-          Cell: MetadataChipCell(cur),
-          flexGrow: isTableWider && 1,
-        },
-      ],
-      [],
-    )
+        (acc, cur) => [
+          ...acc,
+          {
+            title: cur.label,
+            type: cur.type,
+            name: cur.key,
+          },
+        ],
+        [],
+      )
     : [];
 
-  const columns = [
-    {
-      Header: 'ID',
-      accessor: 'id',
-      width: 180,
-    },
-    {
-      Header: 'Name',
-      accessor: 'name',
-      width: 200,
-    },
-    {
-      Header: 'Users',
-      accessor: 'users',
-      width: 300,
-      Cell: ({ cell: { value } }) => value ? value.join(', ') : '',
-    },
-  ];
-
-  const actions = [
-    {
-      Header: 'Actions',
-      accessor: 'action',
-      width: 90,
-      flexGrow: 0,
-      category: 'Action',
-      Cell: ({
-        cell: {
-          value: [item],
-        },
-      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={handleDeleteDialog} category="Group" />,
-    },
-  ];
-
-  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), [isTableWider]);
-
-  const searchItems = (item: UserGroupsData) => {
-    if (filter === '') return true;
-
-    const query = filter.toLowerCase();
-    const id = item.id.toLowerCase();
-    const name = item.name.toLowerCase();
-    const users = item.users.map((ug) => ug.toLowerCase());
-
-    return id.includes(query) || name.includes(query) || users.some((ug) => ug.indexOf(query) >= 0);
-  };
+  const [columns] = useState(DEFAULT_COLUMNS.concat(metadataHeader));
+  const metadataColumnsArray = metadata ? metadata.reduce((acc, cur) => [...acc, cur.key], []) : [];
+  const [metadataColumns] = useState<string[]>(metadataColumnsArray);
+  const [usersColumn] = useState<string[]>(['users']);
 
   const fetchData = () => {
     fetchUserGroups(host, token).subscribe(
       async (body: Record<any, any>) => {
         const userGroups = body as UserGroups[];
-        setUserGroups(userGroups);
+        setRows(userGroups);
       },
       (error) => {
-        setError(true);
-        setLoading(false);
-
         console.error('UG Error: ', error);
       },
     );
@@ -176,65 +93,126 @@ const UserGroups = ({ host, token, metadata }: UserGroupProps) => {
         setUsers(usersOnly);
       },
       (error) => {
-        setError(true);
-        setLoading(false);
-
         console.error('UGU Error: ', error);
       },
     );
   };
 
+  const commitChanges = ({ added, changed, deleted }) => {
+    let changedRows;
+
+    if (added) {
+      const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
+
+      changedRows = [
+        ...rows,
+        ...added.map((row, index) => ({
+          id: startingAddedId + index,
+          ...row,
+        })),
+      ];
+    }
+    if (changed) {
+      changedRows = rows.map((row) => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
+    }
+    if (deleted) {
+      setDeletedDialog(true);
+      const deletedSet = new Set(deleted);
+      const selectedRow = rows.filter((row) => deletedSet.has(row.id));
+      setDeleteRow(selectedRow);
+
+      // return the same rows and let the handleDelete deal with the data, otherwise it will be undefined and crash with no rows
+      changedRows = rows;
+    }
+
+    setRows(changedRows);
+  };
+
+  const handleSubmit = (row, isNew = false) => {
+    if (isNew) {
+      return (
+        createUserGroup(host, token, {
+          id: row.id,
+          name: row.name,
+          users: row.users,
+          metadata: row.metadata,
+        }).subscribe(() => {
+          fetchData();
+        }),
+        (error) => {
+          console.log('Create User Group: ', error);
+        }
+      );
+    } else {
+      return (
+        updateUserGroups(host, token, {
+          id: row.id,
+          name: row.name,
+          users: row.users,
+          metadata: row.metadata,
+        }).subscribe(() => {
+          fetchData();
+        }),
+        (error) => {
+          console.log('Update User Groups: ', error);
+        }
+      );
+    }
+  };
+
+  const handleDelete = (row) => {
+    deleteUserGroup(host, token, row.id).subscribe(
+      () => {
+        fetchData();
+        setDeletedDialog(false);
+      },
+      (error) => console.log(error),
+    );
+  };
+
   useEffect(() => {
     fetchData();
+    setFilteringColumnExtensions(filterRules(metadata));
   }, []);
 
   return (
-    <Box>
-      <Dialog
-        dialogId="userGroups"
-        title={isEditing ? 'Edit User Group Details' : 'Create New User Group'}
-        message=""
-        showDialog={isDialogOpen}
-      >
-        <UserGroupForm
-          onSubmit={handleSubmit}
-          isEditing={isEditing}
-          selectedUserGroup={selectedUserGroup}
-          listOfUsers={users}
+    <Paper>
+      <DeleteDialog
+        selectedRow={deleteRow}
+        showDialog={deletedDialog}
+        closeDialog={() => setDeletedDialog(false)}
+        handleDelete={handleDelete}
+      />
+      <Grid rows={rows} columns={columns} getRowId={getRowId}>
+        <FilteringState />
+        <IntegratedFiltering columnExtensions={filteringColumnExtensions} />
+
+        <SortingState defaultSorting={[{ columnName: 'name', direction: 'asc' }]} />
+        <IntegratedSorting />
+
+        <EditingState onCommitChanges={commitChanges as any} />
+        <VirtualTable height={window.innerHeight - 230} />
+
+        <MetadataTypeProvider for={metadataColumns} />
+        <UsersTypeProvider for={usersColumn} />
+
+        <TableHeaderRow showSortingControls />
+        <TableFilterRow cellComponent={FilterCellRow} />
+
+        <TableEditColumn showAddCommand showEditCommand showDeleteCommand commandComponent={Command} />
+        <PopupEditing
+          popupComponent={Popup}
+          title="User Groups"
+          allUsers={users || []}
           metadata={metadata}
-          onCancel={handleDialog}
+          onSave={handleSubmit}
         />
-      </Dialog>
-
-      <Dialog
-        dialogId="userGroupsDelete"
-        title={`Delete ${selectedUserGroup?.name}`}
-        message={`This will delete the selected user group ${selectedUserGroup?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user group?`}
-        showDialog={deleteDialog}
-      >
-        <ActionsButtons
-          confirmButtonText="Delete"
-          isEditing={isEditing}
-          onCancel={() => setDeleteDialog(false)}
-          onSubmit={handleDelete}
-        />
-      </Dialog>
-
-      <TopTableSection title="User Groups" filter={filter} setFilter={setFilter} onNew={openDialog} />
-      <Paper>
-        <DefaultTable
-          error={error}
-          loading={loading}
-          tableHeaders={TableHeadersData}
-          data={userGroups}
-          searchItems={(item) => searchItems(item)}
-          isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
-          hasHeader
-        />
-      </Paper>
-    </Box>
+        <Toolbar />
+        <TableColumnVisibility />
+        <ColumnChooser />
+      </Grid>
+    </Paper>
   );
 };
 
 export { UserGroupProps, UserGroups };
-
