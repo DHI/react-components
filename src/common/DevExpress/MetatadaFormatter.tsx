@@ -6,23 +6,19 @@ interface MetadataFormatterProps extends Column {
   type?: string;
 }
 
-export const MetadataFormatter = (
-  {
-    column,
-    row,
-    value,
-  }: {
-    column: MetadataFormatterProps;
-    row?: any;
-    value: any;
-  }
-) => {
-
+export const MetadataFormatter = ({
+  column,
+  row,
+  value,
+}: {
+  column: MetadataFormatterProps;
+  row?: any;
+  value: any;
+}) => {
   const { metadata } = row;
   const { name, type } = column;
 
   if (metadata && metadata[name] !== undefined) {
-
     switch (type) {
       case 'SingleChoice':
       case 'Text':
@@ -35,10 +31,7 @@ export const MetadataFormatter = (
       case 'Boolean':
         return (
           <Box alignItems="center">
-            <Chip
-              label={metadata[name] ? 'Yes' : 'No'}
-              style={{ marginRight: 4 }}
-            />
+            <Chip label={metadata[name] ? 'Yes' : 'No'} style={{ marginRight: 4 }} />
           </Box>
         );
 
@@ -48,10 +41,8 @@ export const MetadataFormatter = (
   }
 
   return null;
-}
+};
 
 export const MetadataTypeProvider: React.ComponentType<DataTypeProviderProps> = (props: DataTypeProviderProps) => (
   <DataTypeProvider formatterComponent={MetadataFormatter} {...props} />
 );
-
-

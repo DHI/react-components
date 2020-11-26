@@ -377,8 +377,8 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
       ? `?dataSelectors=[${dataSource.dataSelectors
-        .map((dataSelector) => dataSelector.replace('data.', ''))
-        .join(',')}]`
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
       : '';
 
   return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}${dataSelectors}`, {
@@ -393,8 +393,8 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
       ? `?dataSelectors=[${dataSource.dataSelectors
-        .map((dataSelector) => dataSelector.replace('data.', ''))
-        .join(',')}]`
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
       : '';
 
   return fetchUrl(
@@ -439,9 +439,9 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
 /**
  * /api/jobs/{connectionId}/query
  * @param dataSource
- * @param token 
+ * @param token
  * @param query array of objects { item: string, queryOperator: string, value: string}
- * 
+ *
  *  Gets all the jobs meeting the criteria specified by the given query.
  */
 const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, query: JobParameters[]) => {
@@ -467,7 +467,7 @@ const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, 
         return dataObjectToArray(job).sort((a, b) => {
           return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
         });
-      })
+      }),
     ),
   );
 
@@ -537,8 +537,8 @@ const fetchJobs = (
       !query
         ? `${source.host}/api/jobs/${source.connection}`
         : `${source.host}/api/jobs/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
-          query.since,
-        )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
+            query.since,
+          )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
       {
         method: 'GET',
         additionalHeaders: {

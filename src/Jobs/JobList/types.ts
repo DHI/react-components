@@ -104,6 +104,5 @@ interface DateFilterProps {
   onClearDateFilter: () => void;
 }
 
-
 export default JobListProps;
 export { JobData, FilterProps, JobDetailProps, DateFilterProps, DateProps };

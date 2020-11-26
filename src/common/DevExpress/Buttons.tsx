@@ -6,11 +6,7 @@ import React from 'react';
 
 const AddButton = ({ onExecute }) => (
   <div style={{ textAlign: 'center' }}>
-    <Button
-      color="primary"
-      onClick={onExecute}
-      title="Create new row"
-    >
+    <Button color="primary" onClick={onExecute} title="Create new row">
       <ControlPointIcon />
     </Button>
   </div>
@@ -38,13 +34,8 @@ const commandComponents = {
 
 const Command = ({ id, onExecute }) => {
   const CommandButton = commandComponents[id];
-  return (
-    <CommandButton
-      onExecute={onExecute}
 
-    />
-  );
+  return <CommandButton onExecute={onExecute} />;
 };
 
 export { AddButton, EditButton, DeleteButton, Command };
-

@@ -7,7 +7,7 @@ import {
   FormGroup,
   Grid,
   TextField,
-  withStyles
+  withStyles,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React, { useState } from 'react';
@@ -50,15 +50,15 @@ const Popup: React.FC<PopupProps> = ({
               {isNew ? (
                 <TextField margin="normal" name="id" label="ID" value={row.id || ''} onChange={onChange} />
               ) : (
-                  <NoBorderTextField
-                    fullWidth
-                    label="ID"
-                    margin="dense"
-                    variant="standard"
-                    value={row?.id}
-                    disabled={true}
-                  />
-                )}
+                <NoBorderTextField
+                  fullWidth
+                  label="ID"
+                  margin="dense"
+                  variant="standard"
+                  value={row?.id}
+                  disabled={true}
+                />
+              )}
 
               <TextField margin="normal" name="name" label="Name" value={row.name || ''} onChange={onChange} />
               <Autocomplete

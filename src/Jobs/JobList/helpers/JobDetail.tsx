@@ -8,7 +8,7 @@ import { JobDetailProps } from '../types';
 const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose }: JobDetailProps) => {
   const classes = JobDetailStyles();
   const [structuredLogs, setStructuredLogs] = useState('');
-  const [scrollHeight, setScrollHeight] = useState(null)
+  const [scrollHeight, setScrollHeight] = useState(null);
 
   const displayBlock = (detail) => {
     return (
@@ -43,16 +43,19 @@ const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose
     formatLog();
   }, [detail.logs]);
 
-  const textareaInputRef = useCallback(node => {
-    if (node !== null) {
-      if (textareaScrolled) {
-        setScrollHeight(node.scrollHeight)
-        node.scrollTop = scrollHeight;
-      } else {
-        node.scrollTop = 0;
+  const textareaInputRef = useCallback(
+    (node) => {
+      if (node !== null) {
+        if (textareaScrolled) {
+          setScrollHeight(node.scrollHeight);
+          node.scrollTop = scrollHeight;
+        } else {
+          node.scrollTop = 0;
+        }
       }
-    }
-  }, [textareaScrolled, scrollHeight])
+    },
+    [textareaScrolled, scrollHeight],
+  );
 
   return (
     <div className={classes.root}>
@@ -68,7 +71,13 @@ const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose
       </Grid>
       {displayBlock(detail)}
 
-      <textarea name={detail.id} placeholder="" ref={(node) => textareaInputRef(node)} className={classes.textarea} defaultValue={structuredLogs} />
+      <textarea
+        name={detail.id}
+        placeholder=""
+        ref={(node) => textareaInputRef(node)}
+        className={classes.textarea}
+        defaultValue={structuredLogs}
+      />
     </div>
   );
 };

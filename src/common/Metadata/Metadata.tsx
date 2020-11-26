@@ -9,7 +9,7 @@ import {
   Select,
   Switch,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
@@ -55,7 +55,7 @@ const Metadata = ({
 
   const handleChipDelete = (key, item) => {
     const newList = list.filter((value) => value !== item);
-    setList(newList)
+    setList(newList);
     onChange(key, newList);
   };
 
@@ -82,12 +82,12 @@ const Metadata = ({
   }, [error]);
 
   useEffect(() => {
-    metadata.map(meta => {
+    metadata.map((meta) => {
       if (meta.type === 'MultiText') {
-        setList(data[meta.key])
+        setList(data[meta.key]);
       }
-    })
-  }, [list])
+    });
+  }, [list]);
 
   return (
     <Fragment>
