@@ -38,7 +38,7 @@ export const UserGroupStory = () => {
       key: 'myOptions',
       label: 'My Options',
       type: 'MultiChoice',
-      options: ['A', 'B', 'C'],
+      options: ['A', 'Z', 'V', 'B', 'C'],
       default: ['A', 'C'],
     },
     {
