@@ -1,6 +1,16 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, Grid, TextField, withStyles } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormGroup,
+  Grid,
+  TextField,
+  withStyles
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import React from 'react';
+import React, { useState } from 'react';
 import MetadataEditor from './MetadataEditor';
 import { PopupProps } from './types';
 
@@ -27,7 +37,10 @@ const Popup: React.FC<PopupProps> = ({
   users,
   isNew,
   metadata,
-}) => (
+}) => {
+  const [error, setError] = useState<boolean>(false);
+
+  return (
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{title || ''}</DialogTitle>
       <DialogContent>
@@ -35,13 +48,7 @@ const Popup: React.FC<PopupProps> = ({
           <Grid item xs={12}>
             <FormGroup>
               {isNew ? (
-                <TextField
-                  margin="normal"
-                  name="id"
-                  label="ID"
-                  value={row.id || ''}
-                  onChange={onChange}
-                />
+                <TextField margin="normal" name="id" label="ID" value={row.id || ''} onChange={onChange} />
               ) : (
                   <NoBorderTextField
                     fullWidth
@@ -53,15 +60,9 @@ const Popup: React.FC<PopupProps> = ({
                   />
                 )}
 
-              <TextField
-                margin="normal"
-                name="name"
-                label="Name"
-                value={row.name || ''}
-                onChange={onChange}
-              />
+              <TextField margin="normal" name="name" label="Name" value={row.name || ''} onChange={onChange} />
               <Autocomplete
-                id='users'
+                id="users"
                 disabled={!users}
                 placeholder={!users ? 'Loading users...' : 'Select user(s)'}
                 options={users.sort() || []}
@@ -88,6 +89,7 @@ const Popup: React.FC<PopupProps> = ({
                 row={row}
                 onChange={onMetadataChange}
                 onListChange={onListChange}
+                onError={setError}
               />
             </FormGroup>
           </Grid>
@@ -96,12 +98,13 @@ const Popup: React.FC<PopupProps> = ({
       <DialogActions style={{ padding: 20 }}>
         <Button onClick={onCancelChanges} color="primary">
           Cancel
-      </Button>
-        <Button onClick={onApplyChanges} variant="contained" color="primary">
+        </Button>
+        <Button onClick={onApplyChanges} variant="contained" color="primary" disabled={error}>
           Save
-      </Button>
+        </Button>
       </DialogActions>
     </Dialog>
   );
+};
 
 export default Popup;

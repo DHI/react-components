@@ -58,13 +58,13 @@ export interface PopupEditingProps {
   /**
    * List of all the users
    */
-  allUsers: string[],
+  allUsers: string[];
   /**
    * Metadata supplied on the HOC to extend the table.
    */
   metadata: MetadataProps[];
   /**
-   * Function to save a new or editedRow data 
+   * Function to save a new or editedRow data
    */
   onSave: (editedRow, isNew?) => void;
 }
@@ -97,7 +97,7 @@ export interface PopupProps {
   /**
    * Boolean to open/close Dialog
    */
-  open: boolean,
+  open: boolean;
   /**
    * Dialog Title
    */
@@ -130,7 +130,11 @@ export interface MetadataEditorProps {
    */
   onChange: (e) => void;
   /**
-  * Function called when the dropdown/list is changed
-  */
-  onListChange: (key, values, isMetadata?) => void
+   * Function called when the dropdown/list is changed
+   */
+  onListChange: (key, values, isMetadata?) => void;
+  /**
+   * Function to pass if there is any error on Metadata Fields
+   */
+  onError: (error: boolean) => void;
 }

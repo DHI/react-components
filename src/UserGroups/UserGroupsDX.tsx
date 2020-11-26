@@ -140,7 +140,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           fetchData();
         }),
         (error) => {
-          console.log(error);
+          console.log('Create User Group: ', error);
         }
       );
     } else {
@@ -154,7 +154,7 @@ const UserGroupsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           fetchData();
         }),
         (error) => {
-          console.log(error);
+          console.log('Update User Groups: ', error);
         }
       );
     }

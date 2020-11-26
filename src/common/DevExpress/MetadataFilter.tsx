@@ -21,9 +21,12 @@ export const InputFilterCell = ({ filter, onFilter, column }) => (
 
 export const BooleanFilterCell = ({ filter, onFilter, column }) => (
   <TableCell>
-    <FormControl>
-      <InputLabel id="select-label">Select</InputLabel>
+    <FormControl style={{ width: '100%' }}>
+      <InputLabel id="select-label" style={{ marginTop: -16 }}>
+        Select
+      </InputLabel>
       <Select
+        style={{ marginTop: 0 }}
         fullWidth
         labelId="select-label"
         value={filter ? filter.value : ''}
