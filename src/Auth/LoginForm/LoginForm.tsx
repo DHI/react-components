@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -12,6 +11,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import React, { useEffect, useState } from 'react';
 import AuthService from '../AuthService';
 import LoginFormProps from './types';
 import useStyles from './useStyles';
@@ -50,6 +50,10 @@ const LoginForm = (props: LoginFormProps) => {
   const validate = () => form.id && form.password;
 
   const handleChange = (name: string, value: string | boolean) => {
+    if (typeof value === 'string') {
+      value = value.trim();
+    }
+
     setForm({ ...form, [name]: value });
   };
 

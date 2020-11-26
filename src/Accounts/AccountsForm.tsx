@@ -8,7 +8,7 @@ import { MetadataDefault } from '../common/Metadata/types';
 import { ActionsButtons } from '../common/Table';
 import { fetchUserGroups } from '../DataServices/DataServices';
 import { UserGroups } from '../UserGroups/types';
-import { passwordStrength } from '../utils/Utils';
+import { passwordStrength, trimRecursive } from '../utils/Utils';
 import { AccountsFormProps, EditUser } from './types';
 
 const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, token, host }: AccountsFormProps) => {
@@ -55,33 +55,6 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
         });
       }
     });
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setState({
-      ...state,
-      loading: true,
-    });
-
-    if (form.password && form.password !== form.repeatPassword) {
-      setState({ ...state, passwordValid: false });
-
-      return;
-    }
-
-    const userDetails = {
-      id: form.id,
-      name: form.name,
-      email: form.email || '',
-      password: form.password,
-      repeatPassword: form.repeatPassword,
-      userGroups: form.userGroups || [],
-      metadata: form.metadata || [],
-    } as EditUser;
-
-    onSubmit(userDetails);
   };
 
   const updatePasswordStrengthIndicator = (password: string) => {
@@ -135,6 +108,35 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
     );
   };
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setState({
+      ...state,
+      loading: true,
+    });
+
+    if (form.password && form.password !== form.repeatPassword) {
+      setState({ ...state, passwordValid: false });
+
+      return;
+    }
+
+    const userDetails = {
+      id: form.id,
+      name: form.name,
+      email: form.email || '',
+      password: form.password,
+      repeatPassword: form.repeatPassword,
+      userGroups: form.userGroups || [],
+      metadata: form.metadata || [],
+    } as EditUser;
+
+    const trimmedForm = trimRecursive(userDetails);
+
+    onSubmit(trimmedForm);
+  };
+
   const handleError = (boolean) => {
     setError(boolean);
   };
@@ -168,7 +170,7 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
             label="Username"
             variant="standard"
             value={form.id}
-            onChange={(e) => handleChange('id', e.target.value.trim())}
+            onChange={(e) => handleChange('id', e.target.value)}
           />
         ) : (
           <NoBorderTextField
@@ -224,7 +226,7 @@ const AccountsForm = ({ selectedUser, isEditing, metadata, onSubmit, onCancel, t
           margin="dense"
           variant="standard"
           value={form.email}
-          onChange={(e) => handleChange('email', e.target.value.trim())}
+          onChange={(e) => handleChange('email', e.target.value)}
         />
         <UserGroupsInput
           userId={selectedUser.id}
