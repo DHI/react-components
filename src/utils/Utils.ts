@@ -22,6 +22,15 @@ const setObjectProperty = (objectItem: any, property: string, newValue: any) => 
   jp.apply(objectItem, `$.${property}`, () => newValue);
 };
 
+const trimRecursive = (obj) => {
+  for (const k in obj) {
+    if (typeof obj[k] === 'string') obj[k] = obj[k].trim();
+    else if (typeof obj[k] === 'object' && !(obj[k] instanceof Array)) trimRecursive(obj[k]);
+  }
+
+  return obj;
+};
+
 const getDescriptions = (
   scenarioData: Scenario,
   descriptionFields: DescriptionField[] | undefined,
@@ -265,10 +274,7 @@ const setUtcToZonedTime = (date, timeZone, dateTimeFormat) =>
  * @param offsetHours An optional number of hours to offset the time
  */
 const utcNow = (offsetHours?: number | null) =>
-  format(
-    addHours(utcToZonedTime(new Date(), 'UTC'), offsetHours == null ? 0 : offsetHours),
-    'yyyy-MM-dd HH:mm:ss',
-  );
+  format(addHours(utcToZonedTime(new Date(), 'UTC'), offsetHours == null ? 0 : offsetHours), 'yyyy-MM-dd HH:mm:ss');
 
 /**
  * This converts the date provided in a specific IANA time zone to UTC
@@ -281,25 +287,22 @@ const tzToUtc = (date: string | Date, timeZone: string) =>
     : format(utcToZonedTime(toDate(utcNow(), { timeZone }), 'UTC'), 'yyyy-MM-dd HH:mm:ss');
 
 const toISOLocal = (d: Date) => {
-  const z = n => ('0' + n).slice(-2);
-  const zz = n => ('00' + n).slice(-3);
+  const z = (n) => `0${n}`.slice(-2);
+  const zz = (n) => `00${n}`.slice(-3);
   let off = d.getTimezoneOffset();
   off = Math.abs(off);
 
-  return d.getFullYear() + '-'
-    + z(d.getMonth() + 1) + '-' +
-    z(d.getDate()) + 'T' +
-    z(d.getHours()) + ':' +
-    z(d.getMinutes()) + ':' +
-    z(d.getSeconds()) + '.' +
-    zz(d.getMilliseconds());
-}
+  return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}:${z(
+    d.getSeconds(),
+  )}.${zz(d.getMilliseconds())}`;
+};
 
 export {
   dataObjectToArray,
   getObjectProperty,
   setObjectProperty,
   getDescriptions,
+  trimRecursive,
   changeObjectProperty,
   checkCondition,
   checkStatus,

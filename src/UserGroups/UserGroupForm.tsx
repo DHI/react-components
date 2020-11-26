@@ -3,6 +3,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { Metadata } from '../common/Metadata/Metadata';
 import { ActionsButtons } from '../common/Table';
+import { trimRecursive } from '../utils/Utils';
 import { UserGroupFormProps } from './types';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -83,7 +84,10 @@ const UserGroupForm = ({
 
   const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    onSubmit(form);
+
+    const trimmedForm = trimRecursive(form);
+
+    onSubmit(trimmedForm);
   };
 
   const handleError = (error) => {
