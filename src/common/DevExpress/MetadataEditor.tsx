@@ -9,7 +9,7 @@ import {
   Select,
   Switch,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect, useRef, useState } from 'react';
@@ -56,6 +56,14 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
   useEffect(() => {
     onError(Object.keys(error).some((v) => error[v] === true));
   }, [error]);
+
+  useEffect(() => {
+    metadata.map((meta) => {
+      if (meta.type === 'MultiText') {
+        setList(row.metadata[meta.key]);
+      }
+    });
+  }, [list]);
 
   return (
     <>
@@ -122,7 +130,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
                 options={item.options.sort() || []}
                 value={row.metadata && row.metadata[key] ? row.metadata[key] : item.default}
                 onChange={(e, values) => onListChange(key, values, true)}
-                multiple={true as any}
+                multiple
                 renderInput={(props) => (
                   <TextField
                     {...props}
@@ -141,20 +149,17 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
           } else if (type === 'MultiText') {
             return (
               <>
-                {row.metadata && row.metadata[key]?.length > 0 && (
-                  <Typography style={{ marginTop: 10 }}>{label} list</Typography>
-                )}
-                {row.metadata &&
-                  row.metadata[key]?.map((item, i) => (
-                    <Box alignItems="center" key={`${item}_${i}`}>
-                      <Chip
-                        key={item}
-                        label={item}
-                        style={{ marginRight: 4 }}
-                        onDelete={() => handleChipDelete(key, item)}
-                      />
-                    </Box>
-                  ))}
+                {list?.length > 0 && <Typography style={{ marginTop: 10 }}>{label} list</Typography>}
+                {list?.map((item, i) => (
+                  <Box alignItems="center" key={`${item}_${i}`}>
+                    <Chip
+                      key={item}
+                      label={item}
+                      style={{ marginRight: 4 }}
+                      onDelete={() => handleChipDelete(key, item)}
+                    />
+                  </Box>
+                ))}
 
                 <TextField
                   key={i}

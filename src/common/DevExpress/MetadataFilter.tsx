@@ -114,7 +114,6 @@ const metadataFilterService = [
     type: 'Boolean',
     predicate: (value, filter, row) => {
       const { columnName } = filter;
-      console.log(filter);
 
       if (!row.metadata) return false;
 
