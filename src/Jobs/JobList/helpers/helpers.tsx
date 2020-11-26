@@ -10,14 +10,17 @@ export const GroupCellContent = (props: any) => (
 );
 
 export const Cell = (props: any) => {
-
   if (props.column.name === 'status') {
-    return <td style={{ borderBottom: '1px solid rgba(224, 224, 224, 1)', paddingLeft: 10 }}><StatusCell {...props} /></td>
+    return (
+      <td style={{ borderBottom: '1px solid rgba(224, 224, 224, 1)', paddingLeft: 10 }}>
+        <StatusCell {...props} />
+      </td>
+    );
   }
 
-  return <VirtualTable.Cell {...props} />
-}
+  return <VirtualTable.Cell {...props} />;
+};
 
-export const dateGroupCriteria = value => {
-  return { key: format(new Date(value), 'yyyy-MM-dd - HH:00') }
+export const dateGroupCriteria = (value) => {
+  return { key: format(new Date(value), 'yyyy-MM-dd - HH:00') };
 };

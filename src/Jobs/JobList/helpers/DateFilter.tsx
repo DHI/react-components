@@ -13,12 +13,11 @@ const DateFilter: FC<DateFilterProps> = ({
   onClearDateFilter,
   children,
 }) => {
-
   return (
-    <Grid container direction='row' alignItems='center' justify='flex-end' spacing={3} >
+    <Grid container direction="row" alignItems="center" justify="flex-end" spacing={3}>
       <Grid item>
         <DateInput
-          label='From'
+          label="From"
           dateFormat={dateTimeFormat}
           timeZone={timeZone}
           defaultDate={date.from ? date.from : new Date(startTimeUtc).toISOString()}
@@ -27,7 +26,7 @@ const DateFilter: FC<DateFilterProps> = ({
       </Grid>
       <Grid item>
         <DateInput
-          label='To'
+          label="To"
           dateFormat={dateTimeFormat}
           timeZone={timeZone}
           defaultDate={date.to ? date.to : new Date().toISOString()}
@@ -35,14 +34,18 @@ const DateFilter: FC<DateFilterProps> = ({
         />
       </Grid>
       <Grid item>
-        <Button variant="contained" color="primary" onClick={() => onSetDateFilter()}>Filter</Button>
+        <Button variant="contained" color="primary" onClick={() => onSetDateFilter()}>
+          Filter
+        </Button>
       </Grid>
       <Grid item>
-        <Button variant="contained" color="secondary" onClick={() => onClearDateFilter()}>Clear</Button>
+        <Button variant="contained" color="secondary" onClick={() => onClearDateFilter()}>
+          Clear
+        </Button>
       </Grid>
       {children}
     </Grid>
   );
-}
+};
 
 export { DateFilter, DateFilterProps };

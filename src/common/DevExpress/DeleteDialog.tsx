@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ActionsButtons from './ActionsButtons';
 import Dialog from './Dialog';
@@ -19,6 +18,6 @@ const DeleteDialog = ({ selectedRow, showDialog, closeDialog, handleDelete }: De
       />
     </Dialog>
   );
-}
+};
 
 export default DeleteDialog;

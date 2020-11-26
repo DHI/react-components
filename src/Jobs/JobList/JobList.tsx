@@ -1,5 +1,23 @@
-import { FilteringState, GroupingState, IntegratedFiltering, IntegratedGrouping, IntegratedSorting, SortingState } from '@devexpress/dx-react-grid';
-import { ColumnChooser, DragDropProvider, Grid, GroupingPanel, TableColumnVisibility, TableFilterRow, TableGroupRow, TableHeaderRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
+import {
+  FilteringState,
+  GroupingState,
+  IntegratedFiltering,
+  IntegratedGrouping,
+  IntegratedSorting,
+  SortingState,
+} from '@devexpress/dx-react-grid';
+import {
+  ColumnChooser,
+  DragDropProvider,
+  Grid,
+  GroupingPanel,
+  TableColumnVisibility,
+  TableFilterRow,
+  TableGroupRow,
+  TableHeaderRow,
+  Toolbar,
+  VirtualTable,
+} from '@devexpress/dx-react-grid-material-ui';
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useState } from 'react';
@@ -25,20 +43,11 @@ const DEFAULT_COLUMNS = [
 ];
 
 const JobList = (props: JobListProps) => {
-  const {
-    frequency,
-    dataSources,
-    disabledColumns,
-    parameters,
-    token,
-    startTimeUtc,
-    dateTimeFormat,
-    timeZone,
-  } = props;
+  const { frequency, dataSources, disabledColumns, parameters, token, startTimeUtc, dateTimeFormat, timeZone } = props;
   const initialDateState = {
     from: '',
-    to: ''
-  }
+    to: '',
+  };
   const initialJobData = {
     id: '',
     taskId: '',
@@ -60,14 +69,11 @@ const JobList = (props: JobListProps) => {
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-  const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false)
+  const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false);
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<string>('');
-
-  const [tableColumnExtensions] = useState([
-    { columnName: 'status', width: 120 },
-  ]);
+  const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
 
   const [tableGroupColumnExtension] = useState([
     { columnName: 'requested', showWhenGrouped: true },
@@ -87,15 +93,15 @@ const JobList = (props: JobListProps) => {
 
     const query = [
       {
-        item: "Requested",
-        queryOperator: "GreaterThan",
-        value: date.from ? date.from : new Date(startTimeUtc).toISOString()
+        item: 'Requested',
+        queryOperator: 'GreaterThan',
+        value: date.from ? date.from : new Date(startTimeUtc).toISOString(),
       },
       {
-        item: "Requested",
-        queryOperator: "LessThan",
-        value: date.to ? date.to : new Date().toISOString()
-      }
+        item: 'Requested',
+        queryOperator: 'LessThan',
+        value: date.to ? date.to : new Date().toISOString(),
+      },
     ];
 
     executeJobQuery(dataSources, token, query).subscribe(
@@ -142,7 +148,7 @@ const JobList = (props: JobListProps) => {
         const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
         setStartDateUtc(utcDate);
-        setLoading(false)
+        setLoading(false);
       },
       (error) => {
         console.log(error);
@@ -152,21 +158,20 @@ const JobList = (props: JobListProps) => {
 
   const parameterHeader = parameters
     ? parameters.reduce(
-      (acc, cur) => [
-        ...acc,
-        {
-          title: cur.label,
-          name: cur.parameter,
-        },
-      ],
-      [],
-    )
+        (acc, cur) => [
+          ...acc,
+          {
+            title: cur.label,
+            name: cur.parameter,
+          },
+        ],
+        [],
+      )
     : [];
 
-  const [columns] = useState(DEFAULT_COLUMNS.concat(parameterHeader))
+  const [columns] = useState(DEFAULT_COLUMNS.concat(parameterHeader));
 
   const expandWithData = (row) => {
-
     const {
       id = '',
       taskId = '',
@@ -237,19 +242,19 @@ const JobList = (props: JobListProps) => {
   const setDateFilter = () => {
     setIsFiltered(true);
     fetchJobList();
-  }
+  };
 
   const clearDateFilter = () => {
     setIsFiltered(false);
-    setDate(initialDateState)
-  }
+    setDate(initialDateState);
+  };
 
   const TableRow = (props: any) => (
     <VirtualTable.Row
       {...props}
       style={{
         cursor: 'pointer',
-        backgroundColor: selectedRow === props.row.id ? '#f5f5f5' : 'transparent'
+        backgroundColor: selectedRow === props.row.id ? '#f5f5f5' : 'transparent',
       }}
       onClick={() => expandWithData(props.tableRow.row)}
     />
@@ -257,9 +262,7 @@ const JobList = (props: JobListProps) => {
 
   const ToolbarRootComponent = (props: any) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
-      <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>
-        {props.children}
-      </div>
+      <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>{props.children}</div>
       <DateFilter
         dateTimeFormat={dateTimeFormat}
         startTimeUtc={startTimeUtc}
@@ -269,41 +272,42 @@ const JobList = (props: JobListProps) => {
         onSetDateFilter={setDateFilter}
         onClearDateFilter={clearDateFilter}
       >
-
         <MUIGrid item>
           <FormControlLabel
-            control={<Switch
-              checked={textareaScrolled}
-              onChange={() => setTextareaScrolled(!textareaScrolled)}
-              color="primary"
-              name="textareaView"
-              inputProps={{ 'aria-label': 'textareaView checkbox' }}
-            />}
+            control={
+              <Switch
+                checked={textareaScrolled}
+                onChange={() => setTextareaScrolled(!textareaScrolled)}
+                color="primary"
+                name="textareaView"
+                inputProps={{ 'aria-label': 'textareaView checkbox' }}
+              />
+            }
             label="Textarea scrolled down"
           />
         </MUIGrid>
       </DateFilter>
-    </div >
+    </div>
   );
 
   useEffect(() => {
     fetchJobList();
-  }, [isFiltered])
+  }, [isFiltered]);
 
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
-    }
+    };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }), [];
+  }),
+    [];
 
   useEffect(() => {
-
     let interval: any;
 
     if (startDateUtc) {
@@ -320,10 +324,7 @@ const JobList = (props: JobListProps) => {
       <Paper style={{ position: 'relative' }}>
         {loading && <Loading />}
 
-        <Grid
-          rows={jobsData}
-          columns={columns}
-        >
+        <Grid rows={jobsData} columns={columns}>
           <FilteringState defaultFilters={[]} />
           <IntegratedFiltering />
 
@@ -332,9 +333,7 @@ const JobList = (props: JobListProps) => {
 
           <DragDropProvider />
           <GroupingState />
-          <IntegratedGrouping
-            columnExtensions={integratedGroupingColumnExtensions}
-          />
+          <IntegratedGrouping columnExtensions={integratedGroupingColumnExtensions} />
 
           <VirtualTable
             height={windowHeight - 230}
@@ -346,23 +345,25 @@ const JobList = (props: JobListProps) => {
           <TableHeaderRow showSortingControls />
           <TableFilterRow />
 
-          <TableGroupRow
-            contentComponent={GroupCellContent}
-            columnExtensions={tableGroupColumnExtension}
-          />
+          <TableGroupRow contentComponent={GroupCellContent} columnExtensions={tableGroupColumnExtension} />
           <Toolbar rootComponent={ToolbarRootComponent} />
           <GroupingPanel showGroupingControls />
 
           <TableColumnVisibility defaultHiddenColumnNames={disabledColumns} />
           <ColumnChooser />
         </Grid>
-
       </Paper>
       <div className={classes.jobPanel}>
-        <JobDetail detail={job} textareaScrolled={textareaScrolled} timeZone={timeZone} dateTimeFormat={dateTimeFormat} onClose={closeTab} />
+        <JobDetail
+          detail={job}
+          textareaScrolled={textareaScrolled}
+          timeZone={timeZone}
+          dateTimeFormat={dateTimeFormat}
+          onClose={closeTab}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export { JobList, JobListProps };

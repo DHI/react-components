@@ -1,37 +1,33 @@
-import {
-  Plugin, Template, TemplateConnector, TemplatePlaceholder
-} from '@devexpress/dx-react-core';
+import { Plugin, Template, TemplateConnector, TemplatePlaceholder } from '@devexpress/dx-react-core';
 import React from 'react';
 import { PopupEditingProps } from './types';
-
 
 const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metadata, onSave }: PopupEditingProps) => (
   <Plugin>
     <Template name="popupEditing">
       <TemplateConnector>
         {(
+          { rows, getRowId, addedRows, editingRowIds, createRowChange, rowChanges },
           {
-            rows,
-            getRowId,
-            addedRows,
-            editingRowIds,
-            createRowChange,
-            rowChanges,
-          },
-          {
-            changeRow, changeAddedRow, commitChangedRows, commitAddedRows,
-            stopEditRows, cancelAddedRows, cancelChangedRows,
+            changeRow,
+            changeAddedRow,
+            commitChangedRows,
+            commitAddedRows,
+            stopEditRows,
+            cancelAddedRows,
+            cancelChangedRows,
           },
         ) => {
           const isNew = addedRows.length > 0;
           let editedRow;
           let rowId;
+
           if (isNew) {
             rowId = 0;
             editedRow = addedRows[rowId];
           } else {
             [rowId] = editingRowIds;
-            const targetRow = rows.filter(row => getRowId(row) === rowId)[0];
+            const targetRow = rows.filter((row) => getRowId(row) === rowId)[0];
             editedRow = { ...targetRow, ...rowChanges[rowId] };
           }
 
@@ -40,6 +36,7 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
               rowId,
               change: createRowChange(editedRow, value, name),
             };
+
             if (isNew) {
               changeAddedRow(changeArgs);
             } else {
@@ -55,20 +52,20 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
                 ...editedRow,
                 metadata: {
                   ...editedRow.metadata,
-                  [name]: values
-                }
-              }
+                  [name]: values,
+                },
+              };
             } else {
               changeData = {
                 ...editedRow,
-                [name]: values
-              }
+                [name]: values,
+              };
             }
 
             const changeArgs = {
               rowId,
-              change: changeData
-            }
+              change: changeData,
+            };
 
             if (isNew) {
               changeAddedRow(changeArgs);
@@ -79,6 +76,7 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
 
           const processMetadataChange = ({ target: { name, value, checked } }) => {
             let newValue;
+
             if (value) {
               newValue = value;
             } else {
@@ -90,8 +88,8 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
               change: {
                 metadata: {
                   ...editedRow.metadata,
-                  [name]: newValue
-                }
+                  [name]: newValue,
+                },
               },
             };
 
@@ -103,6 +101,7 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
           };
 
           const rowIds = isNew ? [0] : editingRowIds;
+
           const applyChanges = () => {
             metadata?.forEach((item, index) => {
               if (editedRow.metadata === undefined || editedRow.metadata[metadata[index].key] === undefined) {
@@ -112,15 +111,17 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
                 };
               }
             });
+
             if (isNew) {
               commitAddedRows({ rowIds });
-              onSave(editedRow, isNew)
+              onSave(editedRow, isNew);
             } else {
               stopEditRows({ rowIds });
               commitChangedRows({ rowIds });
               onSave(editedRow);
             }
           };
+
           const cancelChanges = () => {
             if (isNew) {
               cancelAddedRows({ rowIds });
@@ -131,6 +132,7 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
           };
 
           const open = editingRowIds.length > 0 || isNew;
+
           return (
             <Popup
               open={open}
@@ -155,6 +157,5 @@ const PopupEditing = React.memo(({ popupComponent: Popup, title, allUsers, metad
     </Template>
   </Plugin>
 ));
-
 
 export default PopupEditing;

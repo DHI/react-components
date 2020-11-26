@@ -27,4 +27,3 @@ export * from './Timeseries/ChartPlotly/types';
 export * from './Timeseries/TimeseriesExporter/TimeseriesExporter';
 export * from './UserGroups/UserGroups';
 export * from './utils/Utils';
-
