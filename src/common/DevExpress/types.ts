@@ -5,7 +5,7 @@ export interface DeleteDialogProps {
   /**
    * The current Selected row from the table
    */
-  selectedRow: UserGroupsData | {};
+  selectedRow: any;
   /**
    * Boolean to open or close the popup dialog
    */
@@ -73,7 +73,7 @@ export interface PopupProps {
   /**
    * Row with the usergroup data
    */
-  row: UserGroupsData;
+  row: any;
   /**
    * Function called to change a field
    */

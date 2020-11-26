@@ -27,14 +27,8 @@ import {
   PopupEditing,
   UsersTypeProvider,
 } from '../common/DevExpress';
-import {
-  createUserGroup,
-  deleteUserGroup,
-  fetchAccounts,
-  fetchUserGroups,
-  updateUserGroups,
-} from '../DataServices/DataServices';
-import { UserGroupProps, UserGroups, UserGroupsData } from './types';
+import { createAccount, deleteUserGroup, fetchAccounts, updateAccount } from '../DataServices/DataServices';
+import { UserGroupProps, UserGroups as AccountsDX, UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_COLUMNS = [
   {
@@ -42,12 +36,16 @@ const DEFAULT_COLUMNS = [
     name: 'name',
   },
   {
-    title: 'Users',
-    name: 'users',
+    title: 'Email',
+    name: 'email',
+  },
+  {
+    title: 'User Groups',
+    name: 'userGroups',
   },
 ];
 
-const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
+const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [rows, setRows] = useState<UserGroupsData[]>([]);
   const [users, setUsers] = useState<string[]>([]);
   const [deletedDialog, setDeletedDialog] = useState(false);
@@ -75,23 +73,13 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [usersColumn] = useState<string[]>(['users']);
 
   const fetchData = () => {
-    fetchUserGroups(host, token).subscribe(
-      async (body: Record<any, any>) => {
-        const userGroups = body as UserGroups[];
-        setRows(userGroups);
-      },
-      (error) => {
-        console.error('UG Error: ', error);
-      },
-    );
-
     fetchAccounts(host, token).subscribe(
       async (body: Record<any, any>) => {
-        const usersOnly = body.map((item) => item.id);
-        setUsers(usersOnly);
+        console.log(body);
+        setRows(body as any);
       },
       (error) => {
-        console.error('UGU Error: ', error);
+        console.error('AU Error: ', error);
       },
     );
   };
@@ -129,7 +117,7 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const handleSubmit = (row, isNew = false) => {
     if (isNew) {
       return (
-        createUserGroup(host, token, {
+        createAccount(host, token, {
           id: row.id,
           name: row.name,
           users: row.users,
@@ -138,12 +126,12 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           fetchData();
         }),
         (error) => {
-          console.log('Create User Group: ', error);
+          console.log('Create Account: ', error);
         }
       );
     } else {
       return (
-        updateUserGroups(host, token, {
+        updateAccount(host, token, {
           id: row.id,
           name: row.name,
           users: row.users,
@@ -152,7 +140,7 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           fetchData();
         }),
         (error) => {
-          console.log('Update User Groups: ', error);
+          console.log('Update Accounts: ', error);
         }
       );
     }
@@ -200,7 +188,7 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         <TableEditColumn showAddCommand showEditCommand showDeleteCommand commandComponent={Command} />
         <PopupEditing
           popupComponent={Popup}
-          title="User Groups"
+          title="Accounts"
           allUsers={users || []}
           metadata={metadata}
           onSave={handleSubmit}
@@ -213,4 +201,4 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   );
 };
 
-export { UserGroupProps, UserGroups };
+export { UserGroupProps, AccountsDX };

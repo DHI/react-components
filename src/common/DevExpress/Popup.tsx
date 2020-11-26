@@ -61,25 +61,30 @@ const Popup: React.FC<PopupProps> = ({
               )}
 
               <TextField margin="normal" name="name" label="Name" value={row.name || ''} onChange={onChange} />
-              <Autocomplete
-                id="users"
-                disabled={!users}
-                placeholder={!users ? 'Loading users...' : 'Select user(s)'}
-                options={users.sort() || []}
-                value={row.users || []}
-                onChange={(e, values) => onListChange('users', values)}
-                multiple
-                renderInput={(props) => (
-                  <TextField
-                    {...props}
-                    name="users"
-                    variant="standard"
-                    label="User(s)"
-                    placeholder="Select"
-                    autoComplete="off"
-                  />
-                )}
-              />
+              {row?.email && (
+                <TextField margin="normal" name="email" label="Email" value={row.email || ''} onChange={onChange} />
+              )}
+              {row.users && (
+                <Autocomplete
+                  id="users"
+                  disabled={!users}
+                  placeholder={!users ? 'Loading users...' : 'Select user(s)'}
+                  options={users?.sort() || []}
+                  value={row.users || []}
+                  onChange={(e, values) => onListChange('users', values)}
+                  multiple
+                  renderInput={(props) => (
+                    <TextField
+                      {...props}
+                      name="users"
+                      variant="standard"
+                      label="User(s)"
+                      placeholder="Select"
+                      autoComplete="off"
+                    />
+                  )}
+                />
+              )}
             </FormGroup>
           </Grid>
           <Grid item xs={12}>

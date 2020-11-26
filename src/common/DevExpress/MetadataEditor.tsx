@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { MetadataEditorProps } from './types';
 
 const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: MetadataEditorProps) => {
@@ -59,8 +59,8 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
 
   useEffect(() => {
     metadata.map((meta) => {
-      if (meta.type === 'MultiText') {
-        setList(row.metadata[meta.key]);
+      if (row.metadata && meta.type === 'MultiText') {
+        setList(row.metadata[meta.key] || []);
       }
     });
   }, [list]);
@@ -148,7 +148,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
             );
           } else if (type === 'MultiText') {
             return (
-              <>
+              <Fragment key={i}>
                 {list?.length > 0 && <Typography style={{ marginTop: 10 }}>{label} list</Typography>}
                 {list?.map((item, i) => (
                   <Box alignItems="center" key={`${item}_${i}`}>
@@ -180,7 +180,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
                     ),
                   }}
                 />
-              </>
+              </Fragment>
             );
           }
 
