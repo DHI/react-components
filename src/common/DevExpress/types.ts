@@ -64,6 +64,10 @@ export interface PopupEditingProps {
    */
   metadata: MetadataProps[];
   /**
+   * Default columns supplied the table.
+   */
+  defaultColumns: any;
+  /**
    * Function to save a new or editedRow data
    */
   onSave: (editedRow, isNew?) => void;
@@ -110,6 +114,10 @@ export interface PopupProps {
    * Boolean to check if user is editing or creating a new row
    */
   isNew: boolean;
+  /**
+   * Default columns supplied the table.
+   */
+  defaultColumns: any;
   /**
    * Metadata data
    */

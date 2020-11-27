@@ -36,6 +36,7 @@ const Popup: React.FC<PopupProps> = ({
   title,
   users,
   isNew,
+  defaultColumns,
   metadata,
 }) => {
   const [error, setError] = useState<boolean>(false);
@@ -60,11 +61,45 @@ const Popup: React.FC<PopupProps> = ({
                 />
               )}
 
-              <TextField margin="normal" name="name" label="Name" value={row.name || ''} onChange={onChange} />
-              {row?.email && (
-                <TextField margin="normal" name="email" label="Email" value={row.email || ''} onChange={onChange} />
-              )}
-              {row.users && (
+              {defaultColumns.map((column, i) => {
+                if (column.name === 'userGroups' || column.name === 'users') {
+                  return (
+                    <Autocomplete
+                      key={i}
+                      id={column.name}
+                      disabled={!users}
+                      placeholder={!users ? `Loading ${column.name}...` : `Select ${column.name}(s)`}
+                      options={users?.sort() || []}
+                      value={row[column.name] || []}
+                      onChange={(e, values) => onListChange(column.name, values)}
+                      multiple
+                      renderInput={(props) => (
+                        <TextField
+                          {...props}
+                          name={column.name}
+                          variant="standard"
+                          label={`${column.name}(s)`}
+                          placeholder="Select"
+                          autoComplete="off"
+                        />
+                      )}
+                    />
+                  );
+                } else {
+                  return (
+                    <TextField
+                      key={i}
+                      margin="normal"
+                      name={column.name}
+                      label={column.title}
+                      value={row[column.name] || ''}
+                      onChange={onChange}
+                    />
+                  );
+                }
+              })}
+
+              {/* {row.users && (
                 <Autocomplete
                   id="users"
                   disabled={!users}
@@ -84,7 +119,7 @@ const Popup: React.FC<PopupProps> = ({
                     />
                   )}
                 />
-              )}
+              )} */}
             </FormGroup>
           </Grid>
           <Grid item xs={12}>

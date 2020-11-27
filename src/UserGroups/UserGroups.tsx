@@ -203,6 +203,7 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           title="User Groups"
           allUsers={users || []}
           metadata={metadata}
+          defaultColumns={DEFAULT_COLUMNS}
           onSave={handleSubmit}
         />
         <Toolbar />

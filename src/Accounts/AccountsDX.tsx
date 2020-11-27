@@ -27,7 +27,13 @@ import {
   PopupEditing,
   UsersTypeProvider,
 } from '../common/DevExpress';
-import { createAccount, deleteUserGroup, fetchAccounts, updateAccount } from '../DataServices/DataServices';
+import {
+  createAccount,
+  deleteUserGroup,
+  fetchAccounts,
+  fetchUserGroups,
+  updateAccount,
+} from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups as AccountsDX, UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_COLUMNS = [
@@ -70,7 +76,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [columns] = useState(DEFAULT_COLUMNS.concat(metadataHeader));
   const metadataColumnsArray = metadata ? metadata.reduce((acc, cur) => [...acc, cur.key], []) : [];
   const [metadataColumns] = useState<string[]>(metadataColumnsArray);
-  const [usersColumn] = useState<string[]>(['users']);
+  const [usersColumn] = useState<string[]>(['userGroups']);
 
   const fetchData = () => {
     fetchAccounts(host, token).subscribe(
@@ -82,6 +88,11 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         console.error('AU Error: ', error);
       },
     );
+
+    fetchUserGroups(host, token).subscribe(async (body) => {
+      const userGroups = body.map((ug) => ug.name);
+      setUsers(userGroups);
+    });
   };
 
   const commitChanges = ({ added, changed, deleted }) => {
@@ -120,6 +131,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         createAccount(host, token, {
           id: row.id,
           name: row.name,
+          email: row.email,
           users: row.users,
           metadata: row.metadata,
         }).subscribe(() => {
@@ -132,10 +144,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     } else {
       return (
         updateAccount(host, token, {
-          id: row.id,
-          name: row.name,
-          users: row.users,
-          metadata: row.metadata,
+          ...row,
         }).subscribe(() => {
           fetchData();
         }),
@@ -190,6 +199,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           popupComponent={Popup}
           title="Accounts"
           allUsers={users || []}
+          defaultColumns={DEFAULT_COLUMNS}
           metadata={metadata}
           onSave={handleSubmit}
         />

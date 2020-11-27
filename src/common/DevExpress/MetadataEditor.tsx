@@ -63,7 +63,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
         setList(row.metadata[meta.key] || []);
       }
     });
-  }, [list]);
+  }, [row.metadata]);
 
   return (
     <>
