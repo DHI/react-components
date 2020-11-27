@@ -29,7 +29,7 @@ import {
 } from '../common/DevExpress';
 import {
   createAccount,
-  deleteUserGroup,
+  deleteAccount,
   fetchAccounts,
   fetchUserGroups,
   updateAccount,
@@ -148,7 +148,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   };
 
   const handleDelete = (row) => {
-    deleteUserGroup(host, token, row.id).subscribe(
+    deleteAccount(host, token, row.id).subscribe(
       () => {
         fetchData();
         setDeletedDialog(false);
