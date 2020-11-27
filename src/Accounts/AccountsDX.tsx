@@ -128,13 +128,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const handleSubmit = (row, isNew = false) => {
     if (isNew) {
       return (
-        createAccount(host, token, {
-          id: row.id,
-          name: row.name,
-          email: row.email,
-          users: row.users,
-          metadata: row.metadata,
-        }).subscribe(() => {
+        createAccount(host, token, { ...row }).subscribe(() => {
           fetchData();
         }),
         (error) => {
@@ -143,9 +137,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
       );
     } else {
       return (
-        updateAccount(host, token, {
-          ...row,
-        }).subscribe(() => {
+        updateAccount(host, token, { ...row }).subscribe(() => {
           fetchData();
         }),
         (error) => {
