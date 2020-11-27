@@ -9,7 +9,7 @@ import {
   Select,
   Switch,
   TextField,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
@@ -59,11 +59,15 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
 
   useEffect(() => {
     metadata.map((meta) => {
-      if (row.metadata && meta.type === 'MultiText') {
-        setList(row.metadata[meta.key] || []);
+      if (meta.type === 'MultiText') {
+        if (row.metadata) {
+          setList(row.metadata[meta.key] || []);
+        } else {
+          setList((meta.default as string[]) || []);
+        }
       }
     });
-  }, [row.metadata]);
+  }, [row]);
 
   return (
     <>
