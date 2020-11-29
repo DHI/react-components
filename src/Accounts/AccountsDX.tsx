@@ -159,7 +159,10 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
 
   useEffect(() => {
     fetchData();
-    setFilteringColumnExtensions(filterRules(metadata));
+
+    if (metadata) {
+      setFilteringColumnExtensions(filterRules(metadata));
+    }
   }, []);
 
   return (
@@ -180,7 +183,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         <EditingState onCommitChanges={commitChanges as any} />
         <VirtualTable height={window.innerHeight - 230} />
 
-        <MetadataTypeProvider for={metadataColumns} />
+        {metadataColumns && <MetadataTypeProvider for={metadataColumns} />}
         <UsersTypeProvider for={usersColumn} />
 
         <TableHeaderRow showSortingControls />

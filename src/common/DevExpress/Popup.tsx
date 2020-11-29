@@ -122,17 +122,19 @@ const Popup: React.FC<PopupProps> = ({
               )} */}
             </FormGroup>
           </Grid>
-          <Grid item xs={12}>
-            <FormGroup>
-              <MetadataEditor
-                metadata={metadata}
-                row={row}
-                onChange={onMetadataChange}
-                onListChange={onListChange}
-                onError={setError}
-              />
-            </FormGroup>
-          </Grid>
+          {metadata && (
+            <Grid item xs={12}>
+              <FormGroup>
+                <MetadataEditor
+                  metadata={metadata}
+                  row={row}
+                  onChange={onMetadataChange}
+                  onListChange={onListChange}
+                  onError={setError}
+                />
+              </FormGroup>
+            </Grid>
+          )}
         </Grid>
       </DialogContent>
       <DialogActions style={{ padding: 20 }}>
