@@ -1,9 +1,9 @@
-import { forkJoin, from, of, throwError } from 'rxjs';
-import { catchError, flatMap, map, retryWhen, scan, switchMap, takeWhile, tap } from 'rxjs/operators';
-import { Token } from '../Auth/types';
+import { forkJoin, from, Observable, of, throwError, timer } from 'rxjs';
+import { catchError, finalize, flatMap, map, mergeMap, retryWhen, tap } from 'rxjs/operators';
+import { Token, User } from '../Auth/types';
 import { UserGroupsData } from '../UserGroups/types';
 import { dataObjectToArray, queryProp } from '../utils/Utils';
-import { DataSource, JobParameters, JobQuery, Options, User } from './types';
+import { DataSource, JobParameters, JobQuery, Options } from './types';
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -24,37 +24,57 @@ const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
   return from(fetch(endPoint, mergedOptions as any)).pipe(
     tap((response) => console.log(`Response status: ${response.status}`)),
     map((response) => {
-      if (response.status >= 400) {
+      if (response.status >= 200) {
         throw new Error(`Error: ${response.status}, reason: ${response.statusText}`);
       } else {
         return response;
       }
     }),
-    retryWhen((errors) => {
-      console.log(errors);
-
-      return errors.pipe(
-        switchMap((errors: any) => {
-          if (errors.status === 401) {
-            return of(errors);
-          }
-
-          throw errors;
-        }),
-        scan((acc) => {
-          return acc + 1;
-        }, 0),
-
-        takeWhile((acc) => acc < 3),
-
-        // flatMap(() => {
-        //   return console.log('Token refresh retry');
-        // }),
-      );
-    }),
+    retryWhen(
+      genericRetryStrategy({
+        scalingDuration: 2000,
+        excludedStatusCodes: [500],
+      }),
+    ),
 
     flatMap((response) => checkStatus(response)),
     catchError((error) => throwError(error)),
+  );
+};
+
+// TODO: README code from https://www.learnrxjs.io/learn-rxjs/operators/error_handling/retrywhen#additional-resources
+export const genericRetryStrategy = ({
+  maxRetryAttempts = 3,
+  scalingDuration = 1000,
+  excludedStatusCodes = [],
+}: {
+  maxRetryAttempts?: number;
+  scalingDuration?: number;
+  excludedStatusCodes?: number[];
+} = {}) => (attempts: Observable<any>) => {
+  return attempts.pipe(
+    mergeMap((error, i) => {
+      const retryAttempt = i + 1;
+
+      // if maximum number of retries have been met
+      // or response is a status code we don't wish to retry, throw error
+      if (
+        retryAttempt > maxRetryAttempts
+        // || excludedStatusCodes.find((e) => e === error.status)
+      ) {
+        return throwError(error);
+      }
+
+      console.log(`Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`);
+
+      // TODO: run fetchTokenRefresh to get the new token and setSession;
+      // the retryWhen is working and it is running 3x before it give up and show the error.
+
+      // retry after 1s, 2s, etc...
+      return timer(retryAttempt * scalingDuration);
+    }),
+
+    finalize(() => console.log('We are done!')),
   );
 };
 
@@ -72,6 +92,18 @@ const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
     body: JSON.stringify(user),
+  }).pipe<Token>(
+    tap(
+      (res) => console.log('token res', res),
+      (error) => console.log(error),
+    ),
+  );
+};
+
+const fetchTokenRefresh = (host: string, refreshToken: string) => {
+  return fetchUrl(`${host}/api/tokens`, {
+    method: 'POST',
+    body: JSON.stringify(refreshToken),
   }).pipe<Token>(
     tap(
       (res) => console.log('token res', res),
