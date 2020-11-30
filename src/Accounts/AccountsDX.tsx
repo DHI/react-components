@@ -28,26 +28,34 @@ import {
   UsersTypeProvider,
 } from '../common/DevExpress';
 import {
-  createUserGroup,
-  deleteUserGroup,
+  createAccount,
+  deleteAccount,
   fetchAccounts,
   fetchUserGroups,
-  updateUserGroups,
+  updateAccount,
 } from '../DataServices/DataServices';
-import { UserGroupProps, UserGroups, UserGroupsData } from './types';
+import { UserGroupProps, UserGroups as AccountsDX, UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_COLUMNS = [
+  {
+    title: 'Username',
+    name: 'id',
+  },
   {
     title: 'Name',
     name: 'name',
   },
   {
-    title: 'Users',
-    name: 'users',
+    title: 'Email',
+    name: 'email',
+  },
+  {
+    title: 'User Groups',
+    name: 'userGroups',
   },
 ];
 
-const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
+const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [rows, setRows] = useState<UserGroupsData[]>([]);
   const [users, setUsers] = useState<string[]>([]);
   const [deletedDialog, setDeletedDialog] = useState(false);
@@ -72,28 +80,23 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [columns] = useState(DEFAULT_COLUMNS.concat(metadataHeader));
   const metadataColumnsArray = metadata ? metadata.reduce((acc, cur) => [...acc, cur.key], []) : [];
   const [metadataColumns] = useState<string[]>(metadataColumnsArray);
-  const [usersColumn] = useState<string[]>(['users']);
+  const [usersColumn] = useState<string[]>(['userGroups']);
 
   const fetchData = () => {
-    fetchUserGroups(host, token).subscribe(
+    fetchAccounts(host, token).subscribe(
       async (body: Record<any, any>) => {
-        const userGroups = body as UserGroups[];
-        setRows(userGroups);
+        console.log(body);
+        setRows(body as any);
       },
       (error) => {
-        console.error('UG Error: ', error);
+        console.error('AU Error: ', error);
       },
     );
 
-    fetchAccounts(host, token).subscribe(
-      async (body: Record<any, any>) => {
-        const usersOnly = body.map((item) => item.id);
-        setUsers(usersOnly);
-      },
-      (error) => {
-        console.error('UGU Error: ', error);
-      },
-    );
+    fetchUserGroups(host, token).subscribe(async (body) => {
+      const userGroups = body.map((ug) => ug.name);
+      setUsers(userGroups);
+    });
   };
 
   const commitChanges = ({ added, changed, deleted }) => {
@@ -129,37 +132,27 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const handleSubmit = (row, isNew = false) => {
     if (isNew) {
       return (
-        createUserGroup(host, token, {
-          id: row.id,
-          name: row.name,
-          users: row.users,
-          metadata: row.metadata,
-        }).subscribe(() => {
+        createAccount(host, token, { ...row }).subscribe(() => {
           fetchData();
         }),
         (error) => {
-          console.log('Create User Group: ', error);
+          console.log('Create Account: ', error);
         }
       );
     } else {
       return (
-        updateUserGroups(host, token, {
-          id: row.id,
-          name: row.name,
-          users: row.users,
-          metadata: row.metadata,
-        }).subscribe(() => {
+        updateAccount(host, token, { ...row }).subscribe(() => {
           fetchData();
         }),
         (error) => {
-          console.log('Update User Groups: ', error);
+          console.log('Update Accounts: ', error);
         }
       );
     }
   };
 
   const handleDelete = (row) => {
-    deleteUserGroup(host, token, row.id).subscribe(
+    deleteAccount(host, token, row.id).subscribe(
       () => {
         fetchData();
         setDeletedDialog(false);
@@ -170,7 +163,10 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
 
   useEffect(() => {
     fetchData();
-    setFilteringColumnExtensions(filterRules(metadata));
+
+    if (metadata) {
+      setFilteringColumnExtensions(filterRules(metadata));
+    }
   }, []);
 
   return (
@@ -191,7 +187,7 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         <EditingState onCommitChanges={commitChanges as any} />
         <VirtualTable height={window.innerHeight - 230} />
 
-        <MetadataTypeProvider for={metadataColumns} />
+        {metadataColumns && <MetadataTypeProvider for={metadataColumns} />}
         <UsersTypeProvider for={usersColumn} />
 
         <TableHeaderRow showSortingControls />
@@ -200,11 +196,12 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         <TableEditColumn showAddCommand showEditCommand showDeleteCommand commandComponent={Command} />
         <PopupEditing
           popupComponent={Popup}
-          title="User Groups"
+          title="Accounts"
           allUsers={users || []}
-          metadata={metadata}
           defaultColumns={DEFAULT_COLUMNS}
+          metadata={metadata}
           onSave={handleSubmit}
+          hasPassword
         />
         <Toolbar />
         <TableColumnVisibility />
@@ -214,4 +211,4 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   );
 };
 
-export { UserGroupProps, UserGroups };
+export { UserGroupProps, AccountsDX };

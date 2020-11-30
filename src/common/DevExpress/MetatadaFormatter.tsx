@@ -1,5 +1,5 @@
 import { Column, DataTypeProvider, DataTypeProviderProps } from '@devexpress/dx-react-grid';
-import { Box, Chip } from '@material-ui/core';
+import { Box, Chip, Tooltip, Typography, Zoom } from '@material-ui/core';
 import React from 'react';
 
 interface MetadataFormatterProps extends Column {
@@ -22,11 +22,23 @@ export const MetadataFormatter = ({
     switch (type) {
       case 'SingleChoice':
       case 'Text':
-        return metadata[name];
+        return (
+          <Tooltip title={metadata[name]} placement="bottom-start" TransitionComponent={Zoom}>
+            <Typography noWrap variant="body2">
+              {metadata[name]}
+            </Typography>
+          </Tooltip>
+        );
 
       case 'MultiText':
       case 'MultiChoice':
-        return metadata[name].join(', ');
+        return (
+          <Tooltip title={metadata[name].join(', ')} placement="bottom-start" TransitionComponent={Zoom}>
+            <Typography noWrap variant="body2">
+              {metadata[name].join(', ')}
+            </Typography>
+          </Tooltip>
+        );
 
       case 'Boolean':
         return (

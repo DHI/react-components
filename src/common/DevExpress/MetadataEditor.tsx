@@ -9,10 +9,10 @@ import {
   Select,
   Switch,
   TextField,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { MetadataEditorProps } from './types';
 
 const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: MetadataEditorProps) => {
@@ -60,10 +60,14 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
   useEffect(() => {
     metadata.map((meta) => {
       if (meta.type === 'MultiText') {
-        setList(row.metadata[meta.key]);
+        if (!row.metadata) {
+          setList((meta.default as string[]) || []);
+        } else {
+          setList(row.metadata[meta.key] || []);
+        }
       }
     });
-  }, [list]);
+  }, []);
 
   return (
     <>
@@ -78,7 +82,9 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
                 margin="normal"
                 name={key}
                 label={label}
-                value={row.metadata && row.metadata[key] ? row.metadata[key] : item.default}
+                value={
+                  row.metadata && (row.metadata[key] || row.metadata[key] === '') ? row.metadata[key] : item.default
+                }
                 error={error[key]}
                 helperText={error[key] && item.regExError}
                 onChange={(e) => handleChange(e, item.regEx)}
@@ -148,7 +154,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
             );
           } else if (type === 'MultiText') {
             return (
-              <>
+              <Fragment key={i}>
                 {list?.length > 0 && <Typography style={{ marginTop: 10 }}>{label} list</Typography>}
                 {list?.map((item, i) => (
                   <Box alignItems="center" key={`${item}_${i}`}>
@@ -180,7 +186,7 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
                     ),
                   }}
                 />
-              </>
+              </Fragment>
             );
           }
 

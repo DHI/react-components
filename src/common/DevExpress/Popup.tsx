@@ -6,11 +6,14 @@ import {
   DialogTitle,
   FormGroup,
   Grid,
+  InputAdornment,
   TextField,
   withStyles,
 } from '@material-ui/core';
+import { FiberManualRecord } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { passwordStrength } from '../../utils/Utils';
 import MetadataEditor from './MetadataEditor';
 import { PopupProps } from './types';
 
@@ -36,9 +39,57 @@ const Popup: React.FC<PopupProps> = ({
   title,
   users,
   isNew,
+  defaultColumns,
   metadata,
+  hasPassword,
 }) => {
   const [error, setError] = useState<boolean>(false);
+  const [passwordStrengthColor, setPasswordStrengthColor] = useState('red');
+  const [passwordValid, setPasswordValid] = useState(true);
+
+  const endAdornment = (
+    <InputAdornment position="end">
+      <FiberManualRecord style={{ color: passwordStrengthColor }} />
+    </InputAdornment>
+  );
+
+  const updatePasswordStrengthIndicator = (password: string) => {
+    let strengthColor = 'red';
+
+    switch (passwordStrength(password)) {
+      case 0:
+        strengthColor = 'red';
+        break;
+      case 1:
+        strengthColor = 'yellow';
+        break;
+      case 2:
+        strengthColor = 'orange';
+        break;
+      case 3:
+      case 4:
+        strengthColor = 'green';
+        break;
+      default:
+        strengthColor = '';
+    }
+
+    setPasswordStrengthColor(strengthColor);
+  };
+
+  useEffect(() => {
+    if (row.password !== row.repeatPassword) {
+      setPasswordValid(false);
+      setError(true);
+    } else {
+      setPasswordValid(true);
+      setError(false);
+    }
+  }, [row.password, row.repeatPassword]);
+
+  useEffect(() => {
+    updatePasswordStrengthIndicator(row.password as string);
+  }, [row.password]);
 
   return (
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
@@ -60,39 +111,96 @@ const Popup: React.FC<PopupProps> = ({
                 />
               )}
 
-              <TextField margin="normal" name="name" label="Name" value={row.name || ''} onChange={onChange} />
-              <Autocomplete
-                id="users"
-                disabled={!users}
-                placeholder={!users ? 'Loading users...' : 'Select user(s)'}
-                options={users.sort() || []}
-                value={row.users || []}
-                onChange={(e, values) => onListChange('users', values)}
-                multiple
-                renderInput={(props) => (
+              {hasPassword && (
+                <>
                   <TextField
-                    {...props}
-                    name="users"
+                    fullWidth
+                    name="password"
+                    margin="dense"
+                    type="password"
+                    label="Password"
                     variant="standard"
-                    label="User(s)"
-                    placeholder="Select"
-                    autoComplete="off"
+                    required={isNew}
+                    value={row.password || ''}
+                    error={!passwordValid}
+                    InputProps={{ endAdornment }}
+                    onChange={onChange}
+                    autoComplete="new-password"
                   />
-                )}
-              />
+                  {/* Must be 'new-password' to avoid autoComplete. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#Browser_compatibility */}
+                  <TextField
+                    fullWidth
+                    name="repeatPassword"
+                    margin="dense"
+                    type="password"
+                    variant="standard"
+                    required={isNew}
+                    label="Repeat Password"
+                    value={row.repeatPassword || ''}
+                    error={!passwordValid}
+                    onChange={onChange}
+                    helperText={!passwordValid && 'Passwords do not match'}
+                    autoComplete="new-password"
+                  />
+                </>
+              )}
+
+              {defaultColumns.map((column, i) => {
+                if (column.name === 'userGroups' || column.name === 'users') {
+                  return (
+                    <Autocomplete
+                      key={i}
+                      id={column.name}
+                      disabled={!users}
+                      placeholder={!users ? `Loading ${column.name}...` : `Select ${column.name}(s)`}
+                      options={users?.sort() || []}
+                      value={row[column.name] || []}
+                      onChange={(e, values) => onListChange(column.name, values)}
+                      multiple
+                      renderInput={(props) => (
+                        <TextField
+                          {...props}
+                          name={column.name}
+                          variant="standard"
+                          label={`${column.name}(s)`}
+                          placeholder="Select"
+                          autoComplete="off"
+                        />
+                      )}
+                    />
+                  );
+                } else {
+                  if (column.name !== 'id') {
+                    return (
+                      <TextField
+                        key={i}
+                        margin="normal"
+                        name={column.name}
+                        label={column.title}
+                        value={row[column.name] || ''}
+                        onChange={onChange}
+                      />
+                    );
+                  } else {
+                    return null;
+                  }
+                }
+              })}
             </FormGroup>
           </Grid>
-          <Grid item xs={12}>
-            <FormGroup>
-              <MetadataEditor
-                metadata={metadata}
-                row={row}
-                onChange={onMetadataChange}
-                onListChange={onListChange}
-                onError={setError}
-              />
-            </FormGroup>
-          </Grid>
+          {metadata && (
+            <Grid item xs={12}>
+              <FormGroup>
+                <MetadataEditor
+                  metadata={metadata}
+                  row={row}
+                  onChange={onMetadataChange}
+                  onListChange={onListChange}
+                  onError={setError}
+                />
+              </FormGroup>
+            </Grid>
+          )}
         </Grid>
       </DialogContent>
       <DialogActions style={{ padding: 20 }}>

@@ -5,7 +5,7 @@ export interface DeleteDialogProps {
   /**
    * The current Selected row from the table
    */
-  selectedRow: UserGroupsData | {};
+  selectedRow: any;
   /**
    * Boolean to open or close the popup dialog
    */
@@ -64,16 +64,24 @@ export interface PopupEditingProps {
    */
   metadata: MetadataProps[];
   /**
+   * Default columns supplied the table.
+   */
+  defaultColumns: any;
+  /**
    * Function to save a new or editedRow data
    */
   onSave: (editedRow, isNew?) => void;
+  /**
+   * Tell popup if there is the Password and Repeat Password fields
+   */
+  hasPassword?: boolean;
 }
 
 export interface PopupProps {
   /**
    * Row with the usergroup data
    */
-  row: UserGroupsData;
+  row: any;
   /**
    * Function called to change a field
    */
@@ -111,9 +119,17 @@ export interface PopupProps {
    */
   isNew: boolean;
   /**
+   * Default columns supplied the table.
+   */
+  defaultColumns: any;
+  /**
    * Metadata data
    */
   metadata: MetadataProps[];
+  /**
+   * Tell popup if there is the Password and Repeat Password fields
+   */
+  hasPassword?: boolean;
 }
 
 export interface MetadataEditorProps {
