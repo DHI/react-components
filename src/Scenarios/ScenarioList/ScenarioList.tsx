@@ -37,8 +37,8 @@ const ScenarioList = (props: ScenarioListProps) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
-          return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
-        })
+            return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
+          })
         : groupBy(scenarios, (scenario) => scenario.dateTime),
     );
   };
@@ -133,4 +133,3 @@ const ScenarioList = (props: ScenarioListProps) => {
 };
 
 export { ScenarioListProps, ScenarioList };
-

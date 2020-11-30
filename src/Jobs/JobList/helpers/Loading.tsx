@@ -22,7 +22,9 @@ const useStyles = makeStyles(() => ({
 export const Loading = () => {
   const classes = useStyles();
 
-  return <div className={classes.shading}>
-    <CircularProgress className={classes.loading} />
-  </div>
+  return (
+    <div className={classes.shading}>
+      <CircularProgress className={classes.loading} />
+    </div>
+  );
 };

@@ -1,4 +1,3 @@
-
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
@@ -11,21 +10,21 @@ const DateInput = ({
   dateFormat,
   timeZone,
   dateSelected,
-  defaultDate
+  defaultDate,
 }: {
-  label: string,
-  dateFormat: string,
-  timeZone: string,
-  dateSelected: (value) => void,
-  defaultDate?: string
+  label: string;
+  dateFormat: string;
+  timeZone: string;
+  dateSelected: (value) => void;
+  defaultDate?: string;
 }) => {
-  const [value, setValue] = useState<Date | string>()
+  const [value, setValue] = useState<Date | string>();
 
   const handleInputChange = (value) => {
     const date = utcToTz(value, timeZone);
     setValue(date);
     dateSelected(toISOLocal(date));
-  }
+  };
 
   useEffect(() => {
     setValue(format(new Date(defaultDate), dateFormat));
@@ -42,23 +41,19 @@ const DateInput = ({
         strictCompareDates
         autoOk
         onChange={(newDate: MaterialUiPickersDate, newValue?: string | null | undefined): void => {
-
           if (isValid(newDate)) {
             const formattedDate = format(newDate, 'yyyy-MM-dd HH:mm:ss');
             handleInputChange(tzToUtc(formattedDate, timeZone));
           }
         }}
-        style={
-          {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-          }
-        }
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+        }}
       />
-
     </MuiPickersUtilsProvider>
   );
-}
+};
 
 export default DateInput;

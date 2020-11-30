@@ -56,9 +56,9 @@ export const JobListStory = () => {
         dataSources={dataSources}
         disabledColumns={disabledColumns}
         parameters={parameters}
-        dateTimeFormat='yyyy-MM-dd HH:mm:ss'
-        startTimeUtc='2020-11-04T12:15:34'
-        timeZone='Australia/Brisbane'
+        dateTimeFormat="yyyy-MM-dd HH:mm:ss"
+        startTimeUtc="2020-11-04T12:15:34"
+        timeZone="Australia/Brisbane"
         translations={{
           noEntriesData: 'Tidak ada entri job',
           noEntriesFilter: 'Tidak ada entri job untuk status job yang dipilih',
@@ -71,5 +71,4 @@ export const JobListStory = () => {
   }
 
   return null;
-}
-
+};
