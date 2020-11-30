@@ -46,8 +46,6 @@ const Popup: React.FC<PopupProps> = ({
   const [error, setError] = useState<boolean>(false);
   const [passwordStrengthColor, setPasswordStrengthColor] = useState('red');
   const [passwordValid, setPasswordValid] = useState(true);
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
 
   const endAdornment = (
     <InputAdornment position="end">
@@ -79,31 +77,19 @@ const Popup: React.FC<PopupProps> = ({
     setPasswordStrengthColor(strengthColor);
   };
 
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === 'password') {
-      updatePasswordStrengthIndicator(value as string);
-      setPassword(value);
-    } else {
-      setRepeatPassword(value);
-    }
-
-    onChange(e);
-  };
-
   useEffect(() => {
-    if (password !== repeatPassword && repeatPassword.length > 0) {
+    if (row.password !== row.repeatPassword) {
       setPasswordValid(false);
       setError(true);
     } else {
       setPasswordValid(true);
       setError(false);
     }
+  }, [row.password, row.repeatPassword]);
 
-    console.log('password: ', password);
-    console.log('repeatPassword: ', repeatPassword);
-  }, [password, repeatPassword]);
+  useEffect(() => {
+    updatePasswordStrengthIndicator(row.password as string);
+  }, [row.password]);
 
   return (
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
@@ -135,10 +121,10 @@ const Popup: React.FC<PopupProps> = ({
                     label="Password"
                     variant="standard"
                     required={isNew}
-                    value={row.password}
+                    value={row.password || ''}
                     error={!passwordValid}
                     InputProps={{ endAdornment }}
-                    onChange={(e) => handlePasswordChange(e)}
+                    onChange={onChange}
                     autoComplete="new-password"
                   />
                   {/* Must be 'new-password' to avoid autoComplete. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#Browser_compatibility */}
@@ -150,9 +136,9 @@ const Popup: React.FC<PopupProps> = ({
                     variant="standard"
                     required={isNew}
                     label="Repeat Password"
-                    value={row.repeatPassword}
+                    value={row.repeatPassword || ''}
                     error={!passwordValid}
-                    onChange={handlePasswordChange}
+                    onChange={onChange}
                     helperText={!passwordValid && 'Passwords do not match'}
                     autoComplete="new-password"
                   />
@@ -184,40 +170,22 @@ const Popup: React.FC<PopupProps> = ({
                     />
                   );
                 } else {
-                  return (
-                    <TextField
-                      key={i}
-                      margin="normal"
-                      name={column.name}
-                      label={column.title}
-                      value={row[column.name] || ''}
-                      onChange={onChange}
-                    />
-                  );
+                  if (column.name !== 'id') {
+                    return (
+                      <TextField
+                        key={i}
+                        margin="normal"
+                        name={column.name}
+                        label={column.title}
+                        value={row[column.name] || ''}
+                        onChange={onChange}
+                      />
+                    );
+                  } else {
+                    return null;
+                  }
                 }
               })}
-
-              {/* {row.users && (
-                <Autocomplete
-                  id="users"
-                  disabled={!users}
-                  placeholder={!users ? 'Loading users...' : 'Select user(s)'}
-                  options={users?.sort() || []}
-                  value={row.users || []}
-                  onChange={(e, values) => onListChange('users', values)}
-                  multiple
-                  renderInput={(props) => (
-                    <TextField
-                      {...props}
-                      name="users"
-                      variant="standard"
-                      label="User(s)"
-                      placeholder="Select"
-                      autoComplete="off"
-                    />
-                  )}
-                />
-              )} */}
             </FormGroup>
           </Grid>
           {metadata && (
