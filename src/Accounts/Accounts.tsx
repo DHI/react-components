@@ -1,259 +1,214 @@
-// eslint-disable-next-line prettier/prettier
-import { Box, Paper } from '@material-ui/core';
-import React, { useEffect, useMemo, useState } from 'react';
-import { ActionsButtons, ActionsCell, DefaultTable, Dialog, MetadataChipCell, TopTableSection } from '../common/Table';
+import {
+  EditingState,
+  FilteringState,
+  IntegratedFiltering,
+  IntegratedSorting,
+  SortingState,
+} from '@devexpress/dx-react-grid';
+import {
+  ColumnChooser,
+  Grid,
+  TableColumnVisibility,
+  TableEditColumn,
+  TableFilterRow,
+  TableHeaderRow,
+  Toolbar,
+  VirtualTable,
+} from '@devexpress/dx-react-grid-material-ui';
+import Paper from '@material-ui/core/Paper';
+import React, { useEffect, useState } from 'react';
+import {
+  Command,
+  DeleteDialog,
+  FilterCellRow,
+  filterRules,
+  MetadataTypeProvider,
+  Popup,
+  PopupEditing,
+  UsersTypeProvider,
+} from '../common/DevExpress';
 import {
   createAccount,
   deleteAccount,
   fetchAccounts,
   fetchUserGroups,
   updateAccount,
-  updateUserGroupsForUser,
 } from '../DataServices/DataServices';
-import { UserGroups } from '../UserGroups/types';
-import AccountsForm from './AccountsForm';
-import { AccountData, AccountProps, EditUser } from './types';
+import { UserGroupProps, UserGroupsData } from '../UserGroups/types';
 
-const Accounts = ({ host, token, metadata }: AccountProps) => {
-  const [data, setData] = useState<AccountData[]>([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false);
-  const [isEditing, setisEditing] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<AccountData>();
-  const [isTableWider, setIsTableWider] = useState<boolean>(false);
+const DEFAULT_COLUMNS = [
+  {
+    title: 'Username',
+    name: 'id',
+  },
+  {
+    title: 'Name',
+    name: 'name',
+  },
+  {
+    title: 'Email',
+    name: 'email',
+  },
+  {
+    title: 'User Groups',
+    name: 'userGroups',
+  },
+];
 
-  const openDialog = () => {
-    setIsDialogOpen(true);
-    setisEditing(false);
-  };
-
-  const handleDialog = () => {
-    setIsDialogOpen(!isDialogOpen);
-  };
-
-  const onEdit = (item) => {
-    setIsDialogOpen(true);
-    setisEditing(true);
-    setSelectedUser(item);
-  };
-
-  const handleDeleteDialog = (item) => {
-    setDeleteDialog(true);
-    setisEditing(false);
-    setSelectedUser(item);
-  };
-
-  const handleDelete = () => {
-    deleteAccount(host, token, selectedUser.id).subscribe(
-      () => {
-        fetchData();
-        setDeleteDialog(false);
-      },
-      (error) => console.log(error),
-    );
-  };
-
-  const fetchData = () =>
-    fetchAccounts(host, token).subscribe(
-      (users) => {
-        const userData = users.map((u: AccountData) => ({
-          id: u.id,
-          name: u.name,
-          email: u.email ? u.email : '',
-          metadata: u.metadata ? u.metadata : {},
-        }));
-
-        fetchUserGroups(host, token).subscribe(async (body: Record<any, any>) => {
-          const userGroups = body as UserGroups[];
-          const accountData = userData.map((u: AccountData) => ({
-            ...u,
-            userGroups: userGroups.filter((ug) => ug.users.indexOf(u.id) >= 0).map((ug) => ug.name),
-          }));
-
-          setData(accountData);
-        });
-      },
-      (error) => {
-        setError(true);
-        setLoading(false);
-        console.log('ACC Error: ', error);
-      },
-    );
-
-  useEffect(() => {
-    const subscriber = fetchData();
-
-    return () => {
-      if (subscriber !== undefined && subscriber !== null) {
-        // console.log('unmount', subscriber);
-        subscriber.unsubscribe();
-      }
-    };
-  }, []);
-
-  const handleUserSubmit = (user: EditUser) => {
-    if (isEditing) {
-      updateAccount(host, token, user).subscribe(
-        (updatedUser) => {
-          updateUserGroupsForUser(host, token, { groups: user.userGroups, userId: updatedUser.id });
-          setIsDialogOpen(false);
-
-          fetchData();
-        },
-        (error) => {
-          setError(true);
-          setLoading(false);
-          console.log('ACC Submit Error: ', error);
-
-          console.log(error);
-        },
-      );
-    } else {
-      createAccount(host, token, user).subscribe(
-        (newUser) => {
-          updateUserGroupsForUser(host, token, { groups: user.userGroups, userId: newUser.id });
-
-          setIsDialogOpen(false);
-          setError(false);
-
-          fetchData();
-        },
-        (error) => {
-          setError(true);
-          console.log(error);
-        },
-      );
-    }
-  };
+const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
+  const [rows, setRows] = useState<UserGroupsData[]>([]);
+  const [users, setUsers] = useState<string[]>([]);
+  const [deletedDialog, setDeletedDialog] = useState(false);
+  const [deleteRow, setDeleteRow] = useState({});
+  const [filteringColumnExtensions, setFilteringColumnExtensions] = useState([]);
+  const getRowId = (row) => row.id;
 
   const metadataHeader = metadata
     ? metadata.reduce(
         (acc, cur) => [
           ...acc,
           {
-            Header: cur.label,
-            category: cur.type,
-            accessor: `metadata.${cur.key}`,
-            Cell: MetadataChipCell(cur),
-            flexGrow: isTableWider && 1,
+            title: cur.label,
+            type: cur.type,
+            name: cur.key,
           },
         ],
         [],
       )
     : [];
 
-  const columns = [
-    {
-      Header: 'ID',
-      accessor: 'id',
-      width: 200,
-    },
-    {
-      Header: 'Name',
-      accessor: 'name',
-      width: 200,
-    },
-    {
-      Header: 'Email',
-      accessor: 'email',
-      width: 200,
-    },
-    {
-      Header: 'User Groups',
-      accessor: 'userGroups',
-      width: 250,
-      Cell: ({ cell: { value } }) => (value ? value.join(', ') : ''),
-    },
-  ];
+  const [columns] = useState(DEFAULT_COLUMNS.concat(metadataHeader));
+  const metadataColumnsArray = metadata ? metadata.reduce((acc, cur) => [...acc, cur.key], []) : [];
+  const [metadataColumns] = useState<string[]>(metadataColumnsArray);
+  const [usersColumn] = useState<string[]>(['userGroups']);
 
-  const actions = [
-    {
-      Header: 'Actions',
-      accessor: 'action',
-      width: 90,
-      flexGrow: 0,
-      category: 'Action',
-      Cell: ({
-        cell: {
-          value: [item],
-        },
-      }) => <ActionsCell item={item} onEdit={onEdit} onDelete={handleDeleteDialog} />,
-    },
-  ];
+  const fetchData = () => {
+    fetchAccounts(host, token).subscribe(
+      async (body: Record<any, any>) => {
+        console.log(body);
+        setRows(body as any);
+      },
+      (error) => {
+        console.error('AU Error: ', error);
+      },
+    );
 
-  const TableHeadersData = useMemo(() => columns.concat(metadataHeader).concat(actions), [isTableWider]);
+    fetchUserGroups(host, token).subscribe(async (body) => {
+      const userGroups = body.map((ug) => ug.name);
+      setUsers(userGroups);
+    });
+  };
 
-  const searchItems = (item: AccountData) => {
-    if (filter === '') return true;
+  const commitChanges = ({ added, changed, deleted }) => {
+    let changedRows;
 
-    const query = filter.toLowerCase();
-    const id = item.id.toLowerCase();
-    const name = item.name.toLowerCase();
-    const email = item.email.toLowerCase();
-    const userGroups = item.userGroups.map((ug) => ug.toLowerCase());
+    if (added) {
+      const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
 
-    return (
-      id.includes(query) ||
-      name.includes(query) ||
-      email.includes(query) ||
-      userGroups.some((ug) => ug.indexOf(query) >= 0)
+      changedRows = [
+        ...rows,
+        ...added.map((row, index) => ({
+          id: startingAddedId + index,
+          ...row,
+        })),
+      ];
+    }
+    if (changed) {
+      changedRows = rows.map((row) => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
+    }
+    if (deleted) {
+      setDeletedDialog(true);
+      const deletedSet = new Set(deleted);
+      const selectedRow = rows.filter((row) => deletedSet.has(row.id));
+      setDeleteRow(selectedRow);
+
+      // return the same rows and let the handleDelete deal with the data, otherwise it will be undefined and crash with no rows
+      changedRows = rows;
+    }
+
+    setRows(changedRows);
+  };
+
+  const handleSubmit = (row, isNew = false) => {
+    if (isNew) {
+      return (
+        createAccount(host, token, { ...row }).subscribe(() => {
+          fetchData();
+        }),
+        (error) => {
+          console.log('Create Account: ', error);
+        }
+      );
+    } else {
+      return (
+        updateAccount(host, token, { ...row }).subscribe(() => {
+          fetchData();
+        }),
+        (error) => {
+          console.log('Update Accounts: ', error);
+        }
+      );
+    }
+  };
+
+  const handleDelete = (row) => {
+    deleteAccount(host, token, row.id).subscribe(
+      () => {
+        fetchData();
+        setDeletedDialog(false);
+      },
+      (error) => console.log(error),
     );
   };
 
+  useEffect(() => {
+    fetchData();
+
+    if (metadata) {
+      setFilteringColumnExtensions(filterRules(metadata));
+    }
+  }, []);
+
   return (
-    <Box>
-      {isDialogOpen && (
-        <Dialog
-          dialogId="user"
-          title={isEditing ? 'Edit Account Details' : 'Create New Account'}
-          message=""
-          showDialog={isDialogOpen}
-        >
-          <AccountsForm
-            token={token}
-            host={host}
-            onSubmit={handleUserSubmit}
-            isEditing={isEditing}
-            selectedUser={selectedUser}
-            metadata={metadata}
-            onCancel={handleDialog}
-          />
-        </Dialog>
-      )}
+    <Paper>
+      <DeleteDialog
+        selectedRow={deleteRow}
+        showDialog={deletedDialog}
+        closeDialog={() => setDeletedDialog(false)}
+        handleDelete={handleDelete}
+      />
+      <Grid rows={rows} columns={columns} getRowId={getRowId}>
+        <FilteringState />
+        <IntegratedFiltering columnExtensions={filteringColumnExtensions} />
 
-      {deleteDialog && (
-        <Dialog
-          dialogId="userDelete"
-          title={`Delete ${selectedUser?.name}`}
-          message={`This will delete the selected user account ${selectedUser?.name}, after it is deleted you cannot retrieve the data. Are you sure you want to delete this user?`}
-          showDialog={deleteDialog}
-        >
-          <ActionsButtons
-            confirmButtonText="Delete"
-            isEditing={isEditing}
-            onCancel={() => setDeleteDialog(false)}
-            onSubmit={handleDelete}
-          />
-        </Dialog>
-      )}
+        <SortingState defaultSorting={[{ columnName: 'name', direction: 'asc' }]} />
+        <IntegratedSorting />
 
-      <TopTableSection title="Accounts" filter={filter} setFilter={setFilter} onNew={openDialog} />
-      <Paper>
-        <DefaultTable
-          error={error}
-          loading={loading}
-          tableHeaders={TableHeadersData}
-          data={data}
-          searchItems={(item) => searchItems(item)}
-          isTableWiderThanWindow={(wider) => setIsTableWider(wider)}
-          hasHeader
+        <EditingState onCommitChanges={commitChanges as any} />
+        <VirtualTable height={window.innerHeight - 230} />
+
+        {metadataColumns && <MetadataTypeProvider for={metadataColumns} />}
+        <UsersTypeProvider for={usersColumn} />
+
+        <TableHeaderRow showSortingControls />
+        <TableFilterRow cellComponent={FilterCellRow} />
+
+        <TableEditColumn showAddCommand showEditCommand showDeleteCommand commandComponent={Command} />
+        <PopupEditing
+          popupComponent={Popup}
+          title="Accounts"
+          allUsers={users || []}
+          defaultColumns={DEFAULT_COLUMNS}
+          metadata={metadata}
+          onSave={handleSubmit}
+          hasPassword
         />
-      </Paper>
-    </Box>
+        <Toolbar />
+        <TableColumnVisibility />
+        <ColumnChooser />
+      </Grid>
+    </Paper>
   );
 };
 
-export { Accounts, AccountProps };
+export { UserGroupProps, Accounts };
