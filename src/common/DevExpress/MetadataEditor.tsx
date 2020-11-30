@@ -82,7 +82,9 @@ const MetadataEditor = ({ metadata, row, onChange, onListChange, onError }: Meta
                 margin="normal"
                 name={key}
                 label={label}
-                value={row.metadata && row.metadata[key] ? row.metadata[key] : item.default}
+                value={
+                  row.metadata && (row.metadata[key] || row.metadata[key] === '') ? row.metadata[key] : item.default
+                }
                 error={error[key]}
                 helperText={error[key] && item.regExError}
                 onChange={(e) => handleChange(e, item.regEx)}

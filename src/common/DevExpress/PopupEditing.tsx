@@ -78,7 +78,7 @@ const PopupEditing = React.memo(
             const processMetadataChange = ({ target: { name, value, checked } }) => {
               let newValue;
 
-              if (value) {
+              if (value || value === '') {
                 newValue = value;
               } else {
                 newValue = checked;
