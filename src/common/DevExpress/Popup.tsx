@@ -6,11 +6,14 @@ import {
   DialogTitle,
   FormGroup,
   Grid,
+  InputAdornment,
   TextField,
   withStyles,
 } from '@material-ui/core';
+import { FiberManualRecord } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { passwordStrength } from '../../utils/Utils';
 import MetadataEditor from './MetadataEditor';
 import { PopupProps } from './types';
 
@@ -38,8 +41,69 @@ const Popup: React.FC<PopupProps> = ({
   isNew,
   defaultColumns,
   metadata,
+  hasPassword,
 }) => {
   const [error, setError] = useState<boolean>(false);
+  const [passwordStrengthColor, setPasswordStrengthColor] = useState('red');
+  const [passwordValid, setPasswordValid] = useState(true);
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+
+  const endAdornment = (
+    <InputAdornment position="end">
+      <FiberManualRecord style={{ color: passwordStrengthColor }} />
+    </InputAdornment>
+  );
+
+  const updatePasswordStrengthIndicator = (password: string) => {
+    let strengthColor = 'red';
+
+    switch (passwordStrength(password)) {
+      case 0:
+        strengthColor = 'red';
+        break;
+      case 1:
+        strengthColor = 'yellow';
+        break;
+      case 2:
+        strengthColor = 'orange';
+        break;
+      case 3:
+      case 4:
+        strengthColor = 'green';
+        break;
+      default:
+        strengthColor = '';
+    }
+
+    setPasswordStrengthColor(strengthColor);
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'password') {
+      updatePasswordStrengthIndicator(value as string);
+      setPassword(value);
+    } else {
+      setRepeatPassword(value);
+    }
+
+    onChange(e);
+  };
+
+  useEffect(() => {
+    if (password !== repeatPassword && repeatPassword.length > 0) {
+      setPasswordValid(false);
+      setError(true);
+    } else {
+      setPasswordValid(true);
+      setError(false);
+    }
+
+    console.log('password: ', password);
+    console.log('repeatPassword: ', repeatPassword);
+  }, [password, repeatPassword]);
 
   return (
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
@@ -59,6 +123,40 @@ const Popup: React.FC<PopupProps> = ({
                   value={row?.id}
                   disabled={true}
                 />
+              )}
+
+              {hasPassword && (
+                <>
+                  <TextField
+                    fullWidth
+                    name="password"
+                    margin="dense"
+                    type="password"
+                    label="Password"
+                    variant="standard"
+                    required={isNew}
+                    value={row.password}
+                    error={!passwordValid}
+                    InputProps={{ endAdornment }}
+                    onChange={(e) => handlePasswordChange(e)}
+                    autoComplete="new-password"
+                  />
+                  {/* Must be 'new-password' to avoid autoComplete. https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#Browser_compatibility */}
+                  <TextField
+                    fullWidth
+                    name="repeatPassword"
+                    margin="dense"
+                    type="password"
+                    variant="standard"
+                    required={isNew}
+                    label="Repeat Password"
+                    value={row.repeatPassword}
+                    error={!passwordValid}
+                    onChange={handlePasswordChange}
+                    helperText={!passwordValid && 'Passwords do not match'}
+                    autoComplete="new-password"
+                  />
+                </>
               )}
 
               {defaultColumns.map((column, i) => {

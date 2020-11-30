@@ -71,6 +71,10 @@ export interface PopupEditingProps {
    * Function to save a new or editedRow data
    */
   onSave: (editedRow, isNew?) => void;
+  /**
+   * Tell popup if there is the Password and Repeat Password fields
+   */
+  hasPassword?: boolean;
 }
 
 export interface PopupProps {
@@ -122,6 +126,10 @@ export interface PopupProps {
    * Metadata data
    */
   metadata: MetadataProps[];
+  /**
+   * Tell popup if there is the Password and Repeat Password fields
+   */
+  hasPassword?: boolean;
 }
 
 export interface MetadataEditorProps {

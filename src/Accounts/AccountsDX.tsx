@@ -38,6 +38,10 @@ import { UserGroupProps, UserGroups as AccountsDX, UserGroupsData } from '../Use
 
 const DEFAULT_COLUMNS = [
   {
+    title: 'Username',
+    name: 'id',
+  },
+  {
     title: 'Name',
     name: 'name',
   },
@@ -197,6 +201,7 @@ const AccountsDX: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           defaultColumns={DEFAULT_COLUMNS}
           metadata={metadata}
           onSave={handleSubmit}
+          hasPassword
         />
         <Toolbar />
         <TableColumnVisibility />

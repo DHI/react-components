@@ -3,7 +3,7 @@ import React from 'react';
 import { PopupEditingProps } from './types';
 
 const PopupEditing = React.memo(
-  ({ popupComponent: Popup, title, allUsers, defaultColumns, metadata, onSave }: PopupEditingProps) => (
+  ({ popupComponent: Popup, title, allUsers, defaultColumns, metadata, onSave, hasPassword }: PopupEditingProps) => (
     <Plugin>
       <Template name="popupEditing">
         <TemplateConnector>
@@ -148,6 +148,7 @@ const PopupEditing = React.memo(
                 users={allUsers}
                 defaultColumns={defaultColumns}
                 metadata={metadata}
+                hasPassword={hasPassword}
               />
             );
           }}
