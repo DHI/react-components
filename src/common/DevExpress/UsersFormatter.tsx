@@ -3,7 +3,7 @@ import { Tooltip, Typography, Zoom } from '@material-ui/core';
 import React from 'react';
 
 export const UsersFormatter = ({ value }) => {
-  const list = value.join(', ');
+  const list = value?.join(', ');
 
   return (
     <Tooltip title={list} placement="bottom-start" TransitionComponent={Zoom}>
