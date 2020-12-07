@@ -49,7 +49,7 @@ const DEFAULT_COLUMNS = [
 
 const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [rows, setRows] = useState<UserGroupsData[]>([]);
-  const [users, setUsers] = useState<string[]>([]);
+  const [users, setUsers] = useState<Record<string, string>[]>([]);
   const [deletedDialog, setDeletedDialog] = useState(false);
   const [deleteRow, setDeleteRow] = useState({});
   const [filteringColumnExtensions, setFilteringColumnExtensions] = useState([]);
@@ -87,7 +87,10 @@ const UserGroups: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
 
     fetchAccounts(host, token).subscribe(
       async (body: Record<any, any>) => {
-        const usersOnly = body.map((item) => item.id);
+        const usersOnly = body.map((item) => ({
+          id: item.id,
+          name: item.name,
+        }));
         setUsers(usersOnly);
       },
       (error) => {
