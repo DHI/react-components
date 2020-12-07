@@ -37,7 +37,6 @@ const PopupEditing = React.memo(
                 rowId,
                 change: createRowChange(editedRow, value, name),
               };
-              debugger;
 
               if (isNew) {
                 changeAddedRow(changeArgs);
@@ -47,7 +46,6 @@ const PopupEditing = React.memo(
             };
 
             const processListChange = (name, values, isMetadata = false) => {
-              debugger;
               let changeData = {};
 
               if (isMetadata) {
@@ -106,8 +104,6 @@ const PopupEditing = React.memo(
             const rowIds = isNew ? [0] : editingRowIds;
 
             const applyChanges = () => {
-              debugger;
-
               metadata?.forEach((item, index) => {
                 if (editedRow.metadata === undefined || editedRow.metadata[metadata[index].key] === undefined) {
                   editedRow.metadata = {
@@ -137,8 +133,6 @@ const PopupEditing = React.memo(
             };
 
             const open = editingRowIds.length > 0 || isNew;
-
-            debugger;
 
             return (
               <Popup

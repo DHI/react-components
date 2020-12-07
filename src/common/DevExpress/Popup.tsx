@@ -147,10 +147,8 @@ const Popup: React.FC<PopupProps> = ({
 
               {defaultColumns.map((column, i) => {
                 if (column.name === 'userGroups' || column.name === 'users') {
-                  debugger;
-
                   const currentValues =
-                    row[column.name] != null ? users.filter((f) => row[column.name].includes(f.name)) : [];
+                    row[column.name] != null ? users.filter((f) => row[column.name].includes(f.id)) : [];
 
                   return (
                     <Autocomplete
