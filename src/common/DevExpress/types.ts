@@ -58,7 +58,7 @@ export interface PopupEditingProps {
   /**
    * List of all the users
    */
-  allUsers: string[];
+  allUsers: Record<string, string>[];
   /**
    * Metadata supplied on the HOC to extend the table.
    */
@@ -113,7 +113,7 @@ export interface PopupProps {
   /**
    * List of the current available users
    */
-  users: string[];
+  users: Record<string, string>[];
   /**
    * Boolean to check if user is editing or creating a new row
    */

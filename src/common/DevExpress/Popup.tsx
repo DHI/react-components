@@ -147,15 +147,25 @@ const Popup: React.FC<PopupProps> = ({
 
               {defaultColumns.map((column, i) => {
                 if (column.name === 'userGroups' || column.name === 'users') {
+                  const currentValues =
+                    row[column.name] != null ? users.filter((f) => row[column.name].includes(f.id)) : [];
+
                   return (
                     <Autocomplete
                       key={i}
                       id={column.name}
                       disabled={!users}
                       placeholder={!users ? `Loading ${column.name}...` : `Select ${column.name}(s)`}
-                      options={users?.sort() || []}
-                      value={row[column.name] || []}
-                      onChange={(e, values) => onListChange(column.name, values)}
+                      options={users.sort((a: any, b: any) => a.name - b.name) || []}
+                      value={currentValues}
+                      getOptionSelected={(option, val) => option.name === val.name}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(e, values) =>
+                        onListChange(
+                          column.name,
+                          values.map((v: any) => v.id),
+                        )
+                      }
                       multiple
                       renderInput={(props) => (
                         <TextField

@@ -57,7 +57,7 @@ const DEFAULT_COLUMNS = [
 
 const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const [rows, setRows] = useState<UserGroupsData[]>([]);
-  const [users, setUsers] = useState<string[]>([]);
+  const [userGroups, setUserGroups] = useState<Record<string, string>[]>([]);
   const [deletedDialog, setDeletedDialog] = useState(false);
   const [deleteRow, setDeleteRow] = useState({});
   const [filteringColumnExtensions, setFilteringColumnExtensions] = useState([]);
@@ -94,8 +94,11 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
     );
 
     fetchUserGroups(host, token).subscribe(async (body) => {
-      const userGroups = body.map((ug) => ug.name);
-      setUsers(userGroups);
+      const userGroups = body.map((ug) => ({
+        id: ug.id,
+        name: ug.name,
+      }));
+      setUserGroups(userGroups);
     });
   };
 
@@ -197,7 +200,7 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         <PopupEditing
           popupComponent={Popup}
           title="Accounts"
-          allUsers={users || []}
+          allUsers={userGroups || []}
           defaultColumns={DEFAULT_COLUMNS}
           metadata={metadata}
           onSave={handleSubmit}
