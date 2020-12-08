@@ -25,7 +25,11 @@ interface ScenariosProps {
   /**
    * The id to execute scenario
    */
-  taskId?: string;
+  taskId: string;
+  /**
+   * The hostgroup used to execute the job
+   */
+  hostGroup?: string;
   /**
    * The id of selected scenario when it clicked
    */

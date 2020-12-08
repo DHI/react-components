@@ -50,7 +50,17 @@ interface MenuItem {
    * The display name of scenario option menu
    */
   label: string;
+  /**
+   * The task to execute
+   */
   taskId?: string;
+  /**
+   * The host group to use
+   */
+  hostGroup?: string;
+  /**
+   * The connection to use
+   */
   connection?: string;
   /**
    * Optional display conditions

@@ -474,13 +474,25 @@ const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, 
   return forkJoin(requests).pipe(map((job) => job.flat()));
 };
 
-const executeJob = (dataSource: DataSource, token: string, taskId: any, parameters: JobParameters) => {
+const executeJob = (
+  dataSource: DataSource,
+  token: string,
+  taskId: string,
+  parameters: JobParameters,
+  hostGroup?: string,
+) => {
+  const body: Partial<Record<string, any>> = { taskId, parameters };
+
+  if (hostGroup) {
+    body.hostGroup = hostGroup;
+  }
+
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
     method: 'POST',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ taskId, parameters }),
+    body: JSON.stringify(body),
   }).pipe(
     tap(
       (res) => {
