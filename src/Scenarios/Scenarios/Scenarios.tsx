@@ -10,7 +10,7 @@ import {
   fetchScenarios,
   fetchScenariosByDate,
   postScenario,
-  updateScenario,
+  updateScenario
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { getObjectProperty, setObjectProperty } from '../../utils/Utils';
@@ -99,8 +99,8 @@ const Scenarios = (props: ScenariosProps) => {
       {
         host,
         connection: scenarioConnection,
-        from: queryDates.windowStart,
-        to: queryDates.windowEnd,
+        from: queryDates.from,
+        to: queryDates.to,
         dataSelectors: [
           nameField,
           ...descriptionFields!.map((descriptionField) => descriptionField.field),

@@ -392,13 +392,13 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
 const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
-      ? `?dataSelectors=[${dataSource.dataSelectors
+      ? `&dataSelectors=[${dataSource.dataSelectors
           .map((dataSelector) => dataSelector.replace('data.', ''))
           .join(',')}]`
       : '';
 
   return fetchUrl(
-    `${dataSource.host}/api/scenarios/${dataSource.connection}/list?from=${dataSource.from}&to=${dataSource.to}${dataSelectors}`,
+    `${dataSource.host}/api/scenarios/${dataSource.connection}?from=${dataSource.from}&to=${dataSource.to}${dataSelectors}`,
     {
       method: 'GET',
       additionalHeaders: {

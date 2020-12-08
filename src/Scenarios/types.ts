@@ -114,11 +114,11 @@ interface QueryDates {
   /**
    * Start date to fetch scenario by date
    */
-  windowStart: string;
+  from: string;
   /**
    * End date to fetch scenario by date
    */
-  windowEnd: string;
+  to: string;
 }
 
 interface ContextMenuClickHandler {
