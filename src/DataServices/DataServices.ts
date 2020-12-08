@@ -392,13 +392,13 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
 const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
-      ? `?dataSelectors=[${dataSource.dataSelectors
+      ? `&dataSelectors=[${dataSource.dataSelectors
           .map((dataSelector) => dataSelector.replace('data.', ''))
           .join(',')}]`
       : '';
 
   return fetchUrl(
-    `${dataSource.host}/api/scenarios/${dataSource.connection}/list?from=${dataSource.from}&to=${dataSource.to}${dataSelectors}`,
+    `${dataSource.host}/api/scenarios/${dataSource.connection}?from=${dataSource.from}&to=${dataSource.to}${dataSelectors}`,
     {
       method: 'GET',
       additionalHeaders: {
@@ -474,13 +474,25 @@ const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, 
   return forkJoin(requests).pipe(map((job) => job.flat()));
 };
 
-const executeJob = (dataSource: DataSource, token: string, taskId: any, parameters: JobParameters) => {
+const executeJob = (
+  dataSource: DataSource,
+  token: string,
+  taskId: string,
+  parameters: JobParameters,
+  hostGroup?: string,
+) => {
+  const body: Partial<Record<string, any>> = { taskId, parameters };
+
+  if (hostGroup) {
+    body.hostGroup = hostGroup;
+  }
+
   fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
     method: 'POST',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ taskId, parameters }),
+    body: JSON.stringify(body),
   }).pipe(
     tap(
       (res) => {

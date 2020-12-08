@@ -1,5 +1,7 @@
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
+import GeneralDialogProps from '../../common/GeneralDialog/types';
 import {
   cancelJob,
   deleteScenario,
@@ -8,7 +10,7 @@ import {
   fetchScenarios,
   fetchScenariosByDate,
   postScenario,
-  updateScenario,
+  updateScenario
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { getObjectProperty, setObjectProperty } from '../../utils/Utils';
@@ -16,8 +18,6 @@ import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';
 import ScenariosProps from './types';
 import useStyles from './useStyles';
-import GeneralDialogProps from '../../common/GeneralDialog/types';
-import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 
 const Scenarios = (props: ScenariosProps) => {
   const {
@@ -28,6 +28,7 @@ const Scenarios = (props: ScenariosProps) => {
     jobConnection,
     jobParameters,
     taskId,
+    hostGroup,
     descriptionFields,
     extraFields,
     menuItems,
@@ -98,8 +99,8 @@ const Scenarios = (props: ScenariosProps) => {
       {
         host,
         connection: scenarioConnection,
-        from: queryDates.windowStart,
-        to: queryDates.windowEnd,
+        from: queryDates.from,
+        to: queryDates.to,
         dataSelectors: [
           nameField,
           ...descriptionFields!.map((descriptionField) => descriptionField.field),
@@ -194,6 +195,7 @@ const Scenarios = (props: ScenariosProps) => {
       token,
       menuItem.taskId || taskId,
       parameters,
+      menuItem.hostGroup || hostGroup,
     );
   };
 

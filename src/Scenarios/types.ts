@@ -50,7 +50,17 @@ interface MenuItem {
    * The display name of scenario option menu
    */
   label: string;
+  /**
+   * The task to execute
+   */
   taskId?: string;
+  /**
+   * The host group to use
+   */
+  hostGroup?: string;
+  /**
+   * The connection to use
+   */
   connection?: string;
   /**
    * Optional display conditions
@@ -104,11 +114,11 @@ interface QueryDates {
   /**
    * Start date to fetch scenario by date
    */
-  windowStart: string;
+  from: string;
   /**
    * End date to fetch scenario by date
    */
-  windowEnd: string;
+  to: string;
 }
 
 interface ContextMenuClickHandler {

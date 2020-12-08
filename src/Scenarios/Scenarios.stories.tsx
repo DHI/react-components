@@ -1,6 +1,7 @@
 import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Meta } from '@storybook/react/types-6-0';
+import addDays from 'date-fns/addDays';
 import React, { useState } from 'react';
 import { LoginGate } from '../Auth/LoginGate';
 import { Scenarios } from './Scenarios/Scenarios';
@@ -18,6 +19,11 @@ export const ScenariosStory = () => {
     setNewScenario({
       data: `{"name":"My Scenario","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
     });
+  };
+
+  const queryDates = {
+    from: addDays(new Date(), -3).toISOString(),
+    to: addDays(new Date(), 1).toISOString(),
   };
 
   return (
@@ -54,6 +60,7 @@ export const ScenariosStory = () => {
               scenarioConnection={'postgres-scenarios'}
               jobConnection={'wf-jobs'}
               jobParameters={{ variable1: 'test1' }}
+              queryDates={queryDates}
               taskId={'workflow'}
               timeZone="Australia/Brisbane"
               menuItems={[
