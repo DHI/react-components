@@ -67,7 +67,7 @@ const metadataFilterService = [
     predicate: (value, filter, row) => {
       const { columnName } = filter;
 
-      if (!row.metadata) return false;
+      if (!row.metadata || !row.metadata[columnName]) return false;
 
       return row.metadata[columnName].toLowerCase().includes(filter.value.toLowerCase());
     },
@@ -77,7 +77,7 @@ const metadataFilterService = [
     predicate: (value, filter, row) => {
       const { columnName } = filter;
 
-      if (!row.metadata) return false;
+      if (!row.metadata || !row.metadata[columnName]) return false;
 
       return row.metadata[columnName].toLowerCase().includes(filter.value.toLowerCase());
     },
@@ -87,8 +87,9 @@ const metadataFilterService = [
     predicate: (value, filter, row) => {
       const { columnName } = filter;
 
-      if (!row.metadata) return false;
+      if (!row.metadata || !row.metadata[columnName]) return false;
 
+      console.log(row.metadata);
       const regex = new RegExp(filter.value.toLowerCase(), 'g');
       const arrayToLowerCase = row.metadata[columnName].map((item) => item.toLowerCase());
       const result = regex.test(arrayToLowerCase);
@@ -101,7 +102,7 @@ const metadataFilterService = [
     predicate: (value, filter, row) => {
       const { columnName } = filter;
 
-      if (!row.metadata) return false;
+      if (!row.metadata || !row.metadata[columnName]) return false;
 
       const regex = new RegExp(filter.value.toLowerCase(), 'g');
       const arrayToLowerCase = row.metadata[columnName].map((item) => item.toLowerCase());
@@ -115,7 +116,7 @@ const metadataFilterService = [
     predicate: (value, filter, row) => {
       const { columnName } = filter;
 
-      if (!row.metadata) return false;
+      if (!row.metadata || !row.metadata[columnName]) return false;
 
       let result;
       const myBooleanValue = filter.value === 'Yes';
