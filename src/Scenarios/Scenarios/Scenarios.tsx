@@ -10,7 +10,7 @@ import {
   fetchScenarios,
   fetchScenariosByDate,
   postScenario,
-  updateScenario
+  updateScenario,
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { getObjectProperty, setObjectProperty } from '../../utils/Utils';
