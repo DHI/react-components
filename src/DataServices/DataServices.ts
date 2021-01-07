@@ -57,6 +57,13 @@ const fetchToken = (host: string, user: User) => {
   );
 };
 
+const validateToken = (host: string, token: string) => {
+  return fetch(`${host}/api/tokens/validation`, {
+    method: 'POST',
+    body: JSON.stringify(token),
+  });
+};
+
 // GIS
 
 const fetchFeatureCollectionValues = (dataSources: DataSource | DataSource[], token: string) => {
@@ -649,6 +656,7 @@ const updateSpreadsheet = (host: string, connection: string, token: string, spre
 
 export {
   fetchToken,
+  validateToken,
   fetchUrl,
   resetPassword,
   fetchAccounts,
