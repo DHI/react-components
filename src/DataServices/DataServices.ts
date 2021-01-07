@@ -44,7 +44,6 @@ const checkStatus = (response: Response) => {
 };
 
 // AUTHENTICATION
-
 const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
