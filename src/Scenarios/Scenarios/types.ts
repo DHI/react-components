@@ -59,6 +59,10 @@ interface ScenariosProps {
    */
   jobParameters?: JobParameters;
   /**
+   * Temporary for discarding modules which do not match
+   */
+  module?: string;
+  /**
    * Value range to fetch scenario by date
    */
   queryDates?: QueryDates;

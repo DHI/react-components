@@ -27,6 +27,7 @@ const Scenarios = (props: ScenariosProps) => {
     nameField,
     jobConnection,
     jobParameters,
+    module,
     taskId,
     hostGroup,
     descriptionFields,
@@ -138,11 +139,19 @@ const Scenarios = (props: ScenariosProps) => {
       token,
     ).subscribe(
       (res) => {
-        const rawScenarios = res.map((s: { data: string }) => {
-          s.data = s.data ? JSON.parse(s.data) : s.data;
+        const rawScenarios = res
+          .map((s: { data: string }) => {
+            s.data = s.data ? JSON.parse(s.data) : s.data;
 
-          return s;
-        });
+            return s;
+          })
+          .filter((d) => {
+            return (
+              !module ||
+              (module === 'MooringAnalysis' && !(d.data as any).projectionYear) ||
+              (module === 'ClimateChange' && (d.data as any).projectionYear != null)
+            );
+          });
 
         setScenarios(rawScenarios);
 

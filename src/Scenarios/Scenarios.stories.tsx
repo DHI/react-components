@@ -60,7 +60,7 @@ export const ScenariosStory = () => {
               scenarioConnection={'postgres-scenarios'}
               jobConnection={'wf-jobs'}
               jobParameters={{ variable1: 'test1' }}
-              queryDates={queryDates}
+              module={null}
               taskId={'workflow'}
               timeZone="Australia/Brisbane"
               menuItems={[
