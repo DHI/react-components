@@ -59,6 +59,7 @@ const fetchToken = (host: string, user: User) => {
 
 const validateToken = (host: string, token: string) => {
   return fetch(`${host}/api/tokens/validation`, {
+    ...DEFAULT_OPTIONS,
     method: 'POST',
     body: JSON.stringify(token),
   });
