@@ -19,6 +19,7 @@ import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
 import {
   Command,
+  DefaultColumnsTypeProvider,
   DeleteDialog,
   FilterCellRow,
   filterRules,
@@ -81,11 +82,11 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
   const metadataColumnsArray = metadata ? metadata.reduce((acc, cur) => [...acc, cur.key], []) : [];
   const [metadataColumns] = useState<string[]>(metadataColumnsArray);
   const [usersColumn] = useState<string[]>(['userGroups']);
+  const [defaultColumnsNameArray] = useState<string[]>(DEFAULT_COLUMNS.map((column) => column.name));
 
   const fetchData = () => {
     fetchAccounts(host, token).subscribe(
       async (body: Record<any, any>) => {
-        console.log(body);
         setRows(body as any);
       },
       (error) => {
@@ -190,6 +191,7 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
         <EditingState onCommitChanges={commitChanges as any} />
         <VirtualTable height={window.innerHeight - 230} />
 
+        <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
         {metadataColumns && <MetadataTypeProvider for={metadataColumns} />}
         <UsersTypeProvider for={usersColumn} />
 
