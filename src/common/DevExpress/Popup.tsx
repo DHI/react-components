@@ -172,7 +172,7 @@ const Popup: React.FC<PopupProps> = ({
                           {...props}
                           name={column.name}
                           variant="standard"
-                          label={`${column.name}(s)`}
+                          label={`${column.title.slice(0, -1)}(s)`}
                           placeholder="Select"
                           autoComplete="off"
                         />
