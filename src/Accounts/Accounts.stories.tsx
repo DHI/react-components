@@ -49,9 +49,23 @@ export const AccountsStory = () => {
     },
   ] as MetadataProps[];
 
+  const userGroupsDefaultSelected = [
+    {
+      id: 'Editors',
+      name: 'Editors',
+    },
+  ];
+
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
-      {({ token }) => <Accounts host={host} metadata={metadata} token={token.accessToken.token} />}
+      {({ token }) => (
+        <Accounts
+          host="https://auth.seaportopx.com"
+          metadata={metadata}
+          userGroupsDefaultSelected={userGroupsDefaultSelected}
+          token={token.accessToken.token}
+        />
+      )}
     </LoginGate>
   );
 };

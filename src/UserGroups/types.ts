@@ -16,11 +16,16 @@ interface UserGroupProps {
   translations?: {
     /* not impl */
   };
+  /**
+   * Set User Groups default list when creating a new Account
+   */
+  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
 }
+
 /**
- * User Group Data Structure
+ * User Group Default Structure
  */
-interface UserGroupsData {
+interface UserGroupDefault {
   /**
    * The user group id
    */
@@ -29,6 +34,12 @@ interface UserGroupsData {
    *  The user group name
    */
   name: string;
+}
+
+/**
+ * User Group Data Structure
+ */
+interface UserGroupsData extends UserGroupDefault {
   /**
    *  A list of users
    */
@@ -39,15 +50,7 @@ interface UserGroupsData {
   metadata?: {};
 }
 
-interface UserGroups {
-  /**
-   * User Group ID
-   */
-  id: string;
-  /**
-   * User Group name
-   */
-  name: string;
+interface UserGroups extends UserGroupDefault {
   /**
    * A list of users for User Groups
    */
@@ -88,4 +91,8 @@ interface UserGroupFormProps {
   metadata: MetadataProps[];
 }
 
-export { UserGroupProps, UserGroupsData, UserGroups, UserGroupFormProps };
+interface userGroupsDefaultSelectedProps extends UserGroupDefault {
+  [key: string]: string;
+}
+
+export { UserGroupProps, UserGroupsData, UserGroups, UserGroupFormProps, userGroupsDefaultSelectedProps };

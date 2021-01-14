@@ -1,4 +1,4 @@
-import { UserGroupsData } from '../../UserGroups/types';
+import { UserGroupsData, userGroupsDefaultSelectedProps } from '../../UserGroups/types';
 import { MetadataProps } from '../Metadata/types';
 
 export interface DeleteDialogProps {
@@ -75,6 +75,10 @@ export interface PopupEditingProps {
    * Tell popup if there is the Password and Repeat Password fields
    */
   hasPassword?: boolean;
+  /**
+   * Set User Groups default list when creating a new Account
+   */
+  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
 }
 
 export interface PopupProps {
@@ -130,6 +134,10 @@ export interface PopupProps {
    * Tell popup if there is the Password and Repeat Password fields
    */
   hasPassword?: boolean;
+  /**
+   * Set User Groups default list when creating a new Account
+   */
+  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
 }
 
 export interface MetadataEditorProps {
