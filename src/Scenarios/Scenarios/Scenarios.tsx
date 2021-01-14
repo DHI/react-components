@@ -145,25 +145,11 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
 
-        console.log(module);
-
         if (module === 'ClimateChange') {
-          setScenarios(rawScenarios.filter((d) => !(d.data as any).projectionYear));
-
-          console.log(
-            'CC: ',
-            rawScenarios.filter((d) => (d.data as any).projectionYear),
-          );
+          setScenarios(rawScenarios.filter((d) => !(d.data as any).mooring));
         } else {
           setScenarios(rawScenarios.filter((d) => (d.data as any).mooring));
-
-          console.log(
-            'MA: ',
-            rawScenarios.filter((d) => (d.data as any).mooring),
-          );
         }
-
-        console.log({ rawScenarios });
 
         if (onScenariosReceived) {
           onScenariosReceived(rawScenarios);
