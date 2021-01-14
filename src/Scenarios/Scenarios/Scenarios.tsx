@@ -10,7 +10,7 @@ import {
   fetchScenarios,
   fetchScenariosByDate,
   postScenario,
-  updateScenario,
+  updateScenario
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { getObjectProperty, setObjectProperty } from '../../utils/Utils';
@@ -146,9 +146,9 @@ const Scenarios = (props: ScenariosProps) => {
         });
 
         if (module === 'ClimateChange') {
-          setScenarios(rawScenarios.filter((d) => !(d.data as any).projectionYear));
+          setScenarios(rawScenarios.filter((d) => !(d.data as any).mooring));
         } else {
-          setScenarios(rawScenarios.filter((d) => (d.data as any).projectionYear));
+          setScenarios(rawScenarios.filter((d) => (d.data as any).mooring));
         }
 
         console.log({ rawScenarios });
