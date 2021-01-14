@@ -145,10 +145,10 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
 
-        if (module === 'ClimateChange') {
-          setScenarios(rawScenarios.filter((d) => !(d.data as any).mooring));
-        } else {
+        if (module === 'MooringAnalysis') {
           setScenarios(rawScenarios.filter((d) => (d.data as any).mooring));
+        } else {
+          setScenarios(rawScenarios.filter((d) => (d.data as any).projectionYear != null));
         }
 
         if (onScenariosReceived) {
