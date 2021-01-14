@@ -145,12 +145,14 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
 
+        console.log(module);
+
         if (module === 'ClimateChange') {
           setScenarios(rawScenarios.filter((d) => !(d.data as any).projectionYear));
 
           console.log(
             'CC: ',
-            rawScenarios.filter((d) => !(d.data as any).projectionYear),
+            rawScenarios.filter((d) => (d.data as any).projectionYear),
           );
         } else {
           setScenarios(rawScenarios.filter((d) => (d.data as any).mooring));
