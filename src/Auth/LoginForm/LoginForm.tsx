@@ -124,10 +124,10 @@ const LoginForm = (props: LoginFormProps) => {
 
       {twoFA ? (
         <>
-          {otpAuthenticatorIds.length > 1 && <Typography>Please select One Time Password authenticator</Typography>}
-          <FormControl variant="outlined" fullWidth margin="dense">
-            {otpAuthenticatorIds.length > 1 && (
-              <>
+          {otpAuthenticatorIds.length > 1 && (
+            <>
+              <Typography>Please select One Time Password authenticator</Typography>
+              <FormControl variant="outlined" fullWidth margin="dense">
                 <InputLabel shrink id="demo-simple-select-outlined-label" className={classes.shrink}>
                   Authenticator
                 </InputLabel>
@@ -145,9 +145,9 @@ const LoginForm = (props: LoginFormProps) => {
                     </MenuItem>
                   ))}
                 </Select>
-              </>
-            )}
-          </FormControl>
+              </FormControl>
+            </>
+          )}
           <TextField
             fullWidth
             margin="dense"
