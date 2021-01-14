@@ -139,21 +139,17 @@ const Scenarios = (props: ScenariosProps) => {
       token,
     ).subscribe(
       (res) => {
-        const rawScenarios = res
-          .map((s: { data: string }) => {
-            s.data = s.data ? JSON.parse(s.data) : s.data;
+        const rawScenarios = res.map((s: { data: string }) => {
+          s.data = s.data ? JSON.parse(s.data) : s.data;
 
-            return s;
-          })
-          .filter((d) => {
-            return (
-              !module ||
-              (module === 'MooringAnalysis' && !(d.data as any).projectionYear) ||
-              (module === 'ClimateChange' && (d.data as any).projectionYear != null)
-            );
-          });
+          return s;
+        });
 
-        setScenarios(rawScenarios);
+        if (module === 'ClimateChange') {
+          setScenarios(rawScenarios.filter((d) => (d.data as any).projectionYear));
+        } else {
+          setScenarios(rawScenarios.filter((d) => !(d.data as any).projectionYear));
+        }
 
         if (onScenariosReceived) {
           onScenariosReceived(rawScenarios);
