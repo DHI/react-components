@@ -146,10 +146,12 @@ const Scenarios = (props: ScenariosProps) => {
         });
 
         if (module === 'ClimateChange') {
-          setScenarios(rawScenarios.filter((d) => (d.data as any).projectionYear));
-        } else {
           setScenarios(rawScenarios.filter((d) => !(d.data as any).projectionYear));
+        } else {
+          setScenarios(rawScenarios.filter((d) => (d.data as any).projectionYear));
         }
+
+        console.log({ rawScenarios });
 
         if (onScenariosReceived) {
           onScenariosReceived(rawScenarios);
