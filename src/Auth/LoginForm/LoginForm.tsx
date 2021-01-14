@@ -31,7 +31,7 @@ const LoginForm = (props: LoginFormProps) => {
     loginButtonText = 'Login',
     backButtonText = 'Back',
     textFieldVariant = 'outlined',
-    otpAuthPlaceholder = 'Two Factor Authenticator',
+    otpAuthPlaceholder = 'Please enter One Time Password',
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -118,36 +118,39 @@ const LoginForm = (props: LoginFormProps) => {
     <form onSubmit={handleSubmit}>
       {error && (
         <Alert severity="error">{`Username ${
-          twoFA ? 'or Two Factor Authenticator are invalid' : 'and/or password is invalid'
+          twoFA ? 'or One Time Password is invalid' : 'and/or password is invalid'
         }`}</Alert>
       )}
 
       {twoFA ? (
         <>
-          <Typography>Please select your 2 Two Factor Authenticator</Typography>
+          {otpAuthenticatorIds.length > 1 && <Typography>Please select One Time Password authenticator</Typography>}
           <FormControl variant="outlined" fullWidth margin="dense">
-            <InputLabel shrink id="demo-simple-select-outlined-label" className={classes.shrink}>
-              Authenticator
-            </InputLabel>
-            <Select
-              fullWidth
-              defaultValue={form?.otpAuthenticator}
-              value={form?.otpAuthenticator}
-              id="otpAuthenticator"
-              label="Authenticator"
-              onChange={(e) => handleChange('otpAuthenticator', e.target.value as string)}
-            >
-              {otpAuthenticatorIds?.map((item, index) => (
-                <MenuItem key={index} value={item}>
-                  {item}
-                </MenuItem>
-              ))}
-            </Select>
+            {otpAuthenticatorIds.length > 1 && (
+              <>
+                <InputLabel shrink id="demo-simple-select-outlined-label" className={classes.shrink}>
+                  Authenticator
+                </InputLabel>
+                <Select
+                  fullWidth
+                  defaultValue={form?.otpAuthenticator}
+                  value={form?.otpAuthenticator}
+                  id="otpAuthenticator"
+                  label="Authenticator"
+                  onChange={(e) => handleChange('otpAuthenticator', e.target.value as string)}
+                >
+                  {otpAuthenticatorIds?.map((item, index) => (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </>
+            )}
           </FormControl>
           <TextField
             fullWidth
             margin="dense"
-            type="number"
             onChange={(e) => handleChange('otp', e.target.value)}
             label={otpAuthPlaceholder}
             error={error}
@@ -209,7 +212,7 @@ const LoginForm = (props: LoginFormProps) => {
           </Button>
         )}
         {twoFA && (
-          <Button type="submit" className={classes.button} color="secondary" variant="contained" onClick={handleBack}>
+          <Button className={classes.button} color="secondary" variant="contained" onClick={handleBack}>
             {backButtonText}
           </Button>
         )}
