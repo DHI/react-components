@@ -56,7 +56,7 @@ const DEFAULT_COLUMNS = [
   },
 ];
 
-const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
+const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSelected, metadata }) => {
   const [rows, setRows] = useState<UserGroupsData[]>([]);
   const [userGroups, setUserGroups] = useState<Record<string, string>[]>([]);
   const [deletedDialog, setDeletedDialog] = useState(false);
@@ -207,6 +207,7 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, metadata }) => {
           metadata={metadata}
           onSave={handleSubmit}
           hasPassword
+          userGroupsDefaultSelected={userGroupsDefaultSelected}
         />
         <Toolbar />
         <TableColumnVisibility />

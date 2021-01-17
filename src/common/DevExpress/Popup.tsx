@@ -42,6 +42,7 @@ const Popup: React.FC<PopupProps> = ({
   defaultColumns,
   metadata,
   hasPassword,
+  userGroupsDefaultSelected,
 }) => {
   const [error, setError] = useState<boolean>(false);
   const [passwordStrengthColor, setPasswordStrengthColor] = useState('red');
@@ -148,7 +149,11 @@ const Popup: React.FC<PopupProps> = ({
               {defaultColumns.map((column, i) => {
                 if (column.name === 'userGroups' || column.name === 'users') {
                   const currentValues =
-                    row[column.name] != null ? users.filter((f) => row[column.name].includes(f.id)) : [];
+                    row[column.name] != null
+                      ? users.filter((f) => row[column.name].includes(f.id))
+                      : column.name === 'userGroups' && userGroupsDefaultSelected
+                      ? userGroupsDefaultSelected
+                      : [];
 
                   return (
                     <Autocomplete
