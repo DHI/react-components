@@ -26,7 +26,7 @@ import {
   Popup,
   PopupEditing,
   UsersTypeProvider,
-} from '../common/DevExpress';
+} from '../common/Table';
 import {
   createUserGroup,
   deleteUserGroup,
