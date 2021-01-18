@@ -57,10 +57,11 @@ export const ScenariosStory = () => {
               frequency={10}
               token={token.accessToken.token}
               host={process.env.ENDPOINT_URL}
+              queryDates={queryDates}
               scenarioConnection={'postgres-scenarios'}
               jobConnection={'wf-jobs'}
               jobParameters={{ variable1: 'test1' }}
-              module={null}
+              module="MooringAnalysis"
               taskId={'workflow'}
               timeZone="Australia/Brisbane"
               menuItems={[
@@ -147,10 +148,10 @@ export const ScenariosStory = () => {
                   name: 'Vessel LOA',
                 },
               ]}
-              showDate={true}
-              showHour={true}
-              showMenu={true}
-              showStatus={true}
+              showDate
+              showHour
+              showMenu
+              showStatus
               status={[
                 {
                   name: 'Pending',
@@ -164,7 +165,7 @@ export const ScenariosStory = () => {
                 },
                 {
                   name: 'Unknown',
-                  color: 'red',
+                  color: 'black',
                   message: 'Unknown',
                 },
                 {
@@ -184,7 +185,7 @@ export const ScenariosStory = () => {
                 },
                 {
                   name: 'Default',
-                  color: 'red',
+                  color: 'black',
                   message: 'Unknown',
                 },
               ]}

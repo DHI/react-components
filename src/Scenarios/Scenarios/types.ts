@@ -61,7 +61,7 @@ interface ScenariosProps {
   /**
    * Temporary for discarding modules which do not match
    */
-  module?: string;
+  module: 'MooringAnalysis' | 'ClimateChange';
   /**
    * Value range to fetch scenario by date
    */

@@ -128,7 +128,7 @@ const checkStatus = (scenario: Scenario, status: Status[]) => {
 
   const currentStatus = {
     ...status.find((s) => s.name === scenarioStatus),
-    progress,
+    progress: scenarioStatus === 'InProgress' ? progress : 0,
   };
 
   let result;
