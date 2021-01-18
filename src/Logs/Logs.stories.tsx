@@ -26,6 +26,8 @@ export const LogListStory = () => {
     },
   ];
 
+  const disabledColumns = ['id', 'machineName', 'tag'];
+
   useEffect(() => {
     fetchToken(process.env.ENDPOINT_URL, {
       id: process.env.USERUSER!,
@@ -47,6 +49,7 @@ export const LogListStory = () => {
         frequency={30}
         token={token}
         dataSources={dataSources}
+        disabledColumns={disabledColumns}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
         startTimeUtc={'2020-06-30T01:45:34'}
         timeZone={'Asia/Jakarta'}
