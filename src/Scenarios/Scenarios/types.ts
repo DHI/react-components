@@ -39,6 +39,15 @@ interface ScenariosProps {
    */
   frequency?: number;
   /**
+   * Object to filter data by its property
+   * @param field object property e.g.: data.mooring
+   * @param value to filter to a specific value
+   */
+  dataFilterbyProperty?: {
+    field: string;
+    value?: string | null;
+  };
+  /**
    * Backend host
    */
   host: string;

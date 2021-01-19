@@ -13,7 +13,7 @@ import {
   updateScenario,
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
-import { getObjectProperty, setObjectProperty } from '../../utils/Utils';
+import { checkCondition, getObjectProperty, setObjectProperty } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';
 import ScenariosProps from './types';
@@ -28,6 +28,7 @@ const Scenarios = (props: ScenariosProps) => {
     jobConnection,
     jobParameters,
     module,
+    dataFilterbyProperty,
     taskId,
     hostGroup,
     descriptionFields,
@@ -117,7 +118,9 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
 
-        setScenarios(rawScenarios);
+        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+
+        setScenarios(newScenarios);
       },
       (error) => {
         console.log(error);
@@ -145,11 +148,9 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
 
-        if (module === 'MooringAnalysis') {
-          setScenarios(rawScenarios.filter((d) => (d.data as any).mooring));
-        } else {
-          setScenarios(rawScenarios.filter((d) => (d.data as any).projectionYear != null));
-        }
+        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+
+        setScenarios(newScenarios);
 
         if (onScenariosReceived) {
           onScenariosReceived(rawScenarios);
