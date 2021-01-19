@@ -313,7 +313,7 @@ const Scenarios = (props: ScenariosProps) => {
     setDialog({
       dialogId: 'clone',
       showDialog: true,
-      title: `Clone ${job}`,
+      title: `${translations?.cloneTitle || 'Clone'} ${job}`,
       message:
         translations && translations.cloneConfirmation
           ? translations.cloneConfirmation.replace('%job%', job)
@@ -330,7 +330,7 @@ const Scenarios = (props: ScenariosProps) => {
     setDialog({
       dialogId: 'delete',
       showDialog: true,
-      title: `Delete ${job}`,
+      title: `${translations?.deleteTitle || 'Delete'} ${job}`,
       message:
         translations && translations.deleteConfirmation
           ? translations.deleteConfirmation.replace('%job%', job)

@@ -88,9 +88,17 @@ interface ScenariosProps {
      */
     executeConfirmation?: string;
     /**
+     * Scenario clone Title dialog
+     */
+    cloneTitle?: string;
+    /**
      * Scenario clone confirmation dialog
      */
     cloneConfirmation?: string;
+    /**
+     * Scenario delete title dialog
+     */
+    deleteTitle?: string;
     /**
      * Scenario deletion confirmation dialog
      */
