@@ -39,6 +39,13 @@ interface ScenariosProps {
    */
   frequency?: number;
   /**
+   * String to set data filter
+   */
+  dataFilterbyProperty?: {
+    field: string;
+    value?: string | null;
+  };
+  /**
    * Backend host
    */
   host: string;
@@ -61,7 +68,7 @@ interface ScenariosProps {
   /**
    * Temporary for discarding modules which do not match
    */
-  module: 'MooringAnalysis' | 'ClimateChange';
+  module?: string;
   /**
    * Value range to fetch scenario by date
    */
