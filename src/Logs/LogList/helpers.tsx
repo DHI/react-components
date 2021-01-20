@@ -1,5 +1,5 @@
 import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { FormControl, InputLabel, MenuItem, Select, TableCell, Tooltip } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, Select, TableCell, Tooltip, Typography, Zoom } from '@material-ui/core';
 import { blueGrey, red, yellow } from '@material-ui/core/colors';
 import {
   BugReportOutlined,
@@ -48,8 +48,8 @@ export const FilterCellRow = (props) => {
   return <TableFilterRow.Cell {...props} />;
 };
 
-export const LevelIconCell = (props: any) => {
-  const { row, column } = props;
+export const CustomCell = (props: any) => {
+  const { value, row, column } = props;
   let cellIcon;
 
   if (column.name === 'logLevel') {
@@ -77,6 +77,14 @@ export const LevelIconCell = (props: any) => {
     return (
       <td style={{ borderBottom: '1px solid rgba(224, 224, 224, 1)', paddingLeft: 10 }}>
         <Tooltip title={row.logLevel}>{cellIcon}</Tooltip>
+      </td>
+    );
+  } else if (column.name === 'text') {
+    return (
+      <td style={{ borderBottom: '1px solid rgba(224, 224, 224, 1)', padding: 15 }}>
+        <Tooltip title={value} placement="bottom-start" TransitionComponent={Zoom}>
+          <Typography variant="body2">{value}</Typography>
+        </Tooltip>
       </td>
     );
   } else {

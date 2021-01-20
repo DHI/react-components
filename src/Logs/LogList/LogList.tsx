@@ -19,8 +19,9 @@ import { Paper } from '@material-ui/core';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useMemo, useState } from 'react';
 import Loading from '../../common/Loading/Loading';
+import { DefaultColumnsTypeProvider } from '../../common/Table';
 import { fetchLogs } from '../../DataServices/DataServices';
-import { FilterCellRow, LevelIconCell } from './helpers';
+import { CustomCell, FilterCellRow } from './helpers';
 import LogListProps, { LogData } from './types';
 import useStyles from './useStyles';
 
@@ -52,6 +53,13 @@ const LogList = (props: LogListProps) => {
   const [logsData, setLogsData] = useState<LogData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
+  const [defaultColumnsNameArray] = useState<string[]>(DEFAULT_COLUMNS.map((column) => column.name));
+  const [tableColumnExtensions] = useState([
+    { columnName: 'dateTime', width: 200 },
+    { columnName: 'logLevel', width: 100 },
+    { columnName: 'source', width: 180 },
+    { columnName: 'text', wordWrapEnabled: true },
+  ]);
 
   const onLogsRecieved = (data: LogData[]) => {
     return data.reduce(function (obj, v) {
@@ -140,7 +148,13 @@ const LogList = (props: LogListProps) => {
           <GroupingState />
           <IntegratedGrouping />
 
-          <VirtualTable height={windowHeight - 230} cellComponent={LevelIconCell} />
+          <VirtualTable
+            height={windowHeight - 230}
+            cellComponent={CustomCell}
+            columnExtensions={tableColumnExtensions}
+          />
+
+          <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
 
           <TableHeaderRow />
           <TableFilterRow cellComponent={FilterCellRow} />
