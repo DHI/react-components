@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/react/types-6-0';
+import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { fetchToken } from '../DataServices/DataServices';
 import { LogList } from './LogList/LogList';
@@ -26,6 +27,8 @@ export const LogListStory = () => {
     },
   ];
 
+  const disabledColumns = ['id', 'machineName', 'tag'];
+
   useEffect(() => {
     fetchToken(process.env.ENDPOINT_URL, {
       id: process.env.USERUSER!,
@@ -46,9 +49,10 @@ export const LogListStory = () => {
       <LogList
         frequency={30}
         token={token}
+        startTimeUtc={addDays(new Date(), -2).toISOString()}
         dataSources={dataSources}
+        disabledColumns={disabledColumns}
         dateTimeFormat={'yyyy-MM-dd HH:mm:ss'}
-        startTimeUtc={'2020-06-30T01:45:34'}
         timeZone={'Asia/Jakarta'}
         translations={{
           noEntriesData: 'Tidak ada entri log',

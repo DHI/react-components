@@ -1,267 +1,57 @@
 import {
-  Box,
-  CircularProgress,
-  CssBaseline,
-  makeStyles,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Theme,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
-import { blueGrey, red, yellow } from '@material-ui/core/colors';
-import MaUTable from '@material-ui/core/Table';
+  FilteringState,
+  GroupingState,
+  IntegratedFiltering,
+  IntegratedGrouping,
+  IntegratedSorting,
+  SortingState,
+} from '@devexpress/dx-react-grid';
 import {
-  HelpOutline,
-  BugReportOutlined,
-  InfoOutlined,
-  ErrorOutlineOutlined,
-  WarningOutlined,
-  NewReleases,
-} from '@material-ui/icons';
+  ColumnChooser,
+  Grid,
+  TableColumnVisibility,
+  TableFilterRow,
+  TableHeaderRow,
+  Toolbar,
+  VirtualTable,
+} from '@devexpress/dx-react-grid-material-ui';
+import { Paper } from '@material-ui/core';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  TableInstance,
-  useFilters,
-  UseFiltersOptions,
-  useGlobalFilter,
-  UseGlobalFiltersInstanceProps,
-  UseGlobalFiltersOptions,
-  useTable,
-  UseTableOptions,
-  useBlockLayout,
-} from 'react-table';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList } from 'react-window';
+import React, { useEffect, useMemo, useState } from 'react';
+import Loading from '../../common/Loading/Loading';
 import { fetchLogs } from '../../DataServices/DataServices';
+import { FilterCellRow, LevelIconCell } from './helpers';
 import LogListProps, { LogData } from './types';
-import { DefaultColumnFilter, SelectColumnFilter, GlobalFilter } from '../../common/tableHelper';
+import useStyles from './useStyles';
 
-const LevelIconCell = ({ value }: { value: string }) => {
-  switch (value) {
-    case 'Debug':
-      return (
-        <Tooltip title="Debug">
-          <BugReportOutlined style={{ color: yellow[900] }} />
-        </Tooltip>
-      );
-    case 'Information':
-      return (
-        <Tooltip title="Information">
-          <InfoOutlined style={{ color: blueGrey[500] }} />
-        </Tooltip>
-      );
-    case 'Error':
-      return (
-        <Tooltip title="Error">
-          <ErrorOutlineOutlined style={{ color: red[900] }} />
-        </Tooltip>
-      );
-    case 'Warning':
-      return (
-        <Tooltip title="Warning">
-          <WarningOutlined style={{ color: yellow[900] }} />
-        </Tooltip>
-      );
-    case 'Critical':
-      return (
-        <Tooltip title="Critical">
-          <NewReleases style={{ color: red[900] }} />
-        </Tooltip>
-      );
-    default:
-      return (
-        <Tooltip title="Unknown">
-          <HelpOutline style={{ color: yellow[900] }} />
-        </Tooltip>
-      );
-  }
-};
-
-const useStyles = makeStyles((theme: Theme) => ({
-  td: {
-    flexGrow: '1 !important' as any,
-    flexBasis: '5px !important' as any,
-    width: 'unset !important' as any,
-    maxWidth: 'none !important' as any,
-  },
-  tdContent: {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-const Table = ({
-  columns,
-  data,
-  translations,
-  loading,
-  windowHeight,
-}: {
-  columns: any;
-  data: LogData[];
-  translations: any;
-  loading: boolean;
-  windowHeight: number;
-}) => {
-  const defaultColumn = {
-    Filter: DefaultColumnFilter,
-    minWidth: 30,
-    maxWidth: 1000,
-  };
-  const classes = useStyles();
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-    visibleColumns,
-    preGlobalFilteredRows,
-    setGlobalFilter,
-  } = useTable(
-    {
-      autoResetFilters: false,
-      autoResetGlobalFilter: false,
-      columns,
-      data,
-      defaultColumn,
-    } as UseTableOptions<LogData> & UseFiltersOptions<LogData> & UseGlobalFiltersOptions<LogData>,
-    useGlobalFilter,
-    useBlockLayout,
-    useFilters,
-  ) as TableInstance<LogData> & UseGlobalFiltersInstanceProps<LogData>;
-
-  const RenderRow = useCallback(
-    ({ index, style }) => {
-      const row = rows[index];
-
-      prepareRow(row);
-
-      return (
-        <TableRow
-          component="div"
-          {...row.getRowProps({
-            style,
-          })}
-        >
-          {row.cells.map((cell) => {
-            return (
-              <TableCell
-                {...cell.getCellProps()}
-                component="div"
-                className={classes.td}
-                style={{ minWidth: (cell.column as any).header === 'Text' && '500px' }}
-              >
-                <Typography noWrap variant="body2" className={classes.tdContent}>
-                  {cell.render('Cell')}
-                </Typography>
-              </TableCell>
-            );
-          })}
-        </TableRow>
-      );
-    },
-    [prepareRow, rows],
-  );
-
-  return (
-    <MaUTable {...getTableProps()} component="div" size="small" aria-label="a dense table">
-      <TableHead component="div">
-        <TableRow component="div">
-          <TableCell
-            component="div"
-            colSpan={visibleColumns.length}
-            style={{
-              float: 'right',
-            }}
-          >
-            <GlobalFilter
-              preGlobalFilteredRows={preGlobalFilteredRows}
-              globalFilter={(state as any).globalFilter}
-              setGlobalFilter={setGlobalFilter}
-            />
-          </TableCell>
-        </TableRow>
-        {headerGroups.map((headerGroup) => (
-          <TableRow {...headerGroup.getHeaderGroupProps()} component="div" className={classes.td}>
-            {headerGroup.headers.map((column) => (
-              <TableCell
-                {...column.getHeaderProps()}
-                component="div"
-                className={classes.td}
-                style={{ minWidth: (column as any).header === 'Text' && '500px' }}
-              >
-                <Box display="flex" flexDirection="row">
-                  <Typography variant="subtitle1">{column.render('header')}</Typography>
-                  {(column as any).canFilter ? column.render('Filter') : null}
-                </Box>
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableHead>
-
-      <TableBody {...getTableBodyProps()} component="div">
-        {rows.length > 0 ? (
-          <div style={{ display: 'flex' }}>
-            <div style={{ flex: '1 1 auto', height: `${(windowHeight - 110).toString()}px` }}>
-              <AutoSizer>
-                {({ height, width }) => (
-                  <FixedSizeList height={height} itemCount={rows.length} itemSize={35} width={width}>
-                    {RenderRow}
-                  </FixedSizeList>
-                )}
-              </AutoSizer>
-            </div>
-          </div>
-        ) : (
-          <Typography
-            align="center"
-            component="div"
-            style={{ lineHeight: `${(windowHeight - 110).toString()}px`, color: '#999999' }}
-          >
-            {loading ? (
-              <CircularProgress />
-            ) : (state as any).filters.findIndex((x: { id: string }) => x.id === 'logLevel') > -1 ? (
-              translations?.noEntriesFilter ? (
-                `${(state as any).filters.find((x: { id: string }) => x.id === 'logLevel').value}`
-              ) : (
-                `No log entries for selected log level : ${
-                  (state as any).filters.find((x: { id: string }) => x.id === 'logLevel').value
-                }`
-              )
-            ) : (
-              translations?.noEntriesData || 'No log entries'
-            )}
-          </Typography>
-        )}
-      </TableBody>
-    </MaUTable>
-  );
-};
+const DEFAULT_COLUMNS = [
+  { title: 'Time', name: 'dateTime' },
+  { title: 'ID', name: 'id' },
+  { title: 'Level', name: 'logLevel' },
+  { title: 'Machine Name', name: 'machineName' },
+  { title: 'Source', name: 'source' },
+  { title: 'Tag', name: 'tag' },
+  { title: 'Text', name: 'text' },
+];
 
 const LogList = (props: LogListProps) => {
-  const { frequency, dataSources, token, startTimeUtc, dateTimeFormat, timeZone, translations, onReceived } = props;
+  const [columns] = useState(DEFAULT_COLUMNS);
+  const classes = useStyles();
+  const {
+    frequency,
+    dataSources,
+    disabledColumns,
+    token,
+    startTimeUtc,
+    dateTimeFormat,
+    timeZone,
+    translations,
+    onReceived,
+  } = props;
   const [startDateUtc, setStartDateUtc] = useState<string>();
   const [logsData, setLogsData] = useState<LogData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowHeight(window.innerHeight);
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
 
   const onLogsRecieved = (data: LogData[]) => {
     return data.reduce(function (obj, v) {
@@ -280,33 +70,6 @@ const LogList = (props: LogListProps) => {
 
     return logsData;
   }, [logsData]);
-
-  const columns = useMemo(
-    () => [
-      {
-        header: 'Time',
-        accessor: 'dateTime',
-      },
-      {
-        header: 'Level',
-        accessor: 'logLevel',
-        Filter: SelectColumnFilter,
-        filter: 'includes',
-        Cell: LevelIconCell,
-      },
-      {
-        header: 'Source',
-        accessor: 'source',
-        Filter: SelectColumnFilter,
-        filter: 'includes',
-      },
-      {
-        header: 'Text',
-        accessor: 'text',
-      },
-    ],
-    [logsData],
-  );
 
   const fetchLogsList = (dateTimeValue: string) => {
     setLoading(true);
@@ -335,6 +98,18 @@ const LogList = (props: LogListProps) => {
   };
 
   useEffect(() => {
+    function handleResize() {
+      setWindowHeight(window.innerHeight);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
+
+  useEffect(() => {
     fetchLogsList(startTimeUtc);
   }, []);
 
@@ -351,9 +126,31 @@ const LogList = (props: LogListProps) => {
   }, [startDateUtc]);
 
   return (
-    <div>
-      <CssBaseline />
-      <Table columns={columns} data={data} translations={translations} loading={loading} windowHeight={windowHeight} />
+    <div className={classes.wrapper}>
+      <Paper style={{ position: 'relative' }}>
+        {loading && <Loading />}
+
+        <Grid rows={data} columns={columns}>
+          <FilteringState defaultFilters={[]} />
+          <IntegratedFiltering />
+
+          <SortingState defaultSorting={[{ columnName: 'dateTime', direction: 'desc' }]} />
+          <IntegratedSorting />
+
+          <GroupingState />
+          <IntegratedGrouping />
+
+          <VirtualTable height={windowHeight - 230} cellComponent={LevelIconCell} />
+
+          <TableHeaderRow />
+          <TableFilterRow cellComponent={FilterCellRow} />
+
+          <Toolbar />
+
+          <TableColumnVisibility defaultHiddenColumnNames={disabledColumns} />
+          <ColumnChooser />
+        </Grid>
+      </Paper>
     </div>
   );
 };

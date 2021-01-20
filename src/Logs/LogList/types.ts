@@ -5,6 +5,8 @@ interface LogListProps {
   frequency: number;
   /** Data source to get the logs data */
   dataSources: DataSource[];
+  /** Hide or show columns */
+  disabledColumns?: string[];
   /** Authorization header to backend call */
   token: string;
   /** The date time format that the dates shown in */

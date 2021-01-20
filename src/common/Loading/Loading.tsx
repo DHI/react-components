@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import * as React from 'react';
+import React from 'react';
 
 const useStyles = makeStyles(() => ({
   shading: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const Loading = () => {
+const Loading = () => {
   const classes = useStyles();
 
   return (
@@ -28,3 +28,5 @@ export const Loading = () => {
     </div>
   );
 };
+
+export default Loading;

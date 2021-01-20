@@ -89,7 +89,6 @@ const metadataFilterService = [
 
       if (!row.metadata || !row.metadata[columnName]) return false;
 
-      console.log(row.metadata);
       const regex = new RegExp(filter.value.toLowerCase(), 'g');
       const arrayToLowerCase = row.metadata[columnName].map((item) => item.toLowerCase());
       const result = regex.test(arrayToLowerCase);

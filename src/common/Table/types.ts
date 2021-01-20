@@ -1,73 +1,27 @@
-interface DefaultTableProps {
+import { UserGroupsData, userGroupsDefaultSelectedProps } from '../../UserGroups/types';
+import { MetadataProps } from '../Metadata/types';
+
+export interface DeleteDialogProps {
   /**
-   * Error returned if there is no results when data is fetched
+   * The current Selected row from the table
    */
-  error: boolean;
+  selectedRow: any;
   /**
-   * Boolean to inform is the data fetched.
+   * Boolean to open or close the popup dialog
    */
-  loading: boolean;
+  showDialog: boolean;
   /**
-   * List of Header and Accessor to build the table headers.
+   * Function to close the popup dialog
    */
-  tableHeaders: TableHeaders[];
+  closeDialog: () => void;
   /**
-   * Table data once fetched.
+   * Function to delete the row
+   * @param row Selected Row
    */
-  data: TableData[];
-  /**
-   * Items where the search filter checks for data.
-   */
-  searchItems: (item: any) => void;
-  /**
-   * Check if table is wider then window
-   */
-  isTableWiderThanWindow: (size: boolean) => void;
-  /**
-   * Substract the header height if it is present
-   */
-  hasHeader?: boolean;
+  handleDelete: (row) => void;
 }
 
-interface TableHeaders {
-  /**
-   * Header Label
-   */
-  Header: string;
-  /**
-   * Header name
-   */
-  accessor: string;
-}
-
-interface TableData {
-  /**
-   * Table row ID
-   */
-  id: string;
-  /**
-   * Table row name
-   */
-  name: string;
-  /**
-   * Optional: table row email
-   */
-  email?: string;
-  /**
-   * Optional: table row list of user groups
-   */
-  userGroups?: string[];
-  /**
-   * Optional: table row list of users
-   */
-  users?: string[];
-  /**
-   * Table row metadata
-   */
-  metadata?: {};
-}
-
-interface ActionsButtonsProps {
+export interface ActionsButtonsProps {
   /**
    * Optional: string to overwrite the cancel button label
    */
@@ -89,49 +43,122 @@ interface ActionsButtonsProps {
   /**
    *  Check if the current form is on edit mode
    */
-  isEditing: boolean;
+  isEditing?: boolean;
 }
 
-/**
- * Section above the table
- */
-interface TopTableSectionProps {
+export interface PopupEditingProps {
   /**
-   * Section Title
+   * Load the Popup.tsx component
+   */
+  popupComponent: React.FC<PopupProps>;
+  /**
+   * Title for the Popup component
    */
   title: string;
   /**
-   * value passed to filter the data in the table.
+   * List of all the users
    */
-  filter: string;
+  allUsers: Record<string, string>[];
   /**
-   * Function to filter the current data in the table.
+   * Metadata supplied on the HOC to extend the table.
    */
-  setFilter: (event: string) => void;
+  metadata: MetadataProps[];
   /**
-   * Function to open an empty form
+   * Default columns supplied the table.
    */
-  onNew: () => void;
+  defaultColumns: any;
+  /**
+   * Function to save a new or editedRow data
+   */
+  onSave: (editedRow, isNew?) => void;
+  /**
+   * Tell popup if there is the Password and Repeat Password fields
+   */
+  hasPassword?: boolean;
+  /**
+   * Set User Groups default list when creating a new Account
+   */
+  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
 }
 
-interface ActionCellProps {
+export interface PopupProps {
   /**
-   * Data from the row
+   * Row with the usergroup data
    */
-  item: Record<any, any>;
+  row: any;
   /**
-   * Function to open the dialog with the current data in it.
+   * Function called to change a field
    */
-  onEdit: (data: Record<any, any>) => void;
+  onChange: (editedRow) => void;
   /**
-   * Function to open the dialog with the current user name and id in it.
+   * Function called when user click on the dialog Save button
    */
-  onDelete: (data: Record<any, any>) => void;
+  onApplyChanges: () => void;
   /**
-   * category to go into the action button labels.
-   * Default: User
+   * Function called to change the Metadata data
    */
-  category?: string;
+  onMetadataChange: (e) => void;
+  /**
+   * Function called when Cancel button is clicked
+   */
+  onCancelChanges: () => void;
+  /**
+   * Function called when the dropdown/list is changed
+   */
+  onListChange: (name, values) => void;
+  /**
+   * Boolean to open/close Dialog
+   */
+  open: boolean;
+  /**
+   * Dialog Title
+   */
+  title: string;
+  /**
+   * List of the current available users
+   */
+  users: Record<string, string>[];
+  /**
+   * Boolean to check if user is editing or creating a new row
+   */
+  isNew: boolean;
+  /**
+   * Default columns supplied the table.
+   */
+  defaultColumns: any;
+  /**
+   * Metadata data
+   */
+  metadata: MetadataProps[];
+  /**
+   * Tell popup if there is the Password and Repeat Password fields
+   */
+  hasPassword?: boolean;
+  /**
+   * Set User Groups default list when creating a new Account
+   */
+  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
 }
 
-export { DefaultTableProps, TableHeaders, TableData, ActionsButtonsProps, TopTableSectionProps, ActionCellProps };
+export interface MetadataEditorProps {
+  /**
+   * Metadata data
+   */
+  metadata: MetadataProps[];
+  /**
+   * Row with the usergroup data
+   */
+  row: UserGroupsData;
+  /**
+   * Function called to change a field
+   */
+  onChange: (e) => void;
+  /**
+   * Function called when the dropdown/list is changed
+   */
+  onListChange: (key, values, isMetadata?) => void;
+  /**
+   * Function to pass if there is any error on Metadata Fields
+   */
+  onError: (error: boolean) => void;
+}

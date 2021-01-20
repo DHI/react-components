@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/react/types-6-0';
+import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { fetchToken } from '../DataServices/DataServices';
 import { JobList } from './JobList/JobList';
@@ -57,7 +58,7 @@ export const JobListStory = () => {
         disabledColumns={disabledColumns}
         parameters={parameters}
         dateTimeFormat="yyyy-MM-dd HH:mm:ss"
-        startTimeUtc="2020-11-04T12:15:34"
+        startTimeUtc={addDays(new Date(), -2).toISOString()}
         timeZone="Australia/Brisbane"
         translations={{
           noEntriesData: 'Tidak ada entri job',

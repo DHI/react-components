@@ -21,12 +21,12 @@ import {
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useState } from 'react';
+import Loading from '../../common/Loading/Loading';
 import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
 import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
 import { DateFilter } from './helpers/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
 import JobDetail from './helpers/JobDetail';
-import { Loading } from './helpers/Loading';
 import { JobPanelStyles } from './styles';
 import JobListProps, { DateProps, JobData } from './types';
 
@@ -304,8 +304,7 @@ const JobList = (props: JobListProps) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }),
-    [];
+  }, []);
 
   useEffect(() => {
     let interval: any;

@@ -1,6 +1,6 @@
 import { VirtualTable } from '@devexpress/dx-react-grid-material-ui';
 import { format } from 'date-fns';
-import * as React from 'react';
+import React from 'react';
 import StatusCell from './StatusCell';
 
 export const GroupCellContent = (props: any) => (
