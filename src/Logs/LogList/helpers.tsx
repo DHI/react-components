@@ -1,5 +1,5 @@
 import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { FormControl, InputLabel, MenuItem, Select, TableCell, Tooltip, Typography, Zoom } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, Select, TableCell, Tooltip } from '@material-ui/core';
 import { blueGrey, red, yellow } from '@material-ui/core/colors';
 import {
   BugReportOutlined,
@@ -82,9 +82,16 @@ export const CustomCell = (props: any) => {
   } else if (column.name === 'text') {
     return (
       <td style={{ borderBottom: '1px solid rgba(224, 224, 224, 1)', padding: 15 }}>
-        <Tooltip title={value} placement="bottom-start" TransitionComponent={Zoom}>
-          <Typography variant="body2">{value}</Typography>
-        </Tooltip>
+        <div
+          style={{
+            fontSize: '0.875rem',
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+            fontWeight: 400,
+            lineHeight: 1.43,
+            letterSpacing: '0.01071em',
+          }}
+          dangerouslySetInnerHTML={{ __html: value.substring(0, 2048).replace(new RegExp('\n', 'g'), '<br>') }}
+        />
       </td>
     );
   } else {
