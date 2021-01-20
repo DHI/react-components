@@ -60,7 +60,6 @@ export const ScenariosStory = () => {
               queryDates={queryDates}
               scenarioConnection={'postgres-scenarios'}
               jobConnection={'wf-jobs'}
-              jobParameters={{ variable1: 'test1' }}
               dataFilterbyProperty={{
                 field: 'data.mooring',
               }}
