@@ -60,7 +60,7 @@ export const AccountsStory = () => {
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
       {({ token }) => (
         <Accounts
-          host="https://auth.seaportopx.com"
+          host={host}
           metadata={metadata}
           userGroupsDefaultSelected={userGroupsDefaultSelected}
           token={token.accessToken.token}

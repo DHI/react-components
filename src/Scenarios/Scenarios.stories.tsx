@@ -75,9 +75,6 @@ export const ScenariosStory = () => {
                     value: ['Pending', 'InProgress', 'Completed'],
                   },
                   taskId: 'workflow',
-                  jobParameters: {
-                    variable1: 'test2',
-                  },
                 },
                 {
                   id: 'clone',
