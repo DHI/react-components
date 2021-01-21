@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react/types-6-0';
+import { Meta } from '@storybook/react/types-6-0.d';
 import * as React from 'react';
 import { LoginGate } from '../Auth/LoginGate';
 import { MetadataProps } from '../common/Metadata/types';
