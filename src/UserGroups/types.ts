@@ -19,7 +19,7 @@ interface UserGroupProps {
   /**
    * Set User Groups default list when creating a new Account
    */
-  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
+  userGroupsDefaultSelected?: string[];
 }
 
 /**
@@ -91,8 +91,4 @@ interface UserGroupFormProps {
   metadata: MetadataProps[];
 }
 
-interface userGroupsDefaultSelectedProps extends UserGroupDefault {
-  [key: string]: string;
-}
-
-export { UserGroupProps, UserGroupsData, UserGroups, UserGroupFormProps, userGroupsDefaultSelectedProps };
+export { UserGroupProps, UserGroupsData, UserGroups, UserGroupFormProps };

@@ -148,11 +148,19 @@ const Popup: React.FC<PopupProps> = ({
 
               {defaultColumns.map((column, i) => {
                 if (column.name === 'userGroups' || column.name === 'users') {
+                  const defaultUsersSelection = [];
+
+                  userGroupsDefaultSelected &&
+                    userGroupsDefaultSelected.forEach((userId) => {
+                      const found = users.filter((user) => user.id === userId);
+                      defaultUsersSelection.push(...found);
+                    });
+
                   const currentValues =
                     row[column.name] != null
                       ? users.filter((f) => row[column.name].includes(f.id))
                       : column.name === 'userGroups' && userGroupsDefaultSelected
-                      ? userGroupsDefaultSelected
+                      ? defaultUsersSelection
                       : [];
 
                   return (

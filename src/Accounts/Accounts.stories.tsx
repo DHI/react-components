@@ -49,12 +49,7 @@ export const AccountsStory = () => {
     },
   ] as MetadataProps[];
 
-  const userGroupsDefaultSelected = [
-    {
-      id: 'Editors',
-      name: 'Editors',
-    },
-  ];
+  const userGroupsDefaultSelected = ['Editors'];
 
   return (
     <LoginGate host={host} showRememberMe={true} textFieldVariant={'outlined'}>
