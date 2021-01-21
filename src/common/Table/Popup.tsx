@@ -158,7 +158,7 @@ const Popup: React.FC<PopupProps> = ({
 
                   const currentValues =
                     row[column.name] != null
-                      ? users.filter((f) => row[column.name].includes(f.id))
+                      ? users.filter((f) => row[column.name].includes(f.id) || row[column.name].includes(f.name))
                       : column.name === 'userGroups' && userGroupsDefaultSelected
                       ? defaultUsersSelection
                       : [];

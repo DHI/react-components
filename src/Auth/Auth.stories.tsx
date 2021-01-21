@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react/types-6-0';
+import { Meta } from '@storybook/react/types-6-0.d';
 import React from 'react';
 import { Login } from '..';
 import { Token, User } from './types';

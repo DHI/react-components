@@ -1,6 +1,6 @@
 import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { Meta } from '@storybook/react/types-6-0';
+import { Meta } from '@storybook/react/types-6-0.d';
 import addDays from 'date-fns/addDays';
 import React, { useState } from 'react';
 import { LoginGate } from '../Auth/LoginGate';

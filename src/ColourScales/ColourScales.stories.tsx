@@ -1,5 +1,5 @@
 import { withKnobs } from '@storybook/addon-knobs';
-import { Meta } from '@storybook/react/types-6-0';
+import { Meta } from '@storybook/react/types-6-0.d';
 import React from 'react';
 import { ColourScale } from './ColourScale';
 
