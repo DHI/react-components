@@ -134,18 +134,22 @@ const metadataFilterService = [
 ];
 
 export const filterRules = (metadata) => {
-  return metadataFilterService.map((item) => {
-    let result = {};
+  if (metadata) {
+    return metadataFilterService.map((item) => {
+      let result = {};
 
-    metadata.forEach((meta) => {
-      if (item.type === meta.type) {
-        result = {
-          ...item,
-          columnName: meta.key,
-        };
-      }
+      metadata.forEach((meta) => {
+        if (item.type === meta.type) {
+          result = {
+            ...item,
+            columnName: meta.key,
+          };
+        }
+      });
+
+      return result;
     });
-
-    return result;
-  });
+  } else {
+    return [];
+  }
 };
