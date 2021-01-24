@@ -6,9 +6,7 @@ The React Components collection is a TypeScript based collection of components u
 
 The intention with this library is include functionality rich components only and not so much shallow UI components.
 
-A lot of the components in this library are oriented towards providing easy to use off the shelf components for Domain Services backends.
-
-The components here will eventually either merge with the MIKE Shared UI components or at least be using the MIKE Shared UI components.
+A lot of the components in this library are oriented towards providing easy to use off the shelf components for Domain Services backends, but this is not a requirement 
 
 React-Components are demonstrated [here](https://domainservices.dhigroup.com/) and are available as npm package from Github packages.
 
