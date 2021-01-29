@@ -19,6 +19,7 @@ import {
   VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useState } from 'react';
 import Loading from '../../common/Loading/Loading';
@@ -317,6 +318,44 @@ const JobList = (props: JobListProps) => {
       clearInterval(interval);
     };
   }, [startDateUtc]);
+
+  const [connection, setConnection] = useState(null);
+
+  const start = async () => {
+    console.log({ connection });
+
+    if (!connection) return null;
+
+    try {
+      await connection.start();
+      console.log('SignalR Connected.');
+    } catch (err) {
+      console.log(err);
+      // setTimeout(start, 5000);
+    }
+  };
+
+  const connectSignalR = async () => {
+    const newConnection = new HubConnectionBuilder()
+      .withUrl('http://domainservices.dhigroup.com/notificationhub', {
+        accessTokenFactory: () =>
+          'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNyc2Etc2hhMjU2IiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsImRlYnVnIjoiVHJ1ZSIsImNsaWVudGlkIjoiQWxsIiwicm9sZXMiOiJbXSIsIm1vZHVsZXMiOiJbXSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZ3JvdXBzaWQiOlsiR3Vlc3RzIiwiQWRtaW5pc3RyYXRvcnMiLCJVc2VycyIsIkR5bmFtaWMtU3VwcG9ydC1BY2Nlc3MiLCJFZGl0b3JzIl0sImV4cCI6MTYxNzA3NTkxOCwiaXNzIjoiZGhpZ3JvdXAuY29tIiwiYXVkIjoiZGhpZ3JvdXAuY29tIn0.pxesT31RFUvTMPm0DFnIWEXS_FQe5AY5xB7d1ZUo5Q9kwfC-RCKFdBlezvZDBRaElOzHfphCrrsBm3Hq-V7W4iE65iqIkUNcflkyuIrUEspTjqeXDkpZfa9ikZ-GbxBoggUCuMG9VkcdLaEy9PLP1pJpU4QKWsYqL5TuhUM8CzfkuLO9V786_6daYmuojIC8fSnJQEjHtQ0BG-EjCrStYMGQ1P0bTHpwUkH5KYN7v7BQkNztYw6rid2yTy3HRHrPxZpvyGGlMaqiWVmkpd61iN5Y0DQ3NE7AYikqUbCQ0Mr-q6U7WLkEPJofGP2kiSSmRd2s8h6kdKPzHJ-aU6IggQ',
+      })
+      .configureLogging(LogLevel.Information)
+      .withAutomaticReconnect()
+      .build();
+
+    setConnection(newConnection);
+  };
+
+  useEffect(() => {
+    // Open connection
+    connectSignalR();
+  }, []);
+
+  useEffect(() => {
+    start();
+  }, [connection]);
 
   return (
     <div className={classes.wrapper}>
