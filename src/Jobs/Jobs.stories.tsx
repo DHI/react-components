@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react/types-6-0';
+import { Meta } from '@storybook/react/types-6-0.d';
 import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { fetchToken } from '../DataServices/DataServices';
