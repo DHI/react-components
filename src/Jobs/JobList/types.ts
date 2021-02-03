@@ -2,8 +2,6 @@ import { DataSource } from '../../DataServices/types';
 import { LogData } from '../../Logs/LogList/types';
 
 interface JobListProps {
-  /** Time interval to fetch data in second */
-  frequency: number;
   /** Data source to get the logs data */
   dataSources: DataSource[];
   /** Hide or show columns */

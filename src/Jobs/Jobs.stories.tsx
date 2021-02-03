@@ -52,7 +52,6 @@ export const JobListStory = () => {
   if (token) {
     return (
       <JobList
-        frequency={10}
         token={token}
         dataSources={dataSources}
         disabledColumns={disabledColumns}

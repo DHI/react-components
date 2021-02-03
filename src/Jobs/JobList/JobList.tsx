@@ -45,7 +45,7 @@ const DEFAULT_COLUMNS = [
 ];
 
 const JobList = (props: JobListProps) => {
-  const { frequency, dataSources, disabledColumns, parameters, token, startTimeUtc, dateTimeFormat, timeZone } = props;
+  const { dataSources, disabledColumns, parameters, token, startTimeUtc, dateTimeFormat, timeZone } = props;
   const initialDateState = {
     from: '',
     to: '',
@@ -346,12 +346,15 @@ const JobList = (props: JobListProps) => {
               progress: dataAdded.Progress || 0,
             };
 
-            // jobs.unshift(addedJob);
             jobs.push(addedJob);
             setJobsData(jobs);
           });
 
-          connection.invoke('AddJobFilter', 'wf-jobs', [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: -1 }]);
+          connection.invoke(
+            'AddJobFilter' /* dataSources? */,
+            'wf-jobs' /* connections (more than 1 as per DataSources)? */,
+            [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: -1 }], // ability to change condition?
+          );
         })
         .catch((e) => console.log('Connection failed: ', e));
     } catch (err) {
