@@ -365,7 +365,7 @@ const JobList = (props: JobListProps) => {
 
     // Open connection
     const newConnection = new HubConnectionBuilder()
-      .withUrl('https://domainservices.dhigroup.com/notificationhub', {
+      .withUrl(process.env.SIGNALR_URL, {
         accessTokenFactory: () => session.accessToken,
       })
       .configureLogging(LogLevel.Information)
