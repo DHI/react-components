@@ -21,10 +21,11 @@ import {
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { zonedTimeToUtc } from 'date-fns-tz';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import AuthService from '../../Auth/AuthService';
 import Loading from '../../common/Loading/Loading';
 import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
-import { calcTimeDifference, setUtcToZonedTime } from '../../utils/Utils';
+import { calcTimeDifference, convertLocalTime, convertServerTimeToLocalTime } from '../../utils/Utils';
 import { DateFilter } from './helpers/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
 import JobDetail from './helpers/JobDetail';
@@ -72,9 +73,11 @@ const JobList = (props: JobListProps) => {
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false);
   const [date, setDate] = useState<DateProps>(initialDateState);
-  const [isFiltered, setIsFiltered] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<string>('');
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
+  const latestJobs = useRef(null);
+
+  latestJobs.current = jobsData;
 
   const [tableGroupColumnExtension] = useState([
     { columnName: 'requested', showWhenGrouped: true },
@@ -90,7 +93,6 @@ const JobList = (props: JobListProps) => {
 
   const fetchJobList = () => {
     setLoading(true);
-    const oldJobsData = jobsData;
 
     const query = [
       {
@@ -108,17 +110,19 @@ const JobList = (props: JobListProps) => {
     executeJobQuery(dataSources, token, query).subscribe(
       (res) => {
         const rawJobs = res.map((s: { data }) => {
+          const { id, taskId, hostId, accountId, status } = s.data;
+
           // Mapping to JobData.
           const dataMapping = {
-            id: s.data.id,
-            taskId: s.data.taskId,
-            hostId: s.data.hostId,
-            accountId: s.data.accountId,
-            status: s.data.status,
+            id,
+            taskId,
+            hostId,
+            accountId,
+            status,
             progress: s.data.progress || 0,
-            requested: s.data.requested ? setUtcToZonedTime(s.data.requested, timeZone, dateTimeFormat) : '',
-            started: s.data.started ? setUtcToZonedTime(s.data.started, timeZone, dateTimeFormat) : '',
-            finished: s.data.finished ? setUtcToZonedTime(s.data.finished, timeZone, dateTimeFormat) : '',
+            requested: s.data.requested ? convertServerTimeToLocalTime(s.data.requested, dateTimeFormat) : '',
+            started: s.data.started ? convertServerTimeToLocalTime(s.data.started, dateTimeFormat) : '',
+            finished: s.data.finished ? convertServerTimeToLocalTime(s.data.finished, dateTimeFormat) : '',
             duration: calcTimeDifference(s.data.started, s.data.finished),
             delay: calcTimeDifference(s.data.requested, s.data.started),
             connectionJobLog: s.data.connectionJobLog || '',
@@ -130,21 +134,10 @@ const JobList = (props: JobListProps) => {
             }
           }
 
-          const duplicateIndex = oldJobsData.findIndex((x: { id: string }) => x.id === s.data.id);
-
-          // Remove duplicate data
-          if (duplicateIndex > -1) {
-            oldJobsData.splice(duplicateIndex, 1);
-          }
-
           return dataMapping;
         });
 
-        if (isFiltered) {
-          setJobsData(rawJobs);
-        } else {
-          setJobsData(rawJobs.concat(oldJobsData));
-        }
+        setJobsData(rawJobs);
 
         const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
 
@@ -241,12 +234,10 @@ const JobList = (props: JobListProps) => {
   };
 
   const setDateFilter = () => {
-    setIsFiltered(true);
     fetchJobList();
   };
 
   const clearDateFilter = () => {
-    setIsFiltered(false);
     setDate(initialDateState);
   };
 
@@ -291,55 +282,91 @@ const JobList = (props: JobListProps) => {
     </div>
   );
 
-  useEffect(() => {
-    fetchJobList();
-  }, [isFiltered]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    let interval: any;
-
-    if (startDateUtc) {
-      interval = setInterval(() => fetchJobList(), frequency * 1000);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [startDateUtc]);
-
   const [connection, setConnection] = useState(null);
 
-  const start = async () => {
-    console.log({ connection });
-
+  const startSignalR = async () => {
     if (!connection) return null;
 
     try {
-      await connection.start();
-      console.log('SignalR Connected.');
+      await connection
+        .start()
+        .then(() => {
+          console.log('SignalR Connected.');
+
+          connection.on('JobUpdated', (jobMessage) => {
+            const dataUpdated = JSON.parse(jobMessage.data);
+            const jobs = [...latestJobs.current];
+
+            const updatedJob = jobs.map((job) =>
+              job.id === dataUpdated.Id
+                ? {
+                    ...job,
+                    started:
+                      job.started || dataUpdated.Started
+                        ? convertLocalTime(dataUpdated.Started, timeZone, dateTimeFormat)
+                        : '',
+                    finished:
+                      job.finished || dataUpdated.Finished
+                        ? convertLocalTime(dataUpdated.Finished, timeZone, dateTimeFormat)
+                        : '',
+                    hostId: dataUpdated.HostId,
+                    status: dataUpdated.Status,
+                    duration:
+                      job.duration ||
+                      (dataUpdated.Started &&
+                        dataUpdated.Finished &&
+                        calcTimeDifference(dataUpdated.Started.split('+')[0], dataUpdated.Finished.split('+')[0])),
+                    delay:
+                      job.delay ||
+                      (dataUpdated.Started &&
+                        calcTimeDifference(dataUpdated.Requested, dataUpdated.Started.split('+')[0])),
+                    progress: dataUpdated.Progress || 0,
+                  }
+                : job,
+            );
+
+            setJobsData(updatedJob);
+          });
+
+          connection.on('JobAdded', (jobAdded) => {
+            const dataAdded = JSON.parse(jobAdded.data);
+            const jobs = [...latestJobs.current];
+
+            const addedJob = {
+              taskId: dataAdded.TaskId,
+              id: dataAdded.Id,
+              hostId: dataAdded.HostId,
+              accountId: dataAdded.AccountId,
+              ScenarioId: dataAdded.Parameters?.ScenarioId,
+              priority: dataAdded.Priority,
+              requestedUtc: dataAdded.Requested,
+              requested: dataAdded.Requested ? convertLocalTime(dataAdded.Requested, timeZone, dateTimeFormat) : '',
+              status: dataAdded.Status,
+              connectionJobLog: dataAdded.ConnectionJobLog || '',
+              progress: dataAdded.Progress || 0,
+            };
+
+            // jobs.unshift(addedJob);
+            jobs.push(addedJob);
+            setJobsData(jobs);
+          });
+
+          connection.invoke('AddJobFilter', 'wf-jobs', [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: -1 }]);
+        })
+        .catch((e) => console.log('Connection failed: ', e));
     } catch (err) {
       console.log(err);
-      // setTimeout(start, 5000);
     }
   };
 
-  const connectSignalR = async () => {
+  const connectToSignalR = () => {
+    const auth = new AuthService(process.env.ENDPOINT_URL);
+    const session = auth.getSession();
+
+    // Open connection
     const newConnection = new HubConnectionBuilder()
-      .withUrl('http://domainservices.dhigroup.com/notificationhub', {
-        accessTokenFactory: () =>
-          'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNyc2Etc2hhMjU2IiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsImRlYnVnIjoiVHJ1ZSIsImNsaWVudGlkIjoiQWxsIiwicm9sZXMiOiJbXSIsIm1vZHVsZXMiOiJbXSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZ3JvdXBzaWQiOlsiR3Vlc3RzIiwiQWRtaW5pc3RyYXRvcnMiLCJVc2VycyIsIkR5bmFtaWMtU3VwcG9ydC1BY2Nlc3MiLCJFZGl0b3JzIl0sImV4cCI6MTYxNzA3NTkxOCwiaXNzIjoiZGhpZ3JvdXAuY29tIiwiYXVkIjoiZGhpZ3JvdXAuY29tIn0.pxesT31RFUvTMPm0DFnIWEXS_FQe5AY5xB7d1ZUo5Q9kwfC-RCKFdBlezvZDBRaElOzHfphCrrsBm3Hq-V7W4iE65iqIkUNcflkyuIrUEspTjqeXDkpZfa9ikZ-GbxBoggUCuMG9VkcdLaEy9PLP1pJpU4QKWsYqL5TuhUM8CzfkuLO9V786_6daYmuojIC8fSnJQEjHtQ0BG-EjCrStYMGQ1P0bTHpwUkH5KYN7v7BQkNztYw6rid2yTy3HRHrPxZpvyGGlMaqiWVmkpd61iN5Y0DQ3NE7AYikqUbCQ0Mr-q6U7WLkEPJofGP2kiSSmRd2s8h6kdKPzHJ-aU6IggQ',
+      .withUrl('https://domainservices.dhigroup.com/notificationhub', {
+        accessTokenFactory: () => session.accessToken,
       })
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
@@ -349,12 +376,25 @@ const JobList = (props: JobListProps) => {
   };
 
   useEffect(() => {
-    // Open connection
-    connectSignalR();
+    fetchJobList();
   }, []);
 
   useEffect(() => {
-    start();
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    connectToSignalR();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    startSignalR();
   }, [connection]);
 
   return (
