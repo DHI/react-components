@@ -44,6 +44,8 @@ const DEFAULT_COLUMNS = [
   { title: 'Finished', name: 'finished' },
 ];
 
+const NOTIFICATION_HUB = '/notificationhub';
+
 const JobList = (props: JobListProps) => {
   const { dataSources, disabledColumns, parameters, token, startTimeUtc, dateTimeFormat, timeZone } = props;
   const initialDateState = {
@@ -282,100 +284,98 @@ const JobList = (props: JobListProps) => {
     </div>
   );
 
-  const [connection, setConnection] = useState(null);
+  const jobUpdated = (job) => {
+    const dataUpdated = JSON.parse(job.data);
+    const jobs = [...latestJobs.current];
 
-  const startSignalR = async () => {
-    if (!connection) return null;
+    console.log({ dataUpdated });
 
-    try {
-      await connection
-        .start()
-        .then(() => {
-          console.log('SignalR Connected.');
+    const updatedJob = jobs.map((job) =>
+      job.id === dataUpdated.Id
+        ? {
+            ...job,
+            started:
+              job.started || dataUpdated.Started ? convertLocalTime(dataUpdated.Started, timeZone, dateTimeFormat) : '',
+            finished:
+              job.finished || dataUpdated.Finished
+                ? convertLocalTime(dataUpdated.Finished, timeZone, dateTimeFormat)
+                : '',
+            hostId: dataUpdated.HostId,
+            status: dataUpdated.Status,
+            duration:
+              job.duration ||
+              (dataUpdated.Started &&
+                dataUpdated.Finished &&
+                calcTimeDifference(dataUpdated.Started.split('+')[0], dataUpdated.Finished.split('+')[0])),
+            delay:
+              job.delay ||
+              (dataUpdated.Started && calcTimeDifference(dataUpdated.Requested, dataUpdated.Started.split('+')[0])),
+            progress: dataUpdated.Progress || 0,
+          }
+        : job,
+    );
 
-          connection.on('JobUpdated', (jobMessage) => {
-            const dataUpdated = JSON.parse(jobMessage.data);
-            const jobs = [...latestJobs.current];
-
-            const updatedJob = jobs.map((job) =>
-              job.id === dataUpdated.Id
-                ? {
-                    ...job,
-                    started:
-                      job.started || dataUpdated.Started
-                        ? convertLocalTime(dataUpdated.Started, timeZone, dateTimeFormat)
-                        : '',
-                    finished:
-                      job.finished || dataUpdated.Finished
-                        ? convertLocalTime(dataUpdated.Finished, timeZone, dateTimeFormat)
-                        : '',
-                    hostId: dataUpdated.HostId,
-                    status: dataUpdated.Status,
-                    duration:
-                      job.duration ||
-                      (dataUpdated.Started &&
-                        dataUpdated.Finished &&
-                        calcTimeDifference(dataUpdated.Started.split('+')[0], dataUpdated.Finished.split('+')[0])),
-                    delay:
-                      job.delay ||
-                      (dataUpdated.Started &&
-                        calcTimeDifference(dataUpdated.Requested, dataUpdated.Started.split('+')[0])),
-                    progress: dataUpdated.Progress || 0,
-                  }
-                : job,
-            );
-
-            setJobsData(updatedJob);
-          });
-
-          connection.on('JobAdded', (jobAdded) => {
-            const dataAdded = JSON.parse(jobAdded.data);
-            const jobs = [...latestJobs.current];
-
-            const addedJob = {
-              taskId: dataAdded.TaskId,
-              id: dataAdded.Id,
-              hostId: dataAdded.HostId,
-              accountId: dataAdded.AccountId,
-              ScenarioId: dataAdded.Parameters?.ScenarioId,
-              priority: dataAdded.Priority,
-              requestedUtc: dataAdded.Requested,
-              requested: dataAdded.Requested ? convertLocalTime(dataAdded.Requested, timeZone, dateTimeFormat) : '',
-              status: dataAdded.Status,
-              connectionJobLog: dataAdded.ConnectionJobLog || '',
-              progress: dataAdded.Progress || 0,
-            };
-
-            jobs.push(addedJob);
-            setJobsData(jobs);
-          });
-
-          connection.invoke(
-            'AddJobFilter' /* dataSources? */,
-            'wf-jobs' /* connections (more than 1 as per DataSources)? */,
-            [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: -1 }], // ability to change condition?
-          );
-        })
-        .catch((e) => console.log('Connection failed: ', e));
-    } catch (err) {
-      console.log(err);
-    }
+    setJobsData(updatedJob);
   };
 
-  const connectToSignalR = () => {
+  const jobAdded = (job) => {
+    const dataAdded = JSON.parse(job.data);
+    const jobs = [...latestJobs.current];
+
+    console.log({ dataAdded });
+
+    const addedJob = {
+      taskId: dataAdded.TaskId,
+      id: dataAdded.Id,
+      hostId: dataAdded.HostId,
+      accountId: dataAdded.AccountId,
+      ScenarioId: dataAdded.Parameters?.ScenarioId,
+      priority: dataAdded.Priority,
+      requestedUtc: dataAdded.Requested,
+      requested: dataAdded.Requested ? convertLocalTime(dataAdded.Requested, timeZone, dateTimeFormat) : '',
+      status: dataAdded.Status,
+      connectionJobLog: dataAdded.ConnectionJobLog || '',
+      progress: dataAdded.Progress || 0,
+    };
+
+    jobs.push(addedJob);
+    setJobsData(jobs);
+  };
+
+  const connectToSignalR = async () => {
     const auth = new AuthService(process.env.ENDPOINT_URL);
     const session = auth.getSession();
 
-    // Open connection
-    const newConnection = new HubConnectionBuilder()
-      .withUrl(process.env.SIGNALR_URL, {
-        accessTokenFactory: () => session.accessToken,
-      })
-      .configureLogging(LogLevel.Information)
-      .withAutomaticReconnect()
-      .build();
+    // Open connections
+    try {
+      await dataSources.forEach((source) => {
+        const connection = new HubConnectionBuilder()
+          .withUrl(source.host + NOTIFICATION_HUB, {
+            accessTokenFactory: () => session.accessToken,
+          })
+          .configureLogging(LogLevel.Information)
+          .withAutomaticReconnect()
+          .build();
 
-    setConnection(newConnection);
+        connection
+          .start()
+          .then(() => {
+            console.log('SignalR Connected.');
+
+            connection.on('JobUpdated', jobUpdated);
+            connection.on('JobAdded', jobAdded);
+
+            connection.invoke(
+              'AddJobFilter',
+              source.connection,
+              [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: -1 }], // ability to change condition?
+            );
+          })
+          .catch((e) => console.log('Connection failed: ', e));
+      });
+    } catch (err) {
+      console.log('SignalR connection failed: ', err);
+    }
   };
 
   useEffect(() => {
@@ -395,10 +395,6 @@ const JobList = (props: JobListProps) => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  useEffect(() => {
-    startSignalR();
-  }, [connection]);
 
   return (
     <div className={classes.wrapper}>
