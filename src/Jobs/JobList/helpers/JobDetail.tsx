@@ -1,7 +1,7 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import React, { useCallback, useEffect, useState } from 'react';
-import { setUtcToZonedTime } from '../../../utils/Utils';
+import { zonedTimeFromUTC } from '../../../utils/Utils';
 import { JobDetailStyles } from '../styles';
 import { JobDetailProps } from '../types';
 
@@ -31,8 +31,7 @@ const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose
   const formatLog = () => {
     const log = detail?.logs
       ?.map(
-        (item) =>
-          `${setUtcToZonedTime(item.dateTime, timeZone, dateTimeFormat)} - [${item.logLevel}] - ${item.text} \n`,
+        (item) => `${zonedTimeFromUTC(item.dateTime, timeZone, dateTimeFormat)} - [${item.logLevel}] - ${item.text} \n`,
       )
       .join('');
 

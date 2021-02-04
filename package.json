@@ -81,6 +81,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
+    "@microsoft/signalr": "^5.0.2",
     "@types/match-sorter": "^4.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "classnames": "^2.2.6",
