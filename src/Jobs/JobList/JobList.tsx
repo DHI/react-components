@@ -20,7 +20,6 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useRef, useState } from 'react';
 import AuthService from '../../Auth/AuthService';
 import Loading from '../../common/Loading/Loading';
@@ -47,10 +46,10 @@ const DEFAULT_COLUMNS = [
 const NOTIFICATION_HUB = '/notificationhub';
 
 const JobList = (props: JobListProps) => {
-  const { dataSources, disabledColumns, parameters, token, startTimeUtc, dateTimeFormat, timeZone } = props;
+  const { dataSources, token, disabledColumns, parameters, startTimeUtc, dateTimeFormat, timeZone } = props;
   const initialDateState = {
-    from: '',
-    to: '',
+    from: new Date(startTimeUtc).toISOString(),
+    to: new Date().toISOString(),
   };
   const initialJobData = {
     id: '',
@@ -69,7 +68,6 @@ const JobList = (props: JobListProps) => {
 
   const [job, setJob] = useState<JobData>(initialJobData);
   const classes = JobPanelStyles(job?.id)();
-  const [startDateUtc, setStartDateUtc] = useState<string>();
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
@@ -100,12 +98,12 @@ const JobList = (props: JobListProps) => {
       {
         item: 'Requested',
         queryOperator: 'GreaterThan',
-        value: date.from ? date.from : new Date(startTimeUtc).toISOString(),
+        value: date.from ? date.from : initialDateState.from,
       },
       {
         item: 'Requested',
         queryOperator: 'LessThan',
-        value: date.to ? date.to : new Date().toISOString(),
+        value: date.to ? date.to : initialDateState.to,
       },
     ];
 
@@ -141,9 +139,6 @@ const JobList = (props: JobListProps) => {
 
         setJobsData(rawJobs);
 
-        const utcDate = zonedTimeToUtc(new Date(), timeZone).toISOString();
-
-        setStartDateUtc(utcDate);
         setLoading(false);
       },
       (error) => {
@@ -242,6 +237,8 @@ const JobList = (props: JobListProps) => {
   const clearDateFilter = () => {
     setDate(initialDateState);
   };
+
+  useEffect(() => fetchJobList(), [date]);
 
   const TableRow = (props: any) => (
     <VirtualTable.Row
@@ -349,6 +346,10 @@ const JobList = (props: JobListProps) => {
     // Open connections
     try {
       await dataSources.forEach((source) => {
+        if (!source.host) {
+          throw new Error('Host not provided.');
+        }
+
         const connection = new HubConnectionBuilder()
           .withUrl(source.host + NOTIFICATION_HUB, {
             accessTokenFactory: () => session.accessToken,
@@ -360,8 +361,6 @@ const JobList = (props: JobListProps) => {
         connection
           .start()
           .then(() => {
-            console.log('SignalR Connected.');
-
             connection.on('JobUpdated', jobUpdated);
             connection.on('JobAdded', jobAdded);
 
