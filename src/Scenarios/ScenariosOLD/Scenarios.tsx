@@ -15,7 +15,7 @@ import {
 import { JobParameters } from '../../DataServices/types';
 import { checkCondition, getObjectProperty, setObjectProperty } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioListOLD/ScenarioList';
-import { MenuItem, QueryDates, Scenario } from '../types';
+import { MenuItem, QueryDates, ScenarioOLD } from '../types';
 import ScenariosProps from './types';
 import useStyles from './useStyles';
 
@@ -52,8 +52,8 @@ const ScenariosOLD = (props: ScenariosProps) => {
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>();
-  const [scenarios, setScenarios] = useState<Scenario[]>();
-  const [scenario, setScenario] = useState<Scenario>();
+  const [scenarios, setScenarios] = useState<ScenarioOLD[]>();
+  const [scenario, setScenario] = useState<ScenarioOLD>();
   const classes = useStyles();
 
   useEffect(() => {
@@ -76,10 +76,10 @@ const ScenariosOLD = (props: ScenariosProps) => {
 
   useEffect(() => {
     if (addScenario !== scenario) {
-      let newScenario: Scenario;
+      let newScenario: ScenarioOLD;
 
       if (addScenario!.data) {
-        newScenario = clone(addScenario) as Scenario;
+        newScenario = clone(addScenario) as ScenarioOLD;
 
         newScenario = {
           ...newScenario,
@@ -162,7 +162,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     );
   };
 
-  const onAddScenario = (newScenario: Scenario) => {
+  const onAddScenario = (newScenario: ScenarioOLD) => {
     if (newScenario) {
       postScenario(
         {
@@ -175,7 +175,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     }
   };
 
-  const onExecuteScenario = (scenario: Scenario, menuItem: MenuItem) => {
+  const onExecuteScenario = (scenario: ScenarioOLD, menuItem: MenuItem) => {
     closeDialog();
 
     // Define Job Parameter with ScenarioId
@@ -205,7 +205,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     );
   };
 
-  const onTerminateScenario = (scenario: Scenario, menuItem: MenuItem) => {
+  const onTerminateScenario = (scenario: ScenarioOLD, menuItem: MenuItem) => {
     closeDialog();
 
     cancelJob(
@@ -233,7 +233,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     );
   };
 
-  const onCloneScenario = (scenario: Scenario) => {
+  const onCloneScenario = (scenario: ScenarioOLD) => {
     closeDialog();
     const clonedScenario = {
       data: scenario.data,
@@ -273,7 +273,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     );
   };
 
-  const executeDialog = (scenario: Scenario, menuItem: MenuItem) => {
+  const executeDialog = (scenario: ScenarioOLD, menuItem: MenuItem) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
@@ -290,7 +290,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     });
   };
 
-  const terminateDialog = (scenario: Scenario, menuItem: MenuItem) => {
+  const terminateDialog = (scenario: ScenarioOLD, menuItem: MenuItem) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
@@ -307,7 +307,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     });
   };
 
-  const cloneDialog = (scenario: Scenario) => {
+  const cloneDialog = (scenario: ScenarioOLD) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
@@ -324,7 +324,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     });
   };
 
-  const deleteDialog = (scenario: Scenario) => {
+  const deleteDialog = (scenario: ScenarioOLD) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
@@ -341,7 +341,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     });
   };
 
-  const onDeleteScenario = (scenario: Scenario) => {
+  const onDeleteScenario = (scenario: ScenarioOLD) => {
     closeDialog();
 
     deleteScenario(
@@ -361,7 +361,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     });
   };
 
-  const onContextMenuClickHandler = (menuItem: MenuItem, scenario: Scenario) => {
+  const onContextMenuClickHandler = (menuItem: MenuItem, scenario: ScenarioOLD) => {
     getScenario(scenario.id!, (res) => {
       switch (menuItem.id) {
         case 'execute':
@@ -378,7 +378,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
     });
   };
 
-  const onScenarioSelectedHandler = (scenario: Scenario) => {
+  const onScenarioSelectedHandler = (scenario: ScenarioOLD) => {
     onScenarioSelected(scenario);
 
     getScenario(scenario.id!, (res) => onScenarioReceived(res));

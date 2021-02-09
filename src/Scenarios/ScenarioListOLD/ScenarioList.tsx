@@ -5,7 +5,7 @@ import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
-import { Scenario } from '../types';
+import { Scenario, ScenarioOLD } from '../types';
 import ScenarioListProps from './types';
 import useStyles from './useStyles';
 
@@ -25,7 +25,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     nameField,
     timeZone,
   } = props;
-  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
+  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<ScenarioOLD[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
 
@@ -33,7 +33,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     groupScenarios(scenarios);
   }, [scenarios]);
 
-  const groupScenarios = (scenarios: Scenario[]) => {
+  const groupScenarios = (scenarios: ScenarioOLD[]) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
@@ -49,7 +49,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     });
   };
 
-  const buildScenariosList = (scenarios: Scenario[]) => {
+  const buildScenariosList = (scenarios: ScenarioOLD[]) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario) => {
@@ -103,7 +103,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     );
   };
 
-  const onScenarioClick = (scenario: Scenario) => {
+  const onScenarioClick = (scenario: ScenarioOLD) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id'));
     }
