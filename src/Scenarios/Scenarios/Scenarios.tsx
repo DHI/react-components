@@ -1,6 +1,8 @@
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { deleteJsonDocument, fetchJsonDocument, fetchJsonDocuments, postJsonDocuments } from '../../api';
+import AuthService from '../../Auth/AuthService';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
 import { cancelJob, executeJob, fetchScenariosByDate, updateScenario } from '../../DataServices/DataServices';
@@ -10,6 +12,8 @@ import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';
 import ScenariosProps from './types';
 import useStyles from './useStyles';
+
+const NOTIFICATION_HUB = '/notificationhub';
 
 const Scenarios = (props: ScenariosProps) => {
   const {
@@ -319,8 +323,6 @@ const Scenarios = (props: ScenariosProps) => {
   const onDeleteScenario = (scenario: Scenario) => {
     closeDialog();
 
-    console.log({ scenario });
-
     deleteJsonDocument(
       {
         host,
@@ -361,8 +363,49 @@ const Scenarios = (props: ScenariosProps) => {
     getScenario(scenario.fullName!, (res) => onScenarioReceived(res));
   };
 
+  const jsonDocumentTest = (json) => {
+    console.log('JSON DOC: ', json);
+  };
+
+  const connectToSignalR = async () => {
+    const auth = new AuthService(process.env.ENDPOINT_URL);
+    const session = auth.getSession();
+
+    // Open connections
+    try {
+      if (!auth) {
+        throw new Error('Not Authorised.');
+      }
+
+      console.log(process.env.ENDPOINT_URL + NOTIFICATION_HUB);
+
+      const connection = new HubConnectionBuilder()
+        .withUrl(process.env.ENDPOINT_URL + NOTIFICATION_HUB, {
+          accessTokenFactory: () => session.accessToken,
+        })
+        .configureLogging(LogLevel.Information)
+        .withAutomaticReconnect()
+        .build();
+
+      connection
+        .start()
+        .then(() => {
+          console.log('SignalR Connected');
+          connection.on('JsonDocumentAdded', jsonDocumentTest);
+          connection.on('JsonDocumentUpdated', jsonDocumentTest);
+          connection.on('JsonDocumentDeleted', jsonDocumentTest);
+
+          connection.invoke('AddJsonDocumentFilter', scenarioConnection, []);
+        })
+        .catch((e) => console.log('Connection failed: ', e));
+    } catch (err) {
+      console.log('SignalR connection failed: ', err);
+    }
+  };
+
   useEffect(() => {
     fetchScenariosList();
+    connectToSignalR();
   }, []);
 
   return (
