@@ -441,33 +441,6 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
     body: JSON.stringify(scenario),
   }).pipe(tap((res) => console.log('scenario updated', res)));
 
-// JSON Documents
-const fetchJsonDocuments = (dataSource: DataSource, token: string) => {
-  const dataSelectors =
-    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
-      ? `?dataSelectors=[${dataSource.dataSelectors
-          .map((dataSelector) => dataSelector.replace('data.', ''))
-          .join(',')}]`
-      : '';
-
-  return fetchUrl(`${dataSource.host}/api/jsondocuments/${dataSource.connection}${dataSelectors}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('List of JSON documents fetched', res)));
-};
-
-const postJsonDocuments = (dataSource: DataSource, token: string, scenario: any) => {
-  return fetchUrl(`${dataSource.host}/api/jsondocuments/${dataSource.connection}`, {
-    method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(scenario),
-  }).pipe(tap((res) => console.log('Create a JSON document', res)));
-};
-
 // JOBS
 
 /**
@@ -706,8 +679,6 @@ export {
   deleteScenario,
   postScenario,
   updateScenario,
-  fetchJsonDocuments,
-  postJsonDocuments,
   executeJobQuery,
   executeJob,
   cancelJob,

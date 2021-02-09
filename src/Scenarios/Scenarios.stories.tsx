@@ -7,7 +7,7 @@ import { LoginGate } from '../Auth/LoginGate';
 import { uniqueId } from '../utils/Utils';
 import { Scenarios } from './Scenarios/Scenarios';
 import { ScenariosOLD } from './ScenariosOLD/Scenarios';
-import { MenuItem, Scenario, ScenarioJSON } from './types';
+import { MenuItem, Scenario, ScenarioOLD } from './types';
 
 export default {
   title: 'Scenarios Components',
@@ -15,7 +15,7 @@ export default {
 } as Meta;
 
 export const ScenariosStory = () => {
-  const [newScenario, setNewScenario] = useState<Scenario>();
+  const [newScenario, setNewScenario] = useState<ScenarioOLD>();
 
   const onAddScenario = () => {
     setNewScenario({
@@ -98,19 +98,19 @@ export const ScenariosStory = () => {
                   },
                 },
               ]}
-              onContextMenuClick={(menuItem: MenuItem, scenario: Scenario) =>
+              onContextMenuClick={(menuItem: MenuItem, scenario: ScenarioOLD) =>
                 console.log('Scenario menu item clicked', {
                   menuItem,
                   scenario,
                 })
               }
-              onScenarioSelected={(scenario: Scenario) => {
+              onScenarioSelected={(scenario: ScenarioOLD) => {
                 console.log('Scenario selected', scenario);
               }}
-              onScenarioReceived={(scenario: Scenario) => {
+              onScenarioReceived={(scenario: ScenarioOLD) => {
                 console.log('Full Scenario received', scenario);
               }}
-              onScenariosReceived={(scenarios: Scenario[]) => {
+              onScenariosReceived={(scenarios: ScenarioOLD[]) => {
                 console.log('Received new scenarios!', scenarios);
               }}
               nameField="name"
@@ -211,7 +211,7 @@ export const ScenariosStory = () => {
 };
 
 export const ScenariosJSONStory = () => {
-  const [newScenario, setNewScenario] = useState<ScenarioJSON>();
+  const [newScenario, setNewScenario] = useState<Scenario>();
 
   const onAddScenario = () => {
     setNewScenario({
@@ -233,8 +233,6 @@ export const ScenariosJSONStory = () => {
       ],
     });
   };
-
-  // startTime: "2021-02-08T00:12:15.599Z"
 
   const queryDates = {
     from: addDays(new Date(), -3).toISOString(),

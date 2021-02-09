@@ -56,6 +56,10 @@ interface ScenariosProps {
    */
   token: string;
   /**
+   * Object to filter data
+   */
+  queryBody?: QueryBody[];
+  /**
    * Scenario connection to fetch scenario by date
    */
   scenarioConnection: string;
@@ -154,4 +158,11 @@ interface ScenariosProps {
   timeZone?: string;
 }
 
+interface QueryBody {
+  Item: string;
+  QueryOperator: string;
+  Value: string;
+}
+
 export default ScenariosProps;
+export { QueryBody };

@@ -29,7 +29,7 @@ interface DescriptionField {
   /**
    * Data type, generally for formatting purposes
    */
-  dataType?: null | 'string' | 'number' | 'dateTime';
+  dataType?: null | 'string' | 'number' | 'dateTime' | 'createdTime';
   /**
    * Format string specifier
    */
@@ -73,7 +73,7 @@ interface MenuItem {
   jobParameters?: any;
 }
 
-interface Scenario {
+interface ScenarioOLD {
   /**
    * The Id of the scenario
    */
@@ -93,6 +93,25 @@ interface Scenario {
    */
   data: string;
   lastJobProgress?: number;
+}
+
+interface Scenario {
+  /**
+   * The Id of the scenario
+   */
+  fullName?: string;
+  /**
+   * Value containing description of scenario
+   */
+  data: any;
+  permissions?: ScenarioJsonPermissions[];
+  lastJobId?: string;
+}
+
+interface ScenarioJsonPermissions {
+  principals: string[];
+  operation: string;
+  type?: string;
 }
 
 /**
@@ -123,7 +142,7 @@ interface QueryDates {
 
 interface ContextMenuClickHandler {
   /** Handler on menu option clicked */
-  (menuItem: MenuItem, scenario: Scenario): void;
+  (menuItem: MenuItem, scenario: ScenarioOLD): void;
 }
 
 interface CloseDialog {
@@ -131,4 +150,14 @@ interface CloseDialog {
   (value: boolean): void;
 }
 
-export { Status, DescriptionField, MenuItem, Scenario, Condition, QueryDates, ContextMenuClickHandler, CloseDialog };
+export {
+  Status,
+  DescriptionField,
+  MenuItem,
+  ScenarioOLD,
+  Scenario,
+  Condition,
+  QueryDates,
+  ContextMenuClickHandler,
+  CloseDialog,
+};

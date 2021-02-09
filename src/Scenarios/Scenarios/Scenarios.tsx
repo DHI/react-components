@@ -1,19 +1,11 @@
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { deleteJsonDocument, fetchJsonDocument, fetchJsonDocuments, postJsonDocuments } from '../../api';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import {
-  cancelJob,
-  deleteScenario,
-  executeJob,
-  fetchScenario,
-  fetchScenarios,
-  fetchScenariosByDate,
-  postScenario,
-  updateScenario,
-} from '../../DataServices/DataServices';
+import { cancelJob, executeJob, fetchScenariosByDate, updateScenario } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
-import { checkCondition, getObjectProperty, setObjectProperty } from '../../utils/Utils';
+import { checkCondition, getObjectProperty, setObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';
 import ScenariosProps from './types';
@@ -24,6 +16,7 @@ const Scenarios = (props: ScenariosProps) => {
     host,
     token,
     scenarioConnection,
+    queryBody,
     nameField,
     jobConnection,
     jobParameters,
@@ -41,7 +34,6 @@ const Scenarios = (props: ScenariosProps) => {
     showStatus,
     status,
     queryDates,
-    frequency = 10,
     onContextMenuClick,
     onScenarioSelected,
     onScenarioReceived,
@@ -55,24 +47,6 @@ const Scenarios = (props: ScenariosProps) => {
   const [scenarios, setScenarios] = useState<Scenario[]>();
   const [scenario, setScenario] = useState<Scenario>();
   const classes = useStyles();
-
-  useEffect(() => {
-    let interval: ReturnType<typeof setTimeout>;
-
-    if (queryDates) {
-      fetchScenariosByDateList(queryDates);
-
-      interval = setInterval(() => fetchScenariosByDateList(queryDates), frequency * 1000);
-    } else {
-      fetchScenariosList();
-
-      interval = setInterval(() => fetchScenariosList(), frequency * 1000);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   useEffect(() => {
     if (addScenario !== scenario) {
@@ -129,15 +103,10 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const fetchScenariosList = () => {
-    fetchScenarios(
+    fetchJsonDocuments(
       {
         host,
         connection: scenarioConnection,
-        dataSelectors: [
-          nameField,
-          ...descriptionFields!.map((descriptionField) => descriptionField.field),
-          ...extraFields!.map((descriptionField) => descriptionField.field),
-        ],
       },
       token,
     ).subscribe(
@@ -164,7 +133,7 @@ const Scenarios = (props: ScenariosProps) => {
 
   const onAddScenario = (newScenario: Scenario) => {
     if (newScenario) {
-      postScenario(
+      postJsonDocuments(
         {
           host,
           connection: scenarioConnection,
@@ -180,7 +149,7 @@ const Scenarios = (props: ScenariosProps) => {
 
     // Define Job Parameter with ScenarioId
     const parameters = {
-      ScenarioId: scenario.id,
+      ScenarioId: scenario.fullName,
     } as JobParameters;
 
     // Append Job Parameters from Menu Item
@@ -225,7 +194,7 @@ const Scenarios = (props: ScenariosProps) => {
           },
           token,
           {
-            id: scenario.id,
+            id: scenario.fullName,
             lastJobId: res.id,
             data: JSON.stringify(scenario.data),
           },
@@ -236,14 +205,17 @@ const Scenarios = (props: ScenariosProps) => {
   const onCloneScenario = (scenario: Scenario) => {
     closeDialog();
     const clonedScenario = {
-      data: scenario.data,
+      ...scenario,
+      fullName: `scenario-${uniqueId()}`,
     };
     const clonedNamed = `Clone of ${getObjectProperty(scenario.data, nameField)}`;
     setObjectProperty(clonedScenario.data, nameField, clonedNamed);
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);
 
-    postScenario(
+    console.log({ clonedScenario });
+
+    postJsonDocuments(
       {
         host,
         connection: scenarioConnection,
@@ -254,7 +226,7 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const getScenario = (id: string, resultCallback: (data: any) => void) => {
-    fetchScenario(
+    fetchJsonDocument(
       {
         host,
         connection: scenarioConnection,
@@ -275,6 +247,9 @@ const Scenarios = (props: ScenariosProps) => {
 
   const executeDialog = (scenario: Scenario, menuItem: MenuItem) => {
     const job = getObjectProperty(scenario.data, nameField);
+
+    console.log({ scenario });
+    console.log({ job });
 
     setDialog({
       dialogId: 'execute',
@@ -344,13 +319,15 @@ const Scenarios = (props: ScenariosProps) => {
   const onDeleteScenario = (scenario: Scenario) => {
     closeDialog();
 
-    deleteScenario(
+    console.log({ scenario });
+
+    deleteJsonDocument(
       {
         host,
         connection: scenarioConnection,
       },
       token,
-      scenario.id,
+      scenario.fullName,
     ).subscribe((res) => res.ok && fetchScenariosList());
   };
 
@@ -362,7 +339,7 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const onContextMenuClickHandler = (menuItem: MenuItem, scenario: Scenario) => {
-    getScenario(scenario.id!, (res) => {
+    getScenario(scenario.fullName!, (res) => {
       switch (menuItem.id) {
         case 'execute':
           return executeDialog(res, menuItem);
@@ -381,51 +358,45 @@ const Scenarios = (props: ScenariosProps) => {
   const onScenarioSelectedHandler = (scenario: Scenario) => {
     onScenarioSelected(scenario);
 
-    getScenario(scenario.id!, (res) => onScenarioReceived(res));
+    getScenario(scenario.fullName!, (res) => onScenarioReceived(res));
   };
 
-  let printedScenarios = null;
-  let printedDialog = null;
-
-  if (scenarios) {
-    printedScenarios = (
-      <ScenarioList
-        nameField={nameField}
-        descriptionFields={descriptionFields}
-        extraFields={extraFields}
-        menuItems={menuItems}
-        scenarios={scenarios as any}
-        selectedScenarioId={selectedScenarioId}
-        onScenarioSelected={onScenarioSelectedHandler}
-        onContextMenuClick={onContextMenuClickHandler}
-        showDate={showDate}
-        showHour={showHour}
-        showMenu={showMenu}
-        showStatus={showStatus}
-        status={status}
-        timeZone={timeZone}
-      />
-    );
-  }
-
-  if (dialog) {
-    printedDialog = (
-      <GeneralDialog
-        dialogId={dialog.dialogId}
-        title={dialog.title}
-        message={dialog.message}
-        cancelLabel={dialog.cancelLabel}
-        confirmLabel={dialog.confirmLabel}
-        showDialog={dialog.showDialog}
-        onConfirm={dialog.onConfirm}
-        onCancel={closeDialog}
-      />
-    );
-  }
+  useEffect(() => {
+    fetchScenariosList();
+  }, []);
 
   return (
     <div className={classes && classes.root}>
-      {printedScenarios} {printedDialog}
+      {scenarios && (
+        <ScenarioList
+          nameField={nameField}
+          descriptionFields={descriptionFields}
+          extraFields={extraFields}
+          menuItems={menuItems}
+          scenarios={scenarios as any}
+          selectedScenarioId={selectedScenarioId}
+          onScenarioSelected={onScenarioSelectedHandler}
+          onContextMenuClick={onContextMenuClickHandler}
+          showDate={showDate}
+          showHour={showHour}
+          showMenu={showMenu}
+          showStatus={showStatus}
+          status={status}
+          timeZone={timeZone}
+        />
+      )}
+      {dialog && (
+        <GeneralDialog
+          dialogId={dialog.dialogId}
+          title={dialog.title}
+          message={dialog.message}
+          cancelLabel={dialog.cancelLabel}
+          confirmLabel={dialog.confirmLabel}
+          showDialog={dialog.showDialog}
+          onConfirm={dialog.onConfirm}
+          onCancel={closeDialog}
+        />
+      )}
     </div>
   );
 };
