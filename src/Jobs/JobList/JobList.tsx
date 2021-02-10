@@ -71,7 +71,7 @@ const JobList = (props: JobListProps) => {
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-  const [textareaScrolled, setTextareaScrolled] = useState<boolean>(false);
+  const [textareaScrolled, setTextareaScrolled] = useState<boolean>(true);
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
@@ -230,10 +230,6 @@ const JobList = (props: JobListProps) => {
     setJob(initialJobData);
   };
 
-  const setDateFilter = () => {
-    fetchJobList();
-  };
-
   const clearDateFilter = () => {
     setDate(initialDateState);
   };
@@ -260,7 +256,6 @@ const JobList = (props: JobListProps) => {
         timeZone={timeZone}
         date={date}
         onSetDate={(date) => setDate(date)}
-        onSetDateFilter={setDateFilter}
         onClearDateFilter={clearDateFilter}
       >
         <MUIGrid item>
@@ -274,7 +269,7 @@ const JobList = (props: JobListProps) => {
                 inputProps={{ 'aria-label': 'textareaView checkbox' }}
               />
             }
-            label="Textarea scrolled down"
+            label="Log scrolled down"
           />
         </MUIGrid>
       </DateFilter>

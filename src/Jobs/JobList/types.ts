@@ -98,7 +98,6 @@ interface DateFilterProps {
   timeZone: string;
   date: DateProps;
   onSetDate: (date: DateProps) => void;
-  onSetDateFilter: () => void;
   onClearDateFilter: () => void;
 }
 

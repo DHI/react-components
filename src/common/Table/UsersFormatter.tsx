@@ -3,6 +3,8 @@ import { Tooltip, Typography, Zoom } from '@material-ui/core';
 import React from 'react';
 
 export const UsersFormatter = ({ value }) => {
+  if (!value) return null;
+
   const list = value?.join(', ');
 
   return (

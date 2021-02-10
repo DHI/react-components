@@ -9,7 +9,6 @@ const DateFilter: FC<DateFilterProps> = ({
   timeZone,
   date,
   onSetDate,
-  onSetDateFilter,
   onClearDateFilter,
   children,
 }) => {
@@ -34,13 +33,8 @@ const DateFilter: FC<DateFilterProps> = ({
         />
       </Grid>
       <Grid item>
-        <Button variant="contained" color="primary" onClick={() => onSetDateFilter()}>
-          Filter
-        </Button>
-      </Grid>
-      <Grid item>
         <Button variant="contained" color="secondary" onClick={() => onClearDateFilter()}>
-          Clear
+          Reset Date
         </Button>
       </Grid>
       {children}
