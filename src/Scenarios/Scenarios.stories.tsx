@@ -275,7 +275,7 @@ export const ScenariosJSONStory = () => {
               dataFilterbyProperty={{
                 field: 'data.mooring',
               }}
-              taskId={'workflow'}
+              taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
               menuItems={[
                 {
@@ -285,7 +285,7 @@ export const ScenariosJSONStory = () => {
                     field: '!lastJobStatus', // Prefix with exclamation if you wish to inverse the condition test
                     value: ['Pending', 'InProgress', 'Completed'],
                   },
-                  taskId: 'workflow',
+                  taskId: 'workflowJsonDocument',
                 },
                 {
                   id: 'clone',

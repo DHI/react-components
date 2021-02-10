@@ -494,7 +494,7 @@ const executeJob = (
     body.hostGroup = hostGroup;
   }
 
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
+  return fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
     method: 'POST',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,

@@ -77,4 +77,13 @@ const deleteJsonDocument = (dataSource: DataSource, token: string, fullName: str
     },
   }).pipe(tap((res) => console.log('scenario deleted', res)));
 
-export { fetchJsonDocuments, fetchJsonDocument, postJsonDocuments, deleteJsonDocument };
+const updateJsonDocument = (dataSource: DataSource, token: string, scenario: any) =>
+  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
+    method: 'PUT',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(scenario),
+  }).pipe(tap((res) => console.log('scenario updated', res)));
+
+export { fetchJsonDocuments, fetchJsonDocument, postJsonDocuments, deleteJsonDocument, updateJsonDocument };

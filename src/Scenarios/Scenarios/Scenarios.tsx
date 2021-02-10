@@ -175,7 +175,15 @@ const Scenarios = (props: ScenariosProps) => {
       menuItem.taskId || taskId,
       parameters,
       menuItem.hostGroup || hostGroup,
-    );
+    ).subscribe((job) => {
+      const newScenarios = scenarios.map((sce) =>
+        sce.fullName === job.parameters.ScenarioId && job.status === 'InProgress'
+          ? { ...sce, lastJobId: job.id }
+          : { ...sce },
+      );
+
+      setScenarios(newScenarios);
+    });
   };
 
   const onTerminateScenario = (scenario: Scenario, menuItem: MenuItem) => {
@@ -217,8 +225,6 @@ const Scenarios = (props: ScenariosProps) => {
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);
 
-    console.log({ clonedScenario });
-
     postJsonDocuments(
       {
         host,
@@ -240,7 +246,6 @@ const Scenarios = (props: ScenariosProps) => {
     ).subscribe(
       (res) => {
         res.data = res.data ? JSON.parse(res.data) : res.data;
-
         resultCallback(res);
       },
       (error) => {
@@ -251,9 +256,6 @@ const Scenarios = (props: ScenariosProps) => {
 
   const executeDialog = (scenario: Scenario, menuItem: MenuItem) => {
     const job = getObjectProperty(scenario.data, nameField);
-
-    console.log({ scenario });
-    console.log({ job });
 
     setDialog({
       dialogId: 'execute',
@@ -350,7 +352,13 @@ const Scenarios = (props: ScenariosProps) => {
         case 'clone':
           return cloneDialog(res);
         case 'terminate':
-          return terminateDialog(res, menuItem);
+          return terminateDialog(
+            {
+              ...res,
+              lastJobId: scenario.lastJobId,
+            },
+            menuItem,
+          );
         default:
           return onContextMenuClick(menuItem, res);
       }
@@ -363,8 +371,16 @@ const Scenarios = (props: ScenariosProps) => {
     getScenario(scenario.fullName!, (res) => onScenarioReceived(res));
   };
 
-  const jsonDocumentTest = (json) => {
-    console.log('JSON DOC: ', json);
+  const JsonDocumentAddedScenario = (added) => {
+    console.log({ added });
+  };
+
+  const JsonDocumentUpdatedScenario = (updated) => {
+    console.log({ updated });
+  };
+
+  const JsonDocumentDeletedScenario = (deleted) => {
+    console.log({ deleted });
   };
 
   const connectToSignalR = async () => {
@@ -376,8 +392,6 @@ const Scenarios = (props: ScenariosProps) => {
       if (!auth) {
         throw new Error('Not Authorised.');
       }
-
-      console.log(process.env.ENDPOINT_URL + NOTIFICATION_HUB);
 
       const connection = new HubConnectionBuilder()
         .withUrl(process.env.ENDPOINT_URL + NOTIFICATION_HUB, {
@@ -391,9 +405,9 @@ const Scenarios = (props: ScenariosProps) => {
         .start()
         .then(() => {
           console.log('SignalR Connected');
-          connection.on('JsonDocumentAdded', jsonDocumentTest);
-          connection.on('JsonDocumentUpdated', jsonDocumentTest);
-          connection.on('JsonDocumentDeleted', jsonDocumentTest);
+          connection.on('JsonDocumentAdded', JsonDocumentAddedScenario);
+          connection.on('JsonDocumentUpdated', JsonDocumentUpdatedScenario);
+          connection.on('JsonDocumentDeleted', JsonDocumentDeletedScenario);
 
           connection.invoke('AddJsonDocumentFilter', scenarioConnection, []);
         })
