@@ -60,7 +60,7 @@ const ScenarioList = (props: ScenarioListProps) => {
             onKeyPress={() => onScenarioClick(scenario)}
             role="presentation"
             className={classNames(classes.listItem, {
-              [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'id'),
+              [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'fullName'),
             })}
           >
             <ScenarioItem
@@ -68,7 +68,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.data.createdTime ? scenario.data.createdTime.toString() : '') : null}
               key={scenario.fullName}
-              isSelected={selectedId === getObjectProperty(scenario, 'id')}
+              isSelected={selectedId === getObjectProperty(scenario, 'fullName')}
               onContextMenuClick={onContextMenuClick}
               menu={buildMenu(scenario)}
               showHour={showHour}
@@ -104,8 +104,8 @@ const ScenarioList = (props: ScenarioListProps) => {
   };
 
   const onScenarioClick = (scenario: Scenario) => {
-    if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
-      setSelectedId(getObjectProperty(scenario, 'id'));
+    if (scenario && selectedId !== getObjectProperty(scenario, 'fullName')) {
+      setSelectedId(getObjectProperty(scenario, 'fullName'));
     }
     if (onScenarioSelected) {
       onScenarioSelected(scenario);
