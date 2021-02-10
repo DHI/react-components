@@ -1,6 +1,6 @@
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { clone } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { deleteJsonDocument, fetchJsonDocument, fetchJsonDocuments, postJsonDocuments } from '../../api';
 import AuthService from '../../Auth/AuthService';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
@@ -51,6 +51,9 @@ const Scenarios = (props: ScenariosProps) => {
   const [scenarios, setScenarios] = useState<Scenario[]>();
   const [scenario, setScenario] = useState<Scenario>();
   const classes = useStyles();
+  const latestScenarios = useRef(null);
+
+  latestScenarios.current = scenarios;
 
   useEffect(() => {
     if (addScenario !== scenario) {
@@ -373,6 +376,7 @@ const Scenarios = (props: ScenariosProps) => {
 
   const JsonDocumentAddedScenario = (added) => {
     console.log({ added });
+    setScenarios([...scenarios, added]);
   };
 
   const JsonDocumentUpdatedScenario = (updated) => {
@@ -382,6 +386,43 @@ const Scenarios = (props: ScenariosProps) => {
   const JsonDocumentDeletedScenario = (deleted) => {
     console.log({ deleted });
   };
+
+  const jobUpdated = (jobAdded) => {
+    const job = JSON.parse(jobAdded.data);
+    console.log({ job });
+    console.log({ latestScenarios });
+    const updateScenario = latestScenarios.current.map((scenario) => scenario.fullName === job.Parameters.ScenarioId);
+    //   scenario.fullName === job.Parameters.ScenarioId ? { ...scenario, lastJobStatus: job.Status } : { ...scenario },
+    // );
+    setScenarios([...latestScenarios.current, updateScenario]);
+
+    // postJsonDocuments(
+    //   {
+    //     host,
+    //     connection: scenarioConnection,
+    //   },
+    //   token,
+    //   updateScenario,
+    // );
+  };
+
+  // data Model from old Scenario component
+
+  // data:
+  // mooring:
+  //    berthName: "VIG Berth 2"
+  // __proto__: Object
+  // name: "My Scenario 10/02/2021 4:46:37 PM"
+  // startTime: "2021-02-10T16:46:37.7598785+11:00"
+  // vessel:
+  // vesselName: "MSC Pamela"
+  // __proto__: Object
+  // __proto__: Object
+  // dateTime: "2021-02-10T05:46:37.77549"
+  // id: "20210210054637-1190d916-9855-4c33-b54b-909b9ac73a2a"
+  // lastJobId: "e01d2ab6-f086-4f40-b515-86ada16bb74b"
+  // lastJobStatus: "Completed"
+  // version: "d8651e4f-db5c-4008-a550-cd0f8d501d8d"
 
   const connectToSignalR = async () => {
     const auth = new AuthService(process.env.ENDPOINT_URL);
@@ -409,6 +450,9 @@ const Scenarios = (props: ScenariosProps) => {
           connection.on('JsonDocumentUpdated', JsonDocumentUpdatedScenario);
           connection.on('JsonDocumentDeleted', JsonDocumentDeletedScenario);
 
+          connection.on('JobUpdated', jobUpdated);
+
+          connection.invoke('AddJobFilter', 'wf-jobs', []);
           connection.invoke('AddJsonDocumentFilter', scenarioConnection, []);
         })
         .catch((e) => console.log('Connection failed: ', e));
@@ -418,8 +462,8 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   useEffect(() => {
-    fetchScenariosList();
     connectToSignalR();
+    fetchScenariosList();
   }, []);
 
   return (

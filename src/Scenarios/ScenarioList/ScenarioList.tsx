@@ -5,7 +5,7 @@ import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
-import { Scenario, ScenarioOLD } from '../types';
+import { Scenario } from '../types';
 import ScenarioListProps from './types';
 import useStyles from './useStyles';
 
@@ -25,7 +25,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     nameField,
     timeZone,
   } = props;
-  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<ScenarioOLD[]>>();
+  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
 
@@ -37,9 +37,9 @@ const ScenarioList = (props: ScenarioListProps) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
-            return scenario.data.createdTime ? format(parseISO(scenario.data.createdTime), 'yyyy-MM-dd') : '';
+            return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
           })
-        : groupBy(scenarios, (scenario) => scenario.data.createdTime),
+        : groupBy(scenarios, (scenario) => scenario.dateTime),
     );
   };
 
@@ -66,7 +66,7 @@ const ScenarioList = (props: ScenarioListProps) => {
             <ScenarioItem
               name={getObjectProperty(scenario.data, nameField)}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
-              date={showDate ? (scenario.data.createdTime ? scenario.data.createdTime.toString() : '') : null}
+              date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.fullName}
               isSelected={selectedId === getObjectProperty(scenario, 'fullName')}
               onContextMenuClick={onContextMenuClick}

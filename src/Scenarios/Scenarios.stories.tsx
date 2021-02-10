@@ -216,7 +216,8 @@ export const ScenariosJSONStory = () => {
   const onAddScenario = () => {
     setNewScenario({
       fullName: `scenario-${uniqueId()}`,
-      data: `{"name":"My Scenario JSON","startTime":"${new Date().toISOString()}","createdTime": "${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
+      data: `{"name":"My Scenario JSON","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
+      dateTime: new Date().toISOString(),
       permissions: [
         {
           principals: ['Administrators', 'Editors', 'Users'],
@@ -346,7 +347,7 @@ export const ScenariosJSONStory = () => {
                   },
                 },
                 {
-                  field: 'data.createdTime',
+                  field: 'dateTime',
                   name: 'Creation Date',
                   dataType: 'dateTime',
                   format: 'dd-MMM-yyyy h:mm:ss a',
