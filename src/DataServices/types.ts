@@ -14,6 +14,7 @@ interface DataSource {
   to?: string;
   sheetName?: string;
   connectionJobLog?: string;
+  group?: string;
 }
 
 interface User {

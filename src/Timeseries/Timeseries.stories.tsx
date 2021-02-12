@@ -1,9 +1,12 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import React, { useEffect, useState } from 'react';
+import AuthService from '../Auth/AuthService';
 import { fetchTimeseriesValues, fetchToken } from '../DataServices/DataServices';
 import { ChartPlotly } from './ChartPlotly/ChartPlotly';
 import { ChartPlotlyPlotData } from './ChartPlotly/types';
 import { TimeseriesExporter } from './TimeseriesExporter/TimeseriesExporter';
+import DHITreeViewWidget from './TreeView/TestTree';
+import TreeView from './TreeView/TreeView';
 
 export default {
   title: 'Timeseries Components',
@@ -296,4 +299,39 @@ export const TimeseriesExporterStory = () => {
       timeseries={timeseries}
     ></TimeseriesExporter>
   );
+};
+
+export const TreeViewStory = () => {
+  const host = process.env.ENDPOINT_URL;
+
+  const dataSources = [
+    {
+      host: 'https://domainservices.dhigroup.com',
+      connection: 'mclite-timeseries',
+    },
+  ];
+
+  // TODO: add LoginGate;
+  const auth = new AuthService(host);
+  const session = auth.getSession();
+
+  return <TreeView dataSources={dataSources} token={session.accessToken} />;
+};
+
+export const DHITreeViewStory = () => {
+  const host = process.env.ENDPOINT_URL;
+
+  const dataSources = [
+    {
+      host: 'https://domainservices.dhigroup.com',
+      connection: 'mclite-timeseries',
+      group: '',
+    },
+  ];
+
+  // TODO: add LoginGate;
+  const auth = new AuthService(host);
+  const session = auth.getSession();
+
+  return <DHITreeViewWidget dataSources={dataSources} token={session.accessToken} />;
 };
