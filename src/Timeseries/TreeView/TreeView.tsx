@@ -2,7 +2,6 @@ import { Checkbox, Typography } from '@material-ui/core';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
-import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesfullNames } from '../..';
 
@@ -18,154 +17,79 @@ const DHITreeView = (props: TreeViewProps) => {
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState([]);
 
-  const fetchListOfTimeseriesFullnames = (group = '', topLevel: boolean) => {
+  const fetchTopLevelTreeView = (group = '') => {
     fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
       (res) => {
-        if (!group) {
-          const data = res.map((d) => ({
-            value: d,
-            label: d,
-            topLevel: true,
-            ...(d.slice(-1) === '/' && {
-              children: [
-                {
-                  value: '',
-                  label: '',
-                },
-              ],
-            }),
-          }));
+        const data = res.map((d) => ({
+          value: d,
+          label: d,
+          topLevel: true,
+          ...(d.slice(-1) === '/' && {
+            children: [
+              {
+                value: '',
+                label: '',
+              },
+            ],
+          }),
+        }));
 
-          setList(data);
-          console.log({ data });
-        } else {
-          const children = res.map((item) => ({
-            value: item,
-            label: item.replace(group, ''),
-            ...(item.slice(-1) === '/' && {
-              children: [
-                {
-                  value: '',
-                  label: '',
-                },
-              ],
-            }),
-          }));
-
-          const newList = recursive(list, group, children);
-          // const testList = recurse(list, group, children);
-          // console.log('recursive Out');
-          setList(newList);
-        }
+        setList(data);
       },
       (err) => console.log(err),
     );
   };
 
-  const recurse = (originalList, group, children) => {
-    let finalResult;
-    // console.log('out');
-    console.log(originalList);
+  const fetchTreeViewChildren = (group) => {
+    console.log({ group });
 
-    const parent = _.chain(originalList)
-      .map('children') // pluck all elements from data
-      .flatten() // flatten the elements into a single array
-      .filter({ value: group }) // exatract elements with a prop of 'foo'
-      .value();
+    fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+      (res) => {
+        const children = addChildren(res);
+        const listTemp = list;
 
-    const newList = parent.length === 0 ? originalList : parent;
-    finalResult = originalList;
+        listTemp.forEach(function iter(item) {
+          console.log(item);
+          console.log(group);
 
-    for (const k in newList) {
-      if (newList[k].children) {
-        // console.log('in');
-        // list[k].children = children;
-        console.log(newList[k]);
+          if (item.value === group) {
+            item.children = children;
+          }
 
-        finalResult = newList.map((item) =>
-          item.value === group
+          Array.isArray(item.children) && item.children.forEach(iter);
+        });
+
+        console.log(listTemp);
+
+        const updatedList = list.map((l) =>
+          l.value === group
             ? {
-                ...item,
+                ...l,
                 children,
               }
-            : { ...item },
+            : { ...l },
         );
 
-        // console.log({ finalResult });
-
-        return recurse(originalList[k].children, group, children);
-      } else {
-        // stop calling recurse()
-        return finalResult;
-      }
-    }
-
-    console.group('Final Obj');
-    console.log(originalList);
-    console.log(group);
-    const topLevel = search(originalList, group);
-    console.log({ topLevel });
-
-    console.log('Final', finalResult);
-    console.groupEnd();
+        console.log({ updatedList });
+        setList(updatedList);
+      },
+      (error) => console.log(error),
+    );
   };
 
-  const search = (array, keyword) => {
-    const regExp = new RegExp(keyword, 'gi');
-
-    const check = (obj) => {
-      if (obj !== null && typeof obj === 'object') {
-        return Object.values(obj).some(check);
-      }
-      if (Array.isArray(obj)) {
-        return obj.some(check);
-      }
-
-      return (typeof obj === 'string' || typeof obj === 'number') && regExp.test(obj);
-    };
-
-    return array.filter(check);
-  };
-
-  const recursive = (original, group, childList) => {
-    let updatedList = [];
-
-    const parent = _.chain(original)
-      .map('children') // pluck all elements from data
-      .flatten() // flatten the elements into a single array
-      .filter({ value: group }) // exatract elements with a prop of 'foo'
-      .value();
-
-    for (const k in original) {
-      const parObj = parent.length === 0 ? original : parent;
-
-      if (!parObj.find((x) => x.value === group) || parObj[k].value === group) {
-        if (!parObj[k].children) {
-          const parentIn = list.find((item) => item.value === group);
-          // parObj[k].children = recursive(parentIn, original[k].children, group, childList);
-          console.log('recursive In');
-          setLoading(false);
-
-          console.log({ original });
-          console.log({ parObj });
-
-          return original;
-        } else {
-          updatedList = parObj.map((item) =>
-            item.value === group
-              ? {
-                  ...item,
-                  children: childList,
-                }
-              : { ...item },
-          );
-
-          console.log({ updatedList });
-
-          return updatedList;
-        }
-      }
-    }
+  const addChildren = (childrenList) => {
+    return childrenList.map((child) => ({
+      value: child,
+      label: child,
+      ...(child.slice(-1) === '/' && {
+        children: [
+          {
+            value: '',
+            label: '',
+          },
+        ],
+      }),
+    }));
   };
 
   const handleExpanded = (event, nodeIds) => {
@@ -175,7 +99,7 @@ const DHITreeView = (props: TreeViewProps) => {
 
     if (difference.length > 0) {
       setLoading(true);
-      fetchListOfTimeseriesFullnames(difference[0], true);
+      fetchTreeViewChildren(difference[0]);
     }
   };
 
@@ -187,7 +111,7 @@ const DHITreeView = (props: TreeViewProps) => {
       setSelected([...removeSelection]);
     } else {
       setSelected([...selected, id]);
-      fetchListOfTimeseriesFullnames(event.target.id);
+      fetchTopLevelTreeView(event.target.id);
     }
   };
 
@@ -264,11 +188,11 @@ const DHITreeView = (props: TreeViewProps) => {
       setSelected([...selected, value[0]]);
     }
 
-    fetchListOfTimeseriesFullnames(value[0]);
+    fetchTopLevelTreeView(value[0]);
   };
 
   useEffect(() => {
-    fetchListOfTimeseriesFullnames();
+    fetchTopLevelTreeView();
   }, []);
 
   return (
