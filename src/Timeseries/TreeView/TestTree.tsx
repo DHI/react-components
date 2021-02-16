@@ -2,45 +2,6 @@ import React, { useEffect, useState } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 import { fetchTimeseriesfullNames } from '../../DataServices/DataServices';
 
-const nodes = [
-  {
-    value: '/app',
-    label: 'app',
-    children: [
-      {
-        value: '/app/Http',
-        label: 'Http',
-        children: [
-          {
-            value: '/app/Http/Controllers',
-            label: 'Controllers',
-            children: [
-              {
-                value: '/app/Http/Controllers/WelcomeController.js',
-                label: 'WelcomeController.js',
-              },
-            ],
-          },
-          {
-            value: '/app/Http/routes.js',
-            label: 'routes.js',
-          },
-        ],
-      },
-      {
-        value: '/app/Providers',
-        label: 'Providers',
-        children: [
-          {
-            value: '/app/Providers/EventServiceProvider.js',
-            label: 'EventServiceProvider.js',
-          },
-        ],
-      },
-    ],
-  },
-];
-
 interface TreeViewProps {
   dataSources: any;
   token: string;
@@ -51,50 +12,53 @@ const DHITreeViewWidget = (props: TreeViewProps) => {
   const [list, setList] = useState([]);
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchListOfTimeseriesFullnames = (group = '') => {
-    fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe((res) => {
-      if (!group) {
-        const data = res.map((d) => ({
-          value: d,
-          label: d,
-        }));
-        setList(data);
-      } else {
-        updateDataList(res, group);
-      }
-    });
+    fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+      (res) => {
+        console.log({ res });
+
+        if (!res) {
+          return null;
+        }
+        if (!group) {
+          const data = res.map((d) => ({
+            value: d,
+            label: d,
+            children: [],
+          }));
+          setList(data);
+        } else {
+          const children = res.map((item) => ({
+            value: item,
+            label: item.replace(group, ''),
+            children: item.substring(item.length - 1) === '/' && [],
+          }));
+
+          const newList = recursive(null, list, group, children);
+          setList(newList);
+          // setLoading(false);
+        }
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
   };
 
-  const updateDataList = (res, group) => {
-    const children = res.map((item) => ({
-      value: item,
-      label: item.replace(group, ''),
-    }));
-
-    recursive(null, list, group, children);
-  };
-
-  const recursive = (parent, obj, group, childList) => {
-    console.log({ obj });
-    console.log(group);
-    console.log({ childList });
-    console.log('recurisve called');
-
+  const recursive = (parent, original, group, childList) => {
     let updatedList = [];
 
-    for (const k in obj) {
-      const parObj = parent == null ? obj : parent.children;
+    for (const k in original) {
+      const parObj = parent == null ? original : parent.children;
 
       if (!parObj.find((x) => x.value === group) || parObj[k].value === group) {
-        if (obj[k].children) {
-          console.log('Children');
-          recursive(obj[k], obj[k].children, group, childList);
-          // if (typeof obj[k] === 'object' && obj[k] !== null) eachRecursive(obj[k], group, children);
-          // do something...
-        } else {
-          console.log('no children');
+        if (original[k].children?.length > 0) {
+          original[k].children = recursive(original[k], original[k].children, group, childList);
 
+          return original;
+        } else {
           updatedList = parObj.map((item) =>
             item.value === group
               ? {
@@ -104,32 +68,37 @@ const DHITreeViewWidget = (props: TreeViewProps) => {
               : { ...item },
           );
 
-          console.log(updatedList);
+          return updatedList;
         }
       }
     }
-
-    setList(updatedList);
   };
 
   const handleOnCheck = (checked, e) => {
     setChecked(checked);
     fetchListOfTimeseriesFullnames(e.value);
+  };
 
-    console.log({ e });
+  const handleOnExpand = (expanded, e) => {
+    setExpanded(expanded);
+    fetchListOfTimeseriesFullnames(e.value);
   };
 
   useEffect(() => {
     fetchListOfTimeseriesFullnames();
   }, []);
 
+  console.log({ checked });
+  console.log({ expanded });
+
   return (
     <CheckboxTree
       nodes={list}
       checked={checked}
       expanded={expanded}
+      showNodeIcon
       onCheck={(checked, e) => handleOnCheck(checked, e)}
-      onExpand={(expanded) => setExpanded(expanded)}
+      onExpand={(expanded, e) => handleOnExpand(expanded, e)}
     />
   );
 };

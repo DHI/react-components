@@ -1,182 +1,288 @@
 import { Checkbox, Typography } from '@material-ui/core';
-import { Folder } from '@material-ui/icons';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { fetchTimeseriesfullNames } from '../../DataServices/DataServices';
+import { fetchTimeseriesfullNames } from '../..';
 
 interface TreeViewProps {
   dataSources: any;
   token: string;
 }
-const TEMP_DATA = [
-  'Telemetry/Water Level/WL6200_abs.dfs0 [Laško I]',
-  'Telemetry/Catchment rainfall/4230_POLJANSKA_SORA_ZMINEC_Rainfall.dfs0 [weighted]',
-  'Telemetry/Catchment rainfall/4298_SELSKA_SORA_VESTER_Rainfall.dfs0 [weighted]',
-  'Telemetry/Catchment rainfall/4520_RACA_PODRECJE_Rainfall.dfs0 [weighted]',
-  'Telemetry/Catchment rainfall/4570_PSATA_TOPOLE_Rainfall.dfs0 [weighted]',
-  'Telemetry/Catchment rainfall/4695_MIRNA_JELOVEC_Rainfall.dfs0 [weighted]',
-  'Telemetry/Catchment rainfall/4770_MESTINJSCICA_SODNA_VAS_Rainfall.dfs0 [weighted]',
-  'Telemetry/Catchment rainfall/5040_LJUBLJANICA_KOMIN_Rainfall.dfs0 [weighted]',
-  'Telemetry/Catchment rainfall/5500_GRADASCICA_DVOR_Rainfall.dfs0 [weighted]',
-  'Models and Scenarios/Sava5/Model Setup/MIKE 11/Input/RR.dfs0 - 28 - RunOff SAVA_HE_BLANCA 147.780',
-  'Models and Scenarios/Sava5/Model Setup/MIKE 11/Input/RR.dfs0 - 29 - RunOff SAVA_NEK 184.740',
-  'Models and Scenarios/Sava5/Model Setup/MIKE 11/Input/RR.dfs0 - 30 - RunOff SAVA_CATEZ 180.800',
-  'Models and Scenarios/Sava5/Model Setup/MIKE 11/Input/RR.dfs0 - 31 - RunOff SAVA_JESENICE_NA_DOLENJSKEM 135.180',
-  'Models and Scenarios/Sava5/Model Setup/MIKE 11/Input/RR.dfs0 - 32 - RunOff 6060_SAVINJA_NAZARJE 457.100',
-];
-
-//  data Structure needs to be
-//   value: 'telemetry',
-//   label: 'Telemetry',
-//   children: [
-//       {
-//          value: 'catchment-rainfall',
-//          label: 'Catchment rainfall',
-//          children: [
-//              {
-//                value: '4298_SELSKA_SORA_VESTER_Rainfall.dfs0-[weighted]',
-//                label: '4298_SELSKA_SORA_VESTER_Rainfall.dfs0 [weighted]'
-//              },
-//              {
-//                value: '4520_RACA_PODRECJE_Rainfall.dfs0-[weighted]',
-//                label: '4520_RACA_PODRECJE_Rainfall.dfs0 [weighted]'
-//              },
-//              {
-//                value: '4570_PSATA_TOPOLE_Rainfall.dfs0-[weighted]',
-//                label: '4570_PSATA_TOPOLE_Rainfall.dfs0 [weighted]'
-//              },
-//          ],
-//       }
-//  ];
 
 const DHITreeView = (props: TreeViewProps) => {
   const { dataSources, token } = props;
   const [list, setList] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState([]);
 
-  const fetchListOfTimeseriesFullnames = (group = '') => {
-    fetchTimeseriesfullNames(dataSources, token, group).subscribe((res) => {
-      console.log(res);
-      const data = res.map((d) => ({
-        value: d.toLowerCase().replaceAll(' ', '-').replace('/', ''),
-        label: d,
-      }));
-      setList(data);
-    });
+  const fetchListOfTimeseriesFullnames = (group = '', topLevel: boolean) => {
+    fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+      (res) => {
+        if (!group) {
+          const data = res.map((d) => ({
+            value: d,
+            label: d,
+            topLevel: true,
+            ...(d.slice(-1) === '/' && {
+              children: [
+                {
+                  value: '',
+                  label: '',
+                },
+              ],
+            }),
+          }));
+
+          setList(data);
+          console.log({ data });
+        } else {
+          const children = res.map((item) => ({
+            value: item,
+            label: item.replace(group, ''),
+            ...(item.slice(-1) === '/' && {
+              children: [
+                {
+                  value: '',
+                  label: '',
+                },
+              ],
+            }),
+          }));
+
+          const newList = recursive(list, group, children);
+          // const testList = recurse(list, group, children);
+          // console.log('recursive Out');
+          setList(newList);
+        }
+      },
+      (err) => console.log(err),
+    );
   };
 
-  // const structureList = (list) => {
-  //   const structuredData = [];
+  const recurse = (originalList, group, children) => {
+    let finalResult;
+    // console.log('out');
+    console.log(originalList);
 
-  //   list.forEach((item) => {
-  //     const name = item.split('/');
+    const parent = _.chain(originalList)
+      .map('children') // pluck all elements from data
+      .flatten() // flatten the elements into a single array
+      .filter({ value: group }) // exatract elements with a prop of 'foo'
+      .value();
 
-  //     const result = name.reverse().reduce(
-  //       (accumulator, currentValue) => ({
-  //         value: currentValue.toLowerCase().replaceAll(' ', '-'),
-  //         label: currentValue,
-  //         children: [accumulator],
-  //       }),
-  //       {},
-  //     );
+    const newList = parent.length === 0 ? originalList : parent;
+    finalResult = originalList;
 
-  //     structuredData.push(result);
-  //   });
+    for (const k in newList) {
+      if (newList[k].children) {
+        // console.log('in');
+        // list[k].children = children;
+        console.log(newList[k]);
 
-  //   console.log(structuredData);
+        finalResult = newList.map((item) =>
+          item.value === group
+            ? {
+                ...item,
+                children,
+              }
+            : { ...item },
+        );
 
-  //   structuredData.forEach((data, index) => {
-  //     console.log(data);
-  //     console.log(index);
-  //   });
+        // console.log({ finalResult });
 
-  //   // const output = [];
+        return recurse(originalList[k].children, group, children);
+      } else {
+        // stop calling recurse()
+        return finalResult;
+      }
+    }
 
-  //   // structuredData.forEach(function (item) {
-  //   //   const existing = output.filter(function (v, i) {
-  //   //     return v.value === item.value;
-  //   //   });
+    console.group('Final Obj');
+    console.log(originalList);
+    console.log(group);
+    const topLevel = search(originalList, group);
+    console.log({ topLevel });
 
-  //   //   if (existing.length) {
-  //   //     const existingIndex = output.indexOf(existing[0]);
-  //   //     output[existingIndex].children = output[existingIndex].children.concat(item.children);
-  //   //   } else {
-  //   //     output.push(item);
-  //   //   }
-  //   // });
+    console.log('Final', finalResult);
+    console.groupEnd();
+  };
 
-  //   // console.dir(output);
-  // };
+  const search = (array, keyword) => {
+    const regExp = new RegExp(keyword, 'gi');
 
-  useEffect(() => {
-    fetchListOfTimeseriesFullnames();
-  }, []);
+    const check = (obj) => {
+      if (obj !== null && typeof obj === 'object') {
+        return Object.values(obj).some(check);
+      }
+      if (Array.isArray(obj)) {
+        return obj.some(check);
+      }
+
+      return (typeof obj === 'string' || typeof obj === 'number') && regExp.test(obj);
+    };
+
+    return array.filter(check);
+  };
+
+  const recursive = (original, group, childList) => {
+    let updatedList = [];
+
+    const parent = _.chain(original)
+      .map('children') // pluck all elements from data
+      .flatten() // flatten the elements into a single array
+      .filter({ value: group }) // exatract elements with a prop of 'foo'
+      .value();
+
+    for (const k in original) {
+      const parObj = parent.length === 0 ? original : parent;
+
+      if (!parObj.find((x) => x.value === group) || parObj[k].value === group) {
+        if (!parObj[k].children) {
+          const parentIn = list.find((item) => item.value === group);
+          // parObj[k].children = recursive(parentIn, original[k].children, group, childList);
+          console.log('recursive In');
+          setLoading(false);
+
+          console.log({ original });
+          console.log({ parObj });
+
+          return original;
+        } else {
+          updatedList = parObj.map((item) =>
+            item.value === group
+              ? {
+                  ...item,
+                  children: childList,
+                }
+              : { ...item },
+          );
+
+          console.log({ updatedList });
+
+          return updatedList;
+        }
+      }
+    }
+  };
+
+  const handleExpanded = (event, nodeIds) => {
+    const difference = nodeIds.filter((x) => !expanded.includes(x));
+    console.log('diff: ', difference);
+    setExpanded(nodeIds);
+
+    if (difference.length > 0) {
+      setLoading(true);
+      fetchListOfTimeseriesFullnames(difference[0], true);
+    }
+  };
 
   const checkBoxClicked = (event, checked, id) => {
-    console.log({ event });
-    console.log({ checked });
-    console.log({ id });
-    // setOrgStructureElement(checked, id, selected, orgStructure);
+    const existing = selected.some((item) => item === id);
+
+    if (existing) {
+      const removeSelection = selected.filter((item) => item !== id);
+      setSelected([...removeSelection]);
+    } else {
+      setSelected([...selected, id]);
+      fetchListOfTimeseriesFullnames(event.target.id);
+    }
   };
 
-  const createOrgStructureLevel = (orgStructureElement) => {
+  const structureLevel = (treeViewList) => {
     const elements = [];
 
-    orgStructureElement.forEach((v, i) => {
-      const { id, children } = v;
-      console.log(v);
+    treeViewList?.forEach((treeList, i) => {
+      const { value, children } = treeList;
 
       if (i.length !== 0) {
         const label = (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Folder />
             <Checkbox
-              id={`checkbox-${i}`}
-              //    className={classes.globalFilterCheckbox}
-              // checked={selected.has(id)}
-              onChange={(event, checked) => checkBoxClicked(event, checked, id)}
+              id={value}
               color="primary"
+              checked={selected.some((item) => item === value)}
+              onChange={(event, checked) => checkBoxClicked(event, checked, value)}
             />
-            <Typography variant="caption">{v.label.replace('/', '')}</Typography>
+
+            <Typography variant="caption">{treeList.label.replace('/', '')}</Typography>
           </div>
         );
 
         elements.push(
           children && children.length > 0 ? (
-            <TreeItem key={id} nodeId={id} label={label}>
-              {createOrgStructureLevel(children)}
+            <TreeItem
+              key={value}
+              nodeId={value}
+              label={label}
+              // onLabelClick={handleLabelClicked}
+              // onIconClick={handleIconClicked}
+            >
+              {structureLevel(children)}
             </TreeItem>
           ) : (
-            <TreeItem key={id} nodeId={id} label={label} />
+            <>
+              <TreeItem
+                key={value}
+                nodeId={value}
+                label={label}
+                // onLabelClick={handleLabelClicked}
+                // onIconClick={handleIconClicked}
+              />
+            </>
           ),
         );
       } else if (children) {
-        elements.push(createOrgStructureLevel(children));
+        elements.push(structureLevel(children));
       }
     });
 
     return elements;
   };
 
-  const handleExpanded = (nodeId, nodeExpanded) => {
-    // cache expanded nodes
-    if (nodeExpanded) {
-      //    addOpenOrgStructurePanel(nodeId);
-    } else {
-      //    removeOpenOrgStructurePanel(nodeId);
-    }
+  const handleLabelClicked = (e) => {
+    console.log('Label');
+    console.log({ e });
+    console.log(e.nodeId);
   };
+
+  const handleIconClicked = (e) => {
+    console.log('Icon');
+    console.log({ e });
+    console.log(e.nodeId);
+  };
+
+  const handleSelection = (e, value) => {
+    const existing = selected.some((item) => item === value[0]);
+
+    if (existing) {
+      const removeSelection = selected.filter((item) => item !== value[0]);
+      setSelected([...removeSelection]);
+    } else {
+      setSelected([...selected, value[0]]);
+    }
+
+    fetchListOfTimeseriesFullnames(value[0]);
+  };
+
+  useEffect(() => {
+    fetchListOfTimeseriesFullnames();
+  }, []);
 
   return (
     <>
       <TreeView
-        //    defaultExpanded={openOrgStructurePanels}
-        onNodeToggle={(nodeId, nodeExpanded) => handleExpanded(nodeId, nodeExpanded)}
-        defaultCollapseIcon={'+'}
-        defaultExpandIcon={'-'}
+        onNodeToggle={handleExpanded}
+        // onNodeSelect={handleSelection}
+        multiSelect
+        selected={selected}
+        defaultCollapseIcon={<KeyboardArrowUp />}
+        defaultExpandIcon={<KeyboardArrowDown />}
+        expanded={expanded}
       >
-        {createOrgStructureLevel(list)}
+        {structureLevel(list)}
       </TreeView>
     </>
   );
