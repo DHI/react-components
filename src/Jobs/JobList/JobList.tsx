@@ -24,7 +24,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import AuthService from '../../Auth/AuthService';
 import Loading from '../../common/Loading/Loading';
 import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
-import { calcTimeDifference, convertLocalTime, convertServerTimeToLocalTime } from '../../utils/Utils';
+import { calcTimeDifference, convertLocalTime, zonedTimeFromUTC } from '../../utils/Utils';
 import { DateFilter } from './helpers/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
 import JobDetail from './helpers/JobDetail';
@@ -120,9 +120,9 @@ const JobList = (props: JobListProps) => {
             accountId,
             status,
             progress: s.data.progress || 0,
-            requested: s.data.requested ? convertServerTimeToLocalTime(s.data.requested, dateTimeFormat) : '',
-            started: s.data.started ? convertServerTimeToLocalTime(s.data.started, dateTimeFormat) : '',
-            finished: s.data.finished ? convertServerTimeToLocalTime(s.data.finished, dateTimeFormat) : '',
+            requested: s.data.requested ? zonedTimeFromUTC(s.data.requested, timeZone, dateTimeFormat) : '',
+            started: s.data.started ? zonedTimeFromUTC(s.data.started, timeZone, dateTimeFormat) : '',
+            finished: s.data.finished ? zonedTimeFromUTC(s.data.finished, timeZone, dateTimeFormat) : '',
             duration: calcTimeDifference(s.data.started, s.data.finished),
             delay: calcTimeDifference(s.data.requested, s.data.started),
             connectionJobLog: s.data.connectionJobLog || '',
