@@ -257,12 +257,18 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
   const hour = Math.floor(difference / 60);
   const minute = Math.floor(difference - hour * 60);
 
-  if (hour === 0 && minute === 0) {
-    return `<1m`;
-  } else if (isNaN(difference)) {
+  if (isNaN(difference)) {
     return '';
+  }
+
+  if (hour === 0 && minute === 0) {
+    return '<1m';
+  } else if (hour !== 0) {
+    const minutes = minute - hour * 60;
+
+    return `${hour}h ${minutes < 10 ? '0' : ''}${minutes}m`;
   } else {
-    return `${hour}h ${minute}m`;
+    return `${minute}m`;
   }
 };
 
