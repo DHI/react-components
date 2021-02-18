@@ -43,7 +43,7 @@ const DHITreeView = (props: TreeViewProps) => {
   const fetchTreeViewChildren = (group) => {
     fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
       (res) => {
-        const children = addChildren(res);
+        const children = addChildren(res, group);
         list.map((item) => recursive(item, group, children));
 
         setLoading(false);
@@ -53,10 +53,10 @@ const DHITreeView = (props: TreeViewProps) => {
     );
   };
 
-  const addChildren = (childrenList) => {
+  const addChildren = (childrenList, group) => {
     return childrenList.map((child) => ({
       value: child,
-      label: child,
+      label: child.replace(group, ''),
       ...(child.slice(-1) === '/' && {
         children: [
           {
