@@ -65,6 +65,10 @@ const LoginForm = (props: LoginFormProps) => {
       setLoading(true);
     }
 
+    if (twoFA && form.otp === null) {
+      setError(true);
+    }
+
     auth.login(
       form,
       (otpInfo) => {
@@ -151,6 +155,7 @@ const LoginForm = (props: LoginFormProps) => {
           <TextField
             fullWidth
             margin="dense"
+            value={form?.otp || ''}
             onChange={(e) => handleChange('otp', e.target.value)}
             label={otpAuthPlaceholder}
             error={error}
