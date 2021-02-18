@@ -1,9 +1,10 @@
-import { Checkbox, Typography } from '@material-ui/core';
+import { Checkbox, CircularProgress, Typography } from '@material-ui/core';
 import { ChevronRight, KeyboardArrowDown } from '@material-ui/icons';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesfullNames } from '../..';
+import { TreeViewStyles } from './styles';
 
 interface TreeViewProps {
   dataSources: any;
@@ -16,6 +17,7 @@ const DHITreeView = (props: TreeViewProps) => {
   const [selected, setSelected] = useState([]);
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState([]);
+  const classes = TreeViewStyles();
 
   const fetchTopLevelTreeView = (group = '') => {
     fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
@@ -69,8 +71,6 @@ const DHITreeView = (props: TreeViewProps) => {
   };
 
   const recursive = (item: any, group: string, children: any) => {
-    setLoading(true);
-
     if (item.value === group) {
       item.children = children;
     }
@@ -96,7 +96,7 @@ const DHITreeView = (props: TreeViewProps) => {
       setSelected([...removeSelection]);
     } else {
       setSelected([...selected, id]);
-      fetchTopLevelTreeView(event.target.id);
+      fetchTreeViewChildren(event.target.id);
     }
   };
 
@@ -108,15 +108,25 @@ const DHITreeView = (props: TreeViewProps) => {
 
       if (i.length !== 0) {
         const label = (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Checkbox
-              id={value}
-              color="primary"
-              checked={selected.some((item) => item === value)}
-              onChange={(event, checked) => checkBoxClicked(event, checked, value)}
-            />
+          <div className={classes.root}>
+            {treeList.label === '' ? (
+              <CircularProgress size={20} />
+            ) : (
+              <>
+                {!children && (
+                  <Checkbox
+                    id={value}
+                    color="primary"
+                    checked={selected.some((item) => item === value)}
+                    onChange={(event, checked) => checkBoxClicked(event, checked, value)}
+                  />
+                )}
 
-            <Typography variant="caption">{treeList.label.replace('/', '')}</Typography>
+                <Typography variant="body2" className={classes.typography}>
+                  {treeList.label.replace('/', '')}
+                </Typography>
+              </>
+            )}
           </div>
         );
 
@@ -126,8 +136,7 @@ const DHITreeView = (props: TreeViewProps) => {
               key={`${value}_${i}`}
               nodeId={value}
               label={label}
-              // onLabelClick={handleLabelClicked}
-              // onIconClick={handleIconClicked}
+              // onLabelClick={(e) => handleLabelClicked(e, value)}
             >
               {structureLevel(children)}
             </TreeItem>
@@ -138,7 +147,6 @@ const DHITreeView = (props: TreeViewProps) => {
                 nodeId={value}
                 label={label}
                 // onLabelClick={handleLabelClicked}
-                // onIconClick={handleIconClicked}
               />
             </>
           ),
@@ -151,16 +159,10 @@ const DHITreeView = (props: TreeViewProps) => {
     return elements;
   };
 
-  const handleLabelClicked = (e) => {
+  const handleLabelClicked = (e, value) => {
     console.log('Label');
     console.log({ e });
-    console.log(e.nodeId);
-  };
-
-  const handleIconClicked = (e) => {
-    console.log('Icon');
-    console.log({ e });
-    console.log(e.nodeId);
+    console.log(value);
   };
 
   const handleSelection = (e, value) => {
