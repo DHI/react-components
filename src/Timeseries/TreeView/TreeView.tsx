@@ -41,38 +41,13 @@ const DHITreeView = (props: TreeViewProps) => {
   };
 
   const fetchTreeViewChildren = (group) => {
-    console.log({ group });
-
     fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
       (res) => {
         const children = addChildren(res);
+        list.map((item) => recursive(item, group, children));
 
-        list.forEach(function iter(item) {
-          console.log(item);
-          console.log(group);
-
-          if (item.value === group) {
-            item.children = children;
-          }
-
-          Array.isArray(item.children) && item.children.forEach(iter);
-          console.log('Done');
-        });
-
-        const updatedList = list.map((l) =>
-          l.value === group
-            ? {
-                ...l,
-                children,
-              }
-            : { ...l },
-        );
-
-        console.log({ updatedList });
-        console.log({ list });
-        console.log('SetList');
-
-        setList(updatedList);
+        setLoading(false);
+        setList(list);
       },
       (error) => console.log(error),
     );
@@ -93,9 +68,18 @@ const DHITreeView = (props: TreeViewProps) => {
     }));
   };
 
+  const recursive = (item: any, group: string, children: any) => {
+    setLoading(true);
+
+    if (item.value === group) {
+      item.children = children;
+    }
+
+    Array.isArray(item.children) && item.children.map((item) => recursive(item, group, children));
+  };
+
   const handleExpanded = (event, nodeIds) => {
     const difference = nodeIds.filter((x) => !expanded.includes(x));
-    console.log('diff: ', difference);
     setExpanded(nodeIds);
 
     if (difference.length > 0) {
@@ -139,7 +123,7 @@ const DHITreeView = (props: TreeViewProps) => {
         elements.push(
           children && children.length > 0 ? (
             <TreeItem
-              key={value}
+              key={`${value}_${i}`}
               nodeId={value}
               label={label}
               // onLabelClick={handleLabelClicked}
@@ -150,7 +134,7 @@ const DHITreeView = (props: TreeViewProps) => {
           ) : (
             <>
               <TreeItem
-                key={value}
+                key={`${value}_${i}`}
                 nodeId={value}
                 label={label}
                 // onLabelClick={handleLabelClicked}

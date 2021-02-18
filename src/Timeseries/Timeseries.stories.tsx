@@ -316,21 +316,3 @@ export const TreeViewStory = () => {
 
   return <TreeView dataSources={dataSources} token={session.accessToken} />;
 };
-
-// export const DHITreeViewStory = () => {
-//   const host = process.env.ENDPOINT_URL;
-
-//   const dataSources = [
-//     {
-//       host: 'https://domainservices.dhigroup.com',
-//       connection: 'mclite-timeseries',
-//       group: '',
-//     },
-//   ];
-
-//   // TODO: add LoginGate;
-//   const auth = new AuthService(host);
-//   const session = auth.getSession();
-
-//   return <DHITreeViewWidget dataSources={dataSources} token={session.accessToken} />;
-// };
