@@ -1,5 +1,5 @@
 import { Checkbox, Typography } from '@material-ui/core';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
+import { ChevronRight, KeyboardArrowDown } from '@material-ui/icons';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect, useState } from 'react';
@@ -46,9 +46,8 @@ const DHITreeView = (props: TreeViewProps) => {
     fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
       (res) => {
         const children = addChildren(res);
-        const listTemp = list;
 
-        listTemp.forEach(function iter(item) {
+        list.forEach(function iter(item) {
           console.log(item);
           console.log(group);
 
@@ -57,9 +56,8 @@ const DHITreeView = (props: TreeViewProps) => {
           }
 
           Array.isArray(item.children) && item.children.forEach(iter);
+          console.log('Done');
         });
-
-        console.log(listTemp);
 
         const updatedList = list.map((l) =>
           l.value === group
@@ -71,6 +69,9 @@ const DHITreeView = (props: TreeViewProps) => {
         );
 
         console.log({ updatedList });
+        console.log({ list });
+        console.log('SetList');
+
         setList(updatedList);
       },
       (error) => console.log(error),
@@ -202,8 +203,8 @@ const DHITreeView = (props: TreeViewProps) => {
         // onNodeSelect={handleSelection}
         multiSelect
         selected={selected}
-        defaultCollapseIcon={<KeyboardArrowUp />}
-        defaultExpandIcon={<KeyboardArrowDown />}
+        defaultCollapseIcon={<KeyboardArrowDown />}
+        defaultExpandIcon={<ChevronRight />}
         expanded={expanded}
       >
         {structureLevel(list)}
