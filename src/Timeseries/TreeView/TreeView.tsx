@@ -3,7 +3,7 @@ import { ChevronRight, KeyboardArrowDown } from '@material-ui/icons';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect, useState } from 'react';
-import { fetchTimeseriesfullNames } from '../..';
+import { fetchTimeseriesFullNames } from '../..';
 import { TreeViewStyles } from './styles';
 
 interface TreeViewProps {
@@ -20,7 +20,7 @@ const DHITreeView = (props: TreeViewProps) => {
   const classes = TreeViewStyles();
 
   const fetchTopLevelTreeView = (group = '') => {
-    fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
       (res) => {
         const data = res.map((d) => ({
           value: d,
@@ -43,7 +43,7 @@ const DHITreeView = (props: TreeViewProps) => {
   };
 
   const fetchTreeViewChildren = (group) => {
-    fetchTimeseriesfullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
       (res) => {
         const children = addChildren(res, group);
         list.map((item) => recursive(item, group, children));

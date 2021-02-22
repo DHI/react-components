@@ -128,7 +128,7 @@ const fetchTimeseriesByGroup = (dataSources: DataSource[], token: string) => {
  * @param dataSources connectionId is required
  * @param token
  */
-const fetchTimeseriesfullNames = (dataSources: DataSource[], token: string, group: any) => {
+const fetchTimeseriesFullNames = (dataSources: DataSource[], token: string, group: any) => {
   const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
   const requests = dataSourcesArray.flatMap((source) =>
@@ -704,7 +704,7 @@ export {
   deleteUserGroup,
   fetchFeatureCollectionValues,
   fetchTimeseriesByGroup,
-  fetchTimeseriesfullNames,
+  fetchTimeseriesFullNames,
   fetchMapAnimationFiles,
   fetchMapStylePalette,
   fetchScenario,
