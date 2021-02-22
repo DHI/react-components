@@ -133,7 +133,7 @@ const DHITreeView = (props: TreeViewProps) => {
         elements.push(
           children && children.length > 0 ? (
             <TreeItem
-              key={`${value}_${i}`}
+              key={value}
               nodeId={value}
               label={label}
               // onLabelClick={(e) => handleLabelClicked(e, value)}
@@ -143,7 +143,7 @@ const DHITreeView = (props: TreeViewProps) => {
           ) : (
             <>
               <TreeItem
-                key={`${value}_${i}`}
+                key={value}
                 nodeId={value}
                 label={label}
                 // onLabelClick={handleLabelClicked}
