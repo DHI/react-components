@@ -7,10 +7,13 @@ export const TreeViewStyles = makeStyles((theme: Theme) => ({
   },
   typography: {
     display: 'flex',
-    padding: '16px 0',
+    padding: '6px 4px',
     textAlign: 'center',
     justifyContent: 'space-evenly',
     position: 'relative',
     alignItems: 'center',
+  },
+  checkbox: {
+    padding: '6px 4px',
   },
 }));

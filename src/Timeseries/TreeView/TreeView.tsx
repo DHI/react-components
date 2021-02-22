@@ -71,8 +71,9 @@ const DHITreeView = (props: TreeViewProps) => {
   };
 
   const recursive = (item: any, group: string, children: any) => {
-    if (item.value === group) {
+    if (item.value === group && !item.fetched) {
       item.children = children;
+      item.fetched = true;
     }
 
     Array.isArray(item.children) && item.children.map((item) => recursive(item, group, children));
@@ -118,6 +119,7 @@ const DHITreeView = (props: TreeViewProps) => {
                     id={value}
                     color="primary"
                     checked={selected.some((item) => item === value)}
+                    className={classes.checkbox}
                     onChange={(event, checked) => checkBoxClicked(event, checked, value)}
                   />
                 )}
@@ -132,22 +134,12 @@ const DHITreeView = (props: TreeViewProps) => {
 
         elements.push(
           children && children.length > 0 ? (
-            <TreeItem
-              key={value}
-              nodeId={value}
-              label={label}
-              // onLabelClick={(e) => handleLabelClicked(e, value)}
-            >
+            <TreeItem key={value} nodeId={value} label={label}>
               {structureLevel(children)}
             </TreeItem>
           ) : (
             <>
-              <TreeItem
-                key={value}
-                nodeId={value}
-                label={label}
-                // onLabelClick={handleLabelClicked}
-              />
+              <TreeItem key={value} nodeId={value} label={label} />
             </>
           ),
         );
@@ -157,12 +149,6 @@ const DHITreeView = (props: TreeViewProps) => {
     });
 
     return elements;
-  };
-
-  const handleLabelClicked = (e, value) => {
-    console.log('Label');
-    console.log({ e });
-    console.log(value);
   };
 
   const handleSelection = (e, value) => {
