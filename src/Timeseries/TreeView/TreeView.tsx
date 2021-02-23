@@ -3,89 +3,20 @@ import { ChevronRight, KeyboardArrowDown } from '@material-ui/icons';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect, useState } from 'react';
-import { fetchTimeseriesFullNames } from '../..';
 import { TreeViewStyles } from './styles';
+import { TreeViewProps } from './types';
 
-interface TreeViewProps {
-  dataSources: any;
-  token: string;
-}
-
-const DHITreeView = (props: TreeViewProps) => {
-  const { dataSources, token } = props;
-  const [list, setList] = useState([]);
+const DHITreeView = ({ list, onExpand, onChecked }: TreeViewProps) => {
   const [selected, setSelected] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState([]);
   const classes = TreeViewStyles();
-
-  const fetchTopLevelTreeView = (group = '') => {
-    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
-      (res) => {
-        const data = res.map((d) => ({
-          value: d,
-          label: d,
-          topLevel: true,
-          ...(d.slice(-1) === '/' && {
-            children: [
-              {
-                value: '',
-                label: '',
-              },
-            ],
-          }),
-        }));
-
-        setList(data);
-      },
-      (err) => console.log(err),
-    );
-  };
-
-  const fetchTreeViewChildren = (group) => {
-    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
-      (res) => {
-        const children = addChildren(res, group);
-        list.map((item) => recursive(item, group, children));
-
-        setLoading(false);
-        setList(list);
-      },
-      (error) => console.log(error),
-    );
-  };
-
-  const addChildren = (childrenList, group) => {
-    return childrenList.map((child) => ({
-      value: child,
-      label: child.replace(group, ''),
-      ...(child.slice(-1) === '/' && {
-        children: [
-          {
-            value: '',
-            label: '',
-          },
-        ],
-      }),
-    }));
-  };
-
-  const recursive = (item: any, group: string, children: any) => {
-    if (item.value === group && !item.fetched) {
-      item.children = children;
-      item.fetched = true;
-    }
-
-    Array.isArray(item.children) && item.children.map((item) => recursive(item, group, children));
-  };
 
   const handleExpanded = (event, nodeIds) => {
     const difference = nodeIds.filter((x) => !expanded.includes(x));
     setExpanded(nodeIds);
 
     if (difference.length > 0) {
-      setLoading(true);
-      fetchTreeViewChildren(difference[0]);
+      onExpand(difference[0]);
     }
   };
 
@@ -97,7 +28,7 @@ const DHITreeView = (props: TreeViewProps) => {
       setSelected([...removeSelection]);
     } else {
       setSelected([...selected, id]);
-      fetchTreeViewChildren(event.target.id);
+      onExpand(event.target.id);
     }
   };
 
@@ -151,37 +82,21 @@ const DHITreeView = (props: TreeViewProps) => {
     return elements;
   };
 
-  const handleSelection = (e, value) => {
-    const existing = selected.some((item) => item === value[0]);
-
-    if (existing) {
-      const removeSelection = selected.filter((item) => item !== value[0]);
-      setSelected([...removeSelection]);
-    } else {
-      setSelected([...selected, value[0]]);
-    }
-
-    fetchTopLevelTreeView(value[0]);
-  };
-
   useEffect(() => {
-    fetchTopLevelTreeView();
-  }, []);
+    onChecked(selected);
+  }, [selected]);
 
   return (
-    <>
-      <TreeView
-        onNodeToggle={handleExpanded}
-        // onNodeSelect={handleSelection}
-        multiSelect
-        selected={selected}
-        defaultCollapseIcon={<KeyboardArrowDown />}
-        defaultExpandIcon={<ChevronRight />}
-        expanded={expanded}
-      >
-        {structureLevel(list)}
-      </TreeView>
-    </>
+    <TreeView
+      onNodeToggle={handleExpanded}
+      multiSelect
+      selected={selected}
+      defaultCollapseIcon={<KeyboardArrowDown />}
+      defaultExpandIcon={<ChevronRight />}
+      expanded={expanded}
+    >
+      {structureLevel(list)}
+    </TreeView>
   );
 };
 
