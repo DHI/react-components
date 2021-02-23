@@ -1,7 +1,8 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import React, { useEffect, useState } from 'react';
-import AuthService from '../Auth/AuthService';
 import { fetchTimeseriesValues, fetchToken } from '../DataServices/DataServices';
+import DHITheme from '../theme';
+import { StandardChart } from './Chart/StandardChart';
 import { ChartPlotly } from './ChartPlotly/ChartPlotly';
 import { ChartPlotlyPlotData } from './ChartPlotly/types';
 import { TimeseriesExporter } from './TimeseriesExporter/TimeseriesExporter';
@@ -300,8 +301,56 @@ export const TimeseriesExporterStory = () => {
   );
 };
 
+export const eChartStandard = () => {
+  const nameTextStyle = {
+    fontSize: 20,
+    padding: 20,
+  };
+
+  const options = {
+    title: {
+      text: 'ECharts Standard example',
+      textStyle: {
+        color: DHITheme.palette.primary.main,
+        fontSize: 20,
+        fontFamily: 'Roboto',
+      },
+    },
+    tooltip: {},
+    legend: {
+      data: ['Bench Levels', 'Time'],
+    },
+    xAxis: {
+      name: 'Time',
+      nameLocation: 'center',
+      nameTextStyle,
+      data: ['Oct 31', 'Nov 1', 'Nov 2', 'Nov 3', 'Nov 4', 'Nov 5'],
+    },
+    yAxis: {
+      name: 'Bench Levels',
+      nameLocation: 'center',
+      nameTextStyle,
+    },
+    series: [
+      {
+        name: 'Bench Levels',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20],
+      },
+      {
+        name: 'Time',
+        type: 'line',
+        data: [2, 1, 10, 0, 0, 18],
+      },
+    ],
+  };
+
+  return <StandardChart className="standard_chat" chartHeightFunc={() => window.innerHeight * 0.4} options={options} />;
+};
+
 export const TreeViewStory = () => {
   const host = process.env.ENDPOINT_URL;
+  const [token, setToken] = useState('');
 
   const dataSources = [
     {
@@ -310,9 +359,19 @@ export const TreeViewStory = () => {
     },
   ];
 
-  // TODO: add LoginGate;
-  const auth = new AuthService(host);
-  const session = auth.getSession();
+  useEffect(() => {
+    fetchToken(dataSources[0].host, {
+      id: process.env.USERUSER,
+      password: process.env.USERPASSWORD,
+    }).subscribe(
+      (res) => {
+        setToken(res.accessToken.token);
+      },
+      (err) => {
+        console.log(err);
+      },
+    );
+  }, []);
 
-  return <TreeView dataSources={dataSources} token={session.accessToken} />;
+  return <TreeView dataSources={dataSources} token={token} />;
 };
