@@ -5,6 +5,7 @@ import DHITheme from '../theme';
 import { StandardChart } from './Chart/StandardChart';
 import { ChartPlotly } from './ChartPlotly/ChartPlotly';
 import { ChartPlotlyPlotData } from './ChartPlotly/types';
+import Timeseries from './Timeseries/Timeseries';
 import { TimeseriesExporter } from './TimeseriesExporter/TimeseriesExporter';
 import TreeView from './TreeView/TreeView';
 
@@ -299,6 +300,34 @@ export const TimeseriesExporterStory = () => {
       timeseries={timeseries}
     ></TimeseriesExporter>
   );
+};
+
+export const TimeseriesMain = () => {
+  const host = process.env.ENDPOINT_URL;
+  const [token, setToken] = useState('');
+
+  const dataSources = [
+    {
+      host: 'https://domainservices.dhigroup.com',
+      connection: 'mclite-timeseries',
+    },
+  ];
+
+  useEffect(() => {
+    fetchToken(host, {
+      id: process.env.USERUSER,
+      password: process.env.USERPASSWORD,
+    }).subscribe(
+      (res) => {
+        setToken(res.accessToken.token);
+      },
+      (err) => {
+        console.log(err);
+      },
+    );
+  }, []);
+
+  return <Timeseries dataSources={dataSources} token={token} />;
 };
 
 export const eChartStandard = () => {
