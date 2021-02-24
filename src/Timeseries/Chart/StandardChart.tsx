@@ -1,31 +1,22 @@
 import ReactEcharts from 'echarts-for-react';
-import {
-  BarChart,
-  // LineChart,
-  ScatterChart,
-} from 'echarts/charts';
-import {
-  // GridSimpleComponent,
-  GridComponent,
-  // AxisPointerComponent,
-  // BrushComponent,
-  TitleComponent,
-  // PolarComponent,
-  // RadarComponent,
-  // GeoComponent,
-  // SingleAxisComponent,
-  // ParallelComponent,
-  // CalendarComponent,
-  // GraphicComponent,
-  // ToolboxComponent,
-  TooltipComponent,
-} from 'echarts/components';
+import { BarChart, LineChart, PieChart, RadarChart, ScatterChart } from 'echarts/charts';
+import { GridComponent, TitleComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import React, { useEffect, useState } from 'react';
 import { StandardChartProps } from './types';
 
-echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, ScatterChart, CanvasRenderer]);
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  BarChart,
+  ScatterChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  CanvasRenderer,
+]);
 
 export const StandardChart = ({ className, options, chartHeightFunc, debug }: StandardChartProps) => {
   const [chartSize, setChartSize] = useState({ width: '100%', height: chartHeightFunc() });
@@ -46,7 +37,7 @@ export const StandardChart = ({ className, options, chartHeightFunc, debug }: St
 
   return (
     options?.series && (
-      <div className={className}>
+      <div className={className} style={{ display: 'flex', width: '100%' }}>
         <ReactEcharts style={{ width: chartSize.width, height: chartSize.height }} option={options} />
       </div>
     )

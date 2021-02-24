@@ -1,4 +1,5 @@
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { format } from 'date-fns';
 import React, { FC, useEffect, useState } from 'react';
 import { fetchTimeseriesFullNames, fetchTimeseriesValues } from '../../DataServices/DataServices';
@@ -18,8 +19,59 @@ export interface TimeseriesProps {
 }
 
 const NAME_TEXT_STYLE = {
-  fontSize: 12,
-  padding: 20,
+  padding: 12,
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontSize: 15,
+};
+
+const DATA_ZOOM = [
+  {
+    type: 'inside',
+  },
+  {
+    type: 'slider',
+  },
+];
+
+const GRID = {
+  bottom: 85,
+  right: 30,
+};
+
+const TEXT_STYLE = {
+  width: '100%',
+  color: DHITheme.palette.primary.main,
+  fontWeight: 'bold',
+  fontSize: window.innerHeight >= 1200 ? 24 : 18,
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+};
+
+const X_AXIS = {
+  name: 'Time',
+  nameLocation: 'center',
+  nameTextStyle: NAME_TEXT_STYLE,
+  min: 'dataMin',
+  axisLabel: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: 15,
+    color: DHITheme.palette.primary.main,
+  },
+};
+
+const Y_AXIS = {
+  name: 'Bench Levels',
+  nameLocation: 'center',
+  nameTextStyle: NAME_TEXT_STYLE,
+};
+
+const LEGEND_STYLE = {
+  backgroundColor: 'rgba(255,255,255,1)',
+  padding: 8,
+  borderRadius: 5,
+  shadowColor: 'rgba(0, 0, 0, 0.25)',
+  shadowBlur: 5,
+  shadowOffsetX: 3,
+  shadowOffsetY: 3,
 };
 
 const Timeseries: FC<TimeseriesProps> = ({
@@ -36,26 +88,19 @@ const Timeseries: FC<TimeseriesProps> = ({
     title: {
       text: title,
       left: 'center',
-      textStyle: {
-        width: '100%',
-        color: DHITheme.palette.primary.main,
-        fontWeight: 'bold',
-        fontSize: window.innerHeight >= 1200 ? 24 : 18,
-        fontFamily: 'Roboto',
-      },
+      textStyle: TEXT_STYLE,
     },
-    grid: {
-      bottom: 85,
-      right: 30,
+    grid: GRID,
+    dataZoom: DATA_ZOOM,
+    legend: {
+      ...LEGEND_STYLE,
+      top: legendPosition === 'left' ? 100 : 20,
+      left: legendPosition === 'left' ? legendPositionOffset ?? 150 : undefined,
+      right: legendPosition === 'right' ? legendPositionOffset ?? 60 : undefined,
+      align: legendPosition,
     },
-    dataZoom: [
-      {
-        type: 'inside',
-      },
-      {
-        type: 'slider',
-      },
-    ],
+    xAxis: X_AXIS,
+    yAxis: Y_AXIS,
     tooltip: {},
     series: [],
   });
@@ -137,39 +182,20 @@ const Timeseries: FC<TimeseriesProps> = ({
       const series = res.map((item) => ({
         name: item.id.substring(item.id.lastIndexOf('/') + 1),
         data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
-        type: 'scatter',
+        type: 'bar',
       }));
 
       const updatedOptions = {
         ...options,
-        yAxis: {
-          name: 'Bench Levels',
-          nameLocation: 'center',
-          nameTextStyle: NAME_TEXT_STYLE,
-        },
         xAxis: {
-          name: 'Time',
-          nameLocation: 'center',
-          nameTextStyle: NAME_TEXT_STYLE,
+          ...options.xAxis,
           axisLabel: {
-            fontFamily: 'Roboto',
-            fontSize: 15,
-            color: DHITheme.palette.primary.main,
-            formatter: (value) => format(new Date(value), 'dd MM yyyy'),
+            ...options.xAxis.axisLabel,
+            formatter: (value) => format(value, 'dd MMM yyyy'),
           },
         },
         legend: {
-          top: legendPosition === 'left' ? 70 : 40,
-          left: legendPosition === 'left' ? legendPositionOffset ?? 150 : undefined,
-          right: legendPosition === 'right' ? legendPositionOffset ?? 60 : undefined,
-          align: legendPosition,
-          backgroundColor: 'rgba(255,255,255,1)',
-          padding: 8,
-          borderRadius: 5,
-          shadowColor: 'rgba(0, 0, 0, 0.25)',
-          shadowBlur: 5,
-          shadowOffsetX: 3,
-          shadowOffsetY: 3,
+          ...options.legend,
           data: series.map((item) => item.name),
         },
         series,
@@ -183,46 +209,6 @@ const Timeseries: FC<TimeseriesProps> = ({
     fetchTopLevelTreeView();
   }, []);
 
-  // const options = {
-  //   title: {
-  //     text: 'ECharts Standard example',
-  //     textStyle: {
-  //       color: DHITheme.palette.primary.main,
-  //       fontSize: 20,
-  //       fontFamily: 'Roboto',
-  //     },
-  //   },
-  //   tooltip: {},
-  //   legend: {
-  //     data: ['Bench Levels', 'Time'],
-  //   },
-  //   xAxis: {
-  //     name: 'Time',
-  //     nameLocation: 'center',
-  //     nameTextStyle,
-  //     data: ['Oct 31', 'Nov 1', 'Nov 2', 'Nov 3', 'Nov 4', 'Nov 5'],
-  //   },
-  //   yAxis: {
-  //     name: 'Bench Levels',
-  //     nameLocation: 'center',
-  //     nameTextStyle,
-  //   },
-  //   series: [
-  //     {
-  //       name: 'Bench Levels',
-  //       type: 'bar',
-  //       data: [5, 20, 36, 10, 10, 20],
-  //     },
-  //     {
-  //       name: 'Time',
-  //       type: 'line',
-  //       data: [2, 1, 10, 0, 0, 18],
-  //     },
-  //   ],
-  // };
-
-  console.log(options);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -234,14 +220,25 @@ const Timeseries: FC<TimeseriesProps> = ({
           />
         </Grid>
         <Grid item xs={12} sm={9}>
-          {options ? (
+          {options.series.length > 0 ? (
             <StandardChart
               className="standard_chat"
               chartHeightFunc={() => window.innerHeight * 0.4}
               options={options}
             />
           ) : (
-            'No Timeseries selected'
+            <>
+              <Typography variant="h6" className={classes.typography}>
+                No Timeseries Selected
+              </Typography>
+              <Skeleton variant="rect" animation="wave" height={window.innerHeight * 0.2} />
+              <Skeleton
+                variant="text"
+                animation="wave"
+                height={window.innerHeight * 0.1}
+                className={classes.skeleton}
+              />
+            </>
           )}
         </Grid>
       </Grid>
