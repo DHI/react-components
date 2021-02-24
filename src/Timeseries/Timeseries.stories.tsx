@@ -343,7 +343,7 @@ export const eChartStandard = () => {
       textStyle: {
         color: DHITheme.palette.primary.main,
         fontSize: 20,
-        fontFamily: 'Roboto',
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       },
     },
     tooltip: {},
