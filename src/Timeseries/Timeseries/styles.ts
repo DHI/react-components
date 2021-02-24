@@ -15,25 +15,12 @@ export const TimeseriesStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     alignItems: 'center',
   },
-  item: {
-    display: 'flex',
-    flexDirection: 'column',
-    fontFamily: theme.typography.fontFamily,
-    fontSize: 12,
-  },
-  button: {
-    backgroundColor: 'transparent',
-    border: 'none',
-    position: 'absolute',
-    right: '0',
-    cursor: 'pointer',
-  },
-  textarea: {
-    width: '100%',
-    minHeight: 400,
-    overflow: 'scroll',
-    whiteSpace: 'nowrap',
-    height: 'calc(100% - 180px)',
-    marginTop: theme.spacing(2),
+
+  sidebar: {
+    'overflow': 'auto',
+
+    '& p': {
+      whiteSpace: 'nowrap',
+    },
   },
 }));

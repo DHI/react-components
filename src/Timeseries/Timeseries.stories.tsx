@@ -328,7 +328,7 @@ export const TimeseriesMain = () => {
     );
   }, []);
 
-  return <Timeseries dataSources={dataSources} token={token} />;
+  return token && <Timeseries dataSources={dataSources} token={token} title="TimeSeries" />;
 };
 
 export const eChartStandard = () => {
@@ -393,6 +393,19 @@ export const TreeViewStory = () => {
 
   const fetchTreeViewChildren = (group) => {
     setLoading(true);
+
+    if (group.slice(-1) === '/') {
+      fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+        (res) => {
+          const children = addChildren(res, group);
+          list.map((item) => recursive(item, group, children));
+
+          setList(list);
+          setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
+        },
+        (error) => console.log(error),
+      );
+    }
 
     fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
       (res) => {

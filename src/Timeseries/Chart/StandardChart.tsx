@@ -1,7 +1,8 @@
 import ReactEcharts from 'echarts-for-react';
 import {
-  // LineChart,
   BarChart,
+  // LineChart,
+  ScatterChart,
 } from 'echarts/charts';
 import {
   // GridSimpleComponent,
@@ -22,30 +23,11 @@ import {
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import React, { useEffect, useState } from 'react';
-import { StandardChartData } from './types';
+import { StandardChartProps } from './types';
 
-echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
+echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, ScatterChart, CanvasRenderer]);
 
-interface Props {
-  /**
-   * A class name to update the outter div
-   */
-  className?: string;
-  /**
-   * The options to draw the charts
-   */
-  options: StandardChartData;
-  /**
-   * A function to set Height and Width of the Graph
-   */
-  chartHeightFunc: () => number;
-  /**
-   * Set debug mode
-   */
-  debug?: boolean;
-}
-
-export const StandardChart = ({ className, options, chartHeightFunc, debug }: Props) => {
+export const StandardChart = ({ className, options, chartHeightFunc, debug }: StandardChartProps) => {
   const [chartSize, setChartSize] = useState({ width: '100%', height: chartHeightFunc() });
 
   useEffect(() => {

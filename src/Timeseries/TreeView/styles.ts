@@ -12,6 +12,7 @@ export const TreeViewStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'space-evenly',
     position: 'relative',
     alignItems: 'center',
+    fontSize: '0.8rem',
   },
   checkbox: {
     padding: '6px 4px',
