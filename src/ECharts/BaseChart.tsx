@@ -1,23 +1,6 @@
 import ReactEcharts from 'echarts-for-react';
-import { BarChart, LineChart, PieChart, RadarChart, ScatterChart } from 'echarts/charts';
-import { GridComponent, TitleComponent, TooltipComponent } from 'echarts/components';
-import * as echarts from 'echarts/core';
-import { CanvasRenderer } from 'echarts/renderers';
 import React, { useEffect, useState } from 'react';
 import { StandardChartProps } from './types';
-
-//  move this out
-echarts.use([
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  BarChart,
-  ScatterChart,
-  LineChart,
-  PieChart,
-  RadarChart,
-  CanvasRenderer,
-]);
 
 export const BaseChart = (props: StandardChartProps) => {
   const { className, options, chartHeightFunc, debug } = props;
