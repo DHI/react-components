@@ -1,14 +1,10 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import React, { useEffect, useState } from 'react';
-import { fetchTimeseriesFullNames, fetchTimeseriesValues, fetchToken } from '../DataServices/DataServices';
-import DHITheme from '../theme';
-import { recursive } from '../utils/Utils';
-import { StandardChart } from './Chart/StandardChart';
+import { fetchTimeseriesValues, fetchToken } from '../DataServices/DataServices';
 import { ChartPlotly } from './ChartPlotly/ChartPlotly';
 import { ChartPlotlyPlotData } from './ChartPlotly/types';
 import Timeseries from './Timeseries/Timeseries';
 import { TimeseriesExporter } from './TimeseriesExporter/TimeseriesExporter';
-import TreeView from './TreeView/TreeView';
 
 export default {
   title: 'Timeseries Components',
@@ -303,7 +299,7 @@ export const TimeseriesExporterStory = () => {
   );
 };
 
-export const TimeseriesMain = () => {
+export const TimeseriesExplorer = () => {
   const host = process.env.ENDPOINT_URL;
   const [token, setToken] = useState('');
 
@@ -329,157 +325,4 @@ export const TimeseriesMain = () => {
   }, []);
 
   return token && <Timeseries dataSources={dataSources} token={token} title="TimeSeries" />;
-};
-
-export const eChartStandard = () => {
-  const nameTextStyle = {
-    fontSize: 20,
-    padding: 20,
-  };
-
-  const options = {
-    title: {
-      text: 'ECharts Standard example',
-      textStyle: {
-        color: DHITheme.palette.primary.main,
-        fontSize: 20,
-        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-      },
-    },
-    tooltip: {},
-    legend: {
-      data: ['Bench Levels', 'Time'],
-    },
-    xAxis: {
-      name: 'Time',
-      nameLocation: 'center',
-      nameTextStyle,
-      data: ['Oct 31', 'Nov 1', 'Nov 2', 'Nov 3', 'Nov 4', 'Nov 5'],
-    },
-    yAxis: {
-      name: 'Bench Levels',
-      nameLocation: 'center',
-      nameTextStyle,
-    },
-    series: [
-      {
-        name: 'Bench Levels',
-        type: 'bar',
-        data: [5, 20, 36, 10, 10, 20],
-      },
-      {
-        name: 'Time',
-        type: 'line',
-        data: [2, 1, 10, 0, 0, 18],
-      },
-    ],
-  };
-
-  return <StandardChart className="standard_chat" chartHeightFunc={() => window.innerHeight * 0.4} options={options} />;
-};
-
-export const TreeViewStory = () => {
-  const host = process.env.ENDPOINT_URL;
-  const [token, setToken] = useState('');
-  const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const dataSources = [
-    {
-      host: 'https://domainservices.dhigroup.com',
-      connection: 'mclite-timeseries',
-    },
-  ];
-
-  const fetchTreeViewChildren = (group) => {
-    setLoading(true);
-
-    if (group.slice(-1) === '/') {
-      fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
-        (res) => {
-          const children = addChildren(res, group);
-          list.map((item) => recursive(item, group, children));
-
-          setList(list);
-          setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
-        },
-        (error) => console.log(error),
-      );
-    }
-
-    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
-      (res) => {
-        const children = addChildren(res, group);
-        list.map((item) => recursive(item, group, children));
-
-        setList(list);
-        setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
-      },
-      (error) => console.log(error),
-    );
-  };
-
-  const addChildren = (childrenList, group) => {
-    return childrenList.map((child) => ({
-      value: child,
-      label: child.replace(group, ''),
-      ...(child.slice(-1) === '/' && {
-        children: [
-          {
-            value: '',
-            label: '',
-          },
-        ],
-      }),
-    }));
-  };
-
-  const fetchOnCheck = (checked) => {
-    console.log({ checked });
-  };
-
-  useEffect(() => {
-    fetchToken(host, {
-      id: process.env.USERUSER,
-      password: process.env.USERPASSWORD,
-    }).subscribe(
-      (res) => {
-        setToken(res.accessToken.token);
-
-        fetchTimeseriesFullNames(dataSources, res.accessToken.token, '').subscribe(
-          (res) => {
-            const data = res.map((d) => ({
-              value: d,
-              label: d,
-              topLevel: true,
-              ...(d.slice(-1) === '/' && {
-                children: [
-                  {
-                    value: '',
-                    label: '',
-                  },
-                ],
-              }),
-            }));
-
-            setList(data);
-          },
-          (err) => console.log(err),
-        );
-      },
-      (err) => {
-        console.log(err);
-      },
-    );
-  }, []);
-
-  return (
-    list && (
-      <TreeView
-        list={list}
-        onExpand={(expand) => fetchTreeViewChildren(expand)}
-        onChecked={(checked) => fetchOnCheck(checked)}
-      />
-    )
-  );
 };

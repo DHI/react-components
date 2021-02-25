@@ -6,6 +6,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import React, { useEffect, useState } from 'react';
 import { StandardChartProps } from './types';
 
+//  move this out
 echarts.use([
   TitleComponent,
   TooltipComponent,
@@ -18,7 +19,7 @@ echarts.use([
   CanvasRenderer,
 ]);
 
-export const StandardChart = ({ className, options, chartHeightFunc, debug }: StandardChartProps) => {
+export const BaseChart = ({ className, options, chartHeightFunc, debug }: StandardChartProps) => {
   const [chartSize, setChartSize] = useState({ width: '100%', height: chartHeightFunc() });
 
   useEffect(() => {

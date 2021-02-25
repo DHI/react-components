@@ -6,7 +6,6 @@ import { fetchTimeseriesFullNames, fetchTimeseriesValues } from '../../DataServi
 import { DataSource } from '../../DataServices/types';
 import DHITheme from '../../theme';
 import { recursive } from '../../utils/Utils';
-import { StandardChart } from '../Chart/StandardChart';
 import TreeView from '../TreeView/TreeView';
 import { TimeseriesStyles } from './styles';
 
@@ -182,7 +181,7 @@ const Timeseries: FC<TimeseriesProps> = ({
       const series = res.map((item) => ({
         name: item.id.substring(item.id.lastIndexOf('/') + 1),
         data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
-        type: 'bar',
+        type: 'line',
       }));
 
       const updatedOptions = {
