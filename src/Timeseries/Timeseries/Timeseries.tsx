@@ -1,21 +1,14 @@
 import { Grid, Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { format } from 'date-fns';
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesFullNames, fetchTimeseriesValues } from '../../DataServices/DataServices';
-import { DataSource } from '../../DataServices/types';
+import { BaseChart } from '../../ECharts/BaseChart';
 import DHITheme from '../../theme';
 import { recursive } from '../../utils/Utils';
 import TreeView from '../TreeView/TreeView';
 import { TimeseriesStyles } from './styles';
-
-export interface TimeseriesProps {
-  token: string;
-  dataSources: DataSource[];
-  title: string;
-  legendPosition?: 'left' | 'right';
-  legendPositionOffset?: number;
-}
+import { TimeseriesProps } from './types';
 
 const NAME_TEXT_STYLE = {
   padding: 12,
@@ -33,8 +26,8 @@ const DATA_ZOOM = [
 ];
 
 const GRID = {
-  bottom: 85,
-  right: 30,
+  bottom: 100,
+  top: 80,
 };
 
 const TEXT_STYLE = {
@@ -73,13 +66,7 @@ const LEGEND_STYLE = {
   shadowOffsetY: 3,
 };
 
-const Timeseries: FC<TimeseriesProps> = ({
-  token,
-  dataSources,
-  title,
-  legendPosition = 'right',
-  legendPositionOffset,
-}) => {
+const Timeseries = ({ token, dataSources, title, legendPosition = 'right', legendPositionOffset }: TimeseriesProps) => {
   const classes = TimeseriesStyles();
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -93,7 +80,7 @@ const Timeseries: FC<TimeseriesProps> = ({
     dataZoom: DATA_ZOOM,
     legend: {
       ...LEGEND_STYLE,
-      top: legendPosition === 'left' ? 100 : 20,
+      top: legendPosition === 'left' ? 90 : 35,
       left: legendPosition === 'left' ? legendPositionOffset ?? 150 : undefined,
       right: legendPosition === 'right' ? legendPositionOffset ?? 60 : undefined,
       align: legendPosition,
@@ -127,20 +114,20 @@ const Timeseries: FC<TimeseriesProps> = ({
     );
   };
 
-  const fetchTreeViewChildren = (group) => {
-    setLoading(true);
+  // const fetchTreeViewChildren = (group) => {
+  //   setLoading(true);
 
-    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
-      (res) => {
-        const children = addChildren(res, group);
-        list.map((item) => recursive(item, group, children));
+  //   fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+  //     (res) => {
+  //       const children = addChildren(res, group);
+  //       list.map((item) => recursive(item, group, children));
 
-        setList(list);
-        setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
-      },
-      (error) => console.log(error),
-    );
-  };
+  //       setList(list);
+  //       setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
+  //     },
+  //     (error) => console.log(error),
+  //   );
+  // };
 
   const addChildren = (childrenList, group) => {
     return childrenList.map((child) => ({
@@ -208,6 +195,8 @@ const Timeseries: FC<TimeseriesProps> = ({
     fetchTopLevelTreeView();
   }, []);
 
+  console.log({ options });
+
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -220,10 +209,11 @@ const Timeseries: FC<TimeseriesProps> = ({
         </Grid>
         <Grid item xs={12} sm={9}>
           {options.series.length > 0 ? (
-            <StandardChart
+            <BaseChart
               className="standard_chat"
               chartHeightFunc={() => window.innerHeight * 0.4}
               options={options}
+              notMerge
             />
           ) : (
             <>

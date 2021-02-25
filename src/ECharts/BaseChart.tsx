@@ -19,7 +19,8 @@ echarts.use([
   CanvasRenderer,
 ]);
 
-export const BaseChart = ({ className, options, chartHeightFunc, debug }: StandardChartProps) => {
+export const BaseChart = (props: StandardChartProps) => {
+  const { className, options, chartHeightFunc, debug } = props;
   const [chartSize, setChartSize] = useState({ width: '100%', height: chartHeightFunc() });
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export const BaseChart = ({ className, options, chartHeightFunc, debug }: Standa
   return (
     options?.series && (
       <div className={className} style={{ display: 'flex', width: '100%' }}>
-        <ReactEcharts style={{ width: chartSize.width, height: chartSize.height }} option={options} />
+        <ReactEcharts style={{ width: chartSize.width, height: chartSize.height }} option={options} {...props} />
       </div>
     )
   );

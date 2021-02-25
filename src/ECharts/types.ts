@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 export interface StandardChartData {
   series: any[];
   dataset?: any;
@@ -26,4 +28,26 @@ export interface StandardChartProps {
    * Set debug mode
    */
   debug?: boolean;
+  /**
+   * Not merge data, default is false
+   */
+  notMerge?: boolean;
+  /**
+   * Lazy update the data, default is false
+   */
+  lazyUpdate?: boolean;
+  /**
+   * echarts theme config, can be:
+   * 1. theme name string
+   * 2. theme object
+   */
+  theme?: string | Record<string, any>;
+  /**
+   * `style` for container
+   */
+  style?: CSSProperties;
+  /**
+   * Display loading on data change
+   */
+  showLoading?: boolean;
 }
