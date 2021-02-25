@@ -22,6 +22,9 @@ const DATA_ZOOM = [
   },
   {
     type: 'slider',
+    height: 40,
+    bottom: 10,
+    labelFormatter: (value) => format(value, 'dd MMM yyyy'),
   },
 ];
 
@@ -38,22 +41,25 @@ const TEXT_STYLE = {
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 };
 
+const AXIS_LABEL = {
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontSize: 12,
+  color: DHITheme.palette.primary.main,
+};
+
 const X_AXIS = {
   name: 'Time',
   nameLocation: 'center',
   nameTextStyle: NAME_TEXT_STYLE,
   min: 'dataMin',
-  axisLabel: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    fontSize: 15,
-    color: DHITheme.palette.primary.main,
-  },
+  axisLabel: AXIS_LABEL,
 };
 
 const Y_AXIS = {
   name: 'Bench Levels',
   nameLocation: 'center',
   nameTextStyle: NAME_TEXT_STYLE,
+  axisLabel: AXIS_LABEL,
 };
 
 const LEGEND_STYLE = {
@@ -114,21 +120,6 @@ const Timeseries = ({ token, dataSources, title, legendPosition = 'right', legen
     );
   };
 
-  // const fetchTreeViewChildren = (group) => {
-  //   setLoading(true);
-
-  //   fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
-  //     (res) => {
-  //       const children = addChildren(res, group);
-  //       list.map((item) => recursive(item, group, children));
-
-  //       setList(list);
-  //       setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
-  //     },
-  //     (error) => console.log(error),
-  //   );
-  // };
-
   const addChildren = (childrenList, group) => {
     return childrenList.map((child) => ({
       value: child,
@@ -178,6 +169,13 @@ const Timeseries = ({ token, dataSources, title, legendPosition = 'right', legen
           axisLabel: {
             ...options.xAxis.axisLabel,
             formatter: (value) => format(value, 'dd MMM yyyy'),
+          },
+        },
+        yAxis: {
+          ...options.yAxis,
+          axisLabel: {
+            ...options.yAxis.axisLabel,
+            formatter: (value) => value,
           },
         },
         legend: {
