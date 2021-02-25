@@ -72,7 +72,13 @@ const LEGEND_STYLE = {
   shadowOffsetY: 3,
 };
 
-const Timeseries = ({ token, dataSources, title, legendPosition = 'right', legendPositionOffset }: TimeseriesProps) => {
+const TimeseriesExplorer = ({
+  token,
+  dataSources,
+  title,
+  legendPosition = 'right',
+  legendPositionOffset,
+}: TimeseriesProps) => {
   const classes = TimeseriesStyles();
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -234,4 +240,4 @@ const Timeseries = ({ token, dataSources, title, legendPosition = 'right', legen
   );
 };
 
-export default Timeseries;
+export { TimeseriesExplorer, TimeseriesProps };
