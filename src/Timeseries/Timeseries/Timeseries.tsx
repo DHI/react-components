@@ -160,6 +160,7 @@ const Timeseries = ({ token, dataSources, title, legendPosition = 'right', legen
         name: item.id.substring(item.id.lastIndexOf('/') + 1),
         data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
         type: 'line',
+        symbol: 'diamond',
       }));
 
       const updatedOptions = {
