@@ -329,6 +329,21 @@ const toISOLocal = (d: Date) => {
   )}.${zz(d.getMilliseconds())}`;
 };
 
+/**
+ * A recursive function that will add a children property into the object when it matches the current obj.value
+ * @param obj Object where the recursive function will look for its property
+ * @param name Name of the value to match the current loop
+ * @param children object that will be added
+ */
+const recursive = (obj: any, name: string, children: any) => {
+  if (obj.value === name && !obj.fetched) {
+    obj.children = children;
+    obj.fetched = true;
+  }
+
+  Array.isArray(obj.children) && obj.children.map((obj) => recursive(obj, name, children));
+};
+
 export {
   dataObjectToArray,
   getObjectProperty,
@@ -347,4 +362,5 @@ export {
   tzToUtc,
   toISOLocal,
   convertServerTimeToLocalTime,
+  recursive,
 };

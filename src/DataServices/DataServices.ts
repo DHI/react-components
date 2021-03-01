@@ -122,6 +122,39 @@ const fetchTimeseriesByGroup = (dataSources: DataSource[], token: string) => {
   return forkJoin(requests).pipe(tap((ts) => console.log('got group names', ts)));
 };
 
+/**
+ * /api/timeseries/{connectionId}/fullnames
+ * Gets a list of time series full-name identifiers.
+ * @param dataSources connectionId is required
+ * @param token
+ */
+const fetchTimeseriesFullNames = (dataSources: DataSource[], token: string, group: any) => {
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
+
+  const requests = dataSourcesArray.flatMap((source) =>
+    fetchUrl(
+      `${source.host}/api/timeseries/${source.connection}/fullnames?group=${source.group || group || ''};nonrecursive`,
+      {
+        method: 'GET',
+        additionalHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    ).pipe(
+      tap(
+        (res) => {
+          console.log('fetch full names: ', res);
+        },
+        (error) => {
+          console.log(error);
+        },
+      ),
+    ),
+  );
+
+  return forkJoin(requests).pipe(map((ts) => ts.flat()));
+};
+
 // ACCOUNTS
 // Could be an account name or `me`.
 const fetchUserGroups = (host: string, token: string) =>
@@ -671,6 +704,7 @@ export {
   deleteUserGroup,
   fetchFeatureCollectionValues,
   fetchTimeseriesByGroup,
+  fetchTimeseriesFullNames,
   fetchMapAnimationFiles,
   fetchMapStylePalette,
   fetchScenario,
