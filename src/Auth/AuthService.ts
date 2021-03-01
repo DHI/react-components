@@ -2,8 +2,9 @@ import { fetchAccount, fetchToken } from '../DataServices/DataServices';
 import { Form, OtpInfo, Token, User } from './types';
 
 export default class AuthService {
-  host: string;
-  constructor(host: string) {
+  host: string | string[];
+
+  constructor(host: string | string[]) {
     this.host = host;
   }
 
@@ -13,57 +14,107 @@ export default class AuthService {
     onSuccess: (user: User, token: Token) => void,
     onError: (err: string) => void,
   ) => {
-    fetchToken(this.host, {
-      id: form.id,
-      password: form.password,
-      otp: form.otp,
-      otpAuthenticator: form.otpAuthenticator,
-    }).subscribe(
-      (response) => {
-        if ((response as OtpInfo).otpRequired && !form.otp) {
-          onOtpRequired(response as OtpInfo);
-        } else {
-          fetchAccount(this.host, response.accessToken.token, 'me').subscribe(
-            (user) => {
-              const loggedInUser: User = {
-                ...user,
-                roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
-                metadata: user.metadata ? user.metadata : {},
-              };
+    if (Array.isArray(this.host)) {
+      let firstResponse;
+      const accessTokenList = [];
 
-              this.setSession(response, loggedInUser, form.rememberMe);
+      this.host.forEach((host, index) => {
+        fetchToken(host, {
+          id: form.id,
+          password: form.password,
+          otp: form.otp,
+          otpAuthenticator: form.otpAuthenticator,
+        }).subscribe(
+          (response) => {
+            if ((response as OtpInfo).otpRequired && !form.otp) {
+              onOtpRequired(response as OtpInfo);
+            } else {
+              fetchAccount(host, response.accessToken.token, 'me').subscribe(
+                (user) => {
+                  const loggedInUser: User = {
+                    ...user,
+                    roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
+                    metadata: user.metadata ? user.metadata : {},
+                  };
 
-              if (onSuccess != null) {
-                onSuccess(loggedInUser, response);
-              }
-            },
-            (err) => {
-              if (onError != null) {
-                onError(err);
-              }
-            },
-          );
-        }
-      },
-      (error) => onError(error),
-    );
+                  if (index === 0) {
+                    this.setSession(response, loggedInUser, form.rememberMe);
+                    firstResponse = response;
+
+                    if (onSuccess != null) {
+                      onSuccess(loggedInUser, response);
+                    }
+                  } else {
+                    accessTokenList.push({ ...response, host });
+                    this.setSession(firstResponse, loggedInUser, form.rememberMe, accessTokenList);
+                  }
+                },
+                (err) => {
+                  if (onError != null) {
+                    onError(err);
+                  }
+                },
+              );
+            }
+          },
+          (error) => onError(error),
+        );
+      });
+    } else {
+      fetchToken(this.host, {
+        id: form.id,
+        password: form.password,
+        otp: form.otp,
+        otpAuthenticator: form.otpAuthenticator,
+      }).subscribe(
+        (response) => {
+          if ((response as OtpInfo).otpRequired && !form.otp) {
+            onOtpRequired(response as OtpInfo);
+          } else {
+            fetchAccount(this.host as string, response.accessToken.token, 'me').subscribe(
+              (user) => {
+                const loggedInUser: User = {
+                  ...user,
+                  roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
+                  metadata: user.metadata ? user.metadata : {},
+                };
+
+                this.setSession(response, loggedInUser, form.rememberMe);
+
+                if (onSuccess != null) {
+                  onSuccess(loggedInUser, response);
+                }
+              },
+              (err) => {
+                if (onError != null) {
+                  onError(err);
+                }
+              },
+            );
+          }
+        },
+        (error) => onError(error),
+      );
+    }
   };
 
   // Get user details in local storage
   getSession = () => {
     const storage = localStorage.getItem('accessToken') != null ? localStorage : sessionStorage;
     const userStorage = storage.getItem('user');
+    const accessTokenList = storage.getItem('accessTokenList');
 
     return {
       accessToken: storage.getItem('accessToken'),
       refreshToken: storage.getItem('refreshToken'),
       user: userStorage ? JSON.parse(userStorage) : null,
       expiration: storage.getItem('expiration'),
+      accessTokenList: accessTokenList ? JSON.parse(accessTokenList) : null,
     };
   };
 
   // Sets user details in localStorage
-  setSession = (authResult: Token, user: User, useLocalStorage: boolean) => {
+  setSession = (authResult: Token, user: User, useLocalStorage: boolean, list?: any) => {
     // Set the time that the access token will expire at
     // const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
     const storage = useLocalStorage ? localStorage : sessionStorage;
@@ -75,6 +126,10 @@ export default class AuthService {
     storage.setItem('user', JSON.stringify(user));
 
     storage.setItem('expiration', authResult.accessToken.expiration);
+
+    if (list) {
+      storage.setItem('accessTokenList', JSON.stringify(list));
+    }
   };
 
   // checks if the user is authenticated
@@ -106,5 +161,6 @@ export default class AuthService {
     storage.removeItem('refreshToken');
     storage.removeItem('user');
     storage.removeItem('expiration');
+    storage.removeItem('accessTokenList');
   };
 }
