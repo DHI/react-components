@@ -257,12 +257,18 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
   const hour = Math.floor(difference / 60);
   const minute = Math.floor(difference - hour * 60);
 
-  if (hour === 0 && minute === 0) {
-    return `<1m`;
-  } else if (isNaN(difference)) {
+  if (isNaN(difference)) {
     return '';
+  }
+
+  if (hour === 0 && minute === 0) {
+    return '<1m';
+  } else if (hour !== 0) {
+    const minutes = minute - hour * 60;
+
+    return `${hour}h ${minutes < 10 ? '0' : ''}${minutes}m`;
   } else {
-    return `${hour}h ${minute}m`;
+    return `${minute}m`;
   }
 };
 
@@ -323,6 +329,21 @@ const toISOLocal = (d: Date) => {
   )}.${zz(d.getMilliseconds())}`;
 };
 
+/**
+ * A recursive function that will add a children property into the object when it matches the current obj.value
+ * @param obj Object where the recursive function will look for its property
+ * @param name Name of the value to match the current loop
+ * @param children object that will be added
+ */
+const recursive = (obj: any, name: string, children: any) => {
+  if (obj.value === name && !obj.fetched) {
+    obj.children = children;
+    obj.fetched = true;
+  }
+
+  Array.isArray(obj.children) && obj.children.map((obj) => recursive(obj, name, children));
+};
+
 export {
   dataObjectToArray,
   getObjectProperty,
@@ -341,4 +362,5 @@ export {
   tzToUtc,
   toISOLocal,
   convertServerTimeToLocalTime,
+  recursive,
 };

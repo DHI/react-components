@@ -1,5 +1,5 @@
 import { VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { format } from 'date-fns';
+import { differenceInMinutes, format } from 'date-fns';
 import React from 'react';
 import StatusCell from './StatusCell';
 
@@ -12,8 +12,34 @@ export const GroupCellContent = (props: any) => (
 export const Cell = (props: any) => {
   if (props.column.name === 'status') {
     return (
-      <td style={{ borderBottom: '1px solid rgba(224, 224, 224, 1)', paddingLeft: 10 }}>
+      <td className="MuiTableCell-root">
         <StatusCell {...props} />
+      </td>
+    );
+  }
+
+  if (props.column.name === 'delay') {
+    const { requested, started } = props.row;
+
+    if (!requested && !started) {
+      return <td className="MuiTableCell-root"></td>;
+    }
+
+    const difference = differenceInMinutes(new Date(props.row.requested), new Date(props.row.started));
+    const hour = Math.floor(difference / 60);
+    const minute = Math.floor(difference - hour * 60);
+
+    let delayColor = '';
+
+    if (minute > 30) {
+      delayColor = 'darkorange';
+    } else if (minute > 60) {
+      delayColor = ' red';
+    }
+
+    return (
+      <td className="MuiTableCell-root" style={{ color: delayColor }}>
+        {props.value}
       </td>
     );
   }

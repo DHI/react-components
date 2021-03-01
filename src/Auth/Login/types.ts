@@ -4,7 +4,7 @@ interface LoginProps {
   /** style used in the component */
   style?: any;
   /** Authentication server */
-  host: string;
+  host: string | string[];
   /** Callback on successful login */
   onSuccess?: (user: User, token: Token) => void;
   /** Callback on failed login */
