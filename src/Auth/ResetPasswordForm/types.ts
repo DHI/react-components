@@ -1,6 +1,6 @@
 interface ResetPasswordFormProps {
   /** Authentication server */
-  host: string;
+  host: string | string[];
   /** Action handler when back to login link clicked */
   onBackToLogin?: (value: boolean) => void;
   /** Action handler when reset password button clicked */
