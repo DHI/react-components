@@ -24,7 +24,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import AuthService from '../../Auth/AuthService';
 import Loading from '../../common/Loading/Loading';
 import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
-import { calcTimeDifference, convertLocalTime, convertServerTimeToLocalTime } from '../../utils/Utils';
+import { calcTimeDifference, convertServerTimeToLocalTime, zonedTimeFromUTC } from '../../utils/Utils';
 import { DateFilter } from './helpers/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
 import JobDetail from './helpers/JobDetail';
@@ -287,10 +287,10 @@ const JobList = (props: JobListProps) => {
         ? {
             ...job,
             started:
-              job.started || dataUpdated.Started ? convertLocalTime(dataUpdated.Started, timeZone, dateTimeFormat) : '',
+              job.started || dataUpdated.Started ? zonedTimeFromUTC(dataUpdated.Started, timeZone, dateTimeFormat) : '',
             finished:
               job.finished || dataUpdated.Finished
-                ? convertLocalTime(dataUpdated.Finished, timeZone, dateTimeFormat)
+                ? zonedTimeFromUTC(dataUpdated.Finished, timeZone, dateTimeFormat)
                 : '',
             hostId: dataUpdated.HostId,
             status: dataUpdated.Status,
@@ -298,10 +298,11 @@ const JobList = (props: JobListProps) => {
               job.duration ||
               (dataUpdated.Started &&
                 dataUpdated.Finished &&
-                calcTimeDifference(dataUpdated.Started.split('+')[0], dataUpdated.Finished.split('+')[0])),
+                calcTimeDifference(dataUpdated.split('.')[0], dataUpdated.Finished).split('.')[0]),
             delay:
               job.delay ||
-              (dataUpdated.Started && calcTimeDifference(dataUpdated.Requested, dataUpdated.Started.split('+')[0])),
+              (dataUpdated.Started &&
+                calcTimeDifference(dataUpdated.Requested.split('.')[0], dataUpdated.Started.split('.')[0])),
             progress: dataUpdated.Progress || 0,
           }
         : job,
@@ -324,7 +325,7 @@ const JobList = (props: JobListProps) => {
       ScenarioId: dataAdded.Parameters?.ScenarioId,
       priority: dataAdded.Priority,
       requestedUtc: dataAdded.Requested,
-      requested: dataAdded.Requested ? convertLocalTime(dataAdded.Requested, timeZone, dateTimeFormat) : '',
+      requested: dataAdded.Requested ? zonedTimeFromUTC(dataAdded.Requested, timeZone, dateTimeFormat) : '',
       status: dataAdded.Status,
       connectionJobLog: dataAdded.ConnectionJobLog || '',
       progress: dataAdded.Progress || 0,
