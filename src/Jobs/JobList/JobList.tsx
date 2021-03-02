@@ -23,6 +23,7 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import React, { useEffect, useRef, useState } from 'react';
 import AuthService from '../../Auth/AuthService';
 import Loading from '../../common/Loading/Loading';
+import { DefaultColumnsTypeProvider } from '../../common/Table';
 import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
 import { calcTimeDifference, convertLocalTime, convertServerTimeToLocalTime } from '../../utils/Utils';
 import { DateFilter } from './helpers/DateFilter';
@@ -78,6 +79,8 @@ const JobList = (props: JobListProps) => {
   const latestJobs = useRef(null);
 
   latestJobs.current = jobsData;
+
+  const [defaultColumnsNameArray] = useState<string[]>(DEFAULT_COLUMNS.map((column) => column.name));
 
   const [tableGroupColumnExtension] = useState([
     { columnName: 'requested', showWhenGrouped: true },
@@ -412,6 +415,8 @@ const JobList = (props: JobListProps) => {
             cellComponent={Cell}
             columnExtensions={tableColumnExtensions}
           />
+
+          <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
 
           <TableHeaderRow showSortingControls />
           <TableFilterRow />

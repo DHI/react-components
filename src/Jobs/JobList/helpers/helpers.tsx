@@ -1,4 +1,5 @@
 import { VirtualTable } from '@devexpress/dx-react-grid-material-ui';
+import { Tooltip, Typography, Zoom } from '@material-ui/core';
 import { differenceInMinutes, format } from 'date-fns';
 import React from 'react';
 import StatusCell from './StatusCell';
@@ -39,7 +40,11 @@ export const Cell = (props: any) => {
 
     return (
       <td className="MuiTableCell-root" style={{ color: delayColor }}>
-        {props.value}
+        <Tooltip title={props.value} placement="bottom-start" TransitionComponent={Zoom}>
+          <Typography noWrap variant="body2">
+            {props.value}
+          </Typography>
+        </Tooltip>
       </td>
     );
   }
