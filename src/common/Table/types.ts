@@ -83,9 +83,13 @@ export interface PopupEditingProps {
 
 export interface PopupProps {
   /**
-   * Row with the usergroup data
+   * Row with data
    */
   row: any;
+  /**
+   * Rows of data
+   */
+  rows: any;
   /**
    * Function called to change a field
    */

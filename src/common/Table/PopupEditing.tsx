@@ -146,6 +146,7 @@ const PopupEditing = React.memo(
             return (
               <Popup
                 open={open}
+                rows={rows}
                 row={editedRow}
                 onChange={processValueChange}
                 onListChange={processListChange}
