@@ -25,7 +25,7 @@ export const Cell = (props: any) => {
       return <td className="MuiTableCell-root"></td>;
     }
 
-    const difference = differenceInMinutes(new Date(props.row.requested), new Date(props.row.started));
+    const difference = differenceInMinutes(new Date(props.row.started), new Date(props.row.requested));
     const hour = Math.floor(difference / 60);
     const minute = Math.floor(difference - hour * 60);
 

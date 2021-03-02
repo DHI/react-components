@@ -298,7 +298,7 @@ const JobList = (props: JobListProps) => {
               job.duration ||
               (dataUpdated.Started &&
                 dataUpdated.Finished &&
-                calcTimeDifference(dataUpdated.split('.')[0], dataUpdated.Finished).split('.')[0]),
+                calcTimeDifference(dataUpdated.Started.split('.')[0], dataUpdated.Finished.split('.')[0])),
             delay:
               job.delay ||
               (dataUpdated.Started &&
