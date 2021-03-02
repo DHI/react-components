@@ -1,5 +1,5 @@
 import { addHours, differenceInMinutes, parseISO } from 'date-fns';
-import { format, toDate, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
+import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
 import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
@@ -278,27 +278,10 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
  * @param timeZone 'Australia/Brisbane'
  * @param dateTimeFormat 'Date time format. 'yyyy-MM-dd HH:mm:ss'
  */
-const zonedTimeFromUTC = (date, timeZone, dateTimeFormat) =>
-  format(utcToZonedTime(date.replace('T', ' '), timeZone), dateTimeFormat);
+const zonedTimeFromUTC = (date, timeZone, dateTimeFormat) => {
+  date = `${date.replace('Z', '')}Z`;
 
-/**
- * Function to convert to local time.
- * @param date 2021-02-03T17:11:13.415297
- * @param timeZone 'Australia/Brisbane'
- * @param dateTimeFormat Date time format. 'yyyy-MM-dd HH:mm:ss'
- */
-const convertLocalTime = (date, timeZone, dateTimeFormat) => format(zonedTimeToUtc(date, timeZone), dateTimeFormat);
-
-/**
- * Function to convert to local time on the Job List component
- * when the page is refreshed with some updates from Signal R.
- * @param time for example: 2021-02-03T17:11:13.415297
- * @param dateTimeFormat Date time format. 'yyyy-MM-dd HH:mm:ss'
- */
-const convertServerTimeToLocalTime = (time, dateTimeFormat) => {
-  const timeConvertedToSydneyUTC = zonedTimeToUtc(time, 'Australia/Sydney');
-
-  return format(timeConvertedToSydneyUTC, dateTimeFormat);
+  return format(utcToZonedTime(date, timeZone), dateTimeFormat);
 };
 
 /**
@@ -358,9 +341,7 @@ export {
   uniqueId,
   calcTimeDifference,
   zonedTimeFromUTC,
-  convertLocalTime,
   tzToUtc,
   toISOLocal,
-  convertServerTimeToLocalTime,
   recursive,
 };

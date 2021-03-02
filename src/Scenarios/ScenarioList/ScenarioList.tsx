@@ -120,9 +120,9 @@ const ScenarioList = (props: ScenarioListProps) => {
       .reverse()
       .map((key) => (
         <div key={key}>
-          {showDate && buildDateArea(key)}
+          {showDate && key && buildDateArea(key)}
           <div>
-            {buildScenariosList(groupedScenarios[key])}
+            {key && buildScenariosList(groupedScenarios[key])}
             <Divider variant="inset" className={classes.divider} />
           </div>
         </div>

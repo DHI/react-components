@@ -406,24 +406,6 @@ const Scenarios = (props: ScenariosProps) => {
     // );
   };
 
-  // data Model from old Scenario component
-
-  // data:
-  // mooring:
-  //    berthName: "VIG Berth 2"
-  // __proto__: Object
-  // name: "My Scenario 10/02/2021 4:46:37 PM"
-  // startTime: "2021-02-10T16:46:37.7598785+11:00"
-  // vessel:
-  // vesselName: "MSC Pamela"
-  // __proto__: Object
-  // __proto__: Object
-  // dateTime: "2021-02-10T05:46:37.77549"
-  // id: "20210210054637-1190d916-9855-4c33-b54b-909b9ac73a2a"
-  // lastJobId: "e01d2ab6-f086-4f40-b515-86ada16bb74b"
-  // lastJobStatus: "Completed"
-  // version: "d8651e4f-db5c-4008-a550-cd0f8d501d8d"
-
   const connectToSignalR = async () => {
     const auth = new AuthService(process.env.ENDPOINT_URL);
     const session = auth.getSession();
