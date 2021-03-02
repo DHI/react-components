@@ -117,7 +117,7 @@ const Popup: React.FC<PopupProps> = ({
                   value={row.id || ''}
                   onChange={handleOnChange}
                   error={duplicatedId}
-                  helperText={duplicatedId && 'duplicated ID'}
+                  helperText={duplicatedId && 'Duplicated ID'}
                 />
               ) : (
                 <NoBorderTextField
