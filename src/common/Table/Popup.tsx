@@ -30,6 +30,7 @@ const NoBorderTextField = withStyles({
 
 const Popup: React.FC<PopupProps> = ({
   row,
+  rows,
   onChange,
   onListChange,
   onMetadataChange,
@@ -47,6 +48,7 @@ const Popup: React.FC<PopupProps> = ({
   const [error, setError] = useState<boolean>(false);
   const [passwordStrengthColor, setPasswordStrengthColor] = useState('red');
   const [passwordValid, setPasswordValid] = useState(true);
+  const [duplicatedId, setDuplicatedId] = useState(false);
 
   const endAdornment = (
     <InputAdornment position="end">
@@ -92,6 +94,14 @@ const Popup: React.FC<PopupProps> = ({
     updatePasswordStrengthIndicator(row.password as string);
   }, [row.password]);
 
+  const handleOnChange = (e) => {
+    const found = rows.some((item) => item.id === e.target.value);
+    setDuplicatedId(found);
+    setError(found);
+
+    onChange(e);
+  };
+
   return (
     <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{title || ''}</DialogTitle>
@@ -100,7 +110,15 @@ const Popup: React.FC<PopupProps> = ({
           <Grid item xs={12}>
             <FormGroup>
               {isNew ? (
-                <TextField margin="normal" name="id" label="ID" value={row.id || ''} onChange={onChange} />
+                <TextField
+                  margin="normal"
+                  name="id"
+                  label="ID"
+                  value={row.id || ''}
+                  onChange={handleOnChange}
+                  error={duplicatedId}
+                  helperText={duplicatedId && 'Duplicated ID'}
+                />
               ) : (
                 <NoBorderTextField
                   fullWidth
