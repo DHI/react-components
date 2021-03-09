@@ -2,7 +2,7 @@
 
 # React Components
 
-The React Components collection is a TypeScript based collection of components used across a range of application within DHI.
+The React Components collection is a TypeScript based collection of components used across a range of applications within DHI.
 
 The intention with this library is include functionality rich components and not so much shallow UI components.
 

@@ -1,31 +1,23 @@
 {
-  "include": [
-    "src",
-    "typings.d.ts",
-    ".eslintrc.js",
-    ".prettierrc.js"
-  ],
-  "compilerOptions": {
-    "module": "esnext",
-    "target": "ES6",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "importHelpers": true,
-    "declaration": true,
-    "sourceMap": true,
-    "rootDir": "./src",
-    "strict": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    // "baseUrl": "./",
-    "jsx": "react",
-    "esModuleInterop": true
-  }
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "ES6",
+        "lib": [
+            "dom",
+            "esnext"
+        ],
+        "importHelpers": true,
+        "declaration": true,
+        "sourceMap": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "noImplicitAny": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "jsx": "preserve",
+        "esModuleInterop": true
+    }
 }
