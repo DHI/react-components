@@ -2,7 +2,7 @@ name: CI
 on: 
   push:
     paths: 
-      - 'packages/react-components/**'
+      - 'packages/react-components-lab/**'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,21 +25,21 @@ jobs:
             nodeModules-
 
       - name: Install dependencies
-        run: cd packages/react-components && yarn install --frozen-lockfile
+        run: cd packages/react-components-lab && yarn install --frozen-lockfile
         env:
           CI: true
 
       - name: Lint
-        run: cd packages/react-components && yarn lint
+        run: cd packages/react-components-lab && yarn lint
         env:
           CI: true
 
       - name: Test
-        run: cd packages/react-components && yarn test --ci --coverage --maxWorkers=2
+        run: cd packages/react-components-lab && yarn test --ci --coverage --maxWorkers=2
         env:
           CI: true
 
       - name: Build
-        run: cd packages/react-components && yarn build
+        run: cd packages/react-components-lab && yarn build
         env:
           CI: true
