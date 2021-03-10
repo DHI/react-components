@@ -5,7 +5,13 @@ import { deleteJsonDocument, fetchJsonDocument, fetchJsonDocuments, postJsonDocu
 import AuthService from '../../Auth/AuthService';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { cancelJob, executeJob, fetchScenariosByDate, updateScenario } from '../../DataServices/DataServices';
+import {
+  cancelJob,
+  executeJob,
+  executeJobQuery,
+  fetchScenariosByDate,
+  updateScenario,
+} from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { checkCondition, getObjectProperty, setObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
@@ -125,6 +131,25 @@ const Scenarios = (props: ScenariosProps) => {
         });
 
         const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+
+        newScenarios.map((item) => {
+          const query = [
+            {
+              item: 'ScenarioId',
+              queryOperator: 'Any',
+              values: [item.fullName],
+            },
+          ];
+
+          const dataSources = {
+            host,
+            connection: jobConnection,
+          };
+
+          return executeJobQuery(dataSources, token, query).subscribe((res) => (item.data.lastJobId = res[0].data.id));
+        });
+
+        console.log({ newScenarios });
 
         setScenarios(newScenarios);
 
@@ -391,7 +416,11 @@ const Scenarios = (props: ScenariosProps) => {
     const job = JSON.parse(jobAdded.data);
     console.log({ job });
     console.log({ latestScenarios });
-    const updateScenario = latestScenarios.current.map((scenario) => scenario.fullName === job.Parameters.ScenarioId);
+    const updateScenario = latestScenarios.current.filter(
+      (scenario) => scenario.fullName === job.Parameters.ScenarioId,
+    );
+    console.log({ updateScenario });
+    // updateScenario.data.lastJobStatus = job.Status;
     //   scenario.fullName === job.Parameters.ScenarioId ? { ...scenario, lastJobStatus: job.Status } : { ...scenario },
     // );
     setScenarios([...latestScenarios.current, updateScenario]);
