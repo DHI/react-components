@@ -1,6 +1,8 @@
 name: CI
-on: [push]
-
+on: 
+  push:
+    paths: 
+      - packages/react-components/**
 jobs:
   build:
     runs-on: ubuntu-latest
