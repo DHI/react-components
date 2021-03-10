@@ -2,7 +2,7 @@
     "branches": [
         "add-lab"
     ],
-    "repositoryUrl": "https://github.com/DHI-GRAS/react-components",
+    "repositoryUrl": "https://github.com/DHI-GRAS/react-components-ts/tree/add-lab",
     "plugins": [
         "@semantic-release/commit-analyzer",
         "@semantic-release/release-notes-generator",
@@ -16,15 +16,15 @@
         [
             "@semantic-release/changelog",
             {
-                "changelogFile": "docs/CHANGELOG.md"
+                "changelogFile": "./docs/CHANGELOG.md"
             }
         ],
         [
             "@semantic-release/git",
             {
                 "assets": [
-                    "package.json",
-                    "docs/CHANGELOG.md"
+                    "./package.json",
+                    "./docs/CHANGELOG.md"
                 ],
                 "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
             }
