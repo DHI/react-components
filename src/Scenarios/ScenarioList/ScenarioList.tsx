@@ -75,7 +75,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               showMenu={showMenu}
               showStatus={showStatus}
               scenario={scenario}
-              status={checkStatus(scenario, status)}
+              status={checkStatus(scenario.data, status)}
               timeZone={timeZone}
             />
           </div>

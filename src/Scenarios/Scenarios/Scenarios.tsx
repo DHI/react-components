@@ -149,8 +149,6 @@ const Scenarios = (props: ScenariosProps) => {
           return executeJobQuery(dataSources, token, query).subscribe((res) => (item.data.lastJobId = res[0].data.id));
         });
 
-        console.log({ newScenarios });
-
         setScenarios(newScenarios);
 
         if (onScenariosReceived) {
@@ -206,7 +204,7 @@ const Scenarios = (props: ScenariosProps) => {
     ).subscribe((job) => {
       const newScenarios = scenarios.map((sce) =>
         sce.fullName === job.parameters.ScenarioId && job.status === 'InProgress'
-          ? { ...sce, lastJobId: job.id }
+          ? { ...sce, data: { ...sce.data, lastJobId: job.id } }
           : { ...sce },
       );
 
@@ -416,14 +414,20 @@ const Scenarios = (props: ScenariosProps) => {
     const job = JSON.parse(jobAdded.data);
     console.log({ job });
     console.log({ latestScenarios });
-    const updateScenario = latestScenarios.current.filter(
-      (scenario) => scenario.fullName === job.Parameters.ScenarioId,
+    const updateScenario = latestScenarios.current.map((scenario) =>
+      scenario.fullName === job.Parameters.ScenarioId && scenario.data.lastJobStatus !== 'Completed'
+        ? {
+            ...scenario,
+            data: {
+              ...scenario.data,
+              lastJobStatus: job.Status,
+            },
+          }
+        : scenario,
     );
     console.log({ updateScenario });
-    // updateScenario.data.lastJobStatus = job.Status;
-    //   scenario.fullName === job.Parameters.ScenarioId ? { ...scenario, lastJobStatus: job.Status } : { ...scenario },
-    // );
-    setScenarios([...latestScenarios.current, updateScenario]);
+
+    setScenarios(updateScenario);
 
     // postJsonDocuments(
     //   {
@@ -463,7 +467,7 @@ const Scenarios = (props: ScenariosProps) => {
 
           connection.on('JobUpdated', jobUpdated);
 
-          connection.invoke('AddJobFilter', 'wf-jobs', []);
+          connection.invoke('AddJobFilter', jobConnection, []);
           connection.invoke('AddJsonDocumentFilter', scenarioConnection, []);
         })
         .catch((e) => console.log('Connection failed: ', e));
