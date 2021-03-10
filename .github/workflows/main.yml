@@ -1,4 +1,4 @@
-name: CI
+name: CI - react-components
 on: 
   push:
     paths: 
