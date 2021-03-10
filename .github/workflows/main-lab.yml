@@ -34,12 +34,9 @@ jobs:
         env:
           CI: true
 
-      - name: Test
-        run: cd packages/react-components-lab && yarn test --ci --coverage --maxWorkers=2
+      - name: Semantic release
+        run: cd packages/react-components-lab && yarn run semantic-release
         env:
           CI: true
-
-      - name: Build
-        run: cd packages/react-components-lab && yarn build
-        env:
-          CI: true
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}

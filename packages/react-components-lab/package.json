@@ -2,7 +2,7 @@
     "version": "0.0.1",
     "license": "MIT",
     "main": "dist/index.js",
-    "name": "@dhi/react-components-lab",
+    "name": "@dhi-gras/test-the-lab-components-package",
     "author": "DHI",
     "module": "dist/react-components-lab-ts.esm.js",
     "typings": "dist/index.d.ts",
@@ -20,7 +20,8 @@
         "test": "tsdx test --passWithNoTests",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "prepare": "tsdx build"
+        "prepare": "tsdx build",
+        "semantic-release": "npx semantic-release"
     },
     "peerDependencies": {
         "react": ">=16"
@@ -30,6 +31,12 @@
     },
     "devDependencies": {
         "@babel/core": "^7.9.6",
+        "@semantic-release/npm": "^7.0.10",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/commit-analyzer": "^8.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.2.0",
+        "@semantic-release/release-notes-generator": "^9.0.2",
         "@storybook/addon-actions": "^6.1.14",
         "@storybook/addon-docs": "^6.1.14",
         "@storybook/addon-info": "^5.3.21",
