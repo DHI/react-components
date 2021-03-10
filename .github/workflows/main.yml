@@ -2,7 +2,7 @@ name: CI
 on: 
   push:
     paths: 
-      - packages/react-components/**
+      - 'packages/react-components/**'
 jobs:
   build:
     runs-on: ubuntu-latest
