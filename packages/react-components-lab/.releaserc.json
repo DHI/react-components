@@ -1,6 +1,6 @@
 {
     "branches": [
-        "master"
+        "add-lab"
     ],
     "repositoryUrl": "https://github.com/DHI-GRAS/react-components",
     "plugins": [
