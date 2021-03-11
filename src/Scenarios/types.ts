@@ -106,7 +106,7 @@ interface Scenario {
   data: any;
   permissions?: ScenarioJsonPermissions[];
   dateTime?: string;
-  lastJobId?: string;
+  lastJob?: any;
 }
 
 interface ScenarioJsonPermissions {

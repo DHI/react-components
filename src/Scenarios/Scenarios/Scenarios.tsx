@@ -129,36 +129,60 @@ const Scenarios = (props: ScenariosProps) => {
 
           return s;
         });
-
+        let updatedScenarios = [];
         const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+        const values = newScenarios.map((item) => item.fullName);
 
-        newScenarios.map((item) => {
-          const query = [
-            {
-              item: 'ScenarioId',
-              queryOperator: 'Any',
-              values: [item.fullName],
-            },
-          ];
+        const query = [
+          {
+            item: 'ScenarioId',
+            queryOperator: 'Any',
+            values,
+          },
+        ];
+        const dataSources = {
+          host,
+          connection: jobConnection,
+        };
 
-          const dataSources = {
-            host,
-            connection: jobConnection,
-          };
+        executeJobQuery(dataSources, token, query).subscribe((jobs) => {
+          const latestJobs = newScenarios.map((scenario) => filterToLastJob(scenario, jobs));
 
-          return executeJobQuery(dataSources, token, query).subscribe((res) => (item.data.lastJobId = res[0].data.id));
+          if (latestJobs) {
+            newScenarios.map((scenario) => {
+              return latestJobs.map(
+                (latestJob) =>
+                  latestJob?.data.parameters.ScenarioId === scenario.fullName &&
+                  updatedScenarios.push({ ...scenario, lastJob: latestJob.data }),
+              );
+            });
+          } else {
+            updatedScenarios = rawScenarios;
+          }
+
+          setScenarios(updatedScenarios);
         });
 
-        setScenarios(newScenarios);
-
         if (onScenariosReceived) {
-          onScenariosReceived(rawScenarios);
+          onScenariosReceived(updatedScenarios);
         }
       },
       (error) => {
         console.log(error);
       },
     );
+  };
+
+  const filterToLastJob = (scenario, jobs) => {
+    if (jobs) {
+      const latestJobByScenario = jobs
+        .filter((job) => job.data.parameters.ScenarioId === scenario.fullName)
+        .sort((a, b) => b.requested - a.requested);
+
+      return latestJobByScenario[0];
+    } else {
+      return null;
+    }
   };
 
   const onAddScenario = (newScenario: Scenario) => {
@@ -202,10 +226,10 @@ const Scenarios = (props: ScenariosProps) => {
       parameters,
       menuItem.hostGroup || hostGroup,
     ).subscribe((job) => {
+      console.log('Execute: ', job);
+
       const newScenarios = scenarios.map((sce) =>
-        sce.fullName === job.parameters.ScenarioId && job.status === 'InProgress'
-          ? { ...sce, data: { ...sce.data, lastJobId: job.id } }
-          : { ...sce },
+        sce.fullName === job.parameters.ScenarioId ? { ...sce, lastJob: job } : { ...sce },
       );
 
       setScenarios(newScenarios);
@@ -221,7 +245,7 @@ const Scenarios = (props: ScenariosProps) => {
         connection: menuItem.connection || jobConnection,
       },
       token,
-      scenario.lastJobId,
+      scenario.lastJob.id,
     ).subscribe(
       (res) =>
         res &&
@@ -250,6 +274,8 @@ const Scenarios = (props: ScenariosProps) => {
     setObjectProperty(clonedScenario.data, nameField, clonedNamed);
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);
+
+    console.log(JSON.stringify(clonedScenario.data));
 
     postJsonDocuments(
       {
@@ -381,7 +407,7 @@ const Scenarios = (props: ScenariosProps) => {
           return terminateDialog(
             {
               ...res,
-              lastJobId: scenario.lastJobId,
+              lastJobId: scenario.lastJob.id,
             },
             menuItem,
           );
@@ -415,12 +441,12 @@ const Scenarios = (props: ScenariosProps) => {
     console.log({ job });
     console.log({ latestScenarios });
     const updateScenario = latestScenarios.current.map((scenario) =>
-      scenario.fullName === job.Parameters.ScenarioId && scenario.data.lastJobStatus !== 'Completed'
+      scenario.fullName === job.Parameters.ScenarioId && scenario.lastJob.status !== 'Completed'
         ? {
             ...scenario,
-            data: {
-              ...scenario.data,
-              lastJobStatus: job.Status,
+            lastJob: {
+              ...scenario.lastJob,
+              status: job.Status,
             },
           }
         : scenario,

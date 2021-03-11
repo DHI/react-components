@@ -123,8 +123,8 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
 };
 
 const checkStatus = (scenario: Scenario, status: Status[]) => {
-  const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
-  const progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
+  const scenarioStatus = getObjectProperty(scenario, 'status');
+  const progress = Number(getObjectProperty(scenario, 'progress'));
 
   const currentStatus = {
     ...status.find((s) => s.name === scenarioStatus),
