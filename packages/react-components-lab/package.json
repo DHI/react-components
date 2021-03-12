@@ -2,14 +2,21 @@
     "version": "0.0.1",
     "license": "MIT",
     "main": "dist/index.js",
-    "name": "@dhi-gras/test-the-lab-components-package",
+    "name": "@dhi-gras/react-components-lab-test",
     "author": "DHI",
     "module": "dist/react-components-lab-ts.esm.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DHI-GRAS/react-components-ts.git"
+    },
     "typings": "dist/index.d.ts",
     "files": [
         "dist",
         "src"
     ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "engines": {
         "node": ">=10"
     },
@@ -25,9 +32,6 @@
     },
     "peerDependencies": {
         "react": ">=16"
-    },
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
     },
     "devDependencies": {
         "@babel/core": "^7.9.6",
