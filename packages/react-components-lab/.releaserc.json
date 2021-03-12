@@ -2,7 +2,7 @@
     "branches": [
         "add-lab"
     ],
-    "repositoryUrl": "https://github.com/DHI-GRAS/react-components-ts/tree/add-lab",
+    "repositoryUrl": "https://github.com/DHI-GRAS/react-components-ts",
     "plugins": [
         "@semantic-release/commit-analyzer",
         "@semantic-release/release-notes-generator",
