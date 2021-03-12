@@ -1,3 +1,10 @@
+## [0.2.8](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.7...v0.2.8) (2021-03-12)
+
+
+### Bug Fixes
+
+* **readme:** Update readme for pipeline trigger ([7b8307d](https://github.com/DHI-GRAS/react-components-ts/commit/7b8307de56600d6dd58532bb38e1d95525bf215e))
+
 ## [0.2.7](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.6...v0.2.7) (2021-03-10)
 
 
