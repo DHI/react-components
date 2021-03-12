@@ -15,7 +15,7 @@
         "src"
     ],
     "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
+        "registry": "https://npm.pkg.github.com/dhi-gras/"
     },
     "engines": {
         "node": ">=10"
