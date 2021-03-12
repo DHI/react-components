@@ -23,6 +23,11 @@ jobs:
           key: nodeModules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             nodeModules-
+            - name: Add VS token
+      - name: Add GH token
+        run: |
+          echo "@dhi-gras:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
 
       - name: Install dependencies
         run: cd packages/react-components-lab && yarn install --frozen-lockfile
