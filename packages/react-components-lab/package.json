@@ -15,7 +15,8 @@
         "src"
     ],
     "publishConfig": {
-        "registry": "https://npm.pkg.github.com/dhi-gras/"
+        "name": "@dhi-gras/react-components-lab-test",
+        "registry": "https://npm.pkg.github.com/dhi-gras"
     },
     "engines": {
         "node": ">=10"
