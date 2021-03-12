@@ -1,3 +1,10 @@
+## [0.2.10](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.9...v0.2.10) (2021-03-12)
+
+
+### Bug Fixes
+
+* **pipe:** trigger pipe run ([a8105f6](https://github.com/DHI-GRAS/react-components-ts/commit/a8105f63bf10e7f2b828cf5c08adeac74d0bfa99))
+
 ## [0.2.9](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.8...v0.2.9) (2021-03-12)
 
 
