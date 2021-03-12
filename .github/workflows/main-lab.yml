@@ -26,6 +26,7 @@ jobs:
             - name: Add VS token
       - name: Add GH token
         run: |
+          cd packages/react-components-lab
           echo "@dhi-gras:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
 
