@@ -1,3 +1,11 @@
+## [0.2.11](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.10...v0.2.11) (2021-03-12)
+
+
+### Bug Fixes
+
+* **pipe:** trigger pipe run ([b78054d](https://github.com/DHI-GRAS/react-components-ts/commit/b78054d0c290051cc5897aacbb0e9d0218abf78e))
+* **pipe-token:** Add token through script ([4301ece](https://github.com/DHI-GRAS/react-components-ts/commit/4301ece94453d91face20b31814f97e5e84a25b9))
+
 ## [0.2.10](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.9...v0.2.10) (2021-03-12)
 
 
