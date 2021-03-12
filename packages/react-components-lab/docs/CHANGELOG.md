@@ -1,3 +1,10 @@
+## [0.2.9](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.8...v0.2.9) (2021-03-12)
+
+
+### Bug Fixes
+
+* **pipeline:** Add package owner to publishConfig ([c742657](https://github.com/DHI-GRAS/react-components-ts/commit/c742657461c3e620666a84f16d1b3a61c9c1d634))
+
 ## [0.2.8](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.7...v0.2.8) (2021-03-12)
 
 
