@@ -11,10 +11,10 @@ import {
   fetchScenariosByDate,
   postJsonDocuments,
 } from '../../api';
+import { JobParameters } from '../../api/types';
 import AuthService from '../../Auth/AuthService';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { JobParameters } from '../../DataServices/types';
 import { checkCondition, getObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';

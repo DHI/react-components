@@ -1,4 +1,4 @@
-import { JobParameters } from '../../DataServices/types';
+import { JobParameters } from '../../api/types';
 import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
 
 interface ScenariosProps {

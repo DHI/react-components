@@ -1,8 +1,8 @@
 import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
+import { DataSource, Options, User } from '../api/types';
 import { Token } from '../Auth/types';
 import { dataObjectToArray } from '../utils/Utils';
-import { DataSource, Options, User } from './types';
 
 export const DEFAULT_OPTIONS = {
   headers: {

@@ -1,7 +1,7 @@
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DataSource } from '../../api/types';
 import { fetchUrl } from '../../DataServices/DataServices';
-import { DataSource } from '../../DataServices/types';
 import { dataObjectToArray } from '../../utils/Utils';
 
 /**

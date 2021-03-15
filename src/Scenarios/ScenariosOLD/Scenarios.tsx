@@ -10,9 +10,9 @@ import {
   postScenario,
   updateScenario,
 } from '../../api';
+import { JobParameters } from '../../api/types';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { JobParameters } from '../../DataServices/types';
 import { checkCondition, getObjectProperty, setObjectProperty } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioListOLD/ScenarioList';
 import { MenuItem, QueryDates, ScenarioOLD } from '../types';
