@@ -1,4 +1,14 @@
 import {
+  activateAccount,
+  createAccount,
+  deleteAccount,
+  fetchAccount,
+  fetchAccounts,
+  resetPassword,
+  updateAccount,
+  updatePassword,
+} from './Accounts/AccountsApi';
+import {
   cancelJob,
   cancelJobs,
   deleteJob,
@@ -46,4 +56,12 @@ export {
   deleteScenario,
   postScenario,
   updateScenario,
+  resetPassword,
+  fetchAccounts,
+  deleteAccount,
+  updateAccount,
+  createAccount,
+  fetchAccount,
+  updatePassword,
+  activateAccount,
 };
