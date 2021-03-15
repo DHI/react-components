@@ -13,7 +13,7 @@ import {
   updateScenario,
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
-import { checkCondition, getObjectProperty, setObjectProperty, uniqueId } from '../../utils/Utils';
+import { checkCondition, getObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';
 import ScenariosProps from './types';
@@ -129,7 +129,7 @@ const Scenarios = (props: ScenariosProps) => {
 
           return s;
         });
-        let updatedScenarios = [];
+        const updatedScenarios = [];
         const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
         const values = newScenarios.map((item) => item.fullName);
 
@@ -145,23 +145,28 @@ const Scenarios = (props: ScenariosProps) => {
           connection: jobConnection,
         };
 
-        executeJobQuery(dataSources, token, query).subscribe((jobs) => {
-          const latestJobs = newScenarios.map((scenario) => filterToLastJob(scenario, jobs));
-
-          if (latestJobs) {
+        try {
+          executeJobQuery(dataSources, token, query).subscribe((jobs) => {
             newScenarios.map((scenario) => {
-              return latestJobs.map(
-                (latestJob) =>
-                  latestJob?.data.parameters.ScenarioId === scenario.fullName &&
-                  updatedScenarios.push({ ...scenario, lastJob: latestJob.data }),
-              );
-            });
-          } else {
-            updatedScenarios = rawScenarios;
-          }
+              const latestJob = filterToLastJob(scenario, jobs);
+              let sce = {};
 
-          setScenarios(updatedScenarios);
-        });
+              if (latestJob && latestJob.data) {
+                sce = { ...scenario, lastJob: latestJob.data };
+              } else {
+                sce = scenario;
+              }
+
+              updatedScenarios.push(sce);
+            });
+
+            console.log({ updatedScenarios });
+
+            setScenarios(updatedScenarios);
+          });
+        } catch (err) {
+          console.log('Error retrieving Jobs: ', err);
+        }
 
         if (onScenariosReceived) {
           onScenariosReceived(updatedScenarios);
@@ -266,16 +271,17 @@ const Scenarios = (props: ScenariosProps) => {
 
   const onCloneScenario = (scenario: Scenario) => {
     closeDialog();
+
     const clonedScenario = {
       ...scenario,
       fullName: `scenario-${uniqueId()}`,
+      data: {
+        ...scenario.data,
+        name: `Clone of ${getObjectProperty(scenario.data, nameField)}`,
+      },
     };
-    const clonedNamed = `Clone of ${getObjectProperty(scenario.data, nameField)}`;
-    setObjectProperty(clonedScenario.data, nameField, clonedNamed);
 
     clonedScenario.data = JSON.stringify(clonedScenario.data);
-
-    console.log(JSON.stringify(clonedScenario.data));
 
     postJsonDocuments(
       {

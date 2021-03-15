@@ -12,6 +12,8 @@ const dataObjectToArray = (data: { [x: string]: any }) => {
 };
 
 const getObjectProperty = (objectItem: any, property: string): any => {
+  if (!objectItem) return null;
+
   const value = jp.query(objectItem, property);
 
   return value.length > 0 ? value[0] : null;
