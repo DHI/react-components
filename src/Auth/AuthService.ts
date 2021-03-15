@@ -1,4 +1,5 @@
-import { fetchAccount, fetchToken } from '../DataServices/DataServices';
+import { fetchAccount } from '../api';
+import { fetchToken } from '../DataServices/DataServices';
 import { Form, OtpInfo, Token, User } from './types';
 
 export default class AuthService {

@@ -197,107 +197,7 @@ const deleteUserGroup = (host: string, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log('deleted account', res)));
 
-const fetchAccount = (host: string, token: string, id: string) =>
-  fetchUrl(`${host}/api/accounts/${id}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('fetch account', res)));
-
-const fetchAccounts = (host: string, token: string) =>
-  fetchUrl(`${host}/api/accounts`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('fetch accounts', res)));
-
-const deleteAccount = (host: string, token: string, username: string) =>
-  fetchUrl(`${host}/api/accounts/${username}`, {
-    method: 'DELETE',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('deleted account', res)));
-
-const updateAccount = (host: string, token: string, data: Record<any, any>) =>
-  fetchUrl(`${host}/api/accounts`, {
-    method: 'PUT',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  }).pipe(tap((json) => console.log('updated user', json)));
-
-const createAccount = (host: string, token: string, data: Record<any, any>) =>
-  fetchUrl(`${host}/api/accounts`, {
-    method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-const resetPassword = (host: string, user: { Id: string }, token: string) =>
-  fetchUrl(`${host}/api/accounts/passwordreset`, {
-    method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: user.Id,
-  }).pipe(tap((res) => console.log('password reset', res)));
-
-const updatePassword = (host: string, token: string, passwordToken: string, newPassword: string) =>
-  fetchUrl(`${host}/api/accounts/password/token=${passwordToken}`, {
-    method: 'PUT',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: newPassword,
-  }).pipe(tap((res) => console.log('password reset', res)));
-
-const activateAccount = (host: string, token: string, accountToken: string) =>
-  fetchUrl(`${host}/api/accounts/password/token=${accountToken}`, {
-    method: 'PUT',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('account activiated', res)));
-
 // MAIL TEMPLATES
-const fetchMailTemplate = (host: string, token: string, id: string) =>
-  fetchUrl(`${host}/api/mailtemplates/${id}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('fetch mail template', res)));
-
-const fetchMailTemplates = (host: string, token: string) =>
-  fetchUrl(`${host}/api/mailtemplates`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('fetch mail templates', res)));
-
-const deleteMailTemplate = (host: string, token: string, id: string) =>
-  fetchUrl(`${host}/api/mailtemplates/${id}`, {
-    method: 'DELETE',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('delete mail template', res)));
-
-const updateMailTemplate = (host: string, token: string, id: string, mailTemplateDTO: any) =>
-  fetchUrl(`${host}/api/mailtemplates/${id}`, {
-    method: 'PUT',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(mailTemplateDTO),
-  }).pipe(tap((res) => console.log('delete mail template', res)));
 
 // MAP
 
@@ -428,11 +328,6 @@ export {
   fetchToken,
   validateToken,
   fetchUrl,
-  resetPassword,
-  fetchAccounts,
-  deleteAccount,
-  updateAccount,
-  createAccount,
   fetchTimeseriesValues,
   fetchUserGroups,
   updateUserGroupsForUser,
@@ -444,13 +339,6 @@ export {
   fetchTimeseriesFullNames,
   fetchMapAnimationFiles,
   fetchMapStylePalette,
-  updateMailTemplate,
-  fetchAccount,
-  updatePassword,
-  activateAccount,
-  fetchMailTemplate,
-  fetchMailTemplates,
-  deleteMailTemplate,
   fetchMapStyle,
   fetchMapStyles,
   createMapStyle,

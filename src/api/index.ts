@@ -27,6 +27,12 @@ import {
 } from './JsonDocuments/JsonDocumentsApi';
 import { fetchLogs } from './Logs/LogsApi';
 import {
+  deleteMailTemplate,
+  fetchMailTemplate,
+  fetchMailTemplates,
+  updateMailTemplate,
+} from './MailTemplates/MailTemplatesApi';
+import {
   deleteScenario,
   fetchScenario,
   fetchScenarios,
@@ -64,4 +70,8 @@ export {
   fetchAccount,
   updatePassword,
   activateAccount,
+  updateMailTemplate,
+  fetchMailTemplate,
+  fetchMailTemplates,
+  deleteMailTemplate,
 };
