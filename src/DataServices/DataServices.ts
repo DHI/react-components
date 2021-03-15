@@ -4,7 +4,7 @@ import { Token } from '../Auth/types';
 import { dataObjectToArray } from '../utils/Utils';
 import { DataSource, Options, User } from './types';
 
-const DEFAULT_OPTIONS = {
+export const DEFAULT_OPTIONS = {
   headers: {
     'Content-Type': 'application/json',
   },

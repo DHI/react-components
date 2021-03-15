@@ -8,6 +8,7 @@ import {
   updateAccount,
   updatePassword,
 } from './Accounts/AccountsApi';
+import { fetchToken, validateToken } from './Authentication/AuthenticationApi';
 import {
   cancelJob,
   cancelJobs,
@@ -86,4 +87,6 @@ export {
   createUserGroup,
   updateUserGroups,
   deleteUserGroup,
+  fetchToken,
+  validateToken,
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { fetchTimeseriesFullNames, fetchToken } from '../DataServices/DataServices';
+import { fetchToken } from '../api';
+import { fetchTimeseriesFullNames } from '../DataServices/DataServices';
 import { recursive } from '../utils/Utils';
 import TreeView from './TreeView';
 
