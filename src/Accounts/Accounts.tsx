@@ -17,7 +17,7 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
-import { createAccount, deleteAccount, fetchAccounts, updateAccount } from '../api';
+import { createAccount, deleteAccount, fetchAccounts, fetchUserGroups, updateAccount } from '../api';
 import {
   Command,
   DefaultColumnsTypeProvider,
@@ -29,7 +29,6 @@ import {
   PopupEditing,
   UsersTypeProvider,
 } from '../common/Table';
-import { fetchUserGroups } from '../DataServices/DataServices';
 import { UserGroupProps, UserGroupsData } from '../UserGroups/types';
 
 const DEFAULT_COLUMNS = [

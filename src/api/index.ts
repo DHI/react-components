@@ -40,6 +40,13 @@ import {
   postScenario,
   updateScenario,
 } from './Scenarios/ScenariosApi';
+import {
+  createUserGroup,
+  deleteUserGroup,
+  fetchUserGroups,
+  updateUserGroups,
+  updateUserGroupsForUser,
+} from './UserGroups/UserGroupsApi';
 
 export {
   fetchJsonDocuments,
@@ -74,4 +81,9 @@ export {
   fetchMailTemplate,
   fetchMailTemplates,
   deleteMailTemplate,
+  fetchUserGroups,
+  updateUserGroupsForUser,
+  createUserGroup,
+  updateUserGroups,
+  deleteUserGroup,
 };
