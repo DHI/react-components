@@ -2,8 +2,8 @@ import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, flatMap, map, tap } from 'rxjs/operators';
 import { Token } from '../Auth/types';
 import { UserGroupsData } from '../UserGroups/types';
-import { dataObjectToArray, queryProp } from '../utils/Utils';
-import { DataSource, JobParameters, JobQuery, Options, User } from './types';
+import { dataObjectToArray } from '../utils/Utils';
+import { DataSource, Options, User } from './types';
 
 const DEFAULT_OPTIONS = {
   headers: {
@@ -474,198 +474,6 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
     body: JSON.stringify(scenario),
   }).pipe(tap((res) => console.log('scenario updated', res)));
 
-// JOBS
-
-/**
- * /api/jobs/{connectionId}/query
- * @param dataSource
- * @param token
- * @param query array of objects { item: string, queryOperator: string, value: string}
- *
- *  Gets all the jobs meeting the criteria specified by the given query.
- */
-const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, query: JobParameters[]) => {
-  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
-
-  const requests = dataSourcesArray.map((source: DataSource) =>
-    fetchUrl(`${source.host}/api/jobs/${source.connection}/query`, {
-      method: 'POST',
-      additionalHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(query),
-    }).pipe(
-      tap(
-        (res) => {
-          console.log('job executed', res);
-        },
-        (error) => {
-          console.log(error);
-        },
-      ),
-      map((job) => {
-        return dataObjectToArray(job).sort((a, b) => {
-          return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
-        });
-      }),
-    ),
-  );
-
-  return forkJoin(requests).pipe(map((job) => job.flat()));
-};
-
-const executeJob = (
-  dataSource: DataSource,
-  token: string,
-  taskId: string,
-  parameters: JobParameters,
-  hostGroup?: string,
-) => {
-  const body: Partial<Record<string, any>> = { taskId, parameters };
-
-  if (hostGroup) {
-    body.hostGroup = hostGroup;
-  }
-
-  return fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
-    method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(body),
-  }).pipe(
-    tap(
-      (res) => {
-        console.log('job executed', res);
-      },
-      (error) => {
-        console.log(error);
-      },
-    ),
-  );
-};
-
-const cancelJob = (dataSource: DataSource, token: string, id: any) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/${id}/cancel`, {
-    method: 'PUT',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: '',
-  }).pipe(tap((res) => console.log('job canceled', res)));
-
-const cancelJobs = (dataSource: DataSource, token: string, ids: string) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/cancel`, {
-    method: 'PUT',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: { ids },
-  }).pipe(tap((res) => console.log('job canceled', res)));
-
-const fetchJob = (dataSource: DataSource, token: string, id: string) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/${id}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('job fetched executed', res)));
-
-const fetchJobs = (
-  dataSources: DataSource | DataSource[],
-  token: string,
-  query: {
-    account?: any;
-    since: any;
-    status?: any;
-    task?: any;
-    tag?: any;
-  },
-) => {
-  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
-
-  const requests = dataSourcesArray.map((source: DataSource) =>
-    fetchUrl(
-      !query
-        ? `${source.host}/api/jobs/${source.connection}`
-        : `${source.host}/api/jobs/${source.connection}?account=${queryProp(query.account)}&since=${queryProp(
-            query.since,
-          )}&status=${queryProp(query.status)}&task=${queryProp(query.task)}&tag=${queryProp(query.tag)}`,
-      {
-        method: 'GET',
-        additionalHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    ).pipe(
-      map((fc) => {
-        fc.forEach((item) => (item.connectionJobLog = source.connectionJobLog));
-
-        return dataObjectToArray(fc).sort((a, b) => {
-          return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
-        });
-      }),
-    ),
-  );
-
-  return forkJoin(requests).pipe(map((fc) => fc.flat()));
-};
-
-const deleteJob = (dataSource: DataSource, token: string, id: string) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/${id}`, {
-    method: 'DELETE',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('job deleted', res)));
-
-const deleteJobs = (dataSource: DataSource, token: string, query: JobQuery) =>
-  fetchUrl(
-    `${dataSource.host}/api/jobs/${dataSource.connection}?account=${query.account}&since=${query.since}&status=${query.status}&task=${query.task}&tag=${query.tag}`,
-    {
-      method: 'DELETE',
-      additionalHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  ).pipe(tap((res) => console.log('jobs deleted', res)));
-
-const fetchLastJob = (dataSource: DataSource, token: string, query: JobQuery) =>
-  fetchUrl(
-    `${dataSource.host}/api/jobs/${dataSource.connection}/last?account=${query.account}&since=${query.since}&status=${query.status}&task=${query.task}&tag=${query.tag}`,
-    {
-      method: 'GET',
-      additionalHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  ).pipe(tap((res) => console.log('last job fetched', res)));
-
-const fetchJobCount = (dataSource: DataSource, token: string) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/count`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('job count fetched', res)));
-
-// Logs
-const fetchLogs = (dataSources: DataSource | DataSource[], token: string, query: any) => {
-  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
-
-  const requests = dataSourcesArray.map((source: DataSource) =>
-    fetchUrl(`${source.host}/api/logs/${source.connection}/query`, {
-      method: 'POST',
-      body: JSON.stringify(query),
-      additionalHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).pipe(map((fc) => dataObjectToArray(fc))),
-  );
-
-  return forkJoin(requests).pipe(map((fc) => fc.flat()));
-};
-
 // Spreadsheets
 const fetchSpreadsheetUsedRange = (dataSource: DataSource, token: string) =>
   fetchUrl(
@@ -713,15 +521,6 @@ export {
   deleteScenario,
   postScenario,
   updateScenario,
-  executeJobQuery,
-  executeJob,
-  cancelJob,
-  cancelJobs,
-  fetchJobs,
-  deleteJob,
-  deleteJobs,
-  fetchLastJob,
-  fetchJobCount,
   updateMailTemplate,
   fetchAccount,
   updatePassword,
@@ -734,7 +533,6 @@ export {
   createMapStyle,
   fetchMapStyleCount,
   deleteMapStyle,
-  fetchLogs,
   fetchSpreadsheetUsedRange,
   updateSpreadsheet,
 };

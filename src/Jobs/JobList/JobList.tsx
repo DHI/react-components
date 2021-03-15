@@ -21,10 +21,10 @@ import {
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import React, { useEffect, useRef, useState } from 'react';
+import { executeJobQuery, fetchLogs } from '../../api';
 import AuthService from '../../Auth/AuthService';
 import Loading from '../../common/Loading/Loading';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
-import { executeJobQuery, fetchLogs } from '../../DataServices/DataServices';
 import { calcTimeDifference, zonedTimeFromUTC } from '../../utils/Utils';
 import { DateFilter } from './helpers/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';

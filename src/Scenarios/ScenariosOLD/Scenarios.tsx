@@ -1,11 +1,10 @@
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { cancelJob, executeJob } from '../../api';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
 import {
-  cancelJob,
   deleteScenario,
-  executeJob,
   fetchScenario,
   fetchScenarios,
   fetchScenariosByDate,
