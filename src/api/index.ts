@@ -16,6 +16,14 @@ import {
   postJsonDocuments,
 } from './JsonDocuments/JsonDocumentsApi';
 import { fetchLogs } from './Logs/LogsApi';
+import {
+  deleteScenario,
+  fetchScenario,
+  fetchScenarios,
+  fetchScenariosByDate,
+  postScenario,
+  updateScenario,
+} from './Scenarios/ScenariosApi';
 
 export {
   fetchJsonDocuments,
@@ -32,4 +40,10 @@ export {
   fetchLastJob,
   fetchJobCount,
   fetchLogs,
+  fetchScenario,
+  fetchScenarios,
+  fetchScenariosByDate,
+  deleteScenario,
+  postScenario,
+  updateScenario,
 };

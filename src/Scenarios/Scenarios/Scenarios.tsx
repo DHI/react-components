@@ -8,12 +8,12 @@ import {
   executeJobQuery,
   fetchJsonDocument,
   fetchJsonDocuments,
+  fetchScenariosByDate,
   postJsonDocuments,
 } from '../../api';
 import AuthService from '../../Auth/AuthService';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { fetchScenariosByDate } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { checkCondition, getObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';

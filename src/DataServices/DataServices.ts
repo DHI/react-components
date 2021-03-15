@@ -403,77 +403,6 @@ const deleteMapStyle = (host: string, token: string, id: string) =>
     },
   }).pipe(tap((res) => console.log('delete style', res)));
 
-// SCENARIOS
-
-const fetchScenario = (dataSource: DataSource, token: string, id: string) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${id}?scenarioId=${id}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log(`${id} scenario fetched`, res)));
-
-const fetchScenarios = (dataSource: DataSource, token: string) => {
-  const dataSelectors =
-    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
-      ? `?dataSelectors=[${dataSource.dataSelectors
-          .map((dataSelector) => dataSelector.replace('data.', ''))
-          .join(',')}]`
-      : '';
-
-  return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}${dataSelectors}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('List of scenarios fetched', res)));
-};
-
-const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
-  const dataSelectors =
-    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
-      ? `&dataSelectors=[${dataSource.dataSelectors
-          .map((dataSelector) => dataSelector.replace('data.', ''))
-          .join(',')}]`
-      : '';
-
-  return fetchUrl(
-    `${dataSource.host}/api/scenarios/${dataSource.connection}?from=${dataSource.from}&to=${dataSource.to}${dataSelectors}`,
-    {
-      method: 'GET',
-      additionalHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-};
-
-const deleteScenario = (dataSource: DataSource, token: string, id: any) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${id}`, {
-    method: 'DELETE',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).pipe(tap((res) => console.log('scenario deleted', res)));
-
-const postScenario = (dataSource: DataSource, token: string, scenario: any) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
-    method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(scenario),
-  }).pipe(tap((res) => console.log('scenario posted', res)));
-
-const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
-    method: 'PUT',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(scenario),
-  }).pipe(tap((res) => console.log('scenario updated', res)));
-
 // Spreadsheets
 const fetchSpreadsheetUsedRange = (dataSource: DataSource, token: string) =>
   fetchUrl(
@@ -515,12 +444,6 @@ export {
   fetchTimeseriesFullNames,
   fetchMapAnimationFiles,
   fetchMapStylePalette,
-  fetchScenario,
-  fetchScenarios,
-  fetchScenariosByDate,
-  deleteScenario,
-  postScenario,
-  updateScenario,
   updateMailTemplate,
   fetchAccount,
   updatePassword,

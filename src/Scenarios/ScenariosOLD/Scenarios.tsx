@@ -1,16 +1,17 @@
 import { clone } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { cancelJob, executeJob } from '../../api';
-import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
-import GeneralDialogProps from '../../common/GeneralDialog/types';
 import {
+  cancelJob,
   deleteScenario,
+  executeJob,
   fetchScenario,
   fetchScenarios,
   fetchScenariosByDate,
   postScenario,
   updateScenario,
-} from '../../DataServices/DataServices';
+} from '../../api';
+import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
+import GeneralDialogProps from '../../common/GeneralDialog/types';
 import { JobParameters } from '../../DataServices/types';
 import { checkCondition, getObjectProperty, setObjectProperty } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioListOLD/ScenarioList';
