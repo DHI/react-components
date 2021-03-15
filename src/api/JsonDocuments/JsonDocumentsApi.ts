@@ -77,8 +77,15 @@ const deleteJsonDocument = (dataSource: DataSource, token: string, fullName: str
     },
   }).pipe(tap((res) => console.log('scenario deleted', res)));
 
+/**
+ * /api/jsondocuments/{connectionId}
+ * Updates an existing JSON document.
+ * @param dataSource
+ * @param token
+ * @param scenario
+ */
 const updateJsonDocument = (dataSource: DataSource, token: string, scenario: any) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
+  fetchUrl(`${dataSource.host}/api/jsondocuments/${dataSource.connection}`, {
     method: 'PUT',
     additionalHeaders: {
       Authorization: `Bearer ${token}`,

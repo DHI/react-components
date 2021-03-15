@@ -5,13 +5,7 @@ import { deleteJsonDocument, fetchJsonDocument, fetchJsonDocuments, postJsonDocu
 import AuthService from '../../Auth/AuthService';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import {
-  cancelJob,
-  executeJob,
-  executeJobQuery,
-  fetchScenariosByDate,
-  updateScenario,
-} from '../../DataServices/DataServices';
+import { cancelJob, executeJob, executeJobQuery, fetchScenariosByDate } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
 import { checkCondition, getObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
@@ -51,6 +45,7 @@ const Scenarios = (props: ScenariosProps) => {
     addScenario,
     translations,
     timeZone,
+    debug,
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>();
@@ -104,9 +99,7 @@ const Scenarios = (props: ScenariosProps) => {
 
           return s;
         });
-
         const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
-
         setScenarios(newScenarios);
       },
       (error) => {
@@ -160,7 +153,9 @@ const Scenarios = (props: ScenariosProps) => {
               updatedScenarios.push(sce);
             });
 
-            console.log({ updatedScenarios });
+            if (debug) {
+              console.log({ updatedScenarios });
+            }
 
             setScenarios(updatedScenarios);
           });
@@ -231,7 +226,9 @@ const Scenarios = (props: ScenariosProps) => {
       parameters,
       menuItem.hostGroup || hostGroup,
     ).subscribe((job) => {
-      console.log('Execute: ', job);
+      if (debug) {
+        console.log('Execute: ', job);
+      }
 
       const newScenarios = scenarios.map((sce) =>
         sce.fullName === job.parameters.ScenarioId ? { ...sce, lastJob: job } : { ...sce },
@@ -244,6 +241,10 @@ const Scenarios = (props: ScenariosProps) => {
   const onTerminateScenario = (scenario: Scenario, menuItem: MenuItem) => {
     closeDialog();
 
+    if (debug) {
+      console.log('onTerminateScenario: ', scenario);
+    }
+
     cancelJob(
       {
         host,
@@ -251,21 +252,6 @@ const Scenarios = (props: ScenariosProps) => {
       },
       token,
       scenario.lastJob.id,
-    ).subscribe(
-      (res) =>
-        res &&
-        updateScenario(
-          {
-            host,
-            connection: scenarioConnection,
-          },
-          token,
-          {
-            id: scenario.fullName,
-            lastJobId: res.id,
-            data: JSON.stringify(scenario.data),
-          },
-        ).subscribe((res) => res && fetchScenariosList()),
     );
   };
 
@@ -413,7 +399,7 @@ const Scenarios = (props: ScenariosProps) => {
           return terminateDialog(
             {
               ...res,
-              lastJobId: scenario.lastJob.id,
+              lastJob: scenario.lastJob,
             },
             menuItem,
           );
@@ -430,22 +416,21 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const JsonDocumentAddedScenario = (added) => {
-    console.log({ added });
+    if (debug) {
+      console.log({ added });
+    }
+
     setScenarios([...scenarios, added]);
-  };
-
-  const JsonDocumentUpdatedScenario = (updated) => {
-    console.log({ updated });
-  };
-
-  const JsonDocumentDeletedScenario = (deleted) => {
-    console.log({ deleted });
   };
 
   const jobUpdated = (jobAdded) => {
     const job = JSON.parse(jobAdded.data);
-    console.log({ job });
-    console.log({ latestScenarios });
+
+    if (debug) {
+      console.log({ job });
+      console.log({ latestScenarios });
+    }
+
     const updateScenario = latestScenarios.current.map((scenario) =>
       scenario.fullName === job.Parameters.ScenarioId && scenario.lastJob.status !== 'Completed'
         ? {
@@ -457,18 +442,12 @@ const Scenarios = (props: ScenariosProps) => {
           }
         : scenario,
     );
-    console.log({ updateScenario });
+
+    if (debug) {
+      console.log({ updateScenario });
+    }
 
     setScenarios(updateScenario);
-
-    // postJsonDocuments(
-    //   {
-    //     host,
-    //     connection: scenarioConnection,
-    //   },
-    //   token,
-    //   updateScenario,
-    // );
   };
 
   const connectToSignalR = async () => {
@@ -492,11 +471,11 @@ const Scenarios = (props: ScenariosProps) => {
       connection
         .start()
         .then(() => {
-          console.log('SignalR Connected');
-          connection.on('JsonDocumentAdded', JsonDocumentAddedScenario);
-          connection.on('JsonDocumentUpdated', JsonDocumentUpdatedScenario);
-          connection.on('JsonDocumentDeleted', JsonDocumentDeletedScenario);
+          if (debug) {
+            console.log('SignalR Connected!');
+          }
 
+          connection.on('JsonDocumentAdded', JsonDocumentAddedScenario);
           connection.on('JobUpdated', jobUpdated);
 
           connection.invoke('AddJobFilter', jobConnection, []);

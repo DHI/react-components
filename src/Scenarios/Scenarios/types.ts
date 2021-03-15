@@ -156,6 +156,10 @@ interface ScenariosProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * Set debug mode on to track what SignalR is emitting
+   */
+  debug?: boolean;
 }
 
 interface QueryBody {

@@ -413,6 +413,7 @@ export const ScenariosJSONStory = () => {
                 cancelLabel: 'Batal',
                 confirmLabel: 'Lanjut',
               }}
+              debug
             />
           </>
         )}
