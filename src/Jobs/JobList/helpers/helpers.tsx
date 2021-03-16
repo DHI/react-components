@@ -40,11 +40,13 @@ export const Cell = (props: any) => {
 
     return (
       <td className="MuiTableCell-root" style={{ color: delayColor }}>
-        <Tooltip title={props.value} placement="bottom-start" TransitionComponent={Zoom}>
-          <Typography noWrap variant="body2">
-            {props.value}
-          </Typography>
-        </Tooltip>
+        {props.value && (
+          <Tooltip title={props.value} placement="bottom-start" TransitionComponent={Zoom}>
+            <Typography noWrap variant="body2">
+              {props.value}
+            </Typography>
+          </Tooltip>
+        )}
       </td>
     );
   }

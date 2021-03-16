@@ -446,6 +446,7 @@ const Scenarios = (props: ScenariosProps) => {
             lastJob: {
               ...scenario.lastJob,
               status: job.Status,
+              progress: job.Progress,
             },
           }
         : scenario,
