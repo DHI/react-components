@@ -1,4 +1,5 @@
 export * from './Accounts/Accounts';
+export * from './api';
 export * from './api/helpers';
 export * from './api/types';
 export { default } from './Auth/AuthService';
