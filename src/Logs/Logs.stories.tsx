@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react/types-6-0.d';
 import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { fetchToken } from '../DataServices/DataServices';
+import { fetchToken } from '../api';
 import { LogList } from './LogList/LogList';
 
 export default {

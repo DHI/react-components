@@ -1,6 +1,6 @@
 import { tap } from 'rxjs/operators';
-import { fetchUrl } from '../../DataServices/DataServices';
 import { UserGroupsData } from '../../UserGroups/types';
+import { fetchUrl } from '../helpers';
 
 // Could be an account name or `me`.
 

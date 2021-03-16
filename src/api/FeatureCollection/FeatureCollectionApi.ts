@@ -1,23 +1,16 @@
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DataSource } from '../../api/types';
 import { dataObjectToArray } from '../../utils/Utils';
 import { fetchUrl } from '../helpers';
+import { DataSource } from '../types';
 
-/**
- * /api/logs/{connectionId}/query
- * Gets a list of log entries by query.
- * @param dataSources
- * @param token
- * @param query
- */
-const fetchLogs = (dataSources: DataSource | DataSource[], token: string, query: any) => {
+const fetchFeatureCollectionValues = (dataSources: DataSource | DataSource[], token: string) => {
   const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
   const requests = dataSourcesArray.map((source: DataSource) =>
-    fetchUrl(`${source.host}/api/logs/${source.connection}/query`, {
+    fetchUrl(`${source.host}/api/featurecollections/${source.connection}/list`, {
       method: 'POST',
-      body: JSON.stringify(query),
+      body: JSON.stringify(source.ids),
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
       },
@@ -27,4 +20,4 @@ const fetchLogs = (dataSources: DataSource | DataSource[], token: string, query:
   return forkJoin(requests).pipe(map((fc) => fc.flat()));
 };
 
-export { fetchLogs };
+export { fetchFeatureCollectionValues };

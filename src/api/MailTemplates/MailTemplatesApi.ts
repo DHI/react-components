@@ -1,5 +1,5 @@
 import { tap } from 'rxjs/operators';
-import { fetchUrl } from '../../DataServices/DataServices';
+import { fetchUrl } from '../helpers';
 
 /**
  * /api/mailtemplates/{id}

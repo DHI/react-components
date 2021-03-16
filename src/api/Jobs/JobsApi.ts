@@ -1,8 +1,8 @@
 import { forkJoin } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { DataSource, JobParameters, JobQuery } from '../../api/types';
-import { fetchUrl } from '../../DataServices/DataServices';
 import { dataObjectToArray, queryProp } from '../../utils/Utils';
+import { fetchUrl } from '../helpers';
 
 /**
  * /api/jobs/{connectionId}/query

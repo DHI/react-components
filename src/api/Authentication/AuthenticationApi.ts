@@ -1,6 +1,6 @@
 import { tap } from 'rxjs/operators';
 import { Token } from '../../Auth/types';
-import { DEFAULT_OPTIONS, fetchUrl } from '../../DataServices/DataServices';
+import { DEFAULT_OPTIONS, fetchUrl } from '../helpers';
 import { User } from '../types';
 
 /**

@@ -1,6 +1,6 @@
 import { tap } from 'rxjs/operators';
 import { DataSource } from '../../api/types';
-import { fetchUrl } from '../../DataServices/DataServices';
+import { fetchUrl } from '../helpers';
 
 /**
  * /api/scenarios/{connectionId}/{id}

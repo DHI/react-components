@@ -9,6 +9,7 @@ import {
   updatePassword,
 } from './Accounts/AccountsApi';
 import { fetchToken, validateToken } from './Authentication/AuthenticationApi';
+import { fetchFeatureCollectionValues } from './FeatureCollection/FeatureCollectionApi';
 import {
   cancelJob,
   cancelJobs,
@@ -33,6 +34,15 @@ import {
   fetchMailTemplates,
   updateMailTemplate,
 } from './MailTemplates/MailTemplatesApi';
+import { fetchMapAnimationFiles } from './Map/MapApi';
+import {
+  createMapStyle,
+  deleteMapStyle,
+  fetchMapStyle,
+  fetchMapStyleCount,
+  fetchMapStylePalette,
+  fetchMapStyles,
+} from './MapStyles/MapStylesApi';
 import {
   deleteScenario,
   fetchScenario,
@@ -41,6 +51,8 @@ import {
   postScenario,
   updateScenario,
 } from './Scenarios/ScenariosApi';
+import { fetchSpreadsheetUsedRange, updateSpreadsheet } from './Spreadsheets/SpreadsheetsApi';
+import { fetchTimeseriesByGroup, fetchTimeseriesFullNames, fetchTimeseriesValues } from './Timeseries/TimeseriesApi';
 import {
   createUserGroup,
   deleteUserGroup,
@@ -89,4 +101,17 @@ export {
   deleteUserGroup,
   fetchToken,
   validateToken,
+  fetchSpreadsheetUsedRange,
+  updateSpreadsheet,
+  fetchMapStylePalette,
+  fetchMapStyle,
+  fetchMapStyles,
+  createMapStyle,
+  fetchMapStyleCount,
+  deleteMapStyle,
+  fetchTimeseriesValues,
+  fetchTimeseriesByGroup,
+  fetchTimeseriesFullNames,
+  fetchMapAnimationFiles,
+  fetchFeatureCollectionValues,
 };
