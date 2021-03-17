@@ -270,6 +270,7 @@ export const ScenariosJSONStory = () => {
             <Scenarios
               frequency={10}
               token={token.accessToken.token}
+              queryDates={queryDates}
               host={process.env.ENDPOINT_URL}
               scenarioConnection={'postgres-jsondocuments-scenarios'}
               jobConnection={'wf-jobs'}

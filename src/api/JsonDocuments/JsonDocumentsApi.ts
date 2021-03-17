@@ -20,7 +20,7 @@ const fetchJsonDocuments = (dataSource: DataSource, token: string) => {
   return fetchUrl(
     `${dataSource.host}/api/jsondocuments/${dataSource.connection}?from=${dataSource.from || ''}&to=${
       dataSource.to || ''
-    }${dataSelectors}`,
+    }&${dataSelectors}`,
     {
       method: 'GET',
       additionalHeaders: {

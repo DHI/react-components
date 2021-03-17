@@ -8,7 +8,6 @@ import {
   executeJobQuery,
   fetchJsonDocument,
   fetchJsonDocuments,
-  fetchScenariosByDate,
   postJsonDocuments,
 } from '../../api';
 import { JobParameters } from '../../api/types';
@@ -17,7 +16,7 @@ import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
 import { checkCondition, getObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
-import { MenuItem, QueryDates, Scenario } from '../types';
+import { MenuItem, Scenario } from '../types';
 import ScenariosProps from './types';
 import useStyles from './useStyles';
 
@@ -94,39 +93,30 @@ const Scenarios = (props: ScenariosProps) => {
     }
   }, [addScenario]);
 
-  const fetchScenariosByDateList = (queryDates: QueryDates) => {
-    fetchScenariosByDate(
-      {
-        host,
-        connection: scenarioConnection,
-        from: queryDates.from,
-        to: queryDates.to,
-        dataSelectors: [
-          nameField,
-          ...descriptionFields!.map((descriptionField) => descriptionField.field),
-          ...extraFields!.map((descriptionField) => descriptionField.field),
-        ],
-      },
-      token,
-    ).subscribe(
-      (res) => {
-        const rawScenarios = res.map((s: { data: string }) => {
-          s.data = s.data ? JSON.parse(s.data) : s.data;
-
-          return s;
-        });
-        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
-        setScenarios(newScenarios);
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
-  };
-
   const fetchScenariosList = () => {
+    let obj = {};
+
+    if (queryDates) {
+      obj = {
+        ...obj,
+        from: queryDates?.from || '',
+        to: queryDates?.to || '',
+      };
+    } else if (descriptionFields) {
+      obj = {
+        ...obj,
+        dataSelectors:
+          [
+            nameField,
+            ...descriptionFields!.map((descriptionField) => descriptionField.field),
+            ...extraFields!.map((descriptionField) => descriptionField.field),
+          ] || [],
+      };
+    }
+
     fetchJsonDocuments(
       {
+        ...obj,
         host,
         connection: scenarioConnection,
       },
