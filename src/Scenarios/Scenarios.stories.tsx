@@ -289,6 +289,10 @@ export const ScenariosJSONStory = () => {
                   taskId: 'workflowJsonDocument',
                 },
                 {
+                  id: 'edit',
+                  label: 'Edit',
+                },
+                {
                   id: 'clone',
                   label: 'Clone',
                 },

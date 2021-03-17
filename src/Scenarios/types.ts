@@ -104,8 +104,18 @@ interface Scenario {
    * Value containing description of scenario
    */
   data: any;
+  /**
+   * Timestamp added when the SignalR emits a new scenario.
+   */
+  added?: Date;
+  /**
+   * Scenario Permissions
+   */
   permissions?: ScenarioJsonPermissions[];
   dateTime?: string;
+  /**
+   * Last job actioned by this scenario
+   */
   lastJob?: any;
 }
 

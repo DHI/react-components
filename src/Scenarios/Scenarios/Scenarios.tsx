@@ -56,7 +56,15 @@ const Scenarios = (props: ScenariosProps) => {
     debug,
   } = props;
 
-  const [dialog, setDialog] = useState<GeneralDialogProps>();
+  const [dialog, setDialog] = useState<GeneralDialogProps>({
+    showDialog: false,
+    cancelLabel: translations?.cancelLabel || 'Cancel',
+    confirmLabel: translations?.confirmLabel || 'Confirm',
+    dialogId: '',
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
   const [scenarios, setScenarios] = useState<Scenario[]>();
   const [scenario, setScenario] = useState<Scenario>();
   const classes = useStyles();
@@ -287,6 +295,21 @@ const Scenarios = (props: ScenariosProps) => {
     ).subscribe((res) => res && fetchScenariosList());
   };
 
+  const onEditScenario = (scenario: Scenario) => {
+    closeDialog();
+    const updatedScenario = scenarios.map((sce) => {
+      if (sce.fullName === scenario.fullName) {
+        if (new Date(sce.added).getTime() <= new Date().getTime()) {
+          delete sce.lastJob;
+        }
+      }
+
+      return sce;
+    });
+
+    setScenarios(updatedScenario);
+  };
+
   const getScenario = (id: string, resultCallback: (data: any) => void) => {
     fetchJsonDocument(
       {
@@ -306,19 +329,46 @@ const Scenarios = (props: ScenariosProps) => {
     );
   };
 
+  const modalMessage = (action, translations, job) => {
+    switch (action) {
+      case 'delete':
+        return translations && translations.executeConfirmation
+          ? translations.executeConfirmation.replace('%job%', job)
+          : `This will delete the selected scenario from the list. After it is deleted you cannot retrieve the data. Are you sure you want to delete ${job}?`;
+
+      case 'execute':
+        return translations && translations.executeConfirmation
+          ? translations.executeConfirmation.replace('%job%', job)
+          : `This will start a new job in the background. The status will change after job completion. Are you sure you want to execute ${job}?`;
+
+      case 'clone':
+        return translations && translations.cloneConfirmation
+          ? translations.cloneConfirmation.replace('%job%', job)
+          : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ${job}?`;
+
+      case 'edit':
+        return translations && translations.cloneConfirmation
+          ? translations.cloneConfirmation.replace('%job%', job)
+          : `This will Edit ${job}?`;
+
+      case 'terminate':
+        return translations && translations.terminateConfirmation
+          ? translations.terminateConfirmation.replace('%job%', job)
+          : `This will cancel the job currently executing. The status will change after job cancelation. Are you sure you want to terminate ${job}?`;
+      default:
+        return '';
+    }
+  };
+
   const executeDialog = (scenario: Scenario, menuItem: MenuItem) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
-      dialogId: 'execute',
+      ...dialog,
       showDialog: true,
+      dialogId: 'execute',
       title: `${menuItem.label} ${job}`,
-      message:
-        translations && translations.executeConfirmation
-          ? translations.executeConfirmation.replace('%job%', job)
-          : `This will start a new job in the background. The status will change after job completion. Are you sure you want to execute ${job}?`,
-      cancelLabel: translations?.cancelLabel || 'Cancel',
-      confirmLabel: translations?.confirmLabel || 'Confirm',
+      message: modalMessage('execute', translations, job),
       onConfirm: () => onExecuteScenario(scenario, menuItem),
     });
   };
@@ -327,15 +377,11 @@ const Scenarios = (props: ScenariosProps) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
-      dialogId: 'terminate',
+      ...dialog,
       showDialog: true,
+      dialogId: 'terminate',
       title: `${menuItem.label} ${job}`,
-      message:
-        translations && translations.terminateConfirmation
-          ? translations.terminateConfirmation.replace('%job%', job)
-          : `This will cancel the job currently executing. The status will change after job cancelation. Are you sure you want to terminate ${job}?`,
-      cancelLabel: translations?.cancelLabel || 'Cancel',
-      confirmLabel: translations?.confirmLabel || 'Confirm',
+      message: modalMessage('terminate', translations, job),
       onConfirm: () => onTerminateScenario(scenario, menuItem),
     });
   };
@@ -344,15 +390,11 @@ const Scenarios = (props: ScenariosProps) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
-      dialogId: 'clone',
+      ...dialog,
       showDialog: true,
+      dialogId: 'clone',
       title: `${translations?.cloneTitle || 'Clone'} ${job}`,
-      message:
-        translations && translations.cloneConfirmation
-          ? translations.cloneConfirmation.replace('%job%', job)
-          : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ${job}?`,
-      cancelLabel: translations?.cancelLabel || 'Cancel',
-      confirmLabel: translations?.confirmLabel || 'Confirm',
+      message: modalMessage('clone', translations, job),
       onConfirm: () => onCloneScenario(scenario),
     });
   };
@@ -361,16 +403,25 @@ const Scenarios = (props: ScenariosProps) => {
     const job = getObjectProperty(scenario.data, nameField);
 
     setDialog({
-      dialogId: 'delete',
+      ...dialog,
       showDialog: true,
+      dialogId: 'delete',
       title: `${translations?.deleteTitle || 'Delete'} ${job}`,
-      message:
-        translations && translations.deleteConfirmation
-          ? translations.deleteConfirmation.replace('%job%', job)
-          : `This will delete the selected scenario from the list. After it is deleted you cannot retrieve the data. Are you sure you want to delete ${job}?`,
-      cancelLabel: translations?.cancelLabel || 'Cancel',
-      confirmLabel: translations?.confirmLabel || 'Confirm',
+      message: modalMessage('delete', translations, job),
       onConfirm: () => onDeleteScenario(scenario),
+    });
+  };
+
+  const editDialog = (scenario: Scenario) => {
+    const job = getObjectProperty(scenario.data, nameField);
+
+    setDialog({
+      ...dialog,
+      showDialog: true,
+      dialogId: 'edit',
+      title: `${translations?.deleteTitle || 'Edit'} ${job}`,
+      message: modalMessage('edit', translations, job),
+      onConfirm: () => onEditScenario(scenario),
     });
   };
 
@@ -403,6 +454,8 @@ const Scenarios = (props: ScenariosProps) => {
           return deleteDialog(res);
         case 'clone':
           return cloneDialog(res);
+        case 'edit':
+          return editDialog(res);
         case 'terminate':
           return terminateDialog(
             {
