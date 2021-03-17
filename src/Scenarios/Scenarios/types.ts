@@ -43,10 +43,7 @@ interface ScenariosProps {
    * @param field object property e.g.: data.mooring
    * @param value to filter to a specific value
    */
-  dataFilterbyProperty?: {
-    field: string;
-    value?: string | null;
-  };
+  dataFilterbyProperty?: dataFilterbyPropertyObj[];
   /**
    * Backend host
    */
@@ -152,6 +149,11 @@ interface ScenariosProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+}
+
+interface dataFilterbyPropertyObj {
+  field: string;
+  value?: string | null;
 }
 
 export default ScenariosProps;
