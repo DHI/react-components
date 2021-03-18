@@ -13,7 +13,7 @@ import {
   updateScenario,
 } from '../../DataServices/DataServices';
 import { JobParameters } from '../../DataServices/types';
-import { checkCondition, getObjectProperty, setObjectProperty } from '../../utils/Utils';
+import { checkConditions, getObjectProperty, setObjectProperty } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, QueryDates, Scenario } from '../types';
 import ScenariosProps from './types';
@@ -118,8 +118,7 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
 
-        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
-
+        const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
         setScenarios(newScenarios);
       },
       (error) => {
@@ -148,7 +147,7 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
 
-        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+        const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
 
         setScenarios(newScenarios);
 
