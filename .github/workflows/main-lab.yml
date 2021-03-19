@@ -40,6 +40,7 @@ jobs:
           CI: true
   release:
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
@@ -49,6 +50,7 @@ jobs:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
   storybook:
     needs: release
+    runs-on: ubuntu-latest
     steps:
       - name: Build storybook
         run: cd packages/react-components-lab && yarn build-storybook
@@ -56,7 +58,7 @@ jobs:
           CI: true
         
       - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
-          with: 
+        with: 
             source_dir: './packages/react-components-lab/storybook-static'
             container_name: '$web'
             connection_string: ${{ secrets.BlobConnectionString }}
