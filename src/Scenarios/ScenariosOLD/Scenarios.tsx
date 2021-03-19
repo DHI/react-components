@@ -13,7 +13,7 @@ import {
 import { JobParameters } from '../../api/types';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { checkCondition, getObjectProperty, setObjectProperty } from '../../utils/Utils';
+import { checkConditions, getObjectProperty, setObjectProperty } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioListOLD/ScenarioList';
 import { MenuItem, QueryDates, ScenarioOLD } from '../types';
 import ScenariosProps from './types';
@@ -118,7 +118,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
           return s;
         });
 
-        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+        const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
 
         setScenarios(newScenarios);
       },
@@ -148,7 +148,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
           return s;
         });
 
-        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+        const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
 
         setScenarios(newScenarios);
 

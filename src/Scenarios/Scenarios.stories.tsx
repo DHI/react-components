@@ -62,9 +62,11 @@ export const ScenariosStory = () => {
               queryDates={queryDates}
               scenarioConnection={'postgres-scenarios'}
               jobConnection={'wf-jobs'}
-              dataFilterbyProperty={{
-                field: 'data.mooring',
-              }}
+              dataFilterbyProperty={[
+                {
+                  field: 'data.mooring',
+                },
+              ]}
               taskId={'workflow'}
               timeZone="Australia/Brisbane"
               menuItems={[
