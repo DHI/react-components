@@ -50,6 +50,15 @@ jobs:
         with:
           node-version: 12.x
 
+      - name: Use cached node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            nodeModules-
+            - name: Add VS token
+
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
         env:
@@ -67,6 +76,15 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+
+      - name: Use cached node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            nodeModules-
+            - name: Add VS token
 
       - name: Build storybook
         run: cd packages/react-components-lab && yarn build-storybook
