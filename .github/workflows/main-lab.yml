@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - "packages/react-components-lab/**"
+
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
