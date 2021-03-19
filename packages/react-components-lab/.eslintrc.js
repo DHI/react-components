@@ -14,6 +14,6 @@ module.exports = {
   },
   rules: {
     'react/prop-types': 'off',
-    'no-multiple-empty-lines': ['warn', { max: 2 }],
+    'no-multiple-empty-lines': ['warn', { max: 3 }],
   },
 };
