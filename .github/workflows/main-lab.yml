@@ -4,8 +4,6 @@ on:
     paths:
       - "packages/react-components-lab/**"
 
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,7 +23,7 @@ jobs:
           key: nodeModules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             nodeModules-
-            - name: Add GH token
+            - name: Add VS token
       - name: Add GH token
         run: |
           cd packages/react-components-lab
@@ -41,26 +39,6 @@ jobs:
         run: cd packages/react-components-lab && yarn lint
         env:
           CI: true
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Begin CI...
-        uses: actions/checkout@v2
-
-      - name: Use Node 12
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-
-      - name: Use cached node_modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            nodeModules-
-            - name: Add GH token
 
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
@@ -68,27 +46,6 @@ jobs:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-
-  storybook:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Begin CI...
-        uses: actions/checkout@v2
-
-      - name: Use Node 12
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-
-      - name: Use cached node_modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            nodeModules-
-            - name: Add GH token
 
       - name: Build storybook
         run: cd packages/react-components-lab && yarn build-storybook
@@ -101,3 +58,55 @@ jobs:
           container_name: "$web"
           connection_string: ${{ secrets.BlobConnectionString }}
           sync: true
+  # release:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Begin CI...
+  #       uses: actions/checkout@v2
+  #     - name: Use Node 12
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 12.x
+  #     - name: Use cached node_modules
+  #       uses: actions/cache@v1
+  #       with:
+  #         path: node_modules
+  #         key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+  #         restore-keys: |
+  #           nodeModules-
+  #           - name: Add VS token
+  #     - name: Semantic release
+  #       run: cd packages/react-components-lab && yarn run semantic-release
+  #       env:
+  #         CI: true
+  #         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  #         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  # storybook:
+  #   needs: release
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Begin CI...
+  #       uses: actions/checkout@v2
+  #     - name: Use Node 12
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 12.x
+  #     - name: Use cached node_modules
+  #       uses: actions/cache@v1
+  #       with:
+  #         path: node_modules
+  #         key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+  #         restore-keys: |
+  #           nodeModules-
+  #           - name: Add VS token
+  #     - name: Build storybook
+  #       run: cd packages/react-components-lab && yarn build-storybook
+  #       env:
+  #         CI: true
+  #     - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+  #       with:
+  #         source_dir: "./packages/react-components-lab/storybook-static"
+  #         container_name: "$web"
+  #         connection_string: ${{ secrets.BlobConnectionString }}
+  #         sync: true
