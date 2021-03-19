@@ -42,6 +42,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Begin CI...
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
         env:
@@ -52,14 +60,22 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     steps:
+      - name: Begin CI...
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
       - name: Build storybook
         run: cd packages/react-components-lab && yarn build-storybook
         env:
           CI: true
-        
+
       - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
-        with: 
-            source_dir: './packages/react-components-lab/storybook-static'
-            container_name: '$web'
-            connection_string: ${{ secrets.BlobConnectionString }}
-            sync: true
+        with:
+          source_dir: "./packages/react-components-lab/storybook-static"
+          container_name: "$web"
+          connection_string: ${{ secrets.BlobConnectionString }}
+          sync: true
