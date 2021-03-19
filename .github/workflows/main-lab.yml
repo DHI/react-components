@@ -1,12 +1,11 @@
 name: CI - lab
-on: 
+on:
   push:
-    paths: 
-      - 'packages/react-components-lab/**'
+    paths:
+      - "packages/react-components-lab/**"
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Begin CI...
         uses: actions/checkout@v2
@@ -39,10 +38,26 @@ jobs:
         run: cd packages/react-components-lab && yarn lint
         env:
           CI: true
-
+  release:
+    needs: build
+    steps:
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
         env:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  storybook:
+    needs: release
+    steps:
+      - name: Build storybook
+        run: cd packages/react-components-lab && yarn build-storybook
+        env:
+          CI: true
+        
+      - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+          with: 
+            source_dir: './packages/react-components-lab/storybook-static'
+            container_name: '$web'
+            connection_string: ${{ secrets.BlobConnectionString }}
+            sync: true
