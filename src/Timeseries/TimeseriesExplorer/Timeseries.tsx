@@ -2,7 +2,7 @@ import { Grid, Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { fetchTimeseriesFullNames, fetchTimeseriesValues } from '../../DataServices/DataServices';
+import { fetchTimeseriesFullNames, fetchTimeseriesValues } from '../../api';
 import { BaseChart } from '../../ECharts/BaseChart';
 import DHITheme from '../../theme';
 import { recursive } from '../../utils/Utils';

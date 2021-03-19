@@ -1,4 +1,4 @@
-import { DataSource } from '../../DataServices/types';
+import { DataSource } from '../../api/types';
 
 interface LogListProps {
   /** Time interval to fetch data in second */

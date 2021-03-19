@@ -5,7 +5,7 @@ import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
-import { Scenario } from '../types';
+import { Scenario, ScenarioOLD } from '../types';
 import ScenarioListProps from './types';
 import useStyles from './useStyles';
 
@@ -25,7 +25,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     nameField,
     timeZone,
   } = props;
-  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
+  const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<ScenarioOLD[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
 
@@ -33,11 +33,11 @@ const ScenarioList = (props: ScenarioListProps) => {
     groupScenarios(scenarios);
   }, [scenarios]);
 
-  const groupScenarios = (scenarios: Scenario[]) => {
+  const groupScenarios = (scenarios: ScenarioOLD[]) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
-            return scenario.dateTime ? format(parseISO(scenario.dateTime.split('.')[0]), 'yyyy-MM-dd') : '';
+            return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
           })
         : groupBy(scenarios, (scenario) => scenario.dateTime),
     );
@@ -49,33 +49,33 @@ const ScenarioList = (props: ScenarioListProps) => {
     });
   };
 
-  const buildScenariosList = (scenarios: Scenario[]) => {
+  const buildScenariosList = (scenarios: ScenarioOLD[]) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario) => {
         return (
           <div
-            key={scenario.fullName}
+            key={scenario.id}
             onClick={() => onScenarioClick(scenario)}
             onKeyPress={() => onScenarioClick(scenario)}
             role="presentation"
             className={classNames(classes.listItem, {
-              [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'fullName'),
+              [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'id'),
             })}
           >
             <ScenarioItem
               name={getObjectProperty(scenario.data, nameField)}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
-              key={scenario.fullName}
-              isSelected={selectedId === getObjectProperty(scenario, 'fullName')}
+              key={scenario.id}
+              isSelected={selectedId === getObjectProperty(scenario, 'id')}
               onContextMenuClick={onContextMenuClick}
               menu={buildMenu(scenario)}
               showHour={showHour}
               showMenu={showMenu}
               showStatus={showStatus}
               scenario={scenario}
-              status={checkStatus(scenario.lastJob, status)}
+              status={checkStatus(scenario, status)}
               timeZone={timeZone}
             />
           </div>
@@ -103,9 +103,9 @@ const ScenarioList = (props: ScenarioListProps) => {
     );
   };
 
-  const onScenarioClick = (scenario: Scenario) => {
-    if (scenario && selectedId !== getObjectProperty(scenario, 'fullName')) {
-      setSelectedId(getObjectProperty(scenario, 'fullName'));
+  const onScenarioClick = (scenario: ScenarioOLD) => {
+    if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
+      setSelectedId(getObjectProperty(scenario, 'id'));
     }
     if (onScenarioSelected) {
       onScenarioSelected(scenario);
@@ -120,9 +120,9 @@ const ScenarioList = (props: ScenarioListProps) => {
       .reverse()
       .map((key) => (
         <div key={key}>
-          {showDate && key && buildDateArea(key)}
+          {showDate && buildDateArea(key)}
           <div>
-            {key && buildScenariosList(groupedScenarios[key])}
+            {buildScenariosList(groupedScenarios[key])}
             <Divider variant="inset" className={classes.divider} />
           </div>
         </div>

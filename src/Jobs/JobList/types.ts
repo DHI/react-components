@@ -1,4 +1,4 @@
-import { DataSource } from '../../DataServices/types';
+import { DataSource } from '../../api/types';
 import { LogData } from '../../Logs/LogList/types';
 
 interface JobListProps {
