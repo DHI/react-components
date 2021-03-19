@@ -78,6 +78,12 @@ const getDescriptions = (
   return descriptions;
 };
 
+/**
+ * Check if the property passed in the condition object is in the Scenario object
+ * @param scenarioData Scenario Data
+ * @param condition A object with a condition
+ * @returns true or false
+ */
 const checkCondition = (scenarioData: Scenario, condition: Condition) => {
   let conditions: string[] = [];
   let isInverse = false;
@@ -103,6 +109,50 @@ const checkCondition = (scenarioData: Scenario, condition: Condition) => {
   } else {
     return true;
   }
+};
+
+/**
+ * Check if any of the listed properties are in the Scenario object
+ * @param scenarioData Scenario Data
+ * @param conditions Array of conditions
+ * @returns true or false
+ */
+const checkConditions = (scenarioData: Scenario, conditions: Condition[]) => {
+  let conditionsValue: string[] = [];
+  let isInverse = false;
+  const check = [];
+
+  conditions.forEach((condition) => {
+    if (condition) {
+      if (condition!.field.indexOf('!') === 0) {
+        isInverse = true;
+      }
+
+      // If we have a value, check that it matches
+      // If we didn't specify a value, just want to check if this field has data or not
+      if (condition.value) {
+        if (isArray(condition.value)) {
+          conditionsValue = [...condition.value];
+        } else {
+          conditionsValue = [condition.value!];
+        }
+
+        const values = conditionsValue.map((val) => (val === 'true' || val === 'false' ? JSON.parse(val) : val));
+
+        check.push(
+          values.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse,
+        );
+      } else {
+        check.push((getObjectProperty(scenarioData, condition!.field.replace('!', '')) != null) === !isInverse);
+      }
+    } else {
+      check.push(true);
+    }
+  });
+
+  const finalCheck = check.filter((item) => item === false);
+
+  return !(finalCheck.length > 0);
 };
 
 const changeObjectProperty = (objectItem: any, property: string, intent: any) => {
@@ -337,6 +387,7 @@ export {
   trimRecursive,
   changeObjectProperty,
   checkCondition,
+  checkConditions,
   checkStatus,
   utcToTz,
   queryProp,

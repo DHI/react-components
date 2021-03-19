@@ -270,13 +270,15 @@ export const ScenariosJSONStory = () => {
             <Scenarios
               frequency={10}
               token={token.accessToken.token}
-              queryDates={queryDates}
+              // queryDates={queryDates}
               host={process.env.ENDPOINT_URL}
               scenarioConnection={'postgres-jsondocuments-scenarios'}
               jobConnection={'wf-jobs'}
-              dataFilterbyProperty={{
-                field: 'data.mooring',
-              }}
+              dataFilterbyProperty={[
+                {
+                  field: 'data.mooring',
+                },
+              ]}
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
               menuItems={[

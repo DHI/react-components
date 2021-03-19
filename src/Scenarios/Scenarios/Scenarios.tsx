@@ -14,7 +14,7 @@ import { JobParameters } from '../../api/types';
 import AuthService from '../../Auth/AuthService';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { checkCondition, getObjectProperty, uniqueId } from '../../utils/Utils';
+import { checkConditions, getObjectProperty, uniqueId } from '../../utils/Utils';
 import { ScenarioList } from '../ScenarioList/ScenarioList';
 import { MenuItem, Scenario } from '../types';
 import ScenariosProps from './types';
@@ -129,7 +129,7 @@ const Scenarios = (props: ScenariosProps) => {
           return s;
         });
         const updatedScenarios = [];
-        const newScenarios = rawScenarios.filter((scenario) => checkCondition(scenario, dataFilterbyProperty));
+        const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
         const values = newScenarios.map((item) => item.fullName);
 
         const query = [

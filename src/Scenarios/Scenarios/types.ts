@@ -43,10 +43,7 @@ interface ScenariosProps {
    * @param field object property e.g.: data.mooring
    * @param value to filter to a specific value
    */
-  dataFilterbyProperty?: {
-    field: string;
-    value?: string | null;
-  };
+  dataFilterbyProperty?: dataFilterbyPropertyObj[];
   /**
    * Backend host
    */
@@ -166,6 +163,11 @@ interface QueryBody {
   Item: string;
   QueryOperator: string;
   Value: string;
+}
+
+interface dataFilterbyPropertyObj {
+  field: string;
+  value?: string | null;
 }
 
 export default ScenariosProps;
