@@ -170,10 +170,5 @@ interface dataFilterbyPropertyObj {
   value?: string | null;
 }
 
-interface dataFilterbyPropertyObj {
-  field: string;
-  value?: string | null;
-}
-
 export default ScenariosProps;
 export { QueryBody };
