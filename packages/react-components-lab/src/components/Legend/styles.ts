@@ -6,7 +6,7 @@ const LegendStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'nowrap',
-    width:'fit-content'
+    width: 'fit-content',
   },
   legendHeader: {
     fontWeight: 600,
