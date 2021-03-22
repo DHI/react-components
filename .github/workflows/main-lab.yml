@@ -23,9 +23,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /packages/react-components-lab/node-modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
 
       - name: Install dependencies
         run: cd packages/react-components-lab && yarn install --frozen-lockfile
@@ -71,9 +69,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /packages/react-components-lab/node-modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
       
       - name: Add GH token
         run: |
@@ -104,9 +100,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /packages/react-components-lab/node-modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
             
       - name: Build storybook
         run: cd packages/react-components-lab && yarn build-storybook
