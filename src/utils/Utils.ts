@@ -137,7 +137,7 @@ const checkConditions = (scenarioData: Scenario, conditions: Condition[]) => {
           conditionsValue = [condition.value!];
         }
 
-        const values = conditionsValue.map((val) => (val === 'true' || val === 'false' ? JSON.parse(val) : val));
+        const values = conditionsValue.map((val) => (val === 'true' || val === 'false' ? val === 'true' : val));
 
         check.push(
           values.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse,
