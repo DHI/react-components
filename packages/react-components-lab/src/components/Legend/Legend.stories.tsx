@@ -32,7 +32,7 @@ Primary.args = {
 // Large.args = {
 //   size: 'large',
 //   label: 'Button',
-// }
+// };
 
 // export const Small = Template.bind({});
 // Small.args = {
