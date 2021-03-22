@@ -25,10 +25,10 @@ jobs:
           path: |
             /packages/react-components-lab/node-modules
             /packages/react-components-lab/.npmrc
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            nodeModules-
-      
+            ${{ runner.os }}-modules
+          
       - name: Add GH token
         run: |
           cd packages/react-components-lab
@@ -81,9 +81,9 @@ jobs:
           path: |
             /packages/react-components-lab/node-modules
             /packages/react-components-lab/.npmrc
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            nodeModules-
+            ${{ runner.os }}-modules
             
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
@@ -110,9 +110,9 @@ jobs:
           path: |
             /packages/react-components-lab/node-modules
             /packages/react-components-lab/.npmrc
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            nodeModules-
+            ${{ runner.os }}-modules
             
       - name: Build storybook
         run: cd packages/react-components-lab && yarn build-storybook
