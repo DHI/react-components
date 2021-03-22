@@ -19,21 +19,13 @@ jobs:
         with:
           node-version: 12.x
       
-      - name: Use cached data
+      - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: |
-            /packages/react-components-lab/node-modules
-            /packages/react-components-lab/.npmrc
+          path: /packages/react-components-lab/node-modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules
-          
-      - name: Add GH token
-        run: |
-          cd packages/react-components-lab
-          echo "@dhi-gras:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
 
       - name: Install dependencies
         run: cd packages/react-components-lab && yarn install --frozen-lockfile
@@ -75,15 +67,19 @@ jobs:
         with:
           node-version: 12.x
           
-      - name: Use cached data
+      - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: |
-            /packages/react-components-lab/node-modules
-            /packages/react-components-lab/.npmrc
+          path: /packages/react-components-lab/node-modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules
+      
+      - name: Add GH token
+        run: |
+          cd packages/react-components-lab
+          echo "@dhi-gras:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
             
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
@@ -104,12 +100,10 @@ jobs:
         with:
           node-version: 12.x
           
-      - name: Use cached data
+      - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: |
-            /packages/react-components-lab/node-modules
-            /packages/react-components-lab/.npmrc
+          path: /packages/react-components-lab/node-modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules
