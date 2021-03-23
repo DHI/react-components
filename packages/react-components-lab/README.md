@@ -60,7 +60,7 @@ yarn add @dhi/react-components-lab
 
 ## Contributing
 
-If you would like to contribute to our project, please read the [repository guidelines](./../docs/CONTRIBUTING.md).
+If you would like to contribute to our project, please read the [repository guidelines](./docs/CONTRIBUTING.md).
 
 ## Documentation
 
