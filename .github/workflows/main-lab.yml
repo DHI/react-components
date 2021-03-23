@@ -1,8 +1,10 @@
 name: CI - lab
-on: 
+on:
   push:
-    paths: 
-      - 'packages/react-components-lab/**'
+    branches:
+      - add-lab
+    paths:
+      - "packages/react-components-lab/**"
 jobs:
   build:
     runs-on: ubuntu-latest
