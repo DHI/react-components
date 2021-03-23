@@ -1,9 +1,9 @@
-<h1 align="center">@dhi/react-components-lab</h1>
-<div align="center">
+<div align="left">
 
 [![CI - lab](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml)
 
 </div>
+<h1 align="left">@dhi/react-components-lab</h1>
 
 This package hosts the incubator components that are not yet ready to move to the core.
 
