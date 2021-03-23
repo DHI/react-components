@@ -1,7 +1,3 @@
-<p align="center">
-  <a href="https://www.dhigroup.com/" rel="noopener" target="_blank"><img width="150" src="https://grasdatastorage.blob.core.windows.net/images/DHI_Logo_Blue.png" alt="DHI logo"></a></p>
-</p>
-
 <h1 align="center">@dhi/react-components-lab</h1>
 <div align="center">
 
