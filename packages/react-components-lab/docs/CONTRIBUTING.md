@@ -4,6 +4,8 @@ First of all, welcome and thank you for contributing to our Storybook.
 
 The purpose of our `@dhi/react-components-lab` GitHub library is to host the components that are not yet ready to be added to the core library. Here, the components will leave for a certain amount if time until the components have been tested by our maintainers in terms of missing features, bugs, API design etc. The older and more used a component is, the less likely it is that new issues will be found.
 
+A lab component with low usage either means that it isn't fully working yet or that there is a low demand for it.
+
 # Setting up
 
 To get started follow these steps:
@@ -27,7 +29,7 @@ We are using the [Angular Commit Message Conventions](https://github.com/angular
 | feat(name): Commit message | Feature Release 0.1.0  |
 | perf(name): Commit message | Breaking Release 1.0.0 |
 
-This is not a requirement and should only be used when adding a change that needs to be reflected on the package itself. Each of these commits will trigger a specific semantic versioning action when in the pipeline, so use with precaution.
+Each of these commits will trigger a specific semantic versioning action when in the pipeline, so use with precaution.
 
 ## Branch naming conventions
 
@@ -37,7 +39,7 @@ This is not a requirement and should only be used when adding a change that need
 
 ## Issues
 
-When creating a new feature, firstly we have to create the need for it.
+When creating a new feature, its necessity and value should initially be evaluated.
 This is done by creating an issue and describing how does the feature improve our current lab package and what is the expected behaviour, assign somebody to it and label it accordingly.
 
 In order for a component to be added, it needs to check a few boxes:
