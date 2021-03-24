@@ -25,7 +25,7 @@ Our library is showcased on the [Lab Storybook](https://storybooklab.z16.web.cor
 
 # Setting up
 
-Before being able to install the package, you will need a GitHub token scoped for the DHI organization on github. For doing so, you must have access to the DHI GitHub organization. This token needs to have the permission `read:packages` checked. For doing so, go to your `profile -> settings -> developer settings -> personal access tokens`.
+Before installing the package, you will need a GitHub token scoped for the DHI organization on github. For doing so, you must have access to the DHI GitHub organization. This token needs to have the permission `read:packages` checked. For doing so, go to your `profile -> settings -> developer settings -> personal access tokens`.
 
 After getting a token, create an npm configuration file `.npmrc` in the root of the react-components-lab package like this:
 
