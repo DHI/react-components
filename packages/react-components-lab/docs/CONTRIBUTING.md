@@ -37,7 +37,7 @@ This is done by creating an issue and describing how does the feature improve ou
 
 In order for a component to be added, it needs to check a few boxes:
 
-* [x] The component cannot be implemented by styling a MUI component via the theme (finst. `<Button />` or `<Typography />`). However, if the styling is complex enough and requires a lot of styling (finst. The `<Slider />` component), it can be evaluated.
+* [x] The component cannot be implemented by styling a Material UI component via the theme (for instance `<Button />` or `<Typography />`). However, if the styling is complex enough and requires a lot of styling (for instance The `<Slider />` component), it can be evaluated.
 * [x] The component implements an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or is otherwise generic enough in functionality and close enough to the DHI CVI that it is likely to find reuse in other projects.
 * [x] The component needs to be reviewed by at least one of the maintainers.
 
