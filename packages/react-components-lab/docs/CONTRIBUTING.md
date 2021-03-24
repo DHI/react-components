@@ -24,7 +24,7 @@ We are using the [Angular Commit Message Conventions](https://github.com/angular
 
 This is not a requirement and should only be used when adding a change that needs to be reflected on the package itself. Each of these commits will trigger a specific semantic versioning action when in the pipeline, so use with precaution.
 
-## Branches
+## Branch naming conventions
 
 - fix/branch-name - When dealing with a bug or a quick-fix
 - feature/branch-name - When dealing with a feature
