@@ -11,7 +11,7 @@ As developers use and test the components and report issues, the maintainers lea
 
 This package is created using [TypeScript](https://www.typescriptlang.org/) and [MaterialUI](https://material-ui.com/), built using [Yarn](https://classic.yarnpkg.com/en/) and bundled using [TSDX](https://tsdx.io/).
 
-# The mindset of adding a component
+# The flow of adding a component
 
 We are aiming for making it as easy as possible for a component to be added to the lab. However, the component needs to fulfill some minimum requirements:
 
