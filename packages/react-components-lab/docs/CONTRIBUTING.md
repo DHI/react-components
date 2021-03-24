@@ -58,7 +58,7 @@ Sub-components, along with their types and styles should always be exported.
 
 ## Pull Requests (PR)
 
-When creating a PR, please explain what it does and make sure to link the relevant issues to it using the Github keywords or through the GUI.
+When creating a PR, please explain the functionality of the component and make sure to link the relevant GitHub issues.
 
 Moreover, ensure that you are going through the PR template instructions.
 
