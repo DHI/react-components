@@ -26,9 +26,9 @@ This is not a requirement and should only be used when adding a change that need
 
 ## Branch naming conventions
 
-- fix/branch-name - When dealing with a bug or a quick-fix
-- feature/branch-name - When dealing with a feature
-- docs/branch-name - When dealing with the documentation
+- `fix/branch-name` - When dealing with a bug or a quick-fix
+- `feature/branch-name` - When dealing with a feature
+- `docs/branch-name` - When dealing with the documentation
 
 ## Issues
 
