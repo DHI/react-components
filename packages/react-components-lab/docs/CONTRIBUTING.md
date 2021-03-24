@@ -40,6 +40,16 @@ In order for a component to be added, it needs to check a few boxes:
 * [x] The component cannot be implemented by styling a Material UI component via the theme (for instance `<Button />` or `<Typography />`). However, if the styling is complex enough and requires a lot of styling (for instance The `<Slider />` component), it can be evaluated.
 * [x] The component implements an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or is otherwise generic enough in functionality and close enough to the DHI CVI that it is likely to find reuse in other projects.
 * [x] The component needs to be reviewed by at least one of the maintainers.
+## Component structure guidelines
+
+The structure, style and conventions of a component should generally be as consistent as possible.
+Some aspects are enforced by the ESLint configuration, but not all.
+It may therefore be a good idea to take a look at the existing components and follow what's established there.
+
+Early iterations of a component may still be acceptable as it can later be revised and stabilized once the component is to be moved to the core package.
+
+Components must be as atomic as possible. If a child component could potentially be used independently, it should be its own component, not a sub-component.
+Sub-components, along with their types and styles should always be exported.
 
 ## Pull Requests (PR)
 
