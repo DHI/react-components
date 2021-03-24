@@ -8,9 +8,9 @@ The purpose of our `@dhi/react-components-lab` GitHub library is to host the com
 
 To get started follow these steps:
 
-- Clone the repository on your PC using `git clone https://github.com/DHI/react-components.git`.
-- Run `yarn install`.
-- If everything went well, you are ready to add your contribution.
+- Clone the repository`.
+- Install dependencies `yarn install`.
+- Change your working directory to `packages/react-components-lab`
 
 ## Commits:
 
