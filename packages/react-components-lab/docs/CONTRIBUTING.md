@@ -12,6 +12,11 @@ To get started follow these steps:
 - Install dependencies `yarn install`.
 - Change your working directory to `packages/react-components-lab`
 
+## ESLint
+
+The package uses ESLint with the `airbnb-typescript` configuration, which enforces consistent code style and warns on possible errors.
+Most editors support an ESLint plugin or extension. Enabling auto-fix on save may also be a good idea.
+
 ## Commits:
 
 We are using the [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines) for versioning our packages.
