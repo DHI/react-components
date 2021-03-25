@@ -15,9 +15,3 @@ Please review the below criteria before asking for a review.
 ### Completness
 
 - [ ] Story included
-
-### Picked the right package?
-
-- [ ] Just fixing existing stuff
-- [ ] Labs package for new submissions that fulfil the above criteria
-- [ ] Core package for selected components submitted by the SPOPX team
