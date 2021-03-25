@@ -3,14 +3,16 @@
 [![CI - lab](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml)
 ![CI - core](https://github.com/DHI/react-components-ts/workflows/CI/badge.svg)
 
+
+
 React components shared across DHI for implementing our Corporate Visual Identity and working together towards great UX and coherent design.
 
 
 ## Packages and their scope
 
 We have two packages, similar to what you might know from [Material-UI](https://material-ui.com/components/about-the-lab/):
-1. [Lab package](packages/react-components-lab) for rapid uptake and incubation of new components to prove their use and quality.
-1. [Core package](packages/react-components) for mature and widely used components. This package also contains larger components from SPOPX.
+1. [Lab package](packages/react-components-lab) for rapid uptake and incubation of new components to prove their use and quality. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://storybooklab.z16.web.core.windows.net/)
+1. [Core package](packages/react-components) for mature and widely used components. This package also contains larger components from SPOPX. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://domainservices.dhigroup.com/)
 
 
 ## Contributing
