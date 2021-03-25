@@ -1,56 +1,33 @@
-![CI](https://github.com/DHI/react-components-ts/workflows/CI/badge.svg)
+# DHI | React Components
 
-# React Components
+[![CI - lab](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml)
+![CI - core](https://github.com/DHI/react-components-ts/workflows/CI/badge.svg)
 
-The React Components collection is a TypeScript based collection of components used across a range of applications within DHI.
+React components shared across DHI for implementing our Corporate Visual Identity and working together towards great UX and coherent design.
 
-The intention with this library is include functionality rich components and not so much shallow UI components.
 
-A lot of the components in this library are oriented towards providing easy to use off the shelf components for Domain Services backends, but this is not a requirement 
+## Packages and their scope
 
-React-Components are demonstrated [here](https://domainservices.dhigroup.com/) and are available as npm package from Github packages.
+We have two packages, similar to what you might know from [Material-UI](https://material-ui.com/components/about-the-lab/):
+1. [Lab package](packages/react-components-lab) for rapid uptake and incubation of new components to prove their use and quality.
+1. [Core package](packages/react-components) for mature and widely used components. This package also contains larger components from SPOPX.
 
-## Getting started with development
 
-The recommended workflow is to run TSDX in one terminal:
+## Contributing
 
-```
-yarn
-yarn start
-```
+We welcome any components that implement an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or are otherwise generic enough in 
+functionality and close enough to the DHI CVI that they are likely to find reuse in other projects. Size does not matter, but the component should be beyond what you can achieve by theming, 
+styling, or compositing existing components.
 
-To run Storybook
+Please also check out the guidelines for the package you are contributing to.
 
-```
-yarn
-yarn start
-yarn storybook
-```
 
-## Making alterations to React Components
+## Board of maintainers
 
-Yalc can be used to test components as you build them within your own projects.
-
-Generate a GitHub token (following guide at the top of this page under "Installation").
-
-Run to install tools globally:
-```
-npm i rimraf -g
-npm i yalc -g
-```
-Run command in react-components root folder:
-```
-RC-TS> yarn build
-RC-TS> yalc push
-# @dhi/react-components@0.2.63+ae197119 published in store.
-```
-Run command in project folder:
-```
-project> yarn remove @dhi/react-components
-project> yalc add @dhi/react-components
-# Package @dhi/react-components@0.2.63+ae197119 added ==> H:\dev\projects\SOPX\MarineAid.FrontEnd\node_modules\@dhi\react-components.
-```
-
-Every time you make a change to the react-component, just re-run `yalc push` and it will auto-update working project!
-
-_Note_ Once you have completed your development, ensure you `yalc remove @dhi/react-components` publish the package to the web and run `yarn add react-components` to ensure you've wired up to the production (public) package.
+- Graham O'Neale (gron)
+- Elbys Jose Meneses (ejme)
+- Rihards Rancans (rira)
+- Razvan Bertea (rabe)
+- Sam Johnson (sajo)
+- James Harper (jamh)
+- Franz Thomsen (frt)

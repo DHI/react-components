@@ -1,12 +1,10 @@
 name: CI - lab
 on:
   push:
+    branches:
+      - add-lab
     paths:
       - "packages/react-components-lab/**"
-      
-  # Allows you to run this workflow manually from the Actions tab - not working
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,7 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      
+
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
@@ -53,61 +51,60 @@ jobs:
           container_name: "$web"
           connection_string: ${{ secrets.BlobConnectionString }}
           sync: true
-          
 #   release:
 #     needs: build
 #     runs-on: ubuntu-latest
 #     steps:
 #       - name: Begin CI...
 #         uses: actions/checkout@v2
-        
+
 #       - name: Use Node 12
 #         uses: actions/setup-node@v1
 #         with:
 #           node-version: 12.x
-          
+
 #       - name: Cache node_modules
 #         uses: actions/cache@v2
 #         with:
 #           path: /packages/react-components-lab/node-modules
 #           key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
-      
+
 #       - name: Add GH token
 #         run: |
 #           cd packages/react-components-lab
 #           echo "@dhi-gras:registry=https://npm.pkg.github.com" >> .npmrc
 #           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
-            
+
 #       - name: Semantic release
 #         run: cd packages/react-components-lab && yarn run semantic-release
 #         env:
 #           CI: true
 #           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 #           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-          
+
 #   storybook:
 #     needs: release
 #     runs-on: ubuntu-latest
 #     steps:
 #       - name: Begin CI...
 #         uses: actions/checkout@v2
-        
+
 #       - name: Use Node 12
 #         uses: actions/setup-node@v1
 #         with:
 #           node-version: 12.x
-          
+
 #       - name: Cache node_modules
 #         uses: actions/cache@v2
 #         with:
 #           path: /packages/react-components-lab/node-modules
 #           key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
-            
+
 #       - name: Build storybook
 #         run: cd packages/react-components-lab && yarn build-storybook
 #         env:
 #           CI: true
-          
+
 #       - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
 #         with:
 #           source_dir: "./packages/react-components-lab/storybook-static"
