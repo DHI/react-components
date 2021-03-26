@@ -1,6 +1,5 @@
 {
     "extends": "./tsconfig.json",
-    "rootDir": "./src",
     "include": [
         "./src/*",
         "./src/**/*",
