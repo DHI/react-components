@@ -1,6 +1,6 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import React, { useEffect, useState } from 'react';
-import { fetchTimeseriesValues, fetchToken } from '../DataServices/DataServices';
+import { fetchTimeseriesValues, fetchToken } from '../api';
 import { TimeseriesExplorer } from './TimeseriesExplorer/Timeseries';
 import { TimeseriesExporter } from './TimeseriesExporter/TimeseriesExporter';
 

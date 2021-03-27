@@ -71,4 +71,4 @@ const TimeseriesExporter = (props: TimeseriesExporterProps) => {
   );
 };
 
-export { TimeseriesExporterProps, TimeseriesExporter };
+export { TimeseriesExporterProps, TimeseriesData, TimeseriesExporter };
