@@ -17,6 +17,7 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import Paper from '@material-ui/core/Paper';
 import React, { useEffect, useState } from 'react';
+import { createUserGroup, deleteUserGroup, fetchAccounts, fetchUserGroups, updateUserGroups } from '../api';
 import {
   Command,
   DeleteDialog,
@@ -27,13 +28,6 @@ import {
   PopupEditing,
   UsersTypeProvider,
 } from '../common/Table';
-import {
-  createUserGroup,
-  deleteUserGroup,
-  fetchAccounts,
-  fetchUserGroups,
-  updateUserGroups,
-} from '../DataServices/DataServices';
 import { UserGroupProps, UserGroups, UserGroupsData } from './types';
 
 const DEFAULT_COLUMNS = [

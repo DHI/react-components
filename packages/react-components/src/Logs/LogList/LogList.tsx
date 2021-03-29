@@ -18,9 +18,9 @@ import {
 import { Paper } from '@material-ui/core';
 import { format, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import React, { useEffect, useMemo, useState } from 'react';
+import { fetchLogs } from '../../api';
 import Loading from '../../common/Loading/Loading';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
-import { fetchLogs } from '../../DataServices/DataServices';
 import { CustomCell, FilterCellRow } from './helpers';
 import LogListProps, { LogData } from './types';
 import useStyles from './useStyles';

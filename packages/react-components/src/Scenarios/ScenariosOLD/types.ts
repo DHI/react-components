@@ -53,10 +53,6 @@ interface ScenariosProps {
    */
   token: string;
   /**
-   * Object to filter data
-   */
-  queryBody?: QueryBody[];
-  /**
    * Scenario connection to fetch scenario by date
    */
   scenarioConnection: string;
@@ -153,16 +149,6 @@ interface ScenariosProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
-  /**
-   * Set debug mode on to track what SignalR is emitting
-   */
-  debug?: boolean;
-}
-
-interface QueryBody {
-  Item: string;
-  QueryOperator: string;
-  Value: string;
 }
 
 interface dataFilterbyPropertyObj {
@@ -171,4 +157,3 @@ interface dataFilterbyPropertyObj {
 }
 
 export default ScenariosProps;
-export { QueryBody };

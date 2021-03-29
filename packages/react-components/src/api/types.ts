@@ -64,7 +64,7 @@ interface JobQuery {
 }
 
 interface JobParameters {
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 export { Options, DataSource, Header, JobQuery, JobParameters, User };

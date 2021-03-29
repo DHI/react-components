@@ -1,4 +1,4 @@
-import { DataSource } from '../../DataServices/types';
+import { DataSource } from '../../api/types';
 
 export interface TimeseriesProps {
   token: string;

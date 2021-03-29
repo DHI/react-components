@@ -1,5 +1,5 @@
 import { addHours, differenceInMinutes, parseISO } from 'date-fns';
-import { format, toDate, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
+import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
 import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
@@ -12,6 +12,8 @@ const dataObjectToArray = (data: { [x: string]: any }) => {
 };
 
 const getObjectProperty = (objectItem: any, property: string): any => {
+  if (!objectItem) return null;
+
   const value = jp.query(objectItem, property);
 
   return value.length > 0 ? value[0] : null;
@@ -76,6 +78,12 @@ const getDescriptions = (
   return descriptions;
 };
 
+/**
+ * Check if the property passed in the condition object is in the Scenario object
+ * @param scenarioData Scenario Data
+ * @param condition A object with a condition
+ * @returns true or false
+ */
 const checkCondition = (scenarioData: Scenario, condition: Condition) => {
   let conditions: string[] = [];
   let isInverse = false;
@@ -103,6 +111,50 @@ const checkCondition = (scenarioData: Scenario, condition: Condition) => {
   }
 };
 
+/**
+ * Check if any of the listed properties are in the Scenario object
+ * @param scenarioData Scenario Data
+ * @param conditions Array of conditions
+ * @returns true or false
+ */
+const checkConditions = (scenarioData: Scenario, conditions: Condition[]) => {
+  let conditionsValue: string[] = [];
+  let isInverse = false;
+  const check = [];
+
+  conditions.forEach((condition) => {
+    if (condition) {
+      if (condition!.field.indexOf('!') === 0) {
+        isInverse = true;
+      }
+
+      // If we have a value, check that it matches
+      // If we didn't specify a value, just want to check if this field has data or not
+      if (condition.value) {
+        if (isArray(condition.value)) {
+          conditionsValue = [...condition.value];
+        } else {
+          conditionsValue = [condition.value!];
+        }
+
+        const values = conditionsValue.map((val) => (val === 'true' || val === 'false' ? val === 'true' : val));
+
+        check.push(
+          values.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse,
+        );
+      } else {
+        check.push((getObjectProperty(scenarioData, condition!.field.replace('!', '')) != null) === !isInverse);
+      }
+    } else {
+      check.push(true);
+    }
+  });
+
+  const finalCheck = check.filter((item) => item === false);
+
+  return !(finalCheck.length > 0);
+};
+
 const changeObjectProperty = (objectItem: any, property: string, intent: any) => {
   const properties = property.split('.');
   let value = objectItem;
@@ -122,9 +174,17 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
   return body[0];
 };
 
-const checkStatus = (scenario: Scenario, status: Status[]) => {
-  const scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
-  const progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
+const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean) => {
+  let scenarioStatus;
+  let progress;
+
+  if (scenarioOLD) {
+    scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
+    progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
+  } else {
+    scenarioStatus = getObjectProperty(scenario, 'status');
+    progress = Number(getObjectProperty(scenario, 'progress'));
+  }
 
   const currentStatus = {
     ...status.find((s) => s.name === scenarioStatus),
@@ -278,27 +338,10 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
  * @param timeZone 'Australia/Brisbane'
  * @param dateTimeFormat 'Date time format. 'yyyy-MM-dd HH:mm:ss'
  */
-const zonedTimeFromUTC = (date, timeZone, dateTimeFormat) =>
-  format(utcToZonedTime(date.replace('T', ' '), timeZone), dateTimeFormat);
+const zonedTimeFromUTC = (date, timeZone, dateTimeFormat) => {
+  date = `${date.replace('Z', '')}Z`;
 
-/**
- * Function to convert to local time.
- * @param date 2021-02-03T17:11:13.415297
- * @param timeZone 'Australia/Brisbane'
- * @param dateTimeFormat Date time format. 'yyyy-MM-dd HH:mm:ss'
- */
-const convertLocalTime = (date, timeZone, dateTimeFormat) => format(zonedTimeToUtc(date, timeZone), dateTimeFormat);
-
-/**
- * Function to convert to local time on the Job List component
- * when the page is refreshed with some updates from Signal R.
- * @param time for example: 2021-02-03T17:11:13.415297
- * @param dateTimeFormat Date time format. 'yyyy-MM-dd HH:mm:ss'
- */
-const convertServerTimeToLocalTime = (time, dateTimeFormat) => {
-  const timeConvertedToSydneyUTC = zonedTimeToUtc(time, 'Australia/Sydney');
-
-  return format(timeConvertedToSydneyUTC, dateTimeFormat);
+  return format(utcToZonedTime(date, timeZone), dateTimeFormat);
 };
 
 /**
@@ -352,15 +395,14 @@ export {
   trimRecursive,
   changeObjectProperty,
   checkCondition,
+  checkConditions,
   checkStatus,
   utcToTz,
   queryProp,
   uniqueId,
   calcTimeDifference,
   zonedTimeFromUTC,
-  convertLocalTime,
   tzToUtc,
   toISOLocal,
-  convertServerTimeToLocalTime,
   recursive,
 };
