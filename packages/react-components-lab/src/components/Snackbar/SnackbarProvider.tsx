@@ -1,56 +1,61 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/require-default-props */
-
 import React, { useState } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import Button from '@material-ui/core/Button';
+import { Snackbar as MuiSnackbar } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
+import Fade from '@material-ui/core/Fade';
+import Grow from '@material-ui/core/Grow';
+import Slide from '@material-ui/core/Slide';
 
 // #region Local imports
 import SnackbarContext from './SnackbarContext';
 import {
+  TransitionType,
   SeverityType,
   SnackbarContexValue,
-  SnackbarOptions,
+  SnackbarProviderProps,
   SnackbarProps,
-  renderTransitionComponent,
   DEFAULT_TRANSITION,
   DEFAULT_DURATION,
 } from './types';
 import useStyles from './styles';
-// #endregionend
+// #endregion
 
-interface SnackbarProviderState {
-  open?: boolean;
-  message?: any;
-  options?: SnackbarOptions;
+interface SnackbarState {
+  open?: boolean
+  message?: any
+  options?: SnackbarProps
 }
 
-const SnackbarProvider: React.FC<SnackbarProps> = ({
+const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
   children,
   autoHideDuration,
   transitionComponent,
   severity,
-}: SnackbarProps) => {
+}: SnackbarProviderProps) => {
   const classes = useStyles();
 
-  const [state, setState] = useState<SnackbarProviderState>({
+  const [state, setState] = useState<SnackbarState>({
     open: false,
     message: undefined,
     options: undefined,
   });
 
   const existingSnackbarProps = {
-    autoHideDuration,
-    TransitionComponent: transitionComponent,
+    autoHideDuration: autoHideDuration || DEFAULT_DURATION,
+    TransitionComponent: transitionComponent || DEFAULT_TRANSITION,
     severity,
+    // action,
   };
 
-  const showMessage = (message: string, options: SnackbarOptions) => {
+  const newAutoHideDuration = state.options?.autoHideDuration
+    || existingSnackbarProps.autoHideDuration;
+
+  const newTransitionComponent = state.options?.transitionComponent
+    || existingSnackbarProps.TransitionComponent;
+
+  const showMessage = (message: string, options: SnackbarProps) => {
     setState({ open: true, message, options });
   };
 
@@ -64,16 +69,6 @@ const SnackbarProvider: React.FC<SnackbarProps> = ({
       return;
     }
     setState({ open: false, options: undefined });
-  };
-
-  const handleActionClick = (
-    e: React.SyntheticEvent | MouseEvent,
-    reason?: string,
-  ) => {
-    handleClose(e, reason);
-    if (state.options && state.options.handleAction) {
-      state.options.handleAction();
-    }
   };
 
   const handleMessage = (svr: SeverityType, msg: any) => {
@@ -113,44 +108,38 @@ const SnackbarProvider: React.FC<SnackbarProps> = ({
     }
   };
 
+  const renderTransitionComponent = (transitionType?: TransitionType): any => {
+    let transition = Slide;
+    switch (transitionType) {
+      case 'fade':
+        transition = Fade;
+        break;
+      case 'grow':
+        transition = Grow;
+        break;
+      case 'slide':
+        transition = Slide;
+        break;
+      default:
+        transition = Slide;
+    }
+    return transition;
+  };
+
   return (
     <>
       <SnackbarContext.Provider value={stateContextValue}>
         {children}
-        <Snackbar
+        <MuiSnackbar
           {...existingSnackbarProps}
           message={handleMessage(severity, state.message)}
           open={state.open}
-          autoHideDuration={
-            state.options && state.options?.autoHideDuration
-              ? state.options?.autoHideDuration
-              : existingSnackbarProps.autoHideDuration
-                ? existingSnackbarProps.autoHideDuration
-                : DEFAULT_DURATION
-          }
-          TransitionComponent={renderTransitionComponent(
-            state.options && state.options?.transitionComponent
-              ? state.options?.transitionComponent
-              : existingSnackbarProps.TransitionComponent
-                ? existingSnackbarProps.TransitionComponent
-                : DEFAULT_TRANSITION,
-          )}
+          autoHideDuration={newAutoHideDuration}
+          TransitionComponent={renderTransitionComponent(newTransitionComponent)}
           ContentProps={{
             className: classes[severity],
           }}
           onClose={handleClose}
-          action={
-            state.options
-            && state.options.actionLabel && (
-              <Button
-                color="secondary"
-                size="small"
-                onClick={handleActionClick}
-              >
-                {state.options.actionLabel}
-              </Button>
-            )
-          }
         />
       </SnackbarContext.Provider>
     </>
