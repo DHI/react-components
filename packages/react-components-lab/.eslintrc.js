@@ -14,6 +14,8 @@ module.exports = {
   },
   rules: {
     'react/prop-types': 'off',
+    'react/require-default-props': 'off',
+    'react/jsx-props-no-spreading': 'off',
     'no-multiple-empty-lines': ['warn', { max: 2 }],
   },
 };
