@@ -1,11 +1,14 @@
-/* eslint-disable react/jsx-props-no-spreading */
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { SnackbarProvider, useSnackbar } from './Snackbar';
+
+// #region Local imports
+import SnackbarProvider from './SnackbarProvider';
+import useSnackbar from './useSnackbar';
 import { SnackbarProps } from './types';
+// #endregion
 
 const messageContent: string = 'Hi, I am a snackbar!';
 const App: React.FC = () => {
