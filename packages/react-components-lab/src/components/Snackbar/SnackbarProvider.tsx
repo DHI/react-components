@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Snackbar as MuiSnackbar } from '@material-ui/core';
+import { Button, Snackbar as MuiSnackbar } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
@@ -33,6 +33,8 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
   autoHideDuration,
   transitionComponent,
   severity,
+  action,
+  onActionClick,
 }: SnackbarProviderProps) => {
   const classes = useStyles();
 
@@ -46,7 +48,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     autoHideDuration: autoHideDuration || DEFAULT_DURATION,
     TransitionComponent: transitionComponent || DEFAULT_TRANSITION,
     severity,
-    // action,
+    action,
   };
 
   const newAutoHideDuration = state.options?.autoHideDuration
@@ -108,6 +110,14 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     }
   };
 
+  const handleActionClick = (e: React.SyntheticEvent | MouseEvent) => {
+    if (state.options && state.options.onActionClick) {
+      state.options.onActionClick(e);
+    } else {
+      onActionClick(e);
+    }
+  };
+
   const renderTransitionComponent = (transitionType?: TransitionType): any => {
     let transition = Slide;
     switch (transitionType) {
@@ -139,6 +149,13 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
           ContentProps={{
             className: classes[severity],
           }}
+          action={
+            action != null && (
+              <Button variant="outlined" size="small" className={classes.actionButton} onClick={handleActionClick}>
+                {action}
+              </Button>
+            )
+          }
           onClose={handleClose}
         />
       </SnackbarContext.Provider>

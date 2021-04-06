@@ -19,12 +19,14 @@ interface SnackbarProps {
    * @param {number} [autoHideDuration] numbers for auto hide duration
    * @param {TransitionType} [transitionComponent] type of transition will be use on show/hide snackbar
    * @param {SeverityType} [severity] conditions level that indicates with background color
-   * @param {string} [actionLabel] label for the action button
-   * @param {function} [handleAction] click handler for the action button
+   * @param {string} [action] label for the action button
+   * @param {function} [onActionClick] click handler for the action button
   */
   autoHideDuration?: number;
   transitionComponent?: TransitionType;
   severity?: SeverityType;
+  action?: string;
+  onActionClick?: (e: React.SyntheticEvent | MouseEvent) => void;
 }
 
 interface SnackbarProviderProps extends SnackbarProps {

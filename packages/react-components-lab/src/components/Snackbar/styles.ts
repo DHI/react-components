@@ -25,6 +25,11 @@ const SnackbarStyles = makeStyles(() => ({
   error: {
     backgroundColor: '#FD3F75',
   },
+  actionButton: {
+    color: '#fff',
+    borderColor: '#fff',
+    textTransform: 'none',
+  },
 }));
 
 export { SnackbarStyles };
