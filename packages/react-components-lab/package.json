@@ -2,12 +2,12 @@
   "version": "0.2.11",
   "license": "MIT",
   "main": "dist/index.js",
-  "name": "@dhi-gras/react-components-lab-test",
+  "name": "@dhi/react-components-lab",
   "author": "DHI",
-  "module": "dist/react-components-lab-ts.esm.js",
+  "module": "dist/react-components-lab.esm.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DHI-GRAS/react-components-ts.git"
+    "url": "https://github.com/DHI/react-components.git"
   },
   "typings": "dist/index.d.ts",
   "files": [
@@ -15,8 +15,8 @@
     "src"
   ],
   "publishConfig": {
-    "name": "@dhi-gras/react-components-lab-test",
-    "registry": "https://npm.pkg.github.com/dhi-gras"
+    "name": "@dhi/react-components-lab",
+    "registry": "https://npm.pkg.github.com/"
   },
   "engines": {
     "node": ">=10"

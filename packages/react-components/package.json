@@ -28,7 +28,7 @@
         "registry": "https://npm.pkg.github.com/"
     },
     "author": "DHI",
-    "module": "dist/react-components-ts.esm.js",
+    "module": "dist/react-components.esm.js",
     "devDependencies": {
         "@babel/core": "^7.9.6",
         "@storybook/addon-actions": "^6.1.14",

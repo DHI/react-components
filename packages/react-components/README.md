@@ -1,4 +1,4 @@
-![CI](https://github.com/DHI/react-components-ts/workflows/CI/badge.svg)
+![CI](https://github.com/DHI/react-components/workflows/CI/badge.svg)
 
 # React Components
 

@@ -1,8 +1,8 @@
 {
     "branches": [
-        "add-lab"
+        "master"
     ],
-    "repositoryUrl": "https://github.com/DHI-GRAS/react-components-ts",
+    "repositoryUrl": "https://github.com/DHI/react-components",
     "plugins": [
         "@semantic-release/commit-analyzer",
         "@semantic-release/release-notes-generator",
