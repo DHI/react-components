@@ -1,6 +1,6 @@
 <div align="left">
 
-[![CI - lab](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml)
+[![CI - lab](https://github.com/DHI/react-components/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI/react-components/actions/workflows/main-lab.yml)
 
 </div>
 <h1 align="left">@dhi/react-components-lab</h1>

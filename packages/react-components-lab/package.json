@@ -16,7 +16,7 @@
   ],
   "publishConfig": {
     "name": "@dhi/water-warriors-lab",
-    "registry": "https://npm.pkg.github.com/dhi"
+    "registry": "https://npm.pkg.github.com/"
   },
   "engines": {
     "node": ">=10"
