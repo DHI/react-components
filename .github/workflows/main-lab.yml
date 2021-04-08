@@ -2,7 +2,7 @@ name: CI - lab
 on:
   push:
     branches:
-      - inexistent-branch-hopefully
+      - inexistent-branch-hopefully # should be master when we want to trigger it
     # paths:
     #   - "packages/react-components-lab/**"
 jobs:
