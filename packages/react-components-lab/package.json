@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "name": "@dhi/water-warriors-lab",
   "author": "DHI",
-  "module": "dist/react-components-lab-ts.esm.js",
+  "module": "dist/water-warriors-lab.esm.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/DHI/react-components.git"
