@@ -2,7 +2,7 @@ name: CI - lab
 on:
   push:
     branches:
-      - add-lab
+      - master
     paths:
       - "packages/react-components-lab/**"
 jobs:
@@ -38,7 +38,6 @@ jobs:
         env:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Build storybook
         run: cd packages/react-components-lab && yarn build-storybook
