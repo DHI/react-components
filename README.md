@@ -1,7 +1,7 @@
 # DHI | React Components
 
-[![CI - lab](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI-GRAS/react-components-ts/actions/workflows/main-lab.yml)
-![CI - core](https://github.com/DHI/react-components-ts/workflows/CI/badge.svg)
+[![CI - lab](https://github.com/DHI/react-components/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI/react-components/actions/workflows/main-lab.yml)
+![CI - core](https://github.com/DHI/react-components/workflows/CI/badge.svg)
 
 
 

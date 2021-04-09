@@ -50,6 +50,11 @@ jobs:
           container_name: "$web"
           connection_string: ${{ secrets.BlobConnectionString }}
           sync: true
+
+#   This workflow can be separated in 3 separate jobs that can run. There were problems with caching node_modules 
+
+#   For example the 2nd and 3rd jobs that release and deploy the app
+
 #   release:
 #     needs: build
 #     runs-on: ubuntu-latest
@@ -71,7 +76,7 @@ jobs:
 #       - name: Add GH token
 #         run: |
 #           cd packages/react-components-lab
-#           echo "@dhi-gras:registry=https://npm.pkg.github.com" >> .npmrc
+#           echo "@dhi:registry=https://npm.pkg.github.com" >> .npmrc
 #           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
 
 #       - name: Semantic release
