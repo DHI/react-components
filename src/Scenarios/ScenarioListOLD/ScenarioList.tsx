@@ -37,7 +37,9 @@ const ScenarioList = (props: ScenarioListProps) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
-            return scenario.dateTime ? format(parseISO(scenario.dateTime), 'yyyy-MM-dd') : '';
+            return scenario.dateTime && timeZone
+              ? format(utcToTz(scenario.dateTime, timeZone), 'yyyy-MM-dd')
+              : format(parseISO(scenario.dateTime), 'yyyy-MM-dd') || '';
           })
         : groupBy(scenarios, (scenario) => scenario.dateTime),
     );
