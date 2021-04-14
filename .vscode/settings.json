@@ -1,9 +1,15 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": true
-  },
-  "editor.formatOnSave": true,
-  "eslint.format.enable": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "workbench.tree.indent": 20
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": false,
+        "source.fixAll.eslint": true,
+    },
+    "editor.formatOnSave": false,
+    "eslint.format.enable": false,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "eslint.workingDirectories": [
+        "packages/react-components",
+        "packages/react-components-lab"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "workbench.tree.indent": 20,
 }

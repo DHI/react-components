@@ -1,0 +1,10 @@
+{
+    "extends": "../../tsconfig.json",
+    "rootDir": "./src",
+    "include": [
+        "./src/*",
+        "./typings.d.ts",
+        ".eslintrc.js",
+        ".prettierrc.js"
+    ],
+}

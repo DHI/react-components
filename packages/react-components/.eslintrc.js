@@ -111,10 +111,8 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2019,
-    sourceType: 'module',
-    ecmaFeatures: { jsx: true },
-    project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
+    project: './tsconfig.eslint.json',
+    // tsconfigRootDir: __dirname,
   },
   settings: {
     'react': { version: 'detect' },
