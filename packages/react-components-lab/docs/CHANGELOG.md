@@ -1,3 +1,10 @@
+## [0.2.87](https://github.com/DHI/react-components/compare/v0.2.86...v0.2.87) (2021-04-15)
+
+
+### Bug Fixes
+
+* **pipe:** Update package json and pipeline envs. ([7eaa530](https://github.com/DHI/react-components/commit/7eaa530258659edc0a371d5a6875229f14d140ee))
+
 ## [0.2.86](https://github.com/DHI/react-components/compare/v0.2.85...v0.2.86) (2021-04-15)
 
 
