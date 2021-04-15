@@ -8,7 +8,7 @@
   "module": "dist/react-components-lab.esm.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DHI/react-components.git"
+    "url": "git+https://github.com/DHI/react-components.git"
   },
   "typings": "dist/index.d.ts",
   "files": [
@@ -16,7 +16,7 @@
     "src"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com"
   },
   "engines": {
     "node": ">=10"
