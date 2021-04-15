@@ -5,7 +5,7 @@
 </div>
 <h1 align="left">@dhi/react-components-lab</h1>
 
-This package primarily serves as the incubator for components that are not yet ready to move to the core package/library
+This package primarily serves as the incubator for components that are not yet ready to move to the core package/library.
 
 As developers use and test the components and report issues, the maintainers learn more about shortcomings of the components: missing features, accessibility issues, bugs, API design, etc. The older and more used a component is, the less likely it is that new issues will be found and subsequently need to introduce breaking changes.
 
