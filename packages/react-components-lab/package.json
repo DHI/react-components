@@ -16,7 +16,7 @@
   ],
   "publishConfig": {
     "name": "@dhi/react-components-lab",
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/dhi"
   },
   "engines": {
     "node": ">=10"
