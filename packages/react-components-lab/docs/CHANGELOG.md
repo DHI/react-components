@@ -1,3 +1,10 @@
+## [0.2.85](https://github.com/DHI/react-components/compare/v0.2.84...v0.2.85) (2021-04-15)
+
+
+### Bug Fixes
+
+* **pipe:** Add organization to end of registry ([2402536](https://github.com/DHI/react-components/commit/2402536a94edd96408eb8d1173557f20cc5eb089))
+
 ## [0.2.84](https://github.com/DHI/react-components/compare/v0.2.83...v0.2.84) (2021-04-15)
 
 
