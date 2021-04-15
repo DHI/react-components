@@ -9,7 +9,8 @@
     "scripts": {
         "install": "lerna bootstrap",
         "build": "lerna run build",
-        "lint": "lerna exec yarn lint"
+        "lint": "lerna exec yarn lint",
+        "sb": "yarn --cwd packages/react-components sb"
     },
     "workspaces": [
         "./packages/*"

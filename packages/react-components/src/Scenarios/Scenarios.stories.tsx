@@ -73,6 +73,7 @@ export const ScenariosStory = () => {
                 {
                   id: 'execute',
                   label: 'Execute',
+                  disabled: true,
                   condition: {
                     field: '!lastJobStatus', // Prefix with exclamation if you wish to inverse the condition test
                     value: ['Pending', 'InProgress', 'Completed'],

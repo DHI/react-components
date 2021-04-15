@@ -33,7 +33,7 @@ const ScenarioMenu = (props: ScenarioMenuProps) => {
       </IconButton>
       <Menu id="simple-menu" anchorEl={showElement} open={showMenu} onClose={() => setShowMenuState(false)}>
         {menu.map((menuItem) => (
-          <MenuItemUI key={menuItem.id} id={menuItem.id} onClick={() => setContextMenu(menuItem, scenario)}>
+          <MenuItemUI key={menuItem.id} onClick={() => setContextMenu(menuItem, scenario)} {...menuItem}>
             {menuItem.label}
           </MenuItemUI>
         ))}
