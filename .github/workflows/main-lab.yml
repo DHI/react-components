@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@dhi'
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -36,6 +38,7 @@ jobs:
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
