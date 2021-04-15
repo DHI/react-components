@@ -1,3 +1,18 @@
+## [0.2.81](https://github.com/DHI/react-components/compare/v0.2.80...v0.2.81) (2021-04-15)
+
+
+### Bug Fixes
+
+* **add-workflow:** Add semantic release for workflow run. ([57b5f1b](https://github.com/DHI/react-components/commit/57b5f1bbe4ebf093e23ca06846a37e4b7c37dc99))
+* **pipe:** trigger pipe run ([b78054d](https://github.com/DHI/react-components/commit/b78054d0c290051cc5897aacbb0e9d0218abf78e))
+* **pipe:** trigger pipe run ([a8105f6](https://github.com/DHI/react-components/commit/a8105f63bf10e7f2b828cf5c08adeac74d0bfa99))
+* **pipe-token:** Add token through script ([4301ece](https://github.com/DHI/react-components/commit/4301ece94453d91face20b31814f97e5e84a25b9))
+* **pipeline:** Add package owner to publishConfig ([c742657](https://github.com/DHI/react-components/commit/c742657461c3e620666a84f16d1b3a61c9c1d634))
+* **pipeline:** Update the releaserc file. ([fe48c01](https://github.com/DHI/react-components/commit/fe48c013773ce346c451af2af3ebb029355611fb))
+* **readme:** Add semantic-release badge. Fix pipe. ([e507b8f](https://github.com/DHI/react-components/commit/e507b8f47f3ce48387dec5f999d0c41b63b4bfe0))
+* **readme:** Update readme file ([9feef78](https://github.com/DHI/react-components/commit/9feef786261623577d00c7623db1c34407624215))
+* **readme:** Update readme for pipeline trigger ([7b8307d](https://github.com/DHI/react-components/commit/7b8307de56600d6dd58532bb38e1d95525bf215e))
+
 ## [0.2.11](https://github.com/DHI-GRAS/react-components-ts/compare/v0.2.10...v0.2.11) (2021-03-12)
 
 
