@@ -1,3 +1,11 @@
+## [0.2.86](https://github.com/DHI/react-components/compare/v0.2.85...v0.2.86) (2021-04-15)
+
+
+### Bug Fixes
+
+* **packaging:** Publish only dist ([96c30fc](https://github.com/DHI/react-components/commit/96c30fcaa46e66e6969b1ae6438f7df2a2b23a0c))
+* **releaserc:** releaserc pkgRoot ([586476b](https://github.com/DHI/react-components/commit/586476bacfc675c9cea3eb7c7ec541b487cbce09))
+
 ## [0.2.85](https://github.com/DHI/react-components/compare/v0.2.84...v0.2.85) (2021-04-15)
 
 
