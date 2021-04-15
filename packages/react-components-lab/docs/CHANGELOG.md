@@ -1,3 +1,10 @@
+## [0.2.83](https://github.com/DHI/react-components/compare/v0.2.82...v0.2.83) (2021-04-15)
+
+
+### Bug Fixes
+
+* **readme:** Trigger small change for pipe run. ([42841e6](https://github.com/DHI/react-components/commit/42841e611f56b185d972b5b9f683e5ab50721036))
+
 ## [0.2.82](https://github.com/DHI/react-components/compare/v0.2.81...v0.2.82) (2021-04-15)
 
 
