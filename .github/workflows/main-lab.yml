@@ -36,7 +36,6 @@ jobs:
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
         env:
-          CI: true
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
