@@ -71,6 +71,10 @@ interface MenuItem {
    * Extra job parameters
    */
   jobParameters?: any;
+  /**
+   * Ability to disable a button
+   */
+  disabled?: boolean;
 }
 
 interface ScenarioOLD {
