@@ -1,3 +1,11 @@
+## [0.2.82](https://github.com/DHI/react-components/compare/v0.2.81...v0.2.82) (2021-04-15)
+
+
+### Bug Fixes
+
+* **readme:** Trigger change for pipe on path. ([e10f1c5](https://github.com/DHI/react-components/commit/e10f1c5cc9ad8c227c1d32b715610f0e583562f8))
+* **readme:** Trigger change for release. ([ce4af14](https://github.com/DHI/react-components/commit/ce4af142a884f9de7c66208d188023b991716991))
+
 ## [0.2.81](https://github.com/DHI/react-components/compare/v0.2.80...v0.2.81) (2021-04-15)
 
 
