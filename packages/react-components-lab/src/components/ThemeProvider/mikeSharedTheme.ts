@@ -11,9 +11,6 @@ import mikeComponentsProps from './mikeComponentsProps';
 export const mikeSharedTheme: IMikeTheme = createMuiTheme({
   typography: mikeTypography,
   palette: mikePalette,
-  shape: {
-    borderRadius: 4, // default mui: 4
-  },
   overrides: mikeOverrides,
   props: mikeComponentsProps,
 } as IMikeThemeOptions);
