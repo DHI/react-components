@@ -431,8 +431,8 @@ const mikeOverrides: Overrides = {
   },
   MuiSwitch: {
     root: {
-      width: 36,
-      height: 12,
+      width: 46,
+      height: 22,
       padding: 0,
       display: 'flex',
       flexDirection: 'row',
@@ -443,19 +443,19 @@ const mikeOverrides: Overrides = {
     switchBase: {
       padding: 0,
       height: '100%',
-      color: '#86A2B3 !important',
-      transform: 'translateX(4px)',
+      color: `${mikePalette.darkGrey.main} !important`,
+      transform: 'translateX(5.6px)',
       '&:hover': {
         backgroundColor: 'transparent',
       },
       '&$checked': {
-        transform: 'translateX(22px)',
-        color: '#61C051 !important',
+        transform: 'translateX(29px)',
+        color: `${mikePalette.success.dark} !important`,
         height: '100%',
         '& + $track': {
           opacity: 1,
-          backgroundColor: '#BFE787 !important',
-          borderColor: '#BFE787 !important',
+          backgroundColor: `${mikePalette.success.light} !important`,
+          borderColor: `${mikePalette.success.light} !important`,
         },
         '&:hover': {
           backgroundColor: 'transparent',
@@ -469,15 +469,15 @@ const mikeOverrides: Overrides = {
       },
     },
     thumb: {
-      width: 10,
-      height: 10,
+      width: 12.5,
+      height: 12.5,
       boxShadow: 'none',
     },
     track: {
-      border: '2px solid #86A2B3 !important',
-      borderRadius: 20 / 2,
+      border: `3px solid ${mikePalette.darkGrey.main} !important`,
+      borderRadius: 16,
       opacity: 1,
-      backgroundColor: '#FFF',
+      backgroundColor: mikePalette.lightGrey.main,
     },
     checked: {},
   },
