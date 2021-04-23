@@ -1,3 +1,10 @@
+## [0.2.88](https://github.com/DHI/react-components/compare/v0.2.87...v0.2.88) (2021-04-23)
+
+
+### Bug Fixes
+
+* **lab:** index exports ([cc166d5](https://github.com/DHI/react-components/commit/cc166d5631db32ed8f31ec5abb2563c23778d084))
+
 ## [0.2.87](https://github.com/DHI/react-components/compare/v0.2.86...v0.2.87) (2021-04-15)
 
 

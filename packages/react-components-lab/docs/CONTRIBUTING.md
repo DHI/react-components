@@ -78,6 +78,12 @@ The `peerDependencies` are the dependencies that the developers using our packag
 
 While developing, we are primarily using the `devDependencies` to develop the library. Any dependencies that are needed for the development should be added here.
 
+## Exporting
+Components and all other consumable files should be exported in `src/index.ts`  
+If the file has a **default export**, use the following syntax: `export { default as ComponentName } from 'src/components/ComponentName/ComponentName';`  
+If the file has one or more **named exports**, use the following syntax `export * from 'src/components/ComponentName/ComponentName';`  
+If the file contains both a **default** and **named** exports, use both of the above.  
+
 ## Testing
 
 - to be added
