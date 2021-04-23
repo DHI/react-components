@@ -1,5 +1,5 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, Switch } from '@material-ui/core';
 import React, { FC } from 'react';
 import useStyles from './styles';
 import {
@@ -60,7 +60,7 @@ const Legend: FC<LegendProps> = ({
         </Box>
       </Box>
       )}
-
+      <Switch />
       <Box p={1}>
         {unit && (
         <Box display="flex" className={classes.colorTickWrapper}>
