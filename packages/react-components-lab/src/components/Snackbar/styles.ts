@@ -32,5 +32,4 @@ const SnackbarStyles = makeStyles(() => ({
   },
 }));
 
-export { SnackbarStyles };
 export default SnackbarStyles;
