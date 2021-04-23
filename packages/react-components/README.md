@@ -8,7 +8,7 @@ React-Components are demonstrated [here](https://domainservices.dhigroup.com/) a
 
 ## Installing the package
 
-Generating a Personal Access token with GitHub
+Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
 1. Visit Github.com &rarr; Your Profile (top right) &rarr; Settings.
 2. Develop settings (bottom of sidebar)
@@ -29,8 +29,6 @@ Generating a Personal Access token with GitHub
 <sup>(this file can also be created in project-scope via `.npmrc` in root, but it is not advised as it links to your personal access token.)</sup>
 
 11. Now you may install DHI packages from GitHub Packages!
-
-_"Generating a token" - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)_
 
 ## Getting started with development
 
