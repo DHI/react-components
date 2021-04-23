@@ -34,5 +34,4 @@ const LegendStyles = makeStyles(() => ({
   },
 }));
 
-export { LegendStyles };
 export default LegendStyles;
