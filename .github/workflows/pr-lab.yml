@@ -1,0 +1,37 @@
+name: CI - lab
+on:
+  push:
+    pull_request:
+      types: [opened, synchronize, reopened, closed]
+      branches:
+    paths:
+      - "packages/react-components-lab/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Begin CI...
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@dhi'
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: /packages/react-components-lab/node-modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
+
+      - name: Install dependencies
+        run: cd packages/react-components-lab && yarn install --frozen-lockfile
+        env:
+          CI: true
+
+      - name: Lint
+        run: cd packages/react-components-lab && yarn lint
+        env:
+          CI: true

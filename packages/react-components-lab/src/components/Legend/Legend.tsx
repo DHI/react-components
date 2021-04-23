@@ -2,13 +2,12 @@ import { TinyColor } from '@ctrl/tinycolor';
 import { Box, Typography } from '@material-ui/core';
 import React, { FC } from 'react';
 import useStyles from './styles';
-import {
-  ColorsArr,
-  LegendProps,
-} from './types';
+import { ColorsArr, LegendProps } from './types';
 
 export const mixLegendColors = (colorsArr: ColorsArr): ColorsArr => {
-  const formatColors = colorsArr.map((color) => (color.includes('#') ? color : `#${color}`));
+  const formatColors = colorsArr.map((color) =>
+    color.includes('#') ? color : `#${color}`
+  );
   let mixedColors: string[] = [];
 
   formatColors.forEach((color, i) => {
@@ -40,50 +39,62 @@ const Legend: FC<LegendProps> = ({
 
   const colorLenByMax = colors.length / maxItems;
   const maxColorOverBy = Math.ceil(colorLenByMax);
-  const reducedColors = colorLenByMax >= 1.5
-    ? colors.filter((_, i) => i % maxColorOverBy === 0)
-    : colors;
+  const reducedColors =
+    colorLenByMax >= 1.5
+      ? colors.filter((_, i) => i % maxColorOverBy === 0)
+      : colors;
 
   const mixedColors = doMixColors ? mixLegendColors(colors) : reducedColors;
   const step = (max - min) / (mixedColors.length - 1);
 
   return (
-    <Box className={classes.wrapper} style={{ ...style, backgroundColor: legendBackground }}>
+    <Box
+      className={classes.wrapper}
+      style={{ ...style, backgroundColor: legendBackground }}
+    >
       {title && (
-      <Box className={classes.legendHeader} style={{ backgroundColor: headerBackground }}>
-        <Box p="1px 5px">
-          {title.split(' ').map((word, i) => (
-            <Typography key={word + String(i)}>
-              {word}
-            </Typography>
-          ))}
+        <Box
+          className={classes.legendHeader}
+          style={{ backgroundColor: headerBackground }}
+        >
+          <Box p="1px 5px">
+            {title.split(' ').map((word, i) => (
+              <Typography key={word + String(i)}>{word}</Typography>
+            ))}
+          </Box>
         </Box>
-      </Box>
       )}
 
       <Box p={1}>
         {unit && (
-        <Box display="flex" className={classes.colorTickWrapper}>
-          <span className={classes.tick}>
-            <Typography variant="body1">
-              <i>
-                {unit}
-              </i>
-            </Typography>
-          </span>
-          <Box className={classes.color} />
-        </Box>
-        )}
-        {mixedColors.map((color, i) => (
-          <Box key={color + String(i)} display="flex" className={classes.colorTickWrapper}>
+          <Box display="flex" className={classes.colorTickWrapper}>
             <span className={classes.tick}>
               <Typography variant="body1">
-                {Number(min + i * step).toFixed(2)}
+                <i>{unit}</i>
               </Typography>
             </span>
-            <Box className={classes.color} style={{ backgroundColor: color }} />
+            <Box className={classes.color} />
           </Box>
-        )).reverse()}
+        )}
+        {mixedColors
+          .map((color, i) => (
+            <Box
+              key={color + String(i)}
+              display="flex"
+              className={classes.colorTickWrapper}
+            >
+              <span className={classes.tick}>
+                <Typography variant="body1">
+                  {Number(min + i * step).toFixed(2)}
+                </Typography>
+              </span>
+              <Box
+                className={classes.color}
+                style={{ backgroundColor: color }}
+              />
+            </Box>
+          ))
+          .reverse()}
       </Box>
     </Box>
   );
