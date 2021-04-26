@@ -6,7 +6,7 @@ on:
     paths:
       - "packages/react-components-lab/**"
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Begin CI...
