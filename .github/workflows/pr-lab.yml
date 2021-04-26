@@ -1,4 +1,4 @@
-name: CI - PR Lint
+name: CI - Lab PR Lint
 on:
   pull_request:
     types: [opened, synchronize, edited]

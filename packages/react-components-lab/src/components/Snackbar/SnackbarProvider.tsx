@@ -74,7 +74,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     setState({ open: false, options: undefined });
   };
 
-  const handleMessage = (svr: SeverityType, msg: any) => {
+  const handleMessage = (svr: SeverityType, msg: string | ReactNode) => {
     switch (svr) {
       case 'normal':
         return msg;
@@ -119,7 +119,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     }
   };
 
-  const renderTransitionComponent = (transitionType?: TransitionType): any => {
+  const renderTransitionComponent = (transitionType?: TransitionType) => {
     let transition = Slide;
     switch (transitionType) {
       case 'fade':
