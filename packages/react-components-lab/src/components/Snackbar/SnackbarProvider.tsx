@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Button, Snackbar as MuiSnackbar } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
@@ -24,7 +24,7 @@ import useStyles from './styles';
 
 interface SnackbarState {
   open?: boolean;
-  message?: any;
+  message?: string | ReactNode;
   options?: SnackbarProps;
 }
 

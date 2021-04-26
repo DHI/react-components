@@ -1,9 +1,8 @@
-name: CI - lab
+name: CI - PR Lint
 on:
-  push:
-    pull_request:
-      types: [opened, synchronize, reopened, closed]
-      branches:
+  pull_request:
+    types: [opened, synchronize, edited]
+    branches:
     paths:
       - "packages/react-components-lab/**"
 jobs:
