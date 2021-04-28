@@ -145,9 +145,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
         message={handleMessage(severity, state.message)}
         open={state.open}
         autoHideDuration={newAutoHideDuration}
-        TransitionComponent={renderTransitionComponent(
-          newTransitionComponent
-        )}
+        TransitionComponent={renderTransitionComponent(newTransitionComponent)}
         ContentProps={{
           className: classes[severity],
         }}
