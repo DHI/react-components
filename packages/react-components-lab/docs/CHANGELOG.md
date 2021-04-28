@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/DHI/react-components/compare/v0.3.0...v0.4.0) (2021-04-28)
+
+
+### Features
+
+* **Switch-theme:** Adds the theme styling for the Switch component. ([78884de](https://github.com/DHI/react-components/commit/78884de0e86c1e1ced86f4c30b77499e07b317ea))
+
 # [0.3.0](https://github.com/DHI/react-components/compare/v0.2.89...v0.3.0) (2021-04-28)
 
 
