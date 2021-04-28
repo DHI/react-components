@@ -64,7 +64,6 @@ const Legend: FC<LegendProps> = ({
           </Box>
         </Box>
       )}
-
       <Box p={1}>
         {unit && (
           <Box display="flex" className={classes.colorTickWrapper}>
