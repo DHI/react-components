@@ -1,8 +1,8 @@
 import React from 'react';
 
 // #region Local imports
-import { SnackbarContexValue } from './types';
+import { SnackbarContextValue } from './types';
 // #endregion
 
-const SnackbarContext = React.createContext({} as SnackbarContexValue);
+const SnackbarContext = React.createContext({} as SnackbarContextValue);
 export default SnackbarContext;

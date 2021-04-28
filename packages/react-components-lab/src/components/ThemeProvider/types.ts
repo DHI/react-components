@@ -4,20 +4,20 @@ import { Palette, PaletteColor } from '@material-ui/core/styles/createPalette';
 import { Overrides } from '@material-ui/core/styles/overrides';
 
 export interface IProps {
-  overrides?: object
-  children?: ReactNode
+  overrides?: Overrides;
+  children?: ReactNode;
 }
 
 export interface IMikePalette extends Palette {
-  ultimate?: PaletteColor
-  darkGrey?: PaletteColor
-  mediumGrey?: PaletteColor
-  lightGrey?: PaletteColor
+  ultimate?: PaletteColor;
+  darkGrey?: PaletteColor;
+  mediumGrey?: PaletteColor;
+  lightGrey?: PaletteColor;
 }
 
 export interface IMikeTheme extends Theme {
-  palette: IMikePalette
-  overrides?: Overrides
+  palette: IMikePalette;
+  overrides?: Overrides;
 }
 
 export interface IMikeThemeOptions extends ThemeOptions {

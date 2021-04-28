@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Button, Snackbar as MuiSnackbar } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
@@ -13,7 +13,7 @@ import SnackbarContext from './SnackbarContext';
 import {
   TransitionType,
   SeverityType,
-  SnackbarContexValue,
+  SnackbarContextValue,
   SnackbarProviderProps,
   SnackbarProps,
   DEFAULT_TRANSITION,
@@ -23,9 +23,9 @@ import useStyles from './styles';
 // #endregion
 
 interface SnackbarState {
-  open?: boolean
-  message?: any
-  options?: SnackbarProps
+  open?: boolean;
+  message?: string | ReactNode;
+  options?: SnackbarProps;
 }
 
 const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
@@ -51,21 +51,22 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     action,
   };
 
-  const newAutoHideDuration = state.options?.autoHideDuration
-    || existingSnackbarProps.autoHideDuration;
+  const newAutoHideDuration =
+    state.options?.autoHideDuration || existingSnackbarProps.autoHideDuration;
 
-  const newTransitionComponent = state.options?.transitionComponent
-    || existingSnackbarProps.TransitionComponent;
+  const newTransitionComponent =
+    state.options?.transitionComponent ||
+    existingSnackbarProps.TransitionComponent;
 
   const showMessage = (message: string, options: SnackbarProps) => {
     setState({ open: true, message, options });
   };
 
-  const [stateContextValue] = useState<SnackbarContexValue>({ showMessage });
+  const [stateContextValue] = useState<SnackbarContextValue>({ showMessage });
 
   const handleClose = (
     e: React.SyntheticEvent | MouseEvent,
-    reason?: string,
+    reason?: string
   ) => {
     if (reason === 'clickaway') {
       return;
@@ -73,7 +74,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     setState({ open: false, options: undefined });
   };
 
-  const handleMessage = (svr: SeverityType, msg: any) => {
+  const handleMessage = (svr: SeverityType, msg: string | ReactNode) => {
     switch (svr) {
       case 'normal':
         return msg;
@@ -118,7 +119,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     }
   };
 
-  const renderTransitionComponent = (transitionType?: TransitionType): any => {
+  const renderTransitionComponent = (transitionType?: TransitionType) => {
     let transition = Slide;
     switch (transitionType) {
       case 'fade':
@@ -145,13 +146,20 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
           message={handleMessage(severity, state.message)}
           open={state.open}
           autoHideDuration={newAutoHideDuration}
-          TransitionComponent={renderTransitionComponent(newTransitionComponent)}
+          TransitionComponent={renderTransitionComponent(
+            newTransitionComponent
+          )}
           ContentProps={{
             className: classes[severity],
           }}
           action={
             action != null && (
-              <Button variant="outlined" size="small" className={classes.actionButton} onClick={handleActionClick}>
+              <Button
+                variant="outlined"
+                size="small"
+                className={classes.actionButton}
+                onClick={handleActionClick}
+              >
                 {action}
               </Button>
             )

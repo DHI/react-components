@@ -10,7 +10,7 @@ import useSnackbar from './useSnackbar';
 import { SnackbarProps } from './types';
 // #endregion
 
-const messageContent: string = 'Hi, I am a snackbar!';
+const messageContent = 'Hi, I am a snackbar!';
 const App: React.FC = () => {
   const snackbar = useSnackbar();
 
@@ -20,7 +20,9 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleShowSnackbar}>Show</Button>
+      <Button variant="outlined" onClick={handleShowSnackbar}>
+        Show
+      </Button>
     </>
   );
 };
@@ -37,7 +39,6 @@ export default {
     },
   },
 } as Meta;
-
 
 const Template: Story<SnackbarProps> = (args) => (
   <SnackbarProvider {...args}>
