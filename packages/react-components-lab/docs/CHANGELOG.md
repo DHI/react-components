@@ -1,3 +1,33 @@
+# [0.4.0](https://github.com/DHI/react-components/compare/v0.3.0...v0.4.0) (2021-04-28)
+
+
+### Features
+
+* **Switch-theme:** Adds the theme styling for the Switch component. ([78884de](https://github.com/DHI/react-components/commit/78884de0e86c1e1ced86f4c30b77499e07b317ea))
+
+# [0.3.0](https://github.com/DHI/react-components/compare/v0.2.89...v0.3.0) (2021-04-28)
+
+
+### Features
+
+* **lab:** use prettier, add pr lint ci, add lint rules ([4d6466c](https://github.com/DHI/react-components/commit/4d6466c59ee75571028cf5b4458043c51bbf3c54))
+
+## [0.2.89](https://github.com/DHI/react-components/compare/v0.2.88...v0.2.89) (2021-04-28)
+
+
+### Bug Fixes
+
+* **package.json:** Fix readme key ([32e904a](https://github.com/DHI/react-components/commit/32e904a645c359ad666f645d9cbda377362da2b3))
+* **readme:** Adds the .npmrc instructions ([3c33093](https://github.com/DHI/react-components/commit/3c33093f858c6807e9a47e3732ac952a6bce9aeb))
+* **readme:** Update readme with .npmrc instructions ([65d69f7](https://github.com/DHI/react-components/commit/65d69f72d148f0c0f621463cbe97af53af57b37a))
+
+## [0.2.88](https://github.com/DHI/react-components/compare/v0.2.87...v0.2.88) (2021-04-23)
+
+
+### Bug Fixes
+
+* **lab:** index exports ([cc166d5](https://github.com/DHI/react-components/commit/cc166d5631db32ed8f31ec5abb2563c23778d084))
+
 ## [0.2.87](https://github.com/DHI/react-components/compare/v0.2.86...v0.2.87) (2021-04-15)
 
 

@@ -429,6 +429,58 @@ const mikeOverrides: Overrides = {
       padding: '0.5rem', // 8px
     },
   },
+  MuiSwitch: {
+    root: {
+      width: 46,
+      height: 22,
+      padding: 0,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      overflow: 'inherit',
+      float: 'right',
+    },
+    switchBase: {
+      padding: 0,
+      height: '100%',
+      color: `${mikePalette.darkGrey.main} !important`,
+      transform: 'translateX(5.6px)',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+      '&$checked': {
+        transform: 'translateX(29px)',
+        color: `${mikePalette.success.dark} !important`,
+        height: '100%',
+        '& + $track': {
+          opacity: 1,
+          backgroundColor: `${mikePalette.success.light} !important`,
+          borderColor: `${mikePalette.success.light} !important`,
+        },
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+      },
+    },
+    input: {
+      left: '-50%',
+      '&:checked': {
+        left: '-150%',
+      },
+    },
+    thumb: {
+      width: 12.5,
+      height: 12.5,
+      boxShadow: 'none',
+    },
+    track: {
+      border: `3px solid ${mikePalette.darkGrey.main} !important`,
+      borderRadius: 16,
+      opacity: 1,
+      backgroundColor: mikePalette.lightGrey.main,
+    },
+    checked: {},
+  },
 };
 
 export default mikeOverrides;

@@ -23,24 +23,29 @@ We are aiming for making it as easy as possible for a component to be added to t
 
 Our library is showcased on the [Lab Storybook](https://storybooklab.z16.web.core.windows.net/)
 
-# Setting up
+## Installing the package
 
-Before installing the package, you will need a GitHub token scoped for the DHI organization on github. For doing so, you must have access to the DHI GitHub organization. This token needs to have the permission `read:packages` checked. For doing so, go to your `profile -> settings -> developer settings -> personal access tokens`.
+Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
-After getting a token, create an npm configuration file `.npmrc` in the root of the react-components-lab package like this:
-
-```
-├── packages            
-│   └── react-components-lab
-│       └── .npmrc          # Npm config file for react-components-lab
-```
-
-And add the following code to it: 
+1. Visit Github.com &rarr; Your Profile (top right) &rarr; Settings.
+2. Develop settings (bottom of sidebar)
+3. Personal access tokens
+4. "Generate new token"
+5. Note: `GitHub Packages`
+6. Tick: `repo, write:packages, read:packages, delete:packages, admin:repo_hook`
+7. "Generate token"
+8. Click clipboard icon to copy token.
+9. Open `C:\users\<username>\.npmrc` or create this file here if doesn't exist.
+10. Paste within it, replacing `<AUTH_TOKEN>` with the token you copied moments ago.
 
 ```
 @dhi:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=yourToken
+//npm.pkg.github.com/:_authToken=<AUTH_TOKEN>
 ```
+
+<sup>(this file can also be created in project-scope via `.npmrc` in root, but it is not advised as it links to your personal access token.)</sup>
+
+11. Now you may install DHI packages from GitHub Packages!
 
 # Usage
 

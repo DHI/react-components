@@ -23,7 +23,6 @@ export default {
   },
 } as Meta;
 
-
 const Template: Story<IProps> = (args) => (
   <ThemeProvider {...args}>
     <Box>
@@ -34,7 +33,9 @@ const Template: Story<IProps> = (args) => (
         <Box bgcolor="primary.light" margin={1} padding={2}>
           <Typography variant="body1">Your Application</Typography>
           <Box bgcolor="primary.main" margin={1} padding={2}>
-            <Typography variant="body1" color="textSecondary">Your components</Typography>
+            <Typography variant="body1" color="textSecondary">
+              Your components
+            </Typography>
           </Box>
         </Box>
       </Box>
