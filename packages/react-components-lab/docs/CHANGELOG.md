@@ -1,3 +1,12 @@
+## [0.2.89](https://github.com/DHI/react-components/compare/v0.2.88...v0.2.89) (2021-04-28)
+
+
+### Bug Fixes
+
+* **package.json:** Fix readme key ([32e904a](https://github.com/DHI/react-components/commit/32e904a645c359ad666f645d9cbda377362da2b3))
+* **readme:** Adds the .npmrc instructions ([3c33093](https://github.com/DHI/react-components/commit/3c33093f858c6807e9a47e3732ac952a6bce9aeb))
+* **readme:** Update readme with .npmrc instructions ([65d69f7](https://github.com/DHI/react-components/commit/65d69f72d148f0c0f621463cbe97af53af57b37a))
+
 ## [0.2.88](https://github.com/DHI/react-components/compare/v0.2.87...v0.2.88) (2021-04-23)
 
 
