@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/DHI/react-components/compare/v0.2.89...v0.3.0) (2021-04-28)
+
+
+### Features
+
+* **lab:** use prettier, add pr lint ci, add lint rules ([4d6466c](https://github.com/DHI/react-components/commit/4d6466c59ee75571028cf5b4458043c51bbf3c54))
+
 ## [0.2.89](https://github.com/DHI/react-components/compare/v0.2.88...v0.2.89) (2021-04-28)
 
 
