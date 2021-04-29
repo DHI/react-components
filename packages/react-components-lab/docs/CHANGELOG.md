@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/DHI/react-components/compare/v0.4.0...v0.4.1) (2021-04-29)
+
+
+### Bug Fixes
+
+* **package.json:** Update to latest react/react dom  remove un used packages ([2b7a353](https://github.com/DHI/react-components/commit/2b7a3536358e3b5dda97e498f7f1784a6387057f))
+
 # [0.4.0](https://github.com/DHI/react-components/compare/v0.3.0...v0.4.0) (2021-04-28)
 
 
