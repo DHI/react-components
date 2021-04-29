@@ -1,3 +1,10 @@
+## [0.4.2](https://github.com/DHI/react-components/compare/v0.4.1...v0.4.2) (2021-04-29)
+
+
+### Bug Fixes
+
+* **Snackbar:** Remove extra fragment. PR [#107](https://github.com/DHI/react-components/issues/107) ([618214f](https://github.com/DHI/react-components/commit/618214fdb39bd172c3bc6983b51abf9fc4de7043))
+
 ## [0.4.1](https://github.com/DHI/react-components/compare/v0.4.0...v0.4.1) (2021-04-29)
 
 
