@@ -19,11 +19,9 @@ const App: React.FC = () => {
   };
 
   return (
-    <>
-      <Button variant="outlined" onClick={handleShowSnackbar}>
-        Show
-      </Button>
-    </>
+    <Button variant="outlined" onClick={handleShowSnackbar}>
+      Show
+    </Button>
   );
 };
 

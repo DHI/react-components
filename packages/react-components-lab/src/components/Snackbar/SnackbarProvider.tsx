@@ -138,36 +138,32 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
   };
 
   return (
-    <>
-      <SnackbarContext.Provider value={stateContextValue}>
-        {children}
-        <MuiSnackbar
-          {...existingSnackbarProps}
-          message={handleMessage(severity, state.message)}
-          open={state.open}
-          autoHideDuration={newAutoHideDuration}
-          TransitionComponent={renderTransitionComponent(
-            newTransitionComponent
-          )}
-          ContentProps={{
-            className: classes[severity],
-          }}
-          action={
-            action != null && (
-              <Button
-                variant="outlined"
-                size="small"
-                className={classes.actionButton}
-                onClick={handleActionClick}
-              >
-                {action}
-              </Button>
-            )
-          }
-          onClose={handleClose}
-        />
-      </SnackbarContext.Provider>
-    </>
+    <SnackbarContext.Provider value={stateContextValue}>
+      {children}
+      <MuiSnackbar
+        {...existingSnackbarProps}
+        message={handleMessage(severity, state.message)}
+        open={state.open}
+        autoHideDuration={newAutoHideDuration}
+        TransitionComponent={renderTransitionComponent(newTransitionComponent)}
+        ContentProps={{
+          className: classes[severity],
+        }}
+        action={
+          action != null && (
+            <Button
+              variant="outlined"
+              size="small"
+              className={classes.actionButton}
+              onClick={handleActionClick}
+            >
+              {action}
+            </Button>
+          )
+        }
+        onClose={handleClose}
+      />
+    </SnackbarContext.Provider>
   );
 };
 
