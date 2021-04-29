@@ -3,11 +3,12 @@
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React from 'react';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import { Typography, Switch } from '@material-ui/core';
 
 // #region Local imports
 import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
+import ComponentsMui from './ComponentsMui';
 // #endregion
 
 export default {
@@ -39,6 +40,7 @@ const Template: Story<IProps> = (args) => (
           </Box>
         </Box>
       </Box>
+      <ComponentsMui />
     </Box>
   </ThemeProvider>
 );
