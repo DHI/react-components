@@ -151,6 +151,7 @@ const LoginForm = (props: LoginFormProps) => {
           <TextField
             fullWidth
             margin="dense"
+            value={form?.otp || ''}
             onChange={(e) => handleChange('otp', e.target.value)}
             label={otpAuthPlaceholder}
             error={error}
