@@ -29,9 +29,6 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
-  "peerDependencies": {
-    "react": ">=16"
-  },
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@semantic-release/changelog": "^5.0.1",
@@ -58,7 +55,6 @@
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.22.0",
     "babel-loader": "^8.1.0",
-    "eslint": "^7.21.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
@@ -69,23 +65,25 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "fork-ts-checker-webpack-plugin": "^5.0.14",
     "prettier": "^2.2.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-is": "^17.0.2",
     "ts-loader": "^8.0.2",
     "tsdx": "^0.13.2",
     "tslib": "^1.11.1",
+    "eslint": "^7.21.0",
+    "lerna": "^4.0.0",
+    "typescript": "^4.2.3",
     "tslint-plugin-prettier": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.0",
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/system": "^4.11.3",
-    "eslint": "^7.21.0",
-    "lerna": "^4.0.0",
     "lodash": "^4.17.15",
-    "lodash.assignin": "^4.2.0",
-    "typescript": "^4.2.3"
+    "lodash.assignin": "^4.2.0"
   }
 }
