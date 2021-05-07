@@ -1,3 +1,11 @@
+## [0.4.3](https://github.com/DHI/react-components/compare/v0.4.2...v0.4.3) (2021-05-07)
+
+
+### Bug Fixes
+
+* **dependencies:** Add eslint rule. Add peerDependencies. ([0b4e78e](https://github.com/DHI/react-components/commit/0b4e78ecb48409d79b8c44956fea4339d6ede1ab))
+* **lodash-dependency:** Fix assignin package from lodash ([a1ebae4](https://github.com/DHI/react-components/commit/a1ebae49080d27dcb6c9b0844f608dfab678c403))
+
 ## [0.4.2](https://github.com/DHI/react-components/compare/v0.4.1...v0.4.2) (2021-04-29)
 
 
