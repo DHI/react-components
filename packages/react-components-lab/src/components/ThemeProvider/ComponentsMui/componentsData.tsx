@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Switch } from '@material-ui/core';
 import { ComponentList } from './types';
 
+// make sure that the title value is the same as the name of the exported component from @material-ui/core.
 const componentList: ComponentList[] = [
   {
     title: 'Button',

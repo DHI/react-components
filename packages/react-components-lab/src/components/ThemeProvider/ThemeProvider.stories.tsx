@@ -7,7 +7,7 @@ import { Typography, Box } from '@material-ui/core';
 // #region Local imports
 import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
-import ComponentsMui from './ComponentsMui/ComponentsMui';
+import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
 import componentDataList from './ComponentsMui/componentsData';
 import useStyles from './styles';
@@ -56,23 +56,11 @@ const Template: Story<IProps> = (args) => {
               </Box>
             </Box>
             <Syntax
-              code={`<ThemeProvider>
-  <Box bgcolor="primary.main" margin={1} padding={2}>
-    <Typography variant="h2" color="textSecondary">
-      Theme Provider
-    </Typography>
-    <Box bgcolor="primary.light" margin={1} padding={2}>
-      <Typography variant="body1">Your Application</Typography>
-      <Box bgcolor="primary.main" margin={1} padding={2}>
-        <Typography variant="body1" color="textSecondary">
-          Your components
-        </Typography>
-      </Box>
-    </Box>
-  </Box>
-</ThemeProvider>`}
+              code={`import { ThemeProvider } from "@dhi/react-components-lab"\n\n<ThemeProvider>\n \t{children}\n</ThemeProvider>`}
             />
-            <ComponentsMui dataList={componentDataList} />
+            {componentDataList?.map((item) => (
+              <ComponentItem item={item} />
+            ))}
           </Box>
           <Box className={classes.sidenav}>
             <Box className={classes.component}>
