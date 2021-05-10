@@ -1,17 +1,16 @@
-interface ComponentList {
+import { ReactNode } from 'react';
+
+type Component = {
+  component: ReactNode;
+  codeExample: string;
+};
+
+export interface ComponentList {
   title: string;
   description: string;
-  components: [
-    {
-      component: string;
-      codeExample: string;
-    }
-  ];
+  components: Component[];
 }
 
-interface ComponentsMuiProps {
+export interface ComponentsMuiProps {
   dataList: ComponentList[];
 }
-
-export { ComponentList, ComponentsMuiProps };
-export default ComponentList;

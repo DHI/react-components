@@ -11,10 +11,12 @@ import { SyntaxProps } from './types';
 
 const Syntax: React.FC<SyntaxProps> = ({ code, language }) => {
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     Prism.highlightAll();
   }, []);
+
   return (
-    <Box className="Code" p={1}>
+    <Box width={1} className="Code" p={1}>
       <pre>
         <code className={language ? `language-${language}` : `language-tsx`}>
           {code}

@@ -75,6 +75,11 @@ const Styles = makeStyles((theme) => ({
     borderRadius: 5,
     backgroundColor: '#000',
   },
+  tabItem: {
+    textDecoration: 'none',
+    cursor: 'pointer',
+    color: 'inherit',
+  },
 }));
 
 export default Styles;

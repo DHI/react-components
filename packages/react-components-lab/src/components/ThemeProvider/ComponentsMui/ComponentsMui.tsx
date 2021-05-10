@@ -1,18 +1,22 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 
-// #region Local import
 import { ComponentsMuiProps } from './types';
+import Syntax from '../../Syntax/Syntax';
 import useStyles from './styles';
-// //#endregion
 
 const ComponentsMui: React.FC<ComponentsMuiProps> = ({ dataList }) => {
   const classes = useStyles();
-
   return (
     <>
-      {dataList &&
-        dataList.map((item) => (
+      {dataList?.map((item) => {
+        const codeExample = item.components
+          .map((comp) => `${comp.codeExample}\n`)
+          .join('');
+
+        return (
           <Box
             width={1}
             paddingTop={5}
@@ -25,11 +29,28 @@ const ComponentsMui: React.FC<ComponentsMuiProps> = ({ dataList }) => {
                 <Typography variant="body2" className={classes.desc}>
                   {item.description}
                 </Typography>
-                <Box>{item.components.map((sub) => sub.component)}</Box>
+                <Box
+                  width={1}
+                  display="flex"
+                  flexWrap="wrap"
+                  justifyContent="center"
+                  alignItems="center"
+                  padding={2}
+                  mb={2}
+                  className={classes.exampleWrapper}
+                >
+                  {item.components.map((sub, i) => (
+                    <Box m={1} key={`component-${item.title}-${i}`}>
+                      {sub.component}
+                    </Box>
+                  ))}
+                </Box>
+                <Syntax code={codeExample} />
               </>
             </Box>
           </Box>
-        ))}
+        );
+      })}
     </>
   );
 };
