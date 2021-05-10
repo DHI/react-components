@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Button",
+    "description": "This is Button description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  },
+  {
+    "title": "Switch",
+    "description": "This is switch description",
+    "components": [
+      {
+        "component": "<Button>Boom</Button",
+        "codeExample": "<Button variant='contained' color='primary'>\n{'Primart'}\n</Button>"
+      }
+    ]
+  }
+]
