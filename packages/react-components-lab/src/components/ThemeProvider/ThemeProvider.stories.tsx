@@ -9,7 +9,7 @@ import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
 import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
-import componentDataList from './ComponentsMui/componentsData';
+import componentDataList from './ComponentsMui/ComponentsData';
 import useStyles from './styles';
 // #endregion
 
@@ -56,7 +56,7 @@ const Template: Story<IProps> = (args) => {
               </Box>
             </Box>
             <Syntax
-              code={`import { ThemeProvider } from "@dhi/react-components-lab"\n\n<ThemeProvider>\n \t{children}\n</ThemeProvider>`}
+              code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider>\n\t{children}\n</ThemeProvider>`}
             />
             {componentDataList?.map((item) => (
               <ComponentItem item={item} />

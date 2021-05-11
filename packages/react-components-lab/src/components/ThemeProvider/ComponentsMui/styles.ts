@@ -9,8 +9,15 @@ const SnackbarStyles = makeStyles<IMikeTheme>((theme) => ({
     margin: '20px 0 10px 0',
   },
   exampleWrapper: {
+    // width: '100%',
     border: `2px solid ${theme.palette.darkGrey.light}`,
-    borderRadius: 6,
+    borderRadius: '0.3em',
+    minHeight: 100,
+    margin: 8,
+    padding: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));
 
