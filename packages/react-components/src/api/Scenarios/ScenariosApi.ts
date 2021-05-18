@@ -77,7 +77,7 @@ const deleteScenario = (dataSource: DataSource, token: string, id: any) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap((res) => console.log('scenario deleted', res)));
+  });
 
 /**
  * /api/scenarios/{connectionId}
@@ -93,7 +93,7 @@ const postScenario = (dataSource: DataSource, token: string, scenario: any) =>
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(scenario),
-  }).pipe(tap((res) => console.log('scenario posted', res)));
+  });
 
 /**
  * /api/scenarios/{connectionId}
@@ -109,6 +109,6 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(scenario),
-  }).pipe(tap((res) => console.log('scenario updated', res)));
+  });
 
 export { fetchScenario, fetchScenarios, fetchScenariosByDate, deleteScenario, postScenario, updateScenario };
