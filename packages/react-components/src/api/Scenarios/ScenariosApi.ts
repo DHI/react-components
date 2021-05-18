@@ -36,7 +36,7 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap((res) => console.log('List of scenarios fetched', res)));
+  });
 };
 
 /**
