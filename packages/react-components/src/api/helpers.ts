@@ -27,7 +27,7 @@ const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
   };
 
   return from(fetch(endPoint, mergedOptions as any)).pipe(
-    tap((response) => console.log(`Response status: ${response.status}`)),
+    // tap((response) => console.log(`Response status: ${response.status}`)),
     map((response) => {
       if (response.status >= 400) {
         throw new Error(`Error: ${response.status}, reason: ${response.statusText}`);

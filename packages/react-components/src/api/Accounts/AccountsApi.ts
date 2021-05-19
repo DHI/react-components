@@ -14,7 +14,7 @@ const fetchAccount = (host: string, token: string, id: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap((res) => console.log('fetch account', res)));
+  });
 
 /**
  * /api/accounts
@@ -28,7 +28,7 @@ const fetchAccounts = (host: string, token: string) =>
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
-  }).pipe(tap((res) => console.log('fetch accounts', res)));
+  });
 
 /**
  * /api/accounts/{id}
