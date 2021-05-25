@@ -77,7 +77,7 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
   );
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       <div
         className={classes.scenario}
         onMouseOver={() => setHover(true)}
