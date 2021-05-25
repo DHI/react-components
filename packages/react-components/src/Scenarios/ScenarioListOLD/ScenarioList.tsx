@@ -58,7 +58,6 @@ const ScenarioList = (props: ScenarioListProps) => {
         return (
           <div
             key={scenario.id}
-            onClick={() => onScenarioClick(scenario)}
             onKeyPress={() => onScenarioClick(scenario)}
             role="presentation"
             className={classNames(classes.listItem, {
@@ -67,6 +66,7 @@ const ScenarioList = (props: ScenarioListProps) => {
           >
             <ScenarioItem
               name={getObjectProperty(scenario.data, nameField)}
+              onClick={onScenarioClick}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.id}
@@ -109,6 +109,9 @@ const ScenarioList = (props: ScenarioListProps) => {
     if (scenario && selectedId !== getObjectProperty(scenario, 'id')) {
       setSelectedId(getObjectProperty(scenario, 'id'));
     }
+
+    console.log('clicked');
+
     if (onScenarioSelected) {
       onScenarioSelected(scenario);
     }
