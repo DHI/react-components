@@ -110,8 +110,6 @@ const ScenarioList = (props: ScenarioListProps) => {
       setSelectedId(getObjectProperty(scenario, 'id'));
     }
 
-    console.log('clicked');
-
     if (onScenarioSelected) {
       onScenarioSelected(scenario);
     }
