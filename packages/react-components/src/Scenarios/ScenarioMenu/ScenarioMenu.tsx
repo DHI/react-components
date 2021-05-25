@@ -23,7 +23,7 @@ const ScenarioMenu = (props: ScenarioMenuProps) => {
   };
 
   return (
-    <div style={{ marginLeft: 'auto' }}>
+    <div style={{ position: 'relative', right: 5 }}>
       <IconButton
         aria-owns={showMenu ? 'simple-menu' : undefined}
         aria-haspopup="true"

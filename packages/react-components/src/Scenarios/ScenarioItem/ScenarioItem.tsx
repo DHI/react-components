@@ -18,6 +18,7 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
     name,
     description,
     showMenu,
+    onClick,
     onContextMenuClick,
     menu,
     scenario,
@@ -76,16 +77,19 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
   );
 
   return (
-    <div
-      className={classes.scenario}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
-      onFocus={() => undefined}
-      onBlur={() => undefined}
-    >
-      {scenarioHour}
-      {scenarioStatus}
-      {scenarioDetails}
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div
+        className={classes.scenario}
+        onMouseOver={() => setHover(true)}
+        onMouseOut={() => setHover(false)}
+        onFocus={() => undefined}
+        onBlur={() => undefined}
+        onClick={onClick}
+      >
+        {scenarioHour}
+        {scenarioStatus}
+        {scenarioDetails}
+      </div>
       {showMenu && <ScenarioMenu onContextMenuClick={onContextMenuClick} menu={menu} scenario={scenario} />}
     </div>
   );
