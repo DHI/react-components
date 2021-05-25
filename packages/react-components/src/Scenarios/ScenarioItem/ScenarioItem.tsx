@@ -84,7 +84,7 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
         onMouseOut={() => setHover(false)}
         onFocus={() => undefined}
         onBlur={() => undefined}
-        onClick={onClick}
+        onClick={() => onClick(scenario)}
       >
         {scenarioHour}
         {scenarioStatus}
