@@ -90,7 +90,14 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
         {scenarioStatus}
         {scenarioDetails}
       </div>
-      {showMenu && <ScenarioMenu onContextMenuClick={onContextMenuClick} menu={menu} scenario={scenario} />}
+      {showMenu && (
+        <ScenarioMenu
+          onContextMenuClick={onContextMenuClick}
+          onClick={() => onClick(scenario)}
+          menu={menu}
+          scenario={scenario}
+        />
+      )}
     </div>
   );
 };
