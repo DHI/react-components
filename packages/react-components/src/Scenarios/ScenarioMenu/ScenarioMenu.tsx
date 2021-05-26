@@ -5,12 +5,13 @@ import { MenuItem, Scenario } from '../types';
 import ScenarioMenuProps from './types';
 
 const ScenarioMenu = (props: ScenarioMenuProps) => {
-  const { onContextMenuClick, scenario, menu } = props;
+  const { onContextMenuClick, scenario, menu, onClick } = props;
   const [showMenu, setShowMenuState] = useState(false);
   const [showElement, setshowElementState] = useState();
 
   const setShowMenu = (isShow: boolean, elementId: any) => {
     setShowMenuState(isShow);
+    onClick(scenario);
 
     if (isShow) {
       setshowElementState(elementId);
