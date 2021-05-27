@@ -381,8 +381,11 @@ const ScenariosOLD = (props: ScenariosProps) => {
 
   const onScenarioSelectedHandler = (scenario: ScenarioOLD) => {
     if (!loadedScenario || scenario.id !== loadedScenario.id) {
-      setLoadedScenario(scenario);
-      getScenario(scenario.id!, (res) => onScenarioReceived(res));
+      getScenario(scenario.id!, (res) => {
+        onScenarioReceived(res);
+        setLoadedScenario(res);
+      });
+
       onScenarioSelected(scenario);
     } else {
       onScenarioSelected(loadedScenario);
