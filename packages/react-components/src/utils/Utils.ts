@@ -128,6 +128,8 @@ const checkConditions = (scenarioData: Scenario, conditions: Condition[]) => {
         isInverse = true;
       }
 
+      const dtoProperty = getObjectProperty(scenarioData, condition!.field.replace('!', ''));
+
       // If we have a value, check that it matches
       // If we didn't specify a value, just want to check if this field has data or not
       if (condition.value) {
@@ -137,13 +139,19 @@ const checkConditions = (scenarioData: Scenario, conditions: Condition[]) => {
           conditionsValue = [condition.value!];
         }
 
-        const values = conditionsValue.map((val) => (val === 'true' || val === 'false' ? val === 'true' : val));
+        // * If checking field exists in the model, compare as normal *
+        // * If checking field does NOT exist in the model, skip unless a boolean check equalling `false` *
+        // This ensures we have backwards-compatibility where newly added DTO properties may not exist in older scenarioData's
+        // but if it DOES exist, 'false' matches are explicitly checked.
+        const values = conditionsValue
+          .filter((val) => dtoProperty !== null || val !== 'false')
+          .map((val) => (val === 'true' || val === 'false' ? val === 'true' : val));
 
-        check.push(
-          values.indexOf(getObjectProperty(scenarioData, condition!.field.replace('!', ''))) >= 0 === !isInverse,
-        );
+        if (values.length > 0) {
+          check.push(values.indexOf(dtoProperty) >= 0 === !isInverse);
+        }
       } else {
-        check.push((getObjectProperty(scenarioData, condition!.field.replace('!', '')) != null) === !isInverse);
+        check.push((dtoProperty != null) === !isInverse);
       }
     } else {
       check.push(true);

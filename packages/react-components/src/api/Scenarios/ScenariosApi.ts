@@ -1,5 +1,6 @@
 import { tap } from 'rxjs/operators';
 import { DataSource } from '../../api/types';
+import { ScenarioItem } from '../../Scenarios/ScenarioItem/ScenarioItem';
 import { fetchUrl } from '../helpers';
 
 /**
@@ -71,13 +72,27 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
  * @param token
  * @param id
  */
-const deleteScenario = (dataSource: DataSource, token: string, id: any) =>
-  fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${id}`, {
-    method: 'DELETE',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+const deleteScenario = (dataSource: DataSource, token: string, scenario: any, softDelete = false) => {
+  if (softDelete) {
+    scenario.data.deleted = true;
+    scenario.data = JSON.stringify(scenario.data);
+
+    return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
+      method: 'PUT',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(scenario),
+    });
+  } else {
+    return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${scenario}`, {
+      method: 'DELETE',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+};
 
 /**
  * /api/scenarios/{connectionId}
