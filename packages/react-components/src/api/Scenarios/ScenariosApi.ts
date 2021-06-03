@@ -75,9 +75,10 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
 const deleteScenario = (dataSource: DataSource, token: string, scenario: any, softDelete = false) => {
   if (softDelete) {
     scenario.data.deleted = true;
+    scenario.data = JSON.stringify(scenario.data);
 
     return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
-      method: 'POST',
+      method: 'PUT',
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
       },
