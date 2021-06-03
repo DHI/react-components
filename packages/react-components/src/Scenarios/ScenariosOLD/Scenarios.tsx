@@ -154,7 +154,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
         setScenarios(newScenarios);
 
         if (onScenariosReceived) {
-          onScenariosReceived(rawScenarios);
+          onScenariosReceived(newScenarios);
         }
       },
       (error) => {
