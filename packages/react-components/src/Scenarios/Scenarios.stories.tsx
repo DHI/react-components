@@ -19,7 +19,7 @@ export const ScenariosStory = () => {
 
   const onAddScenario = () => {
     setNewScenario({
-      data: `{"name":"My Scenario","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
+      data: `{"testProperty":true,"name":"My Scenario","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
     });
   };
 
@@ -65,6 +65,53 @@ export const ScenariosStory = () => {
               dataFilterbyProperty={[
                 {
                   field: 'data.mooring',
+                },
+                {
+                  field: 'data.stillShowListWithNoExistantProperty',
+                  value: 'false',
+                },
+                {
+                  field: 'data.testProperty',
+                  value: 'false',
+                },
+              ]}
+              nameField="name"
+              descriptionFields={[
+                {
+                  field: 'data.vessel.vesselName',
+                  name: 'Vessel Name',
+                },
+                {
+                  field: 'data.mooring.berthName',
+                  name: 'Berth Name',
+                  condition: {
+                    field: 'lastJobStatus',
+                    value: 'Completed',
+                  },
+                },
+                {
+                  field: 'data.startTime',
+                  name: 'Start Date',
+                  dataType: 'dateTime',
+                  condition: {
+                    field: 'data.startTime',
+                  },
+                },
+                {
+                  field: 'dateTime',
+                  name: 'Creation Date',
+                  dataType: 'dateTime',
+                  format: 'dd-MMM-yyyy h:mm:ss a',
+                },
+                {
+                  field: 'testProperty',
+                  name: 'Test Property',
+                },
+              ]}
+              extraFields={[
+                {
+                  field: 'data.vessel.loa',
+                  name: 'Vessel LOA',
                 },
               ]}
               taskId={'workflow'}
@@ -116,41 +163,6 @@ export const ScenariosStory = () => {
               onScenariosReceived={(scenarios: ScenarioOLD[]) => {
                 console.log('Received new scenarios!', scenarios);
               }}
-              nameField="name"
-              descriptionFields={[
-                {
-                  field: 'data.vessel.vesselName',
-                  name: 'Vessel Name',
-                },
-                {
-                  field: 'data.mooring.berthName',
-                  name: 'Berth Name',
-                  condition: {
-                    field: 'lastJobStatus',
-                    value: 'Completed',
-                  },
-                },
-                {
-                  field: 'data.startTime',
-                  name: 'Start Date',
-                  dataType: 'dateTime',
-                  condition: {
-                    field: 'data.startTime',
-                  },
-                },
-                {
-                  field: 'dateTime',
-                  name: 'Creation Date',
-                  dataType: 'dateTime',
-                  format: 'dd-MMM-yyyy h:mm:ss a',
-                },
-              ]}
-              extraFields={[
-                {
-                  field: 'data.vessel.loa',
-                  name: 'Vessel LOA',
-                },
-              ]}
               showDate
               showHour
               showMenu
@@ -281,6 +293,45 @@ export const ScenariosJSONStory = () => {
                 {
                   field: 'data.mooring',
                 },
+                {
+                  field: 'data.stillShowListWithNoExistantProperty',
+                  value: 'false',
+                },
+              ]}
+              nameField="name"
+              descriptionFields={[
+                {
+                  field: 'data.vessel.vesselName',
+                  name: 'Vessel Name',
+                },
+                {
+                  field: 'data.mooring.berthName',
+                  name: 'Berth Name',
+                  condition: {
+                    field: 'lastJobStatus',
+                    value: 'Completed',
+                  },
+                },
+                {
+                  field: 'data.startTime',
+                  name: 'Start Date',
+                  dataType: 'dateTime',
+                  condition: {
+                    field: 'data.startTime',
+                  },
+                },
+                {
+                  field: 'dateTime',
+                  name: 'Creation Date',
+                  dataType: 'dateTime',
+                  format: 'dd-MMM-yyyy h:mm:ss a',
+                },
+              ]}
+              extraFields={[
+                {
+                  field: 'data.vessel.loa',
+                  name: 'Vessel LOA',
+                },
               ]}
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
@@ -334,41 +385,6 @@ export const ScenariosJSONStory = () => {
               onScenariosReceived={(scenarios: Scenario[]) => {
                 console.log('Received new scenarios!', scenarios);
               }}
-              nameField="name"
-              descriptionFields={[
-                {
-                  field: 'data.vessel.vesselName',
-                  name: 'Vessel Name',
-                },
-                {
-                  field: 'data.mooring.berthName',
-                  name: 'Berth Name',
-                  condition: {
-                    field: 'lastJobStatus',
-                    value: 'Completed',
-                  },
-                },
-                {
-                  field: 'data.startTime',
-                  name: 'Start Date',
-                  dataType: 'dateTime',
-                  condition: {
-                    field: 'data.startTime',
-                  },
-                },
-                {
-                  field: 'dateTime',
-                  name: 'Creation Date',
-                  dataType: 'dateTime',
-                  format: 'dd-MMM-yyyy h:mm:ss a',
-                },
-              ]}
-              extraFields={[
-                {
-                  field: 'data.vessel.loa',
-                  name: 'Vessel LOA',
-                },
-              ]}
               showDate
               showHour
               showMenu

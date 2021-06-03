@@ -74,9 +74,9 @@ const fetchScenariosByDate = (dataSource: DataSource, token: string) => {
  */
 const deleteScenario = (dataSource: DataSource, token: string, scenario: any, softDelete = false) => {
   if (softDelete) {
-    scenario.data.Deleted = true;
+    scenario.data.deleted = true;
 
-    fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
+    return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}`, {
       method: 'POST',
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ const deleteScenario = (dataSource: DataSource, token: string, scenario: any, so
       body: JSON.stringify(scenario),
     });
   } else {
-    fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${scenario.id}`, {
+    return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/${scenario}`, {
       method: 'DELETE',
       additionalHeaders: {
         Authorization: `Bearer ${token}`,
