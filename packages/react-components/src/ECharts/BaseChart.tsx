@@ -2,7 +2,7 @@ import ReactEcharts from 'echarts-for-react';
 import React, { useEffect, useState } from 'react';
 import { StandardChartProps } from './types';
 
-export const BaseChart = (props: StandardChartProps) => {
+const BaseChart = (props: StandardChartProps) => {
   const { className, options, chartHeightFunc, debug } = props;
   const [chartSize, setChartSize] = useState({ width: '100%', height: chartHeightFunc() });
 
@@ -28,3 +28,5 @@ export const BaseChart = (props: StandardChartProps) => {
     )
   );
 };
+
+export { BaseChart, StandardChartProps };
