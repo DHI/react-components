@@ -7,7 +7,7 @@ import mikePalette from '../mikePallete';
 // #endregion
 
 // make sure that the title value is the same as the name of the exported component from @material-ui/core.
-const componentsData: ComponentList[] = [
+const ComponentsData: ComponentList[] = [
   {
     title: 'Color',
     description:
@@ -384,7 +384,7 @@ const componentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center', backgroundColor: '#000' }}>
+              <div style={{ textAlign: 'center' }}>
                 <Box
                   margin={1}
                   padding={1}
@@ -614,4 +614,4 @@ const componentsData: ComponentList[] = [
   },
 ];
 
-export default componentsData;
+export default ComponentsData;

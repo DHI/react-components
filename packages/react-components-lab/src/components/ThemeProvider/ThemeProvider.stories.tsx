@@ -15,7 +15,7 @@ import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
 import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
-import componentsData from './ComponentsMui/ComponentsData';
+import ComponentsData from './ComponentsMui/ComponentsData';
 import SideNav from './SideNav/SideNav';
 import useStyles from './styles';
 import { ComponentList } from './ComponentsMui/types';
@@ -49,12 +49,12 @@ const Template: Story<IProps> = (args) => {
   useEffect(() => {
     // Separate pinned and unpinned item(s) and call some sort method
     // this is useful to separate between non component and component elements.
-    const pinnedData = componentsData
-      .filter((item) => item.pinned)
-      .sort((a, b) => (a.title > b.title ? 1 : -1));
-    const nonPinnedData = componentsData
-      .filter((item) => !item.pinned)
-      .sort((a, b) => (a.title > b.title ? 1 : -1));
+    const pinnedData = ComponentsData.filter(
+      (item) => item.pinned
+    ).sort((a, b) => (a.title > b.title ? 1 : -1));
+    const nonPinnedData = ComponentsData.filter(
+      (item) => !item.pinned
+    ).sort((a, b) => (a.title > b.title ? 1 : -1));
     const newDataList = pinnedData.concat(nonPinnedData);
     const newChildRefState: ChildRefState[] = newDataList.map(
       (item, i): ChildRefState => ({
