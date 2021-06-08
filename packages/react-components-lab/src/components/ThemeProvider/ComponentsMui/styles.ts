@@ -1,5 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
+
+// #region Local imports
 import { IMikeTheme } from '../types';
+import mikePalette from '../mikePallete';
+// #endregion
 
 const SnackbarStyles = makeStyles<IMikeTheme>((theme) => ({
   container: {
@@ -8,8 +12,18 @@ const SnackbarStyles = makeStyles<IMikeTheme>((theme) => ({
   desc: {
     margin: '20px 0 10px 0',
   },
+  subtitle: {
+    margin: '30px 0 10px 0',
+  },
+  subDesc: {
+    margin: '20px 0 10px 0',
+  },
+  highlightText: {
+    backgroundColor: mikePalette.primary.light,
+    borderRadius: 5,
+    padding: '2px 4px 2px 4px',
+  },
   exampleWrapper: {
-    // width: '100%',
     border: `2px solid ${theme.palette.darkGrey.light}`,
     borderRadius: '0.3em',
     minHeight: 100,
@@ -18,6 +32,11 @@ const SnackbarStyles = makeStyles<IMikeTheme>((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  colorBox: {
+    height: 100,
+    width: 150,
   },
 }));
 
