@@ -1,7 +1,13 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/react/types-6-0';
-import React from 'react';
+import React, {
+  createRef,
+  RefObject,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Typography, Box } from '@material-ui/core';
 
 // #region Local imports
@@ -9,8 +15,10 @@ import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
 import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
-import componentDataList from './ComponentsMui/ComponentsData';
+import componentsData from './ComponentsMui/ComponentsData';
+import SideNav from './SideNav/SideNav';
 import useStyles from './styles';
+import { ComponentList } from './ComponentsMui/types';
 // #endregion
 
 export default {
@@ -26,15 +34,49 @@ export default {
   },
 } as Meta;
 
+interface ChildRefState {
+  id: string;
+  index: number;
+  element: RefObject<HTMLElement>;
+  isSelected: boolean;
+}
 const Template: Story<IProps> = (args) => {
   const classes = useStyles();
+
+  const [dataList, setDataList] = useState<ComponentList[]>([]);
+  const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
+
+  useEffect(() => {
+    // Separate pinned and unpinned item(s) and call some sort method
+    // this is useful to separate between non component and component elements.
+    const pinnedData = componentsData
+      .filter((item) => item.pinned)
+      .sort((a, b) => (a.title > b.title ? 1 : -1));
+    const nonPinnedData = componentsData
+      .filter((item) => !item.pinned)
+      .sort((a, b) => (a.title > b.title ? 1 : -1));
+    const newDataList = pinnedData.concat(nonPinnedData);
+    const newChildRefState: ChildRefState[] = newDataList.map(
+      (item, i): ChildRefState => ({
+        id: `nav-item-${item.title}`,
+        index: i,
+        element: createRef<HTMLElement>(),
+        isSelected: false,
+      })
+    );
+
+    setDataList(newDataList);
+    setChildRefState(newChildRefState);
+  }, []);
+
+  const childRefs = useMemo(() => childRefState, [childRefState]);
 
   return (
     <ThemeProvider {...args}>
       <Box className={classes.root}>
         <Typography variant="h1">Theme Provider</Typography>
         <Box className={classes.header}>
-          <Typography variant="h4">
+          <Typography variant="h5">
             <span className={classes.highlightText}>Theme Provider</span> is the
             theming built on top of Material-Ui styles and overridden based on
             DHI official CVI. Here is the concept.
@@ -58,28 +100,17 @@ const Template: Story<IProps> = (args) => {
             <Syntax
               code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider>\n\t{children}\n</ThemeProvider>`}
             />
-            {componentDataList?.map((item) => (
-              <ComponentItem item={item} />
-            ))}
+            {childRefs &&
+              dataList?.map((item, i) => (
+                <ComponentItem
+                  {...{ ref: childRefs[i].element }}
+                  key={item.title}
+                  item={item}
+                  isLastItem={i === dataList?.length - 1}
+                />
+              ))}
           </Box>
-          <Box className={classes.sidenav}>
-            <Box className={classes.component}>
-              <Box className={classes.sidenavHeader}>
-                <Typography variant="h5">Contents</Typography>
-              </Box>
-              <Box className={classes.sidenavContent}>
-                <ul>
-                  {componentDataList?.map((item) => (
-                    <li className={classes.item}>
-                      <a className={classes.tabItem} href={`#${item.title}`}>
-                        {item.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </Box>
-            </Box>
-          </Box>
+          <SideNav data={dataList} contentList={childRefs} />
         </main>
       </Box>
     </ThemeProvider>
