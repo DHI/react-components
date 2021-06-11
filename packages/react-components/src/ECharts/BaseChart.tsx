@@ -25,7 +25,7 @@ const BaseChart = (props: StandardChartProps) => {
       <div className={className} style={{ display: 'flex', width: '100%' }}>
         <ReactEcharts
           ref={(e) => {
-            getRefFunc(e);
+            if (getRefFunc) getRefFunc(e);
           }}
           style={{ width: chartSize.width, height: chartSize.height }}
           option={options}
