@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/DHI/react-components/compare/v0.4.3...v0.5.0) (2021-06-11)
+
+
+### Features
+
+* **lab:** add useBelow hook ([bca4c9f](https://github.com/DHI/react-components/commit/bca4c9f3930ee1dfffa00555137ee47a8fe8ba55))
+
 ## [0.4.3](https://github.com/DHI/react-components/compare/v0.4.2...v0.4.3) (2021-05-07)
 
 
