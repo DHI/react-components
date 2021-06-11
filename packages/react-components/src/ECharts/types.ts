@@ -25,6 +25,10 @@ export interface StandardChartProps {
    */
   chartHeightFunc: () => number;
   /**
+   * A function to return back the ECharts instance ref
+   */
+  getRefFunc?: (instance: any) => void;
+  /**
    * Set debug mode
    */
   debug?: boolean;
