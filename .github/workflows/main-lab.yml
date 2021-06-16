@@ -52,6 +52,8 @@ jobs:
           source_folder: "./packages/react-components-lab/storybook-static"
           container_name: "$web"
           connection_string: ${{ secrets.BlobConnectionString }}
+          clean_destination_folder: true
+          destination_folder: ./
           
           
 # -- faulty gh action plugin
