@@ -10,6 +10,7 @@ export * from './ColourScales/ColourScale';
 export * from './ColourScales/ColourScaleHelper';
 export * from './ColourScales/types';
 export * from './common/Metadata/Metadata';
+export * from './ECharts/BaseChart';
 export * from './Jobs/JobList/JobList';
 export * from './Jobs/JobList/types';
 export * from './Logs/LogList/LogList';

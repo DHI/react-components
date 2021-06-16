@@ -164,13 +164,13 @@ const Scenarios = (props: ScenariosProps) => {
             }
 
             setScenarios(updatedScenarios);
+
+            if (onScenariosReceived) {
+              onScenariosReceived(updatedScenarios);
+            }
           });
         } catch (err) {
           console.log('Error retrieving Jobs: ', err);
-        }
-
-        if (onScenariosReceived) {
-          onScenariosReceived(updatedScenarios);
         }
       },
       (error) => {

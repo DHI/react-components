@@ -12,6 +12,10 @@ interface ScenarioItemOLDProps {
    * The scenario menu function handlers
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: ScenarioOLD) => void;
+  /**
+   * Scenario item click event handler
+   */
+  onClick: (scenario) => void;
 
   status: Status;
   /**

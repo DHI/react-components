@@ -13,3 +13,6 @@ export * from './components/Snackbar/types';
 // ThemeProvider
 export { default as ThemeProvider } from './components/ThemeProvider/ThemeProvider';
 export * from './components/ThemeProvider/types';
+
+// Hooks
+export { default as useBelow } from './hooks/useBelow';
