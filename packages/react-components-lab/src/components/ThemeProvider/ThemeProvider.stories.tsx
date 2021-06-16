@@ -15,7 +15,7 @@ import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
 import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
-import ComponentsData from './ComponentsMui/ComponentsData';
+import ComponentsData from './ComponentsMui/componentsData';
 import SideNav from './SideNav/SideNav';
 import useStyles from './styles';
 import { ComponentList } from './ComponentsMui/types';
