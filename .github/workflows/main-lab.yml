@@ -46,13 +46,21 @@ jobs:
         run: cd packages/react-components-lab && yarn build-storybook
         env:
           CI: true
-
-      - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+      - name: Azure Blob Upload
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
         with:
-          source_dir: "./packages/react-components-lab/storybook-static"
+          source_folder: "./packages/react-components-lab/storybook-static"
           container_name: "$web"
           connection_string: ${{ secrets.BlobConnectionString }}
-          sync: true
+          
+          
+# -- faulty gh action plugin
+#       - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+#         with:
+#           source_dir: "./packages/react-components-lab/storybook-static"
+#           container_name: "$web"
+#           connection_string: ${{ secrets.BlobConnectionString }}
+#           sync: true
 
 #   This workflow can be separated in 3 separate jobs that can run. There were problems with caching node_modules 
 
