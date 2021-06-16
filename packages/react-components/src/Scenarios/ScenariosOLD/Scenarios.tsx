@@ -54,6 +54,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
   const [dialog, setDialog] = useState<GeneralDialogProps>();
   const [scenarios, setScenarios] = useState<ScenarioOLD[]>();
   const [scenario, setScenario] = useState<ScenarioOLD>();
+  const [loadedScenario, setLoadedScenario] = useState<ScenarioOLD>();
   const classes = useStyles();
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
         setScenarios(newScenarios);
 
         if (onScenariosReceived) {
-          onScenariosReceived(rawScenarios);
+          onScenariosReceived(newScenarios);
         }
       },
       (error) => {
@@ -379,9 +380,17 @@ const ScenariosOLD = (props: ScenariosProps) => {
   };
 
   const onScenarioSelectedHandler = (scenario: ScenarioOLD) => {
-    onScenarioSelected(scenario);
+    if (!loadedScenario || scenario.id !== loadedScenario.id) {
+      getScenario(scenario.id!, (res) => {
+        onScenarioReceived(res);
+        setLoadedScenario(res);
+      });
 
-    getScenario(scenario.id!, (res) => onScenarioReceived(res));
+      onScenarioSelected(scenario);
+    } else {
+      onScenarioSelected(loadedScenario);
+      onScenarioReceived(loadedScenario);
+    }
   };
 
   let printedScenarios = null;

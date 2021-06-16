@@ -5,12 +5,13 @@ import { MenuItem, Scenario } from '../types';
 import ScenarioMenuProps from './types';
 
 const ScenarioMenu = (props: ScenarioMenuProps) => {
-  const { onContextMenuClick, scenario, menu } = props;
+  const { onContextMenuClick, scenario, menu, onClick } = props;
   const [showMenu, setShowMenuState] = useState(false);
   const [showElement, setshowElementState] = useState();
 
   const setShowMenu = (isShow: boolean, elementId: any) => {
     setShowMenuState(isShow);
+    onClick(scenario);
 
     if (isShow) {
       setshowElementState(elementId);
@@ -23,7 +24,7 @@ const ScenarioMenu = (props: ScenarioMenuProps) => {
   };
 
   return (
-    <div style={{ marginLeft: 'auto' }}>
+    <div style={{ position: 'relative', right: 5 }}>
       <IconButton
         aria-owns={showMenu ? 'simple-menu' : undefined}
         aria-haspopup="true"

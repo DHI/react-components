@@ -1,11 +1,14 @@
 module.exports = {
   ignorePatterns: ['node_modules', 'dist'],
-  plugins: ['prettier', 'eslint-comments', '@typescript-eslint'],
+  plugins: ['prettier', 'eslint-comments', 'import', '@typescript-eslint'],
   extends: [
     'airbnb-typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:eslint-comments/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',

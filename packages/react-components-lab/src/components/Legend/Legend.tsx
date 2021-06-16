@@ -1,6 +1,6 @@
+import React, { FC } from 'react';
 import { TinyColor } from '@ctrl/tinycolor';
 import { Box, Typography } from '@material-ui/core';
-import React, { FC } from 'react';
 import useStyles from './styles';
 import { ColorsArr, LegendProps } from './types';
 

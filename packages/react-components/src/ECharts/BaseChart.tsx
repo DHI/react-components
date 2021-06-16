@@ -2,8 +2,8 @@ import ReactEcharts from 'echarts-for-react';
 import React, { useEffect, useState } from 'react';
 import { StandardChartProps } from './types';
 
-export const BaseChart = (props: StandardChartProps) => {
-  const { className, options, chartHeightFunc, debug } = props;
+const BaseChart = (props: StandardChartProps) => {
+  const { className, options, chartHeightFunc, getRefFunc, debug } = props;
   const [chartSize, setChartSize] = useState({ width: '100%', height: chartHeightFunc() });
 
   useEffect(() => {
@@ -23,8 +23,17 @@ export const BaseChart = (props: StandardChartProps) => {
   return (
     options?.series && (
       <div className={className} style={{ display: 'flex', width: '100%' }}>
-        <ReactEcharts style={{ width: chartSize.width, height: chartSize.height }} option={options} {...props} />
+        <ReactEcharts
+          ref={(e) => {
+            if (getRefFunc) getRefFunc(e);
+          }}
+          style={{ width: chartSize.width, height: chartSize.height }}
+          option={options}
+          {...props}
+        />
       </div>
     )
   );
 };
+
+export { BaseChart, StandardChartProps };

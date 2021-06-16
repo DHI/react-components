@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import createMuiTheme, {
   ThemeOptions,
 } from '@material-ui/core/styles/createMuiTheme';
-import assignIn from 'lodash/assignIn';
+import assignIn from 'lodash.assignin';
 
 // #region Local imports
 import { mikeSharedTheme } from './mikeSharedTheme';
@@ -14,6 +14,7 @@ import * as Types from './types';
 const ThemeProvider: React.FC<Types.IProps> = ({ overrides, children }) => {
   const theme = useMemo(() => {
     const themeWithOverrides = assignIn({ ...mikeSharedTheme }, overrides);
+
     return createMuiTheme(themeWithOverrides as ThemeOptions);
   }, [overrides]);
 

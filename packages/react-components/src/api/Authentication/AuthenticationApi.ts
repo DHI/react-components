@@ -13,12 +13,13 @@ const fetchToken = (host: string, user: User) => {
   return fetchUrl(`${host}/api/tokens`, {
     method: 'POST',
     body: JSON.stringify(user),
-  }).pipe<Token>(
-    tap(
-      (res) => console.log('token res', res),
-      (error) => console.log(error),
-    ),
-  );
+  });
+  // .pipe<Token>(
+  //   tap(
+  //     (res) => console.log('token res', res),
+  //     (error) => console.log(error),
+  //   ),
+  // );
 };
 
 /**
