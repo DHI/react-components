@@ -34,7 +34,7 @@ Generating a Personal Access token with GitHub - [More info](https://help.github
 5. Note: `GitHub Packages`
 6. Tick: `repo, write:packages, read:packages, delete:packages, admin:repo_hook`
 7. "Generate token"
-8. Click clipboard icon to copy token.
+8. Click clipboard icon to copy token
 9. Open `C:\users\<username>\.npmrc` or create this file here if doesn't exist.
 10. Paste within it, replacing `<AUTH_TOKEN>` with the token you copied moments ago.
 
