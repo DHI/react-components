@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/DHI/react-components/compare/v0.5.0...v0.6.0) (2021-06-16)
+
+
+### Features
+
+* **lab:** add components to theme provider story ([d0cf632](https://github.com/DHI/react-components/commit/d0cf63222c01e7fe5efef31311429ef2285b4a47))
+
 # [0.5.0](https://github.com/DHI/react-components/compare/v0.4.3...v0.5.0) (2021-06-11)
 
 
