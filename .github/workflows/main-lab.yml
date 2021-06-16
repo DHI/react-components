@@ -46,6 +46,7 @@ jobs:
         run: cd packages/react-components-lab && yarn build-storybook
         env:
           CI: true
+          
       - name: Azure Blob Upload
         uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
         with:
