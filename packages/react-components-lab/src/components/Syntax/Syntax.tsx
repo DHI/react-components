@@ -11,7 +11,6 @@ import { SyntaxProps } from './types';
 
 const Syntax: React.FC<SyntaxProps> = ({ code, language }) => {
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     Prism.highlightAll();
   }, []);
 
