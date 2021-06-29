@@ -5,7 +5,7 @@ import useStyles from './styles';
 
 const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
   const classes = useStyles();
-  const [val, setVals] = useState<string[] | undefined>();
+  const [val, setVals] = useState<number[] | undefined>();
 
   useEffect(() => {
     if (
@@ -17,7 +17,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
       let localLength = length;
       localLength -= 1;
 
-      const arr: string[] = [];
+      const arr: number[] = [];
       const diff: number = range[1] - range[0];
       const incr: number = diff / localLength;
 
@@ -36,7 +36,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
       {range &&
         (typeof range[0] === 'number' && typeof range[1] === 'number' && val ? (
           <Box display="flex" justifyContent="space-between">
-            {val.map((v: string) => (
+            {val.map((v: number) => (
               <Typography key={`value-${v}`} style={{ fontSize: 10 }}>
                 {`${v} ${unit}`}
               </Typography>
