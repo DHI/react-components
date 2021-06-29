@@ -43,8 +43,8 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
             ))}
           </Box>
         ) : (
-          range[0] &&
-          range[1] && (
+          ['number', 'string'].includes(typeof range[0]) &&
+          ['number', 'string'].includes(typeof range[1]) && (
             <Box display="flex" justifyContent="space-between">
               <Typography style={{ fontSize: 10 }}>
                 {`${range[0]} ${unit}`}
