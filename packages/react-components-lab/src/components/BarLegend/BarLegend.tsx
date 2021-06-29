@@ -23,7 +23,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
 
       for (let i = 0; i <= localLength; i += 1) {
         const value = range[0] + incr * i;
-        arr.push(value.toFixed(2));
+        arr.push(Number(value.toFixed(2)));
       }
 
       setVals(arr);
@@ -38,7 +38,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
           <Box display="flex" justifyContent="space-between">
             {val.map((v: string) => (
               <Typography key={`value-${v}`} style={{ fontSize: 10 }}>
-                {`${v}${unit}`}
+                {`${v} ${unit}`}
               </Typography>
             ))}
           </Box>
@@ -47,10 +47,10 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
           range[1] && (
             <Box display="flex" justifyContent="space-between">
               <Typography style={{ fontSize: 10 }}>
-                {`${range[0]}${unit}`}
+                {`${range[0]} ${unit}`}
               </Typography>
               <Typography style={{ fontSize: 10 }}>
-                {`${range[1]}${unit}`}
+                {`${range[1]} ${unit}`}
               </Typography>
             </Box>
           )
