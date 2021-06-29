@@ -8,7 +8,12 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
   const [val, setVals] = useState<string[] | undefined>();
 
   useEffect(() => {
-    if (range && typeof range[0] === 'number' && typeof range[1] === 'number') {
+    if (
+      length !== undefined &&
+      range &&
+      typeof range[0] === 'number' &&
+      typeof range[1] === 'number'
+    ) {
       let localLength = length;
       localLength -= 1;
 
