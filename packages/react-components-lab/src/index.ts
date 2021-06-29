@@ -4,6 +4,11 @@ export * from './components/Legend/Legend';
 export { default as LegendStyles } from './components/Legend/styles';
 export * from './components/Legend/types';
 
+// BarLegend
+export { default as BarLegend } from './components/BarLegend/BarLegend';
+export { default as BarLegendStyles } from './components/BarLegend/styles';
+export * from './components/BarLegend/types';
+
 // Snackbar
 export { default as SnackbarProvider } from './components/Snackbar/SnackbarProvider';
 export { default as useSnackbar } from './components/Snackbar/useSnackbar';
