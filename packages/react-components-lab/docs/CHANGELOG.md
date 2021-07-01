@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/DHI/react-components/compare/v0.6.0...v0.7.0) (2021-07-01)
+
+
+### Features
+
+* **BarLegend:** Add BarLegend component ([ccea276](https://github.com/DHI/react-components/commit/ccea2767b1b2d3ae7079f57f6d43bfc623efae7c))
+
 # [0.6.0](https://github.com/DHI/react-components/compare/v0.5.0...v0.6.0) (2021-06-16)
 
 
