@@ -14,7 +14,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
       typeof range[0] === 'number' &&
       typeof range[1] === 'number'
     ) {
-      let localLength = length - 1;
+      const localLength = length - 1;
 
       const arr: number[] = [];
       const diff: number = range[1] - range[0];
