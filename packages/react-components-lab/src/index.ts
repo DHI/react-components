@@ -14,6 +14,11 @@ export { default as Loader } from './components/Loader/Loader';
 export { default as LoaderStyles } from './components/Loader/styles';
 export * from './components/Loader/types';
 
+// GapBox
+export { default as GapBox } from './components/GapBox/GapBox';
+export { default as GapBoxStyles } from './components/GapBox/styles';
+export * from './components/GapBox/types';
+
 // Snackbar
 export { default as SnackbarProvider } from './components/Snackbar/SnackbarProvider';
 export { default as useSnackbar } from './components/Snackbar/useSnackbar';
