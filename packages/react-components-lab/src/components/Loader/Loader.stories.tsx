@@ -2,7 +2,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/react/types-6-0';
 import React from 'react';
-import { Box } from '@material-ui/core';
 import Loader from './Loader';
 import { LoaderProps } from './types';
 
