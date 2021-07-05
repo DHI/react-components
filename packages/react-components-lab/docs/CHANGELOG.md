@@ -1,3 +1,15 @@
+# [0.8.0](https://github.com/DHI/react-components/compare/v0.7.0...v0.8.0) (2021-07-05)
+
+
+### Bug Fixes
+
+* **GapBox:** Export and small cleanup. ([66ac109](https://github.com/DHI/react-components/commit/66ac1096ebab1cec3f8eb15b898a819c2a38982a))
+
+
+### Features
+
+* **Loader:** Add Loader component. ([48774b1](https://github.com/DHI/react-components/commit/48774b1b54a8aa8c42cd42cd077d5cb5705ffdad))
+
 # [0.7.0](https://github.com/DHI/react-components/compare/v0.6.0...v0.7.0) (2021-07-01)
 
 
