@@ -5,127 +5,70 @@ on:
       - master
     paths:
       - "packages/react-components-lab/**"
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
+    paths:
+      - "packages/react-components-lab/**"
+      
 jobs:
-  build:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
+    name: Build and Deploy Job
     steps:
-      - name: Begin CI...
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      
       - name: Use Node 14
         uses: actions/setup-node@v2
         with:
           node-version: '14'
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@dhi'
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: /packages/react-components-lab/node-modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
-
+          
       - name: Install dependencies
         run: cd packages/react-components-lab && yarn install --frozen-lockfile
         env:
           CI: true
-
+      
       - name: Lint
         run: cd packages/react-components-lab && yarn lint
         env:
           CI: true
-
+          
       - name: Semantic release
         run: cd packages/react-components-lab && yarn run semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build storybook
-        run: cd packages/react-components-lab && yarn build-storybook
-        env:
-          CI: true
-
-      - name: Azure Blob Upload
-        uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+      
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          source_folder: "./packages/react-components-lab/storybook-static"
-          container_name: "$web"
-          connection_string: ${{ secrets.BlobConnectionString }}
-          clean_destination_folder: true
-          destination_folder: ./
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_TOKEN }}
+          repo_token: ${{ secrets.GH_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "./packages/react-components-lab/" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "storybook-static" # Built app content directory - optional
+          app_build_command: "yarn build-storybook"
+          ###### End of Repository/Build Configurations ######
           
-          
-# -- faulty gh action plugin
-#       - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
-#         with:
-#           source_dir: "./packages/react-components-lab/storybook-static"
-#           container_name: "$web"
-#           connection_string: ${{ secrets.BlobConnectionString }}
-#           sync: true
-
-#   This workflow can be separated in 3 separate jobs that can run. There were problems with caching node_modules 
-
-#   For example the 2nd and 3rd jobs that release and deploy the app
-
-#   release:
-#     needs: build
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Begin CI...
-#         uses: actions/checkout@v2
-
-#       - name: Use Node 12
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 12.x
-
-#       - name: Cache node_modules
-#         uses: actions/cache@v2
-#         with:
-#           path: /packages/react-components-lab/node-modules
-#           key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
-
-#       - name: Add GH token
-#         run: |
-#           cd packages/react-components-lab
-#           echo "@dhi:registry=https://npm.pkg.github.com" >> .npmrc
-#           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
-
-#       - name: Semantic release
-#         run: cd packages/react-components-lab && yarn run semantic-release
-#         env:
-#           CI: true
-#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-#           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-
-#   storybook:
-#     needs: release
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Begin CI...
-#         uses: actions/checkout@v2
-
-#       - name: Use Node 12
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 12.x
-
-#       - name: Cache node_modules
-#         uses: actions/cache@v2
-#         with:
-#           path: /packages/react-components-lab/node-modules
-#           key: ${{ runner.os }}-modules-${{ hashFiles('/packages/react-components-lab/yarn.lock') }}
-
-#       - name: Build storybook
-#         run: cd packages/react-components-lab && yarn build-storybook
-#         env:
-#           CI: true
-
-#       - uses: bacongobbler/azure-blob-storage-upload@v1.1.1
-#         with:
-#           source_dir: "./packages/react-components-lab/storybook-static"
-#           container_name: "$web"
-#           connection_string: ${{ secrets.BlobConnectionString }}
-#           sync: true
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_TOKEN }}
+          action: "close"
