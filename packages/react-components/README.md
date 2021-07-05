@@ -10,7 +10,7 @@ React-Components are demonstrated [here](https://domainservices.dhigroup.com/) a
 
 Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
-1. Visit Github.com &rarr; Your Profile (top right) &rarr; Settings
+1. Visit Github.com &rarr; Your Profile (top right) &rarr; Settings.
 2. Develop settings (bottom of sidebar)
 3. Personal access tokens
 4. "Generate new token"
