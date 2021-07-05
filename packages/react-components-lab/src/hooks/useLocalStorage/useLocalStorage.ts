@@ -12,7 +12,7 @@ export default ({
   });
 
   const setValue = (value: unknown) => {
-    setStorageValue(value);
+    setStorageValue(String(value));
     window.localStorage.setItem(key, JSON.stringify(value));
   };
 
