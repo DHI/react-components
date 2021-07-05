@@ -4,7 +4,7 @@
 
 The React Components collection is a TypeScript based collection of components used across a range of application within DHI
 
-React-Components are demonstrated [here](https://domainservices.dhigroup.com/) and are available as npm package from Github packages.
+React-Components are demonstrated [here](https://domainservices.dhigroup.com/) and are available as npm package from Github packages
 
 ## Installing the package
 
