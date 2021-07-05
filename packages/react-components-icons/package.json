@@ -1,0 +1,84 @@
+{
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@dhi/react-components-icons",
+  "author": "DHI",
+  "module": "dist/react-components-icons.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DHI/react-components.git"
+  },
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "dev": "yarn sb",
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "tsdx build",
+    "semantic-release": "npx semantic-release",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/npm": "^7.0.10",
+    "@semantic-release/release-notes-generator": "^9.0.2",
+    "@storybook/addon-actions": "^6.1.21",
+    "@storybook/addon-docs": "^6.1.14",
+    "@storybook/addon-essentials": "^6.1.21",
+    "@storybook/addon-info": "^5.3.21",
+    "@storybook/addon-knobs": "^6.1.14",
+    "@storybook/addon-links": "^6.1.21",
+    "@storybook/addon-storysource": "^6.1.14",
+    "@storybook/addons": "^6.1.14",
+    "@storybook/react": "^6.1.21",
+    "@svgr/webpack": "^5.5.0",
+    "@types/classnames": "^2.2.10",
+    "@types/jsonpath": "^0.2.0",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-window": "^1.8.2",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.22.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "fork-ts-checker-webpack-plugin": "^5.0.14",
+    "lerna": "^4.0.0",
+    "prettier": "^2.2.1",
+    "react-is": "^17.0.2",
+    "ts-loader": "^8.0.2",
+    "tsdx": "^0.13.2",
+    "tslib": "^1.11.1",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typescript": "^4.2.3"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "dependencies": {
+    "@rollup/plugin-url": "^6.0.0",
+    "@svgr/rollup": "^5.5.0"
+  }
+}
