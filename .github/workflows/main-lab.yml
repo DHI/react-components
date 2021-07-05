@@ -2,13 +2,13 @@ name: CI - lab
 on:
   push:
     branches:
-      - master
+      - feature/staging-prs
     paths:
       - "packages/react-components-lab/**"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - master
+      - feature/staging-prs
     paths:
       - "packages/react-components-lab/**"
       
