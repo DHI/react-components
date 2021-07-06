@@ -85,6 +85,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/system": "^4.11.3",
     "lodash": "^4.17.21",
-    "lodash.assignin": "^4.2.0"
+    "lodash.assignin": "^4.2.0",
+    "prismjs": "^1.24.1"
   }
 }
