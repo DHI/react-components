@@ -8,7 +8,8 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "eslint.workingDirectories": [
         "packages/react-components",
-        "packages/react-components-lab"
+        "packages/react-components-lab",
+        "packages/icons"
     ],
     "typescript.tsdk": "node_modules/typescript/lib",
     "workbench.tree.indent": 20,
