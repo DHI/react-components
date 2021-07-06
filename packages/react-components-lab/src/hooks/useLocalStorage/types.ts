@@ -1,7 +1,4 @@
-interface InitialVal {
+export interface HookTypes {
   initialValue: unknown;
-}
-
-export interface HookTypes extends InitialVal {
   key: string;
 }
