@@ -70,6 +70,7 @@ const packageJSON = fs.readFileSync('package.json');
 const package = JSON.parse(packageJSON);
 delete package.devDependencies;
 delete package.scripts;
+delete package.files;
 
 const distPackagePath = path.join(distDir, 'package.json');
 
@@ -93,4 +94,10 @@ exec(`tsc`, () => {
       if (err) throw Error(err);
     });
   }
+
+  const indexTsPath = path.join(distDir, 'index.ts');
+  fs.unlink(indexTsPath, (err) => {
+    if (err) throw Error(err);
+    console.log(`Removed ${indexTsPath}`);
+  });
 });
