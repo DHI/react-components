@@ -1,38 +1,31 @@
 {
   "version": "0.0.1",
   "license": "MIT",
-  "main": "dist/index.js",
   "name": "@dhi/icons",
   "author": "DHI",
-  "module": "dist/react-components-icons.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DHI/react-components.git"
   },
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "dev": "yarn sb",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
+    "build": "node build-icons.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "semantic-release": "npx semantic-release"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/npm": "^7.0.10",
     "@semantic-release/release-notes-generator": "^9.0.2",
-    "@types/react": "^17.0.3",
+    "@svgr/core": "^5.5.0",
+    "@svgr/plugin-jsx": "^5.5.0",
+    "@svgr/plugin-svgo": "^5.5.0",
+    "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.3",
     "@types/react-window": "^1.8.2",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
@@ -48,6 +41,7 @@
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
     "fork-ts-checker-webpack-plugin": "^5.0.14",
+    "glob": "^7.1.7",
     "prettier": "^2.2.1",
     "react-is": "^17.0.2",
     "tslint-plugin-prettier": "^2.3.0",
@@ -56,7 +50,5 @@
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
-  },
-  "dependencies": {
   }
 }
