@@ -10,6 +10,9 @@
   "engines": {
     "node": ">=10"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "node build-icons.js",
     "lint": "eslint .",
