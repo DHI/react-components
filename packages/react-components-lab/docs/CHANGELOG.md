@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/DHI/react-components/compare/v0.8.0...v0.9.0) (2021-07-06)
+
+
+### Features
+
+* **useLocalStorage:** Add String() ([2dc0701](https://github.com/DHI/react-components/commit/2dc070113f706cf3d267fe3a4b85810e30229753))
+
 # [0.8.0](https://github.com/DHI/react-components/compare/v0.7.0...v0.8.0) (2021-07-05)
 
 
