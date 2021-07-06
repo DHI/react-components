@@ -31,3 +31,5 @@ export * from './components/ThemeProvider/types';
 
 // Hooks
 export { default as useBelow } from './hooks/useBelow';
+export { default as useLocalStorage } from './hooks/useLocalStorage/useLocalStorage';
+export * from './hooks/useLocalStorage/types';
