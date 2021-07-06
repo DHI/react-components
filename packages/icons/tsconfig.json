@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["dist"],
+  "include": ["./dist"],
   "compilerOptions": {
     "resolveJsonModule": true,
     "sourceMap": false,
