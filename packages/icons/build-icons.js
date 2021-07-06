@@ -56,6 +56,12 @@ for (const svgFile of svgFiles) {
   );
   const filePath = path.join(distDir, `${componentName}.tsx`);
   fs.writeFileSync(filePath, componentCode);
+
+  fs.appendFileSync(
+    path.join(distDir, 'index.ts'),
+    `export { default as ${componentName} } from './${componentName}';\n`
+  );
+
   console.log(`${svgFile} -> ${filePath}`);
 }
 
