@@ -9,6 +9,7 @@ const distDir = './dist/';
 const srcDir = './src/';
 
 const iconSize = 40;
+const iconColor = '#0B4566';
 
 const template = ({ template }, opts, { imports, componentName, jsx }) =>
   template.smart({ plugins: ['typescript'] }).ast`
@@ -47,7 +48,7 @@ for (const svgFile of svgFiles) {
       svgProps: {
         height: iconSize,
         width: iconSize,
-        color: '#0B4566',
+        color: iconColor,
         viewBox: `0 0 ${iconSize} ${iconSize}`,
       },
     },
