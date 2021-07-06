@@ -5,7 +5,7 @@
 </div>
 <h1 align="left">@dhi/react-components-lab</h1>
 
-This package primarily serves as the incubator for components that are not yet ready to move to the core package/library
+This package primarily serves as the incubator for components that are not yet ready to move to the core package/library.
 
 As developers use and test the components and report issues, the maintainers learn more about shortcomings of the components: missing features, accessibility issues, bugs, API design, etc. The older and more used a component is, the less likely it is that new issues will be found and subsequently need to introduce breaking changes.
 
@@ -34,7 +34,7 @@ Generating a Personal Access token with GitHub - [More info](https://help.github
 5. Note: `GitHub Packages`
 6. Tick: `repo, write:packages, read:packages, delete:packages, admin:repo_hook`
 7. "Generate token"
-8. Click clipboard icon to copy token.
+8. Click clipboard icon to copy token
 9. Open `C:\users\<username>\.npmrc` or create this file here if doesn't exist.
 10. Paste within it, replacing `<AUTH_TOKEN>` with the token you copied moments ago.
 

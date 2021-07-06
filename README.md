@@ -11,7 +11,7 @@ React components shared across DHI for implementing our Corporate Visual Identit
 ## Packages and their scope
 
 We have two packages, similar to what you might know from [Material-UI](https://material-ui.com/components/about-the-lab/):
-1. [Lab package](packages/react-components-lab) for rapid uptake and incubation of new components to prove their use and quality. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://storybooklab.z16.web.core.windows.net/)
+1. [Lab package](packages/react-components-lab) for rapid uptake and incubation of new components to prove their use and quality. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://green-glacier-08aae7903.azurestaticapps.net)
 1. [Core package](packages/react-components) for mature and widely used components. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://domainservices.dhigroup.com/)
 
 
@@ -26,10 +26,36 @@ Please also check out the guidelines for the package you are contributing to.
 
 ## Board of maintainers
 
-- Graham O'Neale (gron)
-- Elbys Jose Meneses (ejme)
-- Rihards Rancans (rira)
-- Razvan Bertea (rabe)
-- Sam Johnson (sajo)
-- James Harper (jamh)
-- Franz Thomsen (frt)
+<table>
+  <tr style="border: none">
+  	<td align="center" style="border: none">
+    	<a href="https://github.com/goneale"><img src="https://avatars.githubusercontent.com/goneale" width="70px" style="border-radius: 50%" /><br /><sub><b>Graham O'Neale (gron)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+    <td align="center" style="border: none">
+      <a href="https://github.com/elbys"><img src="https://avatars.githubusercontent.com/elbys" width="70px" style="border-radius: 50%" /><br /><sub><b>Elbys Jose Meneses (ejme)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+    <td align="center" style="border: none">
+    	<a href="https://github.com/rihr"><img src="https://avatars.githubusercontent.com/rihr" width="70px" style="border-radius: 50%" /><br /><sub><b>Rihards Rancans (rira)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+    <td align="center" style="border: none">
+    	<a href="https://github.com/bertearazvan"><img src="https://avatars.githubusercontent.com/bertearazvan" width="70px" style="border-radius: 50%" /><br /><sub><b>Razvan Bertea (rabe)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+    <td align="center" style="border: none">
+    	<a href="https://github.com/nfour"><img src="https://avatars.githubusercontent.com/nfour" width="70px" style="border-radius: 50%" /><br /><sub><b>Sam Johnson (sajo)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+    <td align="center" style="border: none">
+    	<a href="https://github.com/jharper93"><img src="https://avatars.githubusercontent.com/jharper93" width="70px" style="border-radius: 50%" /><br /><sub><b>James Harper (jamh)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+  </tr>
+  <tr style="border: none;">
+    <td align="center" style="border: none">
+      <a href="https://github.com/FranzThomsen1089"><img src="https://avatars.githubusercontent.com/FranzThomsen1089" width="70px" style="border-radius: 50%" /><br /><sub><b>Franz Thomsen (frt)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+    <td align="center" style="border: none">
+    	<a href="https://github.com/rosudhi"><img src="https://avatars.githubusercontent.com/rosudhi" width="70px" style="border-radius: 50%" /><br /><sub><b>Ronald Sutantio (rosu)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+    <td align="center" style="border: none">
+    	<a href="https://github.com/j08lue"><img src="https://avatars.githubusercontent.com/j08lue" width="70px" style="border-radius: 50%" /><br /><sub><b>Jonas Sølvsteen (josl)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+    </td>
+  </tr>
+</table>

@@ -1,3 +1,43 @@
+# [0.9.0](https://github.com/DHI/react-components/compare/v0.8.0...v0.9.0) (2021-07-06)
+
+
+### Features
+
+* **useLocalStorage:** Add String() ([2dc0701](https://github.com/DHI/react-components/commit/2dc070113f706cf3d267fe3a4b85810e30229753))
+
+# [0.8.0](https://github.com/DHI/react-components/compare/v0.7.0...v0.8.0) (2021-07-05)
+
+
+### Bug Fixes
+
+* **GapBox:** Export and small cleanup. ([66ac109](https://github.com/DHI/react-components/commit/66ac1096ebab1cec3f8eb15b898a819c2a38982a))
+
+
+### Features
+
+* **Loader:** Add Loader component. ([48774b1](https://github.com/DHI/react-components/commit/48774b1b54a8aa8c42cd42cd077d5cb5705ffdad))
+
+# [0.7.0](https://github.com/DHI/react-components/compare/v0.6.0...v0.7.0) (2021-07-01)
+
+
+### Features
+
+* **BarLegend:** Add BarLegend component ([ccea276](https://github.com/DHI/react-components/commit/ccea2767b1b2d3ae7079f57f6d43bfc623efae7c))
+
+# [0.6.0](https://github.com/DHI/react-components/compare/v0.5.0...v0.6.0) (2021-06-16)
+
+
+### Features
+
+* **lab:** add components to theme provider story ([d0cf632](https://github.com/DHI/react-components/commit/d0cf63222c01e7fe5efef31311429ef2285b4a47))
+
+# [0.5.0](https://github.com/DHI/react-components/compare/v0.4.3...v0.5.0) (2021-06-11)
+
+
+### Features
+
+* **lab:** add useBelow hook ([bca4c9f](https://github.com/DHI/react-components/commit/bca4c9f3930ee1dfffa00555137ee47a8fe8ba55))
+
 ## [0.4.3](https://github.com/DHI/react-components/compare/v0.4.2...v0.4.3) (2021-05-07)
 
 
