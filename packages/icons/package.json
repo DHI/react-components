@@ -3,7 +3,6 @@
   "license": "MIT",
   "name": "@dhi/icons",
   "author": "DHI",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DHI/react-components.git"
@@ -16,6 +15,22 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "semantic-release": "npx semantic-release"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./*": "./dist/*",
+    ".": "./dist/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [ "dist/*" , "dist/index.d.ts" ]
+    },
+    ".": {
+      ".": [ "dist/index.d.ts"]
+    }
   },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",

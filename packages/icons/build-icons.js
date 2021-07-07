@@ -69,19 +69,6 @@ for (const svgFile of svgFiles) {
   console.log(`${svgFile} -> ${filePath}`);
 }
 
-// Copy package.json, remove unnecessary fields
-const packageJSON = fs.readFileSync('package.json');
-const package = JSON.parse(packageJSON);
-delete package.devDependencies;
-delete package.scripts;
-delete package.private;
-
-const distPackagePath = path.join(distDir, 'package.json');
-
-fs.writeFile(distPackagePath, JSON.stringify(package), () =>
-  console.log(`✅ Added ${distPackagePath}`)
-);
-
 // Compile TS for dist
 console.log('🔧 Compiling...');
 exec(`tsc`, () => {
