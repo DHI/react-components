@@ -1,5 +1,5 @@
-import React, { memo, useEffect } from 'react';
-import Prism from 'prismjs';
+import React, { memo, useEffect, FC } from 'react';
+import { highlightAll } from 'prismjs';
 
 // #region Local imports
 import 'prismjs/components/prism-jsx';
@@ -9,9 +9,9 @@ import { Box } from '@material-ui/core';
 import { SyntaxProps } from './types';
 // #endregion
 
-const Syntax: React.FC<SyntaxProps> = ({ code, language }) => {
+const Syntax: FC<SyntaxProps> = ({ code, language }) => {
   useEffect(() => {
-    Prism.highlightAll();
+    highlightAll();
   }, []);
 
   return (
