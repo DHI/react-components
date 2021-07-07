@@ -5,16 +5,16 @@
 </div>
 <h1 align="left">@dhi/icons</h1>
 
-This package provides icons developed by the UI/UX department, as we are usually working with water-related and map-based apps. We recommend using primarily the icons provided by [@material-ui/icons](https://material-ui.com/components/material-icons/) and when in need, bring this one to the table.
+This package provides icons primarily made by the UI/UX department, as we are usually working with water-related and map-based apps. We recommend primarily using the generic icons provided by [`@material-ui/icons`](https://material-ui.com/components/material-icons/). The icons here are either specialized or generic icons standardised by UI/UX.
 
-This package is created using [TypeScript](https://www.typescriptlang.org/) and [Yarn](https://classic.yarnpkg.com/en/).
+This package uses [TypeScript](https://www.typescriptlang.org/) and [Yarn](https://classic.yarnpkg.com/en/).
 
-# Adding an icon
+# Adding icons
 
-We are aiming for making it as easy as possible for more icons to be added. However, the component needs to fulfill some minimum requirements:
+We are aiming for making it as easy as possible for more icons to be added. However, the icons need to fulfill some minimum requirements:
 
-* [x] The icon is generic and close enough to the DHI CVI and is likely to find use in multiple projects.
-* [x] The icon needs to be reviewed by at least one of the maintainers.
+* [x] The icons are generic and close enough to the DHI CVI and is likely to find use in multiple projects.
+* [x] The icons need to be reviewed by at least one of the maintainers.
 
 Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation.
 
@@ -44,7 +44,7 @@ Generating a Personal Access token with GitHub - [More info](https://help.github
 
 # Usage
 
-You can simply import the package using `yarn` or `npm`.
+Install the package with `yarn` or `npm`.
 
 ```
 // with npm
@@ -56,7 +56,7 @@ yarn add @dhi/icons
 
 ## Documentation
 
-In order to use our components, you can import them like:
+To use the icons, import them with the following syntax:
 
 ```
 import Edit from "@dhi/icons/Edit;
