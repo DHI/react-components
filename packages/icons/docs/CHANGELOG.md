@@ -1,3 +1,10 @@
+## @dhi/icons [1.0.1](https://github.com/DHI/react-components/compare/@dhi/icons@1.0.0...@dhi/icons@1.0.1) (2021-07-07)
+
+
+### Bug Fixes
+
+* **icons:** Trigger patch release for icons only ([1c09f72](https://github.com/DHI/react-components/commit/1c09f727594727c2ba43a448908e11046214b6b1))
+
 # @dhi/icons 1.0.0 (2021-07-07)
 
 
