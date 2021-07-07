@@ -14,10 +14,12 @@ To get started follow these steps:
 - Change your working directory to `packages/icons`
 - Install dependencies `yarn install`.
 
-## ESLint
 
-The package uses ESLint with the `airbnb-typescript` configuration, which enforces consistent code style and warns on possible errors.
-Most editors support an ESLint plugin or extension. Enabling auto-fix on save may also be a good idea.
+## Adding an icon
+
+When adding an icon, make sure that:
+* [x] Add `.svg` icon files in the `src` folder.
+* [x] The file names should be written in `kebab-case` and the SVG is recommended to be `40px x 40px` in size.
 
 ## Commits:
 
@@ -47,15 +49,6 @@ In order for a component to be added, it needs to check a few boxes:
 * [x] The component implements an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or is otherwise generic enough in functionality and close enough to the DHI CVI that it is likely to find reuse in other projects.
 * [x] The component needs to be reviewed by at least one of the maintainers.
 
-## Component structure guidelines
-
-The structure, style and conventions of a component should generally be as consistent as possible.
-Some aspects are enforced by the ESLint configuration, but not all.
-It may therefore be a good idea to take a look at the existing icons and follow what's established there.
-
-When adding an icon, make sure that:
-* [x] You only add `.svg` icons in the `src` folder.
-* [x] That the file names are written in `kebab-case` and the SVG is `40px x 40px` in size.
 
 ## Pull Requests (PR)
 
@@ -77,9 +70,10 @@ The `peerDependencies` are the dependencies that the developers using our packag
 
 While developing, we are primarily using the `devDependencies` to develop the library. Any dependencies that are needed for the development should be added here.
 
-## Exporting
+## Building / Exporting
 
-The export part of the component is being handled by the build-icons.js script, found in the root of the icons package.
+Icons are generated with the `build-icons.js` Node.js script, found in the root of the icons package.  
+It first generates TypeScript JSX React icon components from a template, then compiles them with TypeScript into `.js` and `.d.ts` files
 
 ## Testing
 
