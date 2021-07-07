@@ -1,0 +1,68 @@
+{
+  "version": "0.0.1",
+  "license": "MIT",
+  "name": "@dhi/icons",
+  "author": "DHI",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DHI/react-components.git"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "node build-icons.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "semantic-release": "npx semantic-release"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./*": "./dist/*",
+    ".": "./dist/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [ "dist/*" , "dist/index.d.ts" ]
+    },
+    ".": {
+      ".": [ "dist/index.d.ts"]
+    }
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/npm": "^7.0.10",
+    "@semantic-release/release-notes-generator": "^9.0.2",
+    "@svgr/core": "^5.5.0",
+    "@svgr/plugin-jsx": "^5.5.0",
+    "@svgr/plugin-svgo": "^5.5.0",
+    "@types/react": "^17.0.13",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-window": "^1.8.2",
+    "babel-loader": "^8.1.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "fork-ts-checker-webpack-plugin": "^5.0.14",
+    "glob": "^7.1.7",
+    "prettier": "^2.2.1",
+    "react-is": "^17.0.2",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typescript": "^4.2.3",
+    "xml2json": "^0.12.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}

@@ -1,0 +1,10 @@
+<svg
+  width="40"
+  height="40"
+  viewbox="0 0 40 40"
+  stroke="var(--BrandBlue--default)"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path d="M12 28l5-5 5 5 8-8M23 21l-8-8H8" stroke-width="2"/>
+</svg>

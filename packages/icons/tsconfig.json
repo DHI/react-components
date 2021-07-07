@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["./dist"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "jsx": "react",
+  }
+}

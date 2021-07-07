@@ -1,0 +1,12 @@
+<svg
+  width="40"
+  height="40"
+  viewbox="0 0 40 40"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g stroke="var(--BrandBlue--default)">
+    <path d="M17 11v18M11 17h18M11 23h18M23 11v18" />
+    <path stroke-width="2" d="M10 10h20v20H10z"/>
+  </g>
+</svg>
