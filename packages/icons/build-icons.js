@@ -4,11 +4,11 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const { exec } = require('child_process');
+const xmlParser = require('xml2json');
 
 const distDir = './dist/';
 const srcDir = './src/';
 
-const iconSize = 40;
 const iconColor = '#0B4566';
 
 const template = ({ template }, opts, { imports, componentName, jsx }) =>
@@ -34,6 +34,10 @@ for (const svgFile of svgFiles) {
     .map((substr) => substr.charAt(0).toUpperCase() + substr.slice(1))
     .join('');
 
+  const { svg: svgObj } = JSON.parse(xmlParser.toJson(svg));
+  const height = svgObj.height ?? 40;
+  const width = svgObj.width ?? 40;
+
   const componentCode = svgr.sync(
     svg,
     {
@@ -46,10 +50,10 @@ for (const svgFile of svgFiles) {
         ],
       },
       svgProps: {
-        height: iconSize,
-        width: iconSize,
+        height,
+        width,
         color: iconColor,
-        viewBox: `0 0 ${iconSize} ${iconSize}`,
+        viewBox: `0 0 ${height} ${width}`,
       },
     },
     { componentName }

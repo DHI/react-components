@@ -3,7 +3,7 @@ module.exports = {
   ignorePatterns: ['node_modules', 'dist'],
   plugins: ['prettier', 'eslint-comments', 'import'],
   env: {
-    es6: true,
+    es2021: true,
   },
   extends: [
     // 'airbnb-typescript',
