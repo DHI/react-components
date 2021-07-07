@@ -2,17 +2,17 @@ First of all, welcome and thank you for contributing to our Storybook.
 
 # About
 
-The purpose of our `@dhi/react-components-icons` GitHub library is to host the components that are not yet ready to be added to the core library. Here, the components will leave for a certain amount if time until the components have been tested by our maintainers in terms of missing features, bugs, API design etc. The older and more used a component is, the less likely it is that new issues will be found.
+The purpose of our `@dhi/icons` GitHub library is to host the icons developed by the UI/UX department which are used extensively within DHI.
 
-A icons component with low usage either means that it isn't fully working yet or that there is a low demand for it.
+An icon component with low usage either means that it isn't fully working yet or that there is a low demand for it.
 
 # Setting up
 
 To get started follow these steps:
 
-- Clone the repository`.
+- Clone the repository.
+- Change your working directory to `packages/icons`
 - Install dependencies `yarn install`.
-- Change your working directory to `packages/react-components-icons`
 
 ## ESLint
 
@@ -44,23 +44,18 @@ This is done by creating an issue and describing how does the feature improve ou
 
 In order for a component to be added, it needs to check a few boxes:
 
-* [x] The component cannot be implemented by styling a Material UI component via the theme (for instance `<Button />` or `<Typography />`). However, if the styling is complex enough and requires a lot of styling (for instance The `<Slider />` component), it can be evaluated.
 * [x] The component implements an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or is otherwise generic enough in functionality and close enough to the DHI CVI that it is likely to find reuse in other projects.
 * [x] The component needs to be reviewed by at least one of the maintainers.
+
 ## Component structure guidelines
 
 The structure, style and conventions of a component should generally be as consistent as possible.
 Some aspects are enforced by the ESLint configuration, but not all.
-It may therefore be a good idea to take a look at the existing components and follow what's established there.
-
-Early iterations of a component may still be acceptable as it can later be revised and stabilized once the component is to be moved to the core package.
-
-Components must be as atomic as possible. If a child component could potentially be used independently, it should be its own component, not a sub-component.
-Sub-components, along with their types and styles should always be exported.
+It may therefore be a good idea to take a look at the existing icons and follow what's established there.
 
 ## Pull Requests (PR)
 
-When creating a PR, please explain the functionality of the component and make sure to link the relevant GitHub issues.
+When creating a PR, please explain the need of the icon and make sure to link the relevant GitHub issues.
 
 Moreover, ensure that you are going through the PR template instructions.
 
@@ -79,10 +74,8 @@ The `peerDependencies` are the dependencies that the developers using our packag
 While developing, we are primarily using the `devDependencies` to develop the library. Any dependencies that are needed for the development should be added here.
 
 ## Exporting
-Components and all other consumable files should be exported in `src/index.ts`  
-If the file has a **default export**, use the following syntax: `export { default as ComponentName } from 'src/components/ComponentName/ComponentName';`  
-If the file has one or more **named exports**, use the following syntax `export * from 'src/components/ComponentName/ComponentName';`  
-If the file contains both a **default** and **named** exports, use both of the above.  
+
+The export part of the component is being handled by the build-icons.js script, found in the root of the icons package.
 
 ## Testing
 
