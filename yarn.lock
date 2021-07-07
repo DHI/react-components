@@ -19190,6 +19190,7 @@ unbox-primitive@^1.0.0:
     has-symbols "^1.0.0"
     which-boxed-primitive "^1.0.1"
 
+<<<<<<< HEAD
 unbox-primitive@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/unbox-primitive/-/unbox-primitive-1.0.1.tgz#085e215625ec3162574dc8859abee78a59b14471"
@@ -19200,6 +19201,8 @@ unbox-primitive@^1.0.1:
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
 
+=======
+>>>>>>> b753be9472d8b63e5fdbad23821af3e74e7411bf
 underscore@1.12.1:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.1.tgz#7bb8cc9b3d397e201cf8553336d262544ead829e"

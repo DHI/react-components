@@ -1615,10 +1615,10 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@microsoft/signalr@^5.0.2":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-5.0.6.tgz#b21887e594981bac1f789276e5f2d00a2d14a332"
-  integrity sha512-ExwKc9L/Dia7gachfekMYNqalH1qAnluNmh1mhTNGqIp0s3SH9DJMi5FSVcmgx8R1K6Sn86Z67lYGBfOlvifLg==
+"@microsoft/signalr@^5.0.7":
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-5.0.7.tgz#e63c04809a408b712322e346e2fded251214ad57"
+  integrity sha512-DqNssGZ8ML8IL4sB4GS+zaX8s2BNnv4acQujs/i/WxojpGQJOZ7OyONfnYbNePRYItXgbHmm7b6SVPikqQcLCg==
   dependencies:
     abort-controller "^3.0.0"
     eventsource "^1.0.7"
@@ -8874,11 +8874,6 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
-  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
-
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -13541,9 +13536,9 @@ ws@^5.2.0:
     async-limiter "~1.0.0"
 
 ws@^6.0.0:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
-  integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.2.tgz#dd5cdbd57a9979916097652d78f1cc5faea0c32e"
+  integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
   dependencies:
     async-limiter "~1.0.0"
 
