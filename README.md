@@ -10,10 +10,10 @@ React components shared across DHI for implementing our Corporate Visual Identit
 
 ## Packages and their scope
 
-We have two packages, similar to what you might know from [Material-UI](https://material-ui.com/components/about-the-lab/):
+We have a few packages, similar to what you might know from [Material-UI](https://material-ui.com/components/about-the-lab/):
 1. [Lab package](packages/react-components-lab) for rapid uptake and incubation of new components to prove their use and quality. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://green-glacier-08aae7903.azurestaticapps.net)
-1. [Core package](packages/react-components) for mature and widely used components. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://domainservices.dhigroup.com/)
-
+2. [Core package](packages/react-components) for mature and widely used components. [![Storybook](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://domainservices.dhigroup.com/)
+3. [Icons package](packages/icons) for getting the icons.
 
 ## Contributing
 
