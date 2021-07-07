@@ -5,9 +5,9 @@
 </div>
 <h1 align="left">@dhi/icons</h1>
 
-This package provides icons developed by the UI/UX department, as we are usually working with water-related and map-based apps. We reccommend using primarily the icons provided by [@material-ui/icons](https://material-ui.com/components/material-icons/)
+This package provides icons developed by the UI/UX department, as we are usually working with water-related and map-based apps. We recommend using primarily the icons provided by [@material-ui/icons](https://material-ui.com/components/material-icons/) and when in need, bring this one to the table.
 
-This package is created using [TypeScript](https://www.typescriptlang.org/), built using [Yarn](https://classic.yarnpkg.com/en/) and bundled using [TSDX](https://tsdx.io/).
+This package is created using [TypeScript](https://www.typescriptlang.org/) and [Yarn](https://classic.yarnpkg.com/en/).
 
 # The flow of adding a component
 
@@ -15,6 +15,8 @@ We are aiming for making it as easy as possible for a component to be added to t
 
 * [x] The icon implements an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or is otherwise generic enough in functionality and close enough to the DHI CVI that it is likely to find reuse in other projects.
 * [x] The component needs to be reviewed by at least one of the maintainers.
+
+Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation.
 
 ## Installing the package
 
@@ -52,16 +54,23 @@ npm install @dhi/icons
 yarn add @dhi/icons
 ```
 
-## Contributing
-
-If you would like to contribute to our project, please read the [repository guidelines](./docs/CONTRIBUTING.md).
-
 ## Documentation
 
 In order to use our components, you can import them like:
 
 ```
-// with npm
-npm install @dhi/icons
+import Edit from "@dhi/icons/Edit;
+
+// or
+
+import { Edit } from "@dhi/icons";
+
+// and you can use it as
+
+<Edit color="#00A4EC" width={40} height={40}/>
 
 ```
+
+## Contributing
+
+If you would like to contribute to our project, please read the [repository guidelines](./docs/CONTRIBUTING.md).

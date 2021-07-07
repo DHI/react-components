@@ -53,6 +53,10 @@ The structure, style and conventions of a component should generally be as consi
 Some aspects are enforced by the ESLint configuration, but not all.
 It may therefore be a good idea to take a look at the existing icons and follow what's established there.
 
+When adding an icon, make sure that:
+* [x] You only add `.svg` icons in the `src` folder.
+* [x] That the file names are written in `kebab-case` and the SVG is `40px x 40px` in size.
+
 ## Pull Requests (PR)
 
 When creating a PR, please explain the need of the icon and make sure to link the relevant GitHub issues.
