@@ -16,6 +16,10 @@ const BaseChart = (props: StandardChartProps) => {
     };
   });
 
+  useEffect(() => {
+    setChartSize({ width: '100%', height: chartHeightFunc() });
+  }, [chartHeightFunc]);
+
   if (debug) {
     console.log('chart config', { data: options, raw: JSON.stringify(options) });
   }
