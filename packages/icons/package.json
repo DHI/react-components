@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.9.1",
   "license": "MIT",
   "name": "@dhi/icons",
   "author": "DHI",
@@ -26,10 +26,15 @@
   },
   "typesVersions": {
     "*": {
-      "*": [ "dist/*" , "dist/index.d.ts" ]
+      "*": [
+        "dist/*",
+        "dist/index.d.ts"
+      ]
     },
     ".": {
-      ".": [ "dist/index.d.ts"]
+      ".": [
+        "dist/index.d.ts"
+      ]
     }
   },
   "devDependencies": {
