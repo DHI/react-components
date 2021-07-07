@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.1.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.0.0...@dhi/react-components-lab@1.1.0) (2021-07-07)
+
+
+### Features
+
+* **lab:** Trigger feat version for testing purposes ([e7f23bf](https://github.com/DHI/react-components/commit/e7f23bf179ef02ee58971baad6a8b02c78bfcb07))
+
 # 1.0.0 (2021-07-07)
 
 
