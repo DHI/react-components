@@ -18,5 +18,8 @@
     "dependencies": {
         "lerna": "^4.0.0",
         "typescript": "3.9.9"
+    },
+    "devDependencies": {
+        "@qiwi/multi-semantic-release": "^3.14.2"
     }
 }
