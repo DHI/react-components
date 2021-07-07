@@ -45,7 +45,7 @@ jobs:
           CI: true
           
       - name: Semantic release
-        run: yarn run semantic-release
+        run: yarn run multi-semantic-release --ignore-packages=packages/icons/**
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

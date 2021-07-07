@@ -7,7 +7,7 @@
 
 This package provides icons primarily made by the UI/UX department, as we are usually working with water-related and map-based apps. We recommend primarily using the generic icons provided by [`@material-ui/icons`](https://material-ui.com/components/material-icons/). The icons here are either specialized or generic icons standardised by UI/UX.
 
-This package uses [TypeScript](https://www.typescriptlang.org/) and [Yarn](https://classic.yarnpkg.com/en/)
+This package uses [TypeScript](https://www.typescriptlang.org/) and [Yarn](https://classic.yarnpkg.com/en/).
 
 # Adding icons
 
