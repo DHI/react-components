@@ -29,8 +29,13 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@dhi'
           
-      - name: Install dependencies
+      - name: Install dependencies lab
         run: cd packages/react-components-lab && yarn install --frozen-lockfile
+        env:
+          CI: true
+      
+      - name: Install dependencies repo
+        run: yarn install --frozen-lockfile
         env:
           CI: true
       
@@ -40,7 +45,7 @@ jobs:
           CI: true
           
       - name: Semantic release
-        run: cd packages/react-components-lab && yarn run semantic-release
+        run: yarn run semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

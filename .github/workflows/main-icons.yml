@@ -29,11 +29,16 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@dhi'
           
-      - name: Install dependencies
+      - name: Install dependencies icons
         run: cd packages/icons && yarn install --frozen-lockfile
         env:
           CI: true
-      
+            
+      - name: Install dependencies repo
+        run: yarn install --frozen-lockfile
+        env:
+          CI: true
+
       - name: Lint
         run: cd packages/icons && yarn lint
         env:
@@ -45,7 +50,7 @@ jobs:
           CI: true
           
       - name: Semantic release
-        run: cd packages/icons && yarn run semantic-release
+        run: yarn run semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
