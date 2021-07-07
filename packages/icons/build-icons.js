@@ -70,6 +70,7 @@ const packageJSON = fs.readFileSync('package.json');
 const package = JSON.parse(packageJSON);
 delete package.devDependencies;
 delete package.scripts;
+delete package.private;
 
 const distPackagePath = path.join(distDir, 'package.json');
 

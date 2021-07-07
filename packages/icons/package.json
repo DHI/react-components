@@ -3,6 +3,7 @@
   "license": "MIT",
   "name": "@dhi/icons",
   "author": "DHI",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DHI/react-components.git"
@@ -10,13 +11,6 @@
   "engines": {
     "node": ">=10"
   },
-  "exports": {
-    "*": "./dist/"
-  },
-  "files": [
-    "./dist/"
-  ],
-  "main": "./dist/index.js",
   "scripts": {
     "build": "node build-icons.js",
     "lint": "eslint .",
