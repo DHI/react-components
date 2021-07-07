@@ -9,12 +9,12 @@ This package provides icons developed by the UI/UX department, as we are usually
 
 This package is created using [TypeScript](https://www.typescriptlang.org/) and [Yarn](https://classic.yarnpkg.com/en/).
 
-# The flow of adding a component
+# Adding an icon
 
-We are aiming for making it as easy as possible for a component to be added to the icons. However, the component needs to fulfill some minimum requirements:
+We are aiming for making it as easy as possible for more icons to be added. However, the component needs to fulfill some minimum requirements:
 
-* [x] The icon implements an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or is otherwise generic enough in functionality and close enough to the DHI CVI that it is likely to find reuse in other projects.
-* [x] The component needs to be reviewed by at least one of the maintainers.
+* [x] The icon is generic and close enough to the DHI CVI and is likely to find use in multiple projects.
+* [x] The icon needs to be reviewed by at least one of the maintainers.
 
 Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation.
 
@@ -65,11 +65,14 @@ import Edit from "@dhi/icons/Edit;
 
 import { Edit } from "@dhi/icons";
 
-// and you can use it as
+// then use in JSX
 
 <Edit color="#00A4EC" width={40} height={40}/>
 
 ```
+
+For all props/attributes that can be added to icons see [here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute)  
+These will be added to the upper `<svg>` element - elements such as `<path>` within it cannot be modified.  
 
 ## Contributing
 
