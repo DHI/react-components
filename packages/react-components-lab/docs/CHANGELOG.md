@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.1.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.1.0...@dhi/react-components-lab@1.1.1) (2021-07-08)
+
+
+### Bug Fixes
+
+* **ThemeProvider:** Fix theme overrides ([9f5ed98](https://github.com/DHI/react-components/commit/9f5ed9841c1047234620f159310bcff1f68e6fe6))
+
 # @dhi/react-components-lab [1.1.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.0.0...@dhi/react-components-lab@1.1.0) (2021-07-07)
 
 
