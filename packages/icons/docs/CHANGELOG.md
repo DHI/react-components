@@ -1,3 +1,10 @@
+# @dhi/icons [1.1.0](https://github.com/DHI/react-components/compare/@dhi/icons@1.0.1...@dhi/icons@1.1.0) (2021-07-12)
+
+
+### Features
+
+* **icons:** add draw-circle, draw-rectangle ([77692fe](https://github.com/DHI/react-components/commit/77692fe3dc7028cdde6e46f9fa9da46e7d925c33))
+
 ## @dhi/icons [1.0.1](https://github.com/DHI/react-components/compare/@dhi/icons@1.0.0...@dhi/icons@1.0.1) (2021-07-07)
 
 
