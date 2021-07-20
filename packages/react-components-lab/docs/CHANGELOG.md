@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.1.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.1.1...@dhi/react-components-lab@1.1.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **useLocalStorage:** optional initialValue which breaks code when empty ([c80bdf4](https://github.com/DHI/react-components/commit/c80bdf44f4206464da74bf3ab3fbccf9ca73a6b9))
+
 ## @dhi/react-components-lab [1.1.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.1.0...@dhi/react-components-lab@1.1.1) (2021-07-08)
 
 
