@@ -7,7 +7,7 @@ function useLocalStorage<T>(
   const [storageValue, setStorageValue] = useState(() => {
     const item = window.localStorage.getItem(key);
 
-    return item ? ((String(JSON.parse(item)) as unknown) as T) : initialValue;
+    return item ? (JSON.parse(item) as T) : initialValue;
   });
 
   const setValue = (value: T) => {
