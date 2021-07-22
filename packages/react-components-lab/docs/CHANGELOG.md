@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.2.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.1.2...@dhi/react-components-lab@1.2.0) (2021-07-22)
+
+
+### Features
+
+* **useDebounce:** Add useDebounce ([0ca9dd6](https://github.com/DHI/react-components/commit/0ca9dd63d59d2cff8cf1c407e52e08317f1772cb))
+
 ## @dhi/react-components-lab [1.1.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.1.1...@dhi/react-components-lab@1.1.2) (2021-07-20)
 
 
