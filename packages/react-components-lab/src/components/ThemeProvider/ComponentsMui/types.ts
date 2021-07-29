@@ -24,5 +24,4 @@ export interface ComponentsMuiProps {
 
 export interface ComponentItemProps {
   item: ComponentList;
-  isLastItem?: boolean;
 }

@@ -20,7 +20,7 @@ import useStyles from './styles';
 const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
   HTMLElement,
   ComponentItemProps
->(({ item, isLastItem }, ref) => {
+>(({ item }, ref) => {
   const classes = useStyles();
 
   const [showCode, setShowCode] = useState<Record<string, boolean>>({});
@@ -81,7 +81,6 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
               </Collapse>
             </>
           )}
-          {/* {isLastItem && <div style={{ marginBottom: 320 }} />} */}
         </div>
       ))}
     </Box>
