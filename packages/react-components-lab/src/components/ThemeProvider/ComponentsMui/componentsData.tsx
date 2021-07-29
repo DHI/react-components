@@ -1,5 +1,18 @@
 import React from 'react';
-import { Box, Button, Switch, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Switch,
+  Typography,
+  FormControlLabel,
+  Fab,
+  Radio,
+  TextField,
+  InputAdornment,
+} from '@material-ui/core';
+import { Plus, User } from '@dhi/icons';
 
 // #region Local imports
 import { ComponentList } from './types';
@@ -586,10 +599,10 @@ const ComponentsData: ComponentList[] = [
   },
   {
     title: 'Switch',
-    description: 'This is switch description',
+    description: 'This allows you to toggle the state on or off (true / false)',
     sub: [
       {
-        title: 'Basic switches',
+        title: 'Basic',
         description: '',
         components: [
           {
@@ -607,6 +620,881 @@ const ComponentsData: ComponentList[] = [
           {
             component: <Switch color="secondary" />,
             codeExample: '<Switch color="secondary" />',
+          },
+        ],
+      },
+      {
+        title: 'With label',
+        description: '',
+        components: [
+          {
+            component: (
+              <FormControlLabel control={<Switch />} label="Default" />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch />} label="Default" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch color="primary" />}
+                label="Primary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch color="primary" />} label="Primary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch color="secondary" />}
+                label="Secondary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch color="secondary" />} label="Secondary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch color="secondary" disabled />}
+                label="Secondary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch color="secondary" disabled />} label="Disabled" />',
+          },
+        ],
+      },
+      {
+        title: 'Sizes',
+        description: '',
+        components: [
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch size="small" />}
+                label="Small"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch size="small" />} label="Small" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch color="primary" size="medium" />}
+                label="Medium"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch color="primary" size="medium" />} label="Medium" />',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Button Group',
+    description: 'This can be used to group related buttons',
+    sub: [
+      {
+        title: 'Basic',
+        description: '',
+        components: [
+          {
+            component: (
+              <ButtonGroup color="primary">
+                <Button>Default 1</Button>
+                <Button>Default 2</Button>
+                <Button>Default 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup color="primary">\n\t' +
+              '<Button>Default 1</Button>\n\t<Button>Default 2</Button>\n\t<Button>Default 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+          {
+            component: (
+              <ButtonGroup variant="contained" color="primary">
+                <Button>Contained 1</Button>
+                <Button>Contained 2</Button>
+                <Button>Contained 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup variant="contained" color="primary">\n\t' +
+              '<Button>Contained 1</Button>\n\t' +
+              '<Button>Contained 2</Button>\n\t' +
+              '<Button>Contained 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+          {
+            component: (
+              <ButtonGroup variant="text" color="primary">
+                <Button>Text 1</Button>
+                <Button>Text 2</Button>
+                <Button>Text 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup variant="text" color="primary">\n\t' +
+              '<Button>Text 1</Button>\n\t' +
+              '<Button>Text 2</Button>\n\t' +
+              '<Button>Text 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+        ],
+      },
+      {
+        title: 'Sizes and Colors',
+        description: '',
+        components: [
+          {
+            component: (
+              <ButtonGroup size="small">
+                <Button>Small 1</Button>
+                <Button>Small 2</Button>
+                <Button>Small 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup size="small">\n\t' +
+              '<Button>Small 1</Button>\n\t' +
+              '<Button>Small 2</Button>\n\t' +
+              '<Button>Small 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+          {
+            component: (
+              <ButtonGroup color="secondary">
+                <Button>Default 1</Button>
+                <Button>Default 2</Button>
+                <Button>Default 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup color="secondary">\n\t' +
+              '<Button>Default 1</Button>\n\t' +
+              '<Button>Default 2</Button>\n\t' +
+              '<Button>Default 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+          {
+            component: (
+              <ButtonGroup size="large" color="primary">
+                <Button>Large 1</Button>
+                <Button>Large 2</Button>
+                <Button>Large 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup size="large" color="primary">\n\t' +
+              '<Button>Large 1</Button>\n\t' +
+              '<Button>Large 2</Button>\n\t' +
+              '<Button>Large 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+        ],
+      },
+      {
+        title: 'Vertical group',
+        description: '',
+        components: [
+          {
+            component: (
+              <ButtonGroup orientation="vertical" color="primary">
+                <Button>Default 1</Button>
+                <Button>Default 2</Button>
+                <Button>Default 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup orientation="vertical" color="primary">\n\t' +
+              '<Button>Default 1</Button>\n\t' +
+              '<Button>Default 2</Button>\n\t' +
+              '<Button>Default 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+          {
+            component: (
+              <ButtonGroup
+                orientation="vertical"
+                color="primary"
+                variant="contained"
+              >
+                <Button>Contained 1</Button>
+                <Button>Contained 2</Button>
+                <Button>Contained 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup orientation="vertical" color="primary" variant="contained">\n\t' +
+              '<Button>Contained 1</Button>\n\t' +
+              '<Button>Contained 2</Button>\n\t' +
+              '<Button>Contained 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+          {
+            component: (
+              <ButtonGroup
+                orientation="vertical"
+                color="primary"
+                variant="text"
+              >
+                <Button>Text 1</Button>
+                <Button>Text 2</Button>
+                <Button>Text 3</Button>
+              </ButtonGroup>
+            ),
+            codeExample:
+              '<ButtonGroup orientation="vertical" color="primary" variant="text">\n\t' +
+              '<Button>Text 1</Button>\n\t' +
+              '<Button>Text 2</Button>\n\t' +
+              '<Button>Text 3</Button>\n' +
+              '</ButtonGroup>',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Checkbox',
+    description: 'This allows you to select one or more items from a set.',
+    sub: [
+      {
+        title: 'Basic',
+        description: '',
+        components: [
+          {
+            component: <Checkbox />,
+            codeExample: '<Checkbox />',
+          },
+          {
+            component: <Checkbox defaultChecked />,
+            codeExample: '<Checkbox defaultChecked />',
+          },
+          {
+            component: <Checkbox defaultChecked color="primary" />,
+            codeExample: '<Checkbox defaultChecked color="primary" />',
+          },
+          {
+            component: <Checkbox disabled />,
+            codeExample: '<Checkbox disabled />',
+          },
+          {
+            component: <Checkbox disabled defaultChecked />,
+            codeExample: '<Checkbox disabled defaultChecked />',
+          },
+          {
+            component: <Checkbox defaultChecked indeterminate />,
+            codeExample: '<Checkbox defaultChecked indeterminate />',
+          },
+          {
+            component: <Checkbox defaultChecked color="default" />,
+            codeExample: '<Checkbox defaultChecked color="default" />',
+          },
+        ],
+      },
+      {
+        title: 'With label',
+        description: '',
+        components: [
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked name="checkedA" />}
+                label="This is label"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked name="checkedA" />} label="This is label" />',
+          },
+        ],
+      },
+      {
+        title: 'Label placement',
+        description: '',
+        components: [
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="top"
+                control={<Checkbox defaultChecked />}
+                label="Top"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="top" control={<Checkbox defaultChecked />} label="Top" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="bottom"
+                control={<Checkbox defaultChecked />}
+                label="Bottom"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="bottom" control={<Checkbox defaultChecked />} label="Bottom" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="start"
+                control={<Checkbox defaultChecked />}
+                label="Start"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="start" control={<Checkbox defaultChecked />} label="Start" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="end"
+                control={<Checkbox defaultChecked />}
+                label="End (default)"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="end" control={<Checkbox defaultChecked />} label="End" />',
+          },
+        ],
+      },
+      {
+        title: 'Sizes',
+        description: '',
+        components: [
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked size="small" />}
+                label="Small"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked size="small" />} label="Small" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label="Default"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked />} label="Default" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked size="medium" />}
+                label="Medium"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked size="medium" />} label="Medium" />',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Fab',
+    description: '',
+    sub: [
+      {
+        title: 'Basic',
+        description: '',
+        components: [
+          {
+            component: (
+              <Fab color="primary">
+                <Plus color="white" />
+              </Fab>
+            ),
+            codeExample:
+              '<Fab color="primary">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab color="secondary">
+                <Plus color="white" />
+              </Fab>
+            ),
+            codeExample:
+              '<Fab color="secondary">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab variant="extended">
+                <Plus color="white" />
+                Extended
+              </Fab>
+            ),
+            codeExample:
+              '<Fab variant="extended">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab disabled>
+                <Plus color="white" />
+              </Fab>
+            ),
+            codeExample: '<Fab disabled>\n\t<Plus color="white" />\n</Fab>',
+          },
+        ],
+      },
+      {
+        title: 'Sizes',
+        description: '',
+        components: [
+          {
+            component: (
+              <Fab color="primary" size="small">
+                <Plus color="white" />
+              </Fab>
+            ),
+            codeExample:
+              '<Fab color="primary" size="small">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab color="primary" size="medium">
+                <Plus color="white" />
+              </Fab>
+            ),
+            codeExample:
+              '<Fab color="primary" size="medium">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab color="primary" size="large">
+                <Plus color="white" />
+              </Fab>
+            ),
+            codeExample:
+              '<Fab variant="extended" size="large">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab color="primary" size="small" variant="extended">
+                <Plus color="white" />
+                Small
+              </Fab>
+            ),
+            codeExample:
+              '<Fab color="primary" size="small" variant="extended">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab color="primary" size="medium" variant="extended">
+                <Plus color="white" />
+                Medium
+              </Fab>
+            ),
+            codeExample:
+              '<Fab color="primary" size="medium" variant="extended">\n\t<Plus color="white" />\n</Fab>',
+          },
+          {
+            component: (
+              <Fab color="primary" size="large" variant="extended">
+                <Plus color="white" />
+                Large
+              </Fab>
+            ),
+            codeExample:
+              '<Fab variant="extended" size="large" variant="extended">\n\t<Plus color="white" />\n</Fab>',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Radio',
+    description: 'This allows you to select only one item from a set.',
+    sub: [
+      {
+        title: 'Basic',
+        description: '',
+        components: [
+          {
+            component: <Radio />,
+            codeExample: '<Radio />',
+          },
+          {
+            component: <Radio defaultChecked color="default" />,
+            codeExample: '<Radio defaultChecked color="default" />',
+          },
+          {
+            component: <Radio defaultChecked color="primary" />,
+            codeExample: '<Radio defaultChecked color="primary" />',
+          },
+          {
+            component: <Radio defaultChecked color="secondary" />,
+            codeExample: '<Radio defaultChecked color="secondary" />',
+          },
+        ],
+      },
+      {
+        title: 'With label',
+        description: '',
+        components: [
+          {
+            component: (
+              <FormControlLabel
+                control={<Radio defaultChecked />}
+                label="This is label"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Radio defaultChecked />} label="This is label" />',
+          },
+        ],
+      },
+      {
+        title: 'Label placement',
+        description: '',
+        components: [
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="top"
+                control={<Radio defaultChecked />}
+                label="Top"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="top" control={<Radio defaultChecked />} label="Top" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="bottom"
+                control={<Radio defaultChecked />}
+                label="Bottom"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="bottom" control={<Radio defaultChecked />} label="Bottom" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="start"
+                control={<Radio defaultChecked />}
+                label="Start"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="start" control={<Radio defaultChecked />} label="Start" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                labelPlacement="end"
+                control={<Radio defaultChecked />}
+                label="End (default)"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel labelPlacement="end" control={<Radio defaultChecked />} label="End" />',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Text Field',
+    description: 'This allows you to input / edit text.',
+    sub: [
+      {
+        title: 'Basic',
+        description: '',
+        components: [
+          {
+            component: <TextField label="Default" />,
+            codeExample: '<TextField label="Default" />',
+          },
+          {
+            component: <TextField variant="filled" label="Filled" />,
+            codeExample: '<TextField variant="filled" label="Filled" />',
+          },
+          {
+            component: <TextField variant="outlined" label="Outlined" />,
+            codeExample: '<TextField variant="outlined" label="Outlined" />',
+          },
+        ],
+      },
+      {
+        title: 'Disabled',
+        description: '',
+        components: [
+          {
+            component: <TextField label="Default" disabled />,
+            codeExample: '<TextField label="Default" disabled />',
+          },
+          {
+            component: <TextField variant="filled" label="Filled" disabled />,
+            codeExample:
+              '<TextField variant="filled" label="Filled" disabled />',
+          },
+          {
+            component: (
+              <TextField variant="outlined" label="Outlined" disabled />
+            ),
+            codeExample:
+              '<TextField variant="outlined" label="Outlined" disabled />',
+          },
+        ],
+      },
+      {
+        title: 'With icon',
+        description: '',
+        components: [
+          {
+            component: (
+              <TextField
+                label="Pre icon"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <User />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ),
+            codeExample:
+              '<TextField label="Pre icon"' +
+              'InputProps={{' +
+              'startAdornment: (' +
+              '<InputAdornment position="start">' +
+              '<User />' +
+              '</InputAdornment>' +
+              '),' +
+              '}}' +
+              '/>',
+          },
+          {
+            component: (
+              <TextField
+                label="Post icon"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <User />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ),
+            codeExample:
+              '<TextField label="Post icon"' +
+              'InputProps={{' +
+              'endAdornment: (' +
+              '<InputAdornment position="end">' +
+              '<User />' +
+              '</InputAdornment>' +
+              '),' +
+              '}}' +
+              '/>',
+          },
+          {
+            component: (
+              <TextField
+                label="Pre icon"
+                variant="filled"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <User />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ),
+            codeExample:
+              '<TextField label="Pre icon" variant="filled"' +
+              'InputProps={{' +
+              'startAdornment: (' +
+              '<InputAdornment position="start">' +
+              '<User />' +
+              '</InputAdornment>' +
+              '),' +
+              '}}' +
+              '/>',
+          },
+          {
+            component: (
+              <TextField
+                label="Post icon"
+                variant="filled"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <User />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ),
+            codeExample:
+              '<TextField label="Post icon" variant="filled"' +
+              'InputProps={{' +
+              'endAdornment: (' +
+              '<InputAdornment position="end">' +
+              '<User />' +
+              '</InputAdornment>' +
+              '),' +
+              '}}' +
+              '/>',
+          },
+          {
+            component: (
+              <TextField
+                label="Pre icon"
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <User />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ),
+            codeExample:
+              '<TextField label="Pre icon" variant="outlined"' +
+              'InputProps={{' +
+              'startAdornment: (' +
+              '<InputAdornment position="start">' +
+              '<User />' +
+              '</InputAdornment>' +
+              '),' +
+              '}}' +
+              '/>',
+          },
+          {
+            component: (
+              <TextField
+                label="Post icon"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <User />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ),
+            codeExample:
+              '<TextField label="Post icon" variant="outlined"' +
+              'InputProps={{' +
+              'endAdornment: (' +
+              '<InputAdornment position="end">' +
+              '<User />' +
+              '</InputAdornment>' +
+              '),' +
+              '}}' +
+              '/>',
+          },
+        ],
+      },
+      {
+        title: 'With color',
+        description: '',
+        components: [
+          {
+            component: <TextField label="Default" />,
+            codeExample: '<TextField label="Default" />',
+          },
+          {
+            component: <TextField label="Primary" color="primary" />,
+            codeExample: '<TextField label="Primary" color="primary" />',
+          },
+          {
+            component: <TextField label="Secondary" color="secondary" />,
+            codeExample: '<TextField label="Secondary" color="secondary" />',
+          },
+          {
+            component: <TextField label="Default" variant="filled" />,
+            codeExample: '<TextField label="Default" variant="filled" />',
+          },
+          {
+            component: (
+              <TextField label="Primary" color="primary" variant="filled" />
+            ),
+            codeExample:
+              '<TextField label="Primary" color="primary" variant="filled" />',
+          },
+          {
+            component: (
+              <TextField label="Secondary" color="secondary" variant="filled" />
+            ),
+            codeExample:
+              '<TextField label="Secondary" color="secondary" variant="filled" />',
+          },
+          {
+            component: <TextField label="Default" variant="outlined" />,
+            codeExample: '<TextField label="Default" variant="outlined" />',
+          },
+          {
+            component: (
+              <TextField label="Primary" color="primary" variant="outlined" />
+            ),
+            codeExample:
+              '<TextField label="Primary" color="primary" variant="outlined" />',
+          },
+          {
+            component: (
+              <TextField
+                label="Secondary"
+                color="secondary"
+                variant="outlined"
+              />
+            ),
+            codeExample:
+              '<TextField label="Secondary" color="secondary" variant="outlined" />',
+          },
+        ],
+      },
+      {
+        title: 'Sizes',
+        description: '',
+        components: [
+          {
+            component: <TextField label="Small" size="small" />,
+            codeExample: '<TextField label="Small" size="small" />',
+          },
+          {
+            component: (
+              <TextField label="Small" size="small" variant="filled" />
+            ),
+            codeExample:
+              '<TextField label="Small" size="small" variant="filled" />',
+          },
+          {
+            component: (
+              <TextField label="Small" size="small" variant="outlined" />
+            ),
+            codeExample:
+              '<TextField label="Small" size="small" variant="outlined" />',
+          },
+          {
+            component: <TextField label="Default" />,
+            codeExample: '<TextField label="Small" />',
+          },
+          {
+            component: <TextField label="Default" variant="filled" />,
+            codeExample: '<TextField label="Default" variant="filled" />',
+          },
+          {
+            component: <TextField label="Default" variant="outlined" />,
+            codeExample: '<TextField label="Default" variant="outlined" />',
           },
         ],
       },

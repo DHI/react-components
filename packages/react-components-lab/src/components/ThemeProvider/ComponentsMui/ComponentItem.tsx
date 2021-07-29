@@ -73,14 +73,15 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
               </Box>
               <Collapse in={showCode[c.title]}>
                 <Syntax
-                  code={`import { ${
-                    item.title
-                  } } from '@material-ui/core'\n\n${beautifyCode(c)}`}
+                  code={`import { ${item.title.replace(
+                    ' ',
+                    ''
+                  )} } from '@material-ui/core'\n\n${beautifyCode(c)}`}
                 />
               </Collapse>
             </>
           )}
-          {isLastItem && <div style={{ marginBottom: 320 }} />}
+          {/* {isLastItem && <div style={{ marginBottom: 320 }} />} */}
         </div>
       ))}
     </Box>
