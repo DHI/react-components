@@ -638,31 +638,41 @@ const ComponentsData: ComponentList[] = [
             component: (
               <FormControlLabel
                 control={<Switch color="primary" />}
-                label="Primary"
+                label="Color primary"
               />
             ),
             codeExample:
-              '<FormControlLabel control={<Switch color="primary" />} label="Primary" />',
+              '<FormControlLabel control={<Switch color="primary" />} label="Color primary" />',
           },
           {
             component: (
               <FormControlLabel
                 control={<Switch color="secondary" />}
-                label="Secondary"
+                label="Color secondary"
               />
             ),
             codeExample:
-              '<FormControlLabel control={<Switch color="secondary" />} label="Secondary" />',
+              '<FormControlLabel control={<Switch color="secondary" />} label="Color secondary" />',
           },
           {
             component: (
               <FormControlLabel
-                control={<Switch color="secondary" disabled />}
-                label="Secondary"
+                control={<Switch color="default" />}
+                label="Color default"
               />
             ),
             codeExample:
-              '<FormControlLabel control={<Switch color="secondary" disabled />} label="Disabled" />',
+              '<FormControlLabel control={<Switch color="default" />} label="Color default" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch disabled />}
+                label="Disabled"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch disabled />} label="Disabled" />',
           },
         ],
       },
@@ -904,12 +914,52 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <FormControlLabel
-                control={<Checkbox defaultChecked name="checkedA" />}
-                label="This is label"
+                control={<Checkbox defaultChecked />}
+                label="Default"
               />
             ),
             codeExample:
-              '<FormControlLabel control={<Checkbox defaultChecked name="checkedA" />} label="This is label" />',
+              '<FormControlLabel control={<Checkbox defaultChecked />} label="Default" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked color="primary" />}
+                label="Color primary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked color="primary" />} label="Color primary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked color="secondary" />}
+                label="Color secondary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked color="secondary" />} label="Color secondary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked color="default" />}
+                label="Color default"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked color="default" />} label="Color default" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Checkbox defaultChecked disabled />}
+                label="Disabled"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Checkbox defaultChecked disabled />} label="Disabled" />',
           },
         ],
       },
@@ -1146,11 +1196,51 @@ const ComponentsData: ComponentList[] = [
             component: (
               <FormControlLabel
                 control={<Radio defaultChecked />}
-                label="This is label"
+                label="Default"
               />
             ),
             codeExample:
-              '<FormControlLabel control={<Radio defaultChecked />} label="This is label" />',
+              '<FormControlLabel control={<Radio defaultChecked />} label="Default" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Radio defaultChecked color="primary" />}
+                label="Color primary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Radio defaultChecked color="primary" />} label="Primary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Radio defaultChecked color="secondary" />}
+                label="Color secondary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Radio defaultChecked color="secondary" />} label="Secondary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Radio defaultChecked color="default" />}
+                label="Color default"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Radio defaultChecked color="default" />} label="Color default" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Radio defaultChecked disabled />}
+                label="Disabled"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Radio defaultChecked disabled />} label="Disabled" />',
           },
         ],
       },
