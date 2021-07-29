@@ -1073,6 +1073,11 @@
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
   integrity sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==
 
+"@dhi/icons@^1.1.0":
+  version "1.1.0"
+  resolved "https://npm.pkg.github.com/download/@dhi/icons/1.1.0/35b25d31a68e181069b991fe4eb85c1bb4b084596852bec4b21173085eaa3eee#f92833ff0c1e748d99db3f519063a6f3bca0e9d1"
+  integrity sha512-ONmP5HkZQaL7FRilGDUWGOP6r2dQcrvUUXgvh4RNw9cDQGRnDwlVlCshemgdSc9vQtCSriV+AOmWgfgumPj/nA==
+
 "@emotion/cache@^10.0.27", "@emotion/cache@^10.0.9":
   version "10.0.29"
   resolved "https://registry.yarnpkg.com/@emotion/cache/-/cache-10.0.29.tgz#87e7e64f412c060102d589fe7c6dc042e6f9d1e0"

@@ -28,14 +28,20 @@ jobs:
           node-version: '14'
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@dhi'
-          
-      - name: Install dependencies lab
-        run: cd packages/react-components-lab && yarn install --frozen-lockfile
-        env:
-          CI: true
+      
+      - name: Add GITHUB_TOKEN to .npmrc
+        run: |
+          cd packages/react-components-lab
+          echo "@dhi:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
       
       - name: Install dependencies repo
         run: yarn install --frozen-lockfile
+        env:
+          CI: true
+
+      - name: Install dependencies lab
+        run: cd packages/react-components-lab && yarn install --frozen-lockfile
         env:
           CI: true
       
@@ -43,15 +49,9 @@ jobs:
         run: cd packages/react-components-lab && yarn lint
         env:
           CI: true
-          
-      - name: Semantic release
-        run: yarn run multi-semantic-release --ignore-packages=packages/icons/**
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Build And Deploy
+        if: (github.ref != 'master' && ${{ failure() }}) || ${{ success() }}
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -65,6 +65,13 @@ jobs:
           output_location: "storybook-static" # Built app content directory - optional
           app_build_command: "yarn build-storybook"
           ###### End of Repository/Build Configurations ######
+          
+      - name: Semantic release
+        run: yarn run multi-semantic-release --ignore-packages=packages/icons/**
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
