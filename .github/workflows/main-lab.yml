@@ -34,14 +34,14 @@ jobs:
           cd packages/react-components-lab
           echo "@dhi:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
-          
-      - name: Install dependencies lab
-        run: cd packages/react-components-lab && yarn install --frozen-lockfile
-        env:
-          CI: true
       
       - name: Install dependencies repo
         run: yarn install --frozen-lockfile
+        env:
+          CI: true
+
+      - name: Install dependencies lab
+        run: cd packages/react-components-lab && yarn install --frozen-lockfile
         env:
           CI: true
       
