@@ -16,6 +16,7 @@ import {
   SnackbarContextValue,
   SnackbarProviderProps,
   SnackbarProps,
+  DEFAULT_SEVERITY,
   DEFAULT_TRANSITION,
   DEFAULT_DURATION,
 } from './types';
@@ -30,11 +31,11 @@ interface SnackbarState {
 
 const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
   children,
-  autoHideDuration,
-  transitionComponent,
-  severity,
-  action,
-  onActionClick,
+  autoHideDuration = DEFAULT_DURATION,
+  transitionComponent = DEFAULT_TRANSITION,
+  severity = DEFAULT_SEVERITY,
+  action = null,
+  onActionClick = null,
 }: SnackbarProviderProps) => {
   const classes = useStyles();
 
@@ -45,8 +46,8 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
   });
 
   const existingSnackbarProps = {
-    autoHideDuration: autoHideDuration || DEFAULT_DURATION,
-    TransitionComponent: transitionComponent || DEFAULT_TRANSITION,
+    autoHideDuration,
+    transitionComponent,
     severity,
     action,
   };
@@ -56,7 +57,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
 
   const newTransitionComponent =
     state.options?.transitionComponent ||
-    existingSnackbarProps.TransitionComponent;
+    existingSnackbarProps.transitionComponent;
 
   const showMessage = (message: string, options: SnackbarProps) => {
     setState({ open: true, message, options });
