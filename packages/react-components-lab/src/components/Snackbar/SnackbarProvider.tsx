@@ -150,7 +150,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
           className: classes[severity],
         }}
         action={
-          action != null && (
+          action && (
             <Button
               variant="outlined"
               size="small"
