@@ -16,9 +16,8 @@ component and `useSnackbar` hooks.
 
 ## How to use
 
-1. Wrap your main app inside `ThemeProvider` and `SnackbarProvider`.
-This is minimum configuration with no `Props` values provided hence the `SnackbarProvider` will use default values.
-This default values can be overridden through `useSnackbar` hooks.
+1. Wrap your main app within `ThemeProvider` and `SnackbarProvider`. If you just passing nothing to
+`SnackbarProvider` props, then it will use default values and this can be overridden through `useSnackbar` hooks.
 Just info, passing `Props` values at this level means the values will affect globally.
 
 ### Component with no passing Props values
