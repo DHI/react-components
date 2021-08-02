@@ -106,7 +106,6 @@ const Template: Story<IProps> = (args) => {
                   {...{ ref: childRefs[i].element }}
                   key={item.title}
                   item={item}
-                  isLastItem={i === dataList?.length - 1}
                 />
               ))}
           </Box>
