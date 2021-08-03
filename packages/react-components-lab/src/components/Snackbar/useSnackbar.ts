@@ -5,6 +5,6 @@ import { SnackbarContextValue } from './types';
 // #endregion
 
 const useSnackbar = (): SnackbarContextValue =>
-  React.useContext(SnackbarContext);
+  useContext(SnackbarContext);
 
 export default useSnackbar;
