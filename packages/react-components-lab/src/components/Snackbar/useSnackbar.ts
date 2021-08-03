@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // #region Local imports
 import SnackbarContext from './SnackbarContext';
 import { SnackbarContextValue } from './types';
