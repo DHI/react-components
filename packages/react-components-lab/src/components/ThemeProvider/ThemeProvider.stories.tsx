@@ -49,12 +49,12 @@ const Template: Story<IProps> = (args) => {
   useEffect(() => {
     // Separate pinned and unpinned item(s) and call some sort method
     // this is useful to separate between non component and component elements.
-    const pinnedData = ComponentsData.filter(
-      (item) => item.pinned
-    ).sort((a, b) => (a.title > b.title ? 1 : -1));
-    const nonPinnedData = ComponentsData.filter(
-      (item) => !item.pinned
-    ).sort((a, b) => (a.title > b.title ? 1 : -1));
+    const pinnedData = ComponentsData.filter((item) => item.pinned).sort(
+      (a, b) => (a.title > b.title ? 1 : -1)
+    );
+    const nonPinnedData = ComponentsData.filter((item) => !item.pinned).sort(
+      (a, b) => (a.title > b.title ? 1 : -1)
+    );
     const newDataList = pinnedData.concat(nonPinnedData);
     const newChildRefState: ChildRefState[] = newDataList.map(
       (item, i): ChildRefState => ({
@@ -106,7 +106,6 @@ const Template: Story<IProps> = (args) => {
                   {...{ ref: childRefs[i].element }}
                   key={item.title}
                   item={item}
-                  isLastItem={i === dataList?.length - 1}
                 />
               ))}
           </Box>

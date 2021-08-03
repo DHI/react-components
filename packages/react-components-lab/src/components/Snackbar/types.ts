@@ -41,6 +41,7 @@ export type {
   SnackbarProps,
 };
 
+export const DEFAULT_SEVERITY: SeverityType = 'normal';
 export const DEFAULT_TRANSITION: TransitionType = 'slide';
 export const DEFAULT_DURATION = 3000;
 
