@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.2.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.1...@dhi/react-components-lab@1.2.2) (2021-08-03)
+
+
+### Bug Fixes
+
+* **Loader:** Remove required style prop ([61b8a67](https://github.com/DHI/react-components/commit/61b8a678f1256777aeb51cc33b3fdb9b10e4d6e6))
+
 ## @dhi/react-components-lab [1.2.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.0...@dhi/react-components-lab@1.2.1) (2021-07-22)
 
 
