@@ -6,7 +6,7 @@ import { LoaderProps } from './types';
 const Loader: FC<LoaderProps> = ({
   isLoading = false,
   variant = 'blocking',
-  style,
+  style = {},
 }) => {
   const classes = useStyles();
   if (isLoading) {
