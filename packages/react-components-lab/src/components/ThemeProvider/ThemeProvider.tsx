@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import createTheme, {
+import createMuiTheme, {
   ThemeOptions,
-} from '@material-ui/core/styles/createTheme';
+} from '@material-ui/core/styles/createMuiTheme';
 import assignIn from 'lodash.assignin';
 
 // #region Local imports
@@ -15,7 +15,7 @@ const ThemeProvider: React.FC<Types.IProps> = ({ overrides, children }) => {
   const theme = useMemo(() => {
     const themeWithOverrides = assignIn({ ...mikeSharedTheme }, overrides);
 
-    return createTheme(themeWithOverrides as ThemeOptions);
+    return createMuiTheme(themeWithOverrides as ThemeOptions);
   }, [overrides]);
 
   return (
