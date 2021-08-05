@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.2.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.2...@dhi/react-components-lab@1.2.3) (2021-08-05)
+
+
+### Bug Fixes
+
+* **ThemeProvider:** Update material-ui to latest ([5ce5b85](https://github.com/DHI/react-components/commit/5ce5b85f2a264b2725802be88becd0a1a5a8bc4f))
+
 ## @dhi/react-components-lab [1.2.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.1...@dhi/react-components-lab@1.2.2) (2021-08-03)
 
 
