@@ -28,7 +28,7 @@ Our library is showcased on the [Lab Storybook](https://storybooklab.z16.web.cor
 Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
 1. Visit Github.com &rarr; Your Profile (top right) &rarr; Settings.
-2. Develop settings (bottom of sidebar)
+2. Develop settings (bottom of sidebar).
 3. Personal access tokens
 4. "Generate new token"
 5. Note: `GitHub Packages`
