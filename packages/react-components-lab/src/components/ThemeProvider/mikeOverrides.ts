@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { Overrides } from '@material-ui/core/styles/overrides';
 
 // #region Local imports
@@ -7,7 +7,7 @@ import { SPACING, FONT_SIZE, FONT_FAMILY } from './types';
 import mikePalette from './mikePallete';
 // #endregion
 
-const defaultTheme = createMuiTheme();
+const defaultTheme = createTheme();
 
 const mikeOverrides: Overrides = {
   MuiCssBaseline: {
