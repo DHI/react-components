@@ -86,7 +86,8 @@ const ScenarioList = (props: ScenarioListProps) => {
   };
 
   const buildDateArea = (date: string) => {
-    const isoDate = timeZone ? utcToTz(date, timeZone) : parseISO(date);
+    const isoDate = parseISO(date);
+
     const dateObject = {
       day: format(isoDate, 'dd'),
       dayName: format(isoDate, 'EEE'),
