@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.2.4](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.3...@dhi/react-components-lab@1.2.4) (2021-08-09)
+
+
+### Bug Fixes
+
+* **theming:** Update mui to latest version ([bb689b4](https://github.com/DHI/react-components/commit/bb689b4e155102a4f36173f3f10938bb16805633))
+
 ## @dhi/react-components-lab [1.2.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.2...@dhi/react-components-lab@1.2.3) (2021-08-05)
 
 
