@@ -1,5 +1,5 @@
 import { JobParameters } from '../../api/types';
-import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
+import { DescriptionField, MenuItem, QueryDates, Scenario, Status, Routes } from '../types';
 
 interface ScenariosProps {
   /**
@@ -129,6 +129,10 @@ interface ScenariosProps {
    * The scenario menu options
    */
   menuItems: MenuItem[];
+  /**
+   * List of availables routes
+   */
+  routes: Routes[];
   /**
    * The scenario menu function handlers
    */

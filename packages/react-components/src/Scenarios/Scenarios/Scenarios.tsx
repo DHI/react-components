@@ -38,6 +38,7 @@ const Scenarios = (props: ScenariosProps) => {
     descriptionFields,
     extraFields,
     menuItems,
+    routes,
     selectedScenarioId,
     showDate,
     showHour,
@@ -552,6 +553,7 @@ const Scenarios = (props: ScenariosProps) => {
           descriptionFields={descriptionFields}
           extraFields={extraFields}
           menuItems={menuItems}
+          routes={routes}
           scenarios={scenarios as any}
           selectedScenarioId={selectedScenarioId}
           onScenarioSelected={onScenarioSelectedHandler}

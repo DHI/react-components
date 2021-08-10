@@ -1,9 +1,10 @@
-import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
 import ScenarioItemOLDProps from './types';
+import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import useStyles from './useStyles';
 
 const ScenarioItem = (props: ScenarioItemOLDProps) => {
@@ -25,59 +26,53 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
     timeZone,
   } = props;
 
-  const scenarioHour = date && showHour && (
-    <Grid item className={classes.scenarioHour}>
-      <Typography component="div" className={classes.hourText}>
-        {format(timeZone ? utcToTz(date, timeZone) : parseISO(date), 'HH:mm')}
-      </Typography>
-    </Grid>
-  );
+  const newIcon = () => {
+    if (status.Icon) {
+      const { Icon } = status;
 
-  const scenarioStatus = showStatus && (
-    <Grid item className={classes.status}>
-      <div className={classes.verticalLine} />
-      <div
-        style={{
-          backgroundColor: isSelected || hover ? '#e8e8e8' : 'white',
-          marginLeft: '-8px',
-        }}
-      >
-        <div>
-          <Tooltip title={status.message ? status.message : ''}>
-            <CircularProgress
-              style={{
-                color: status.color,
-                display: 'grid',
-              }}
-              variant={status.progress ? 'indeterminate' : 'determinate'}
-              value={status.progress ? status.progress : 100}
-              size={16}
-              thickness={status.progress ? 7 : 21}
-            />
-          </Tooltip>
+      return (
+        <Typography className={classes.icon}>
+          <Icon />
+          <span>{status.name}</span>
+        </Typography>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const showSpinner = () => {
+    return (
+      <Grid item className={classes.status}>
+        <div
+          style={{
+            backgroundColor: isSelected || hover ? '#e8e8e8' : 'white',
+          }}
+        >
+          <div>
+            <Tooltip title={status.message ? status.message : ''}>
+              <CircularProgress
+                style={{
+                  color: status.color,
+                  display: 'grid',
+                }}
+                variant="indeterminate"
+                value={status.progress || 0}
+                size={16}
+                thickness={7}
+              />
+            </Tooltip>
+          </div>
+          <Typography component="span" className={classes.scenarioProgress}>
+            {status.progress ? `${status.progress}%` : null}
+          </Typography>
         </div>
-        <Typography component="span" className={classes.scenarioProgress}>
-          {status.progress ? `${status.progress}%` : null}
-        </Typography>
-      </div>
-    </Grid>
-  );
-
-  const scenarioDetails = (
-    <Grid item className={classes.scenarioDetails}>
-      <Typography component="span" color="primary" className={classes.scenarioTitle}>
-        {name}
-      </Typography>
-      {description.map((item: { name: string; value: string }) => (
-        <Typography key={item.name} component="span" className={classes.textFields}>
-          {`${item.name}: ${item.value}`}
-        </Typography>
-      ))}
-    </Grid>
-  );
+      </Grid>
+    );
+  };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ display: 'flex' }}>
       <div
         className={classes.scenario}
         onMouseOver={() => setHover(true)}
@@ -86,18 +81,49 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
         onBlur={() => undefined}
         onClick={() => onClick(scenario)}
       >
-        {scenarioHour}
-        {scenarioStatus}
-        {scenarioDetails}
+        {date && showHour && (
+          <Grid item className={classes.scenarioHour}>
+            <Typography component="div" className={classes.hourText}>
+              {format(timeZone ? utcToTz(date, timeZone) : parseISO(date), 'HH:mm')}
+            </Typography>
+            {status.progress ? showStatus && showSpinner() : newIcon()}
+          </Grid>
+        )}
+        <div className={classes.verticalLine} />
+        <Grid item className={classes.scenarioDetails}>
+          <Typography component="span" color="primary" className={classes.scenarioTitle}>
+            {name}
+          </Typography>
+          {description.map((item: { name: string; value: string }) => (
+            <Typography key={item.name} component="span" className={classes.textFields}>
+              {`${item.name}: ${item.value}`}
+            </Typography>
+          ))}
+        </Grid>
       </div>
-      {showMenu && (
-        <ScenarioMenu
-          onContextMenuClick={onContextMenuClick}
-          onClick={() => onClick(scenario)}
-          menu={menu}
-          scenario={scenario}
-        />
-      )}
+      <div className={classes.actions}>
+        {showMenu && (
+          <ScenarioMenu
+            onContextMenuClick={onContextMenuClick}
+            onClick={() => onClick(scenario)}
+            menu={menu}
+            scenario={scenario}
+          />
+        )}
+
+        {menu.some((item) => item.id === 'operationalView') && (
+          <Button
+            style={{ color: '#00A4EC' }}
+            classes={{
+              label: classes.buttonLabel,
+            }}
+            endIcon={<ArrowForwardOutlinedIcon />}
+            onClick={() => )}
+          >
+            <span>Operational View</span>
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

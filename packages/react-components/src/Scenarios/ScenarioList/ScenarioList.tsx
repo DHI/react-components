@@ -16,6 +16,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     showHour,
     showDate,
     menuItems,
+    routes,
     status,
     descriptionFields,
     onContextMenuClick,
@@ -77,6 +78,8 @@ const ScenarioList = (props: ScenarioListProps) => {
               scenario={scenario}
               status={checkStatus(scenario.lastJob, status)}
               timeZone={timeZone}
+              onClick={() => onScenarioClick(scenario)}
+              routes={routes}
             />
           </div>
         );
@@ -90,14 +93,13 @@ const ScenarioList = (props: ScenarioListProps) => {
       dayName: format(isoDate, 'EEE'),
       monthName: format(isoDate, 'MMM'),
     };
-    const dateBlockwidth = showHour ? '97px' : '39px';
 
     return (
-      <div className={classes.dateBlock} style={{ width: dateBlockwidth }}>
+      <div className={classes.dateBlock}>
         <div className={classes.dateArea}>
-          <div className={classes.dayText}>{dateObject.day}</div>
-          <div className={classes.textFields}>{dateObject.monthName}</div>
-          <div className={classes.textFields}>{dateObject.dayName}</div>
+          <strong>
+            {`${dateObject.day} ${dateObject.monthName}`} <span>{` - ${dateObject.dayName}`} </span>
+          </strong>
         </div>
       </div>
     );
@@ -119,12 +121,9 @@ const ScenarioList = (props: ScenarioListProps) => {
       .sort()
       .reverse()
       .map((key) => (
-        <div key={key}>
+        <div key={key} className={classes.listBlock}>
           {showDate && key && buildDateArea(key)}
-          <div>
-            {key && buildScenariosList(groupedScenarios[key])}
-            <Divider variant="inset" className={classes.divider} />
-          </div>
+          <div>{key && buildScenariosList(groupedScenarios[key])}</div>
         </div>
       ));
   }
