@@ -1,30 +1,33 @@
 import { Button, CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
 import ScenarioItemOLDProps from './types';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import useStyles from './useStyles';
+import { Routes } from '../types';
 
-const ScenarioItem = (props: ScenarioItemOLDProps) => {
+const ScenarioItem = ({
+  showHour,
+  date,
+  showStatus,
+  isSelected,
+  status,
+  name,
+  description,
+  showMenu,
+  onClick,
+  onContextMenuClick,
+  menu,
+  scenario,
+  timeZone,
+  routes,
+}: ScenarioItemOLDProps) => {
+  console.log(routes);
   const [hover, setHover] = useState(false);
+  const [menuLinks] = useState<Routes[]>(routes);
   const classes = useStyles();
-  const {
-    showHour,
-    date,
-    showStatus,
-    isSelected,
-    status,
-    name,
-    description,
-    showMenu,
-    onClick,
-    onContextMenuClick,
-    menu,
-    scenario,
-    timeZone,
-  } = props;
 
   const newIcon = () => {
     if (status.Icon) {
@@ -111,14 +114,14 @@ const ScenarioItem = (props: ScenarioItemOLDProps) => {
           />
         )}
 
-        {menu.some((item) => item.id === 'operationalView') && (
+        {menuLinks.some((item) => item.id === 'operationalView') && (
           <Button
             style={{ color: '#00A4EC' }}
             classes={{
               label: classes.buttonLabel,
             }}
             endIcon={<ArrowForwardOutlinedIcon />}
-            onClick={() => )}
+            onClick={() => console.log('clicked')}
           >
             <span>Operational View</span>
           </Button>

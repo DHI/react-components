@@ -1,4 +1,4 @@
-import { MenuItem, Scenario, ScenarioOLD, Status } from '../types';
+import { MenuItem, Routes, Scenario, ScenarioOLD, Status } from '../types';
 
 // TODO: remove ScenarioItemProps
 interface ScenarioItemOLDProps {
@@ -59,6 +59,10 @@ interface ScenarioItemOLDProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * List of availables routes
+   */
+  routes: Routes[];
 }
 
 interface ScenarioItemProps {
