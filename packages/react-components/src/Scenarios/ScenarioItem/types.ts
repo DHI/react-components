@@ -62,7 +62,7 @@ interface ScenarioItemOLDProps {
   /**
    * List of availables routes
    */
-  routes: Routes[];
+  routes?: Routes[];
 }
 
 interface ScenarioItemProps {
