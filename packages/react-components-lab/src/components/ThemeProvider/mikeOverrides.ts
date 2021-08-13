@@ -441,8 +441,11 @@ const mikeOverrides: Overrides = {
       float: 'right',
     },
     sizeSmall: {
-      '& + $switchBase': {
-        transform: 'translateX(0px)',
+      '& $switchBase': {
+        transform: 'translateX(-2px)',
+        '&$checked': {
+          transform: 'translateX(18px)',
+        },
       },
     },
     switchBase: {
@@ -484,7 +487,6 @@ const mikeOverrides: Overrides = {
       opacity: 1,
       backgroundColor: mikePalette.lightGrey.main,
     },
-    checked: {},
   },
 };
 
