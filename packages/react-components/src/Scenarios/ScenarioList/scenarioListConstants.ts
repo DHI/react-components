@@ -1,3 +1,4 @@
+import { Status } from '../types';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -84,7 +85,7 @@ export const STATUS = [
     color: 'black',
     message: 'Unknown',
   },
-];
+] as Status;
 
 export const TRANSLATIONS = {
   executeConfirmation:

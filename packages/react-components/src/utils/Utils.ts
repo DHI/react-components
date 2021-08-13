@@ -206,7 +206,7 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
     result = {
       color: 'red',
       message: 'Unknown Status Field',
-      Icon: ReportProblemOutlinedIcon,
+      icon: ReportProblemOutlinedIcon,
       name: 'Error',
     };
   } else {

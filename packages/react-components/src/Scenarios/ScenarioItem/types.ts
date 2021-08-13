@@ -65,4 +65,4 @@ interface ScenarioItemProps {
   routes?: Routes[];
 }
 
-export { ScenarioItemProps };
+export default ScenarioItemProps;

@@ -2,7 +2,7 @@ import { CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
 import React, { useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
-import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
+import { ScenarioMenuOLD } from '../ScenarioMenuOLD/ScenarioMenu';
 import ScenarioItemOLDProps from './types';
 import useStyles from './useStyles';
 
@@ -91,7 +91,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
         {scenarioDetails}
       </div>
       {showMenu && (
-        <ScenarioMenu
+        <ScenarioMenuOLD
           onContextMenuClick={onContextMenuClick}
           onClick={() => onClick(scenario)}
           menu={menu}

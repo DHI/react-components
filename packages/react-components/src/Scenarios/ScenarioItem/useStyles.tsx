@@ -18,7 +18,7 @@ const styles = () => ({
   },
   hourText: {
     fontSize: 15,
-    padding: '0 10px 15px',
+    padding: '0 15px',
   },
   scenarioHour: {
     padding: '10px',

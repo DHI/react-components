@@ -3,10 +3,10 @@ import { format, parseISO } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
-import { ScenarioItemProps } from './types';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import useStyles from './useStyles';
 import { Routes } from '../types';
+import ScenarioItemProps from './types';
 
 const ScenarioItem = ({
   showHour,
@@ -28,13 +28,13 @@ const ScenarioItem = ({
   const [menuLinks] = useState<Routes[]>(routes);
   const classes = useStyles();
 
-  const newIcon = () => {
+  const rowIcon = () => {
     if (status.Icon) {
       const { Icon } = status;
 
       return (
         <Typography className={classes.icon}>
-          <Icon />
+          <Icon style={{ color: status.color }} />
           <span>{status.name}</span>
         </Typography>
       );
@@ -85,10 +85,14 @@ const ScenarioItem = ({
       >
         {date && showHour && (
           <Grid item className={classes.scenarioHour}>
-            <Typography component="div" className={classes.hourText}>
+            <Typography
+              component="div"
+              className={classes.hourText}
+              style={{ paddingBottom: status.Icon ? '10px' : '' }}
+            >
               {format(timeZone ? utcToTz(date, timeZone) : parseISO(date), 'HH:mm')}
             </Typography>
-            {status.progress ? showStatus && showSpinner() : newIcon()}
+            {status.progress ? showStatus && showSpinner() : rowIcon()}
           </Grid>
         )}
         <div className={classes.verticalLine} />

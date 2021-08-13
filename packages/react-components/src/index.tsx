@@ -17,6 +17,7 @@ export * from './Logs/LogList/LogList';
 export * from './Logs/LogList/types';
 export * from './Scenarios/ScenarioItem/ScenarioItem';
 export * from './Scenarios/ScenarioItem/types';
+export * from './Scenarios/ScenarioItemOLD/types';
 export * from './Scenarios/ScenarioListOLD/ScenarioList';
 export * from './Scenarios/ScenarioListOLD/types';
 export * from './Scenarios/ScenarioMenu/ScenarioMenu';
