@@ -90,7 +90,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     const isoDate = timeZone ? utcToTz(date, timeZone) : parseISO(date);
     const dateObject = {
       day: format(isoDate, 'dd'),
-      dayName: format(isoDate, 'EEE'),
+      dayName: format(isoDate, 'EEEE'),
       monthName: format(isoDate, 'MMM'),
     };
 
