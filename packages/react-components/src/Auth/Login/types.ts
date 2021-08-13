@@ -5,10 +5,6 @@ interface LoginProps {
   style?: any;
   /** Authentication server */
   host: string | string[];
-  /** Callback on successful login */
-  onSuccess?: (user: User, token: Token) => void;
-  /** Callback on failed login */
-  onError?: (error: string) => void;
   translations?: {
     /** Placeholder text for user edit box. */
     userNamePlaceholder?: string;
@@ -18,8 +14,10 @@ interface LoginProps {
     rememberMeLabel?: string;
     /** Local text translation for field */
     resetPasswordLabel?: string;
-    /** Local text translation for field */
+    /** Local text translation for reset password button */
     resetPasswordButton?: string;
+    /** Local text translation for when there is an error resetting password */
+    resetPasswordError?: string;
     /** Placeholder text for password reset edit box. */
     resetPasswordUserNamePlaceholder?: string;
     /** Local text translation for field */
@@ -29,8 +27,14 @@ interface LoginProps {
   showRememberMe?: boolean;
   /** Should the reset password checkbox be displayed? */
   showResetPassword?: boolean;
+  /** The mail template to use for reset password (if using), utilised by server */
+  resetPasswordMailTemplate?: string;
   /** Variant of text fields */
   textFieldVariant?: 'outlined' | 'standard' | 'filled';
+  /** Callback on successful login */
+  onSuccess?: (user: User, token: Token) => void;
+  /** Callback on failed login */
+  onError?: (error: string) => void;
 }
 
 export default LoginProps;

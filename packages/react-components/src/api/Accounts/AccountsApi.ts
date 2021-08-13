@@ -88,13 +88,10 @@ const createAccount = (host: string, token: string, data: Record<any, any>) =>
  * @param user 
  * @param token 
  */
-const resetPassword = (host: string, user: { Id: string }, token: string) =>
-  fetchUrl(`${host}/api/accounts/passwordreset`, {
+const resetPassword = (host: string, mailBody: string, emailAddress: string) =>
+  fetchUrl(`${host}/api/accounts/passwordreset?mailBody=${mailBody}`, {
     method: 'POST',
-    additionalHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: user.Id,
+    body: emailAddress,
   }).pipe(tap((res) => console.log('password reset', res)));
 
 /**

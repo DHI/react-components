@@ -1,24 +1,28 @@
 import { Button, CircularProgress, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
+import AuthService from '../AuthService';
 import ResetPasswordFormProps from './types';
 import useStyles from './useStyles';
 
 const ResetPasswordForm = (props: ResetPasswordFormProps) => {
   const {
-    // host,
+    host,
+    mailTemplate,
+    onResetPassword,
     onBackToLogin,
-    // onResetPassword,
-    resetPasswordUserNamePlaceholder = 'E-Mail Address or User ID',
+    resetPasswordUserNamePlaceholder = 'E-mail Address',
     resetPasswordButtonText = 'Reset Password',
+    resetPasswordErrorText = 'Email address not found in the system',
     textFieldVariant,
   } = props;
   const [loading, setLoading] = useState(false);
-  const error = false;
+  const [error, setError] = useState(false);
   const [form, setForm] = useState({
-    Id: '',
+    EmailAddress: '',
   });
   const classes = useStyles();
-  const validate = () => form.Id;
+  const auth = new AuthService(host);
+  const validate = () => form.EmailAddress;
   const handleChange = (name: string, value: string) => setForm({ ...form, [name]: value });
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -28,19 +32,22 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
       setLoading(true);
     }
 
-    alert('Reset Password Clicked');
     setLoading(false);
-    // @todo: complete password reset form. Current webAPIDemo does not seem to have this endpoint
-    // resetPassword(host, form).subscribe(
-    //   json => {
-    //     setLoading(false);
-    //     onResetPassword(json);
-    //   },
-    //   err => {
-    //     setLoading(false);
-    //     setError(err);
-    //   },
-    // );
+
+    auth.requestResetPassword(
+      mailTemplate,
+      form.EmailAddress,
+      () => {
+        setLoading(false);
+
+        if (onResetPassword) onResetPassword();
+      },
+      (err) => {
+        console.log(err);
+        setLoading(false);
+        setError(true);
+      },
+    );
   };
 
   return (
@@ -49,10 +56,10 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
         required
         fullWidth
         margin="dense"
-        value={form.Id}
+        value={form.EmailAddress}
         error={error}
-        onChange={(e) => handleChange('Id', e.target.value)}
-        helperText={error ? 'Account Not Found' : ''}
+        onChange={(e) => handleChange('EmailAddress', e.target.value)}
+        helperText={error ? resetPasswordErrorText : ''}
         label={resetPasswordUserNamePlaceholder}
         variant={textFieldVariant as any}
       />

@@ -1,12 +1,16 @@
 interface ResetPasswordFormProps {
   /** Authentication server */
   host: string | string[];
+  /** The mail template to use, utilised by server */
+  mailTemplate: string;
   /** Action handler when back to login link clicked */
   onBackToLogin?: (value: boolean) => void;
   /** Action handler when reset password button clicked */
-  onResetPassword?: (json: string) => void;
-  /** Local text translation for field */
+  onResetPassword?: () => void;
+  /** Local text translation for reset password button */
   resetPasswordButtonText?: string;
+  /** Local text translation for when there is an error resetting password */
+  resetPasswordErrorText?: string;
   /** Placeholder text for password reset edit box. */
   resetPasswordUserNamePlaceholder?: string;
   /** Variant of text fields */

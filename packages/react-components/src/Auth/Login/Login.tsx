@@ -6,7 +6,16 @@ import { ResetPasswordForm } from '../ResetPasswordForm/ResetPasswordForm';
 import LoginProps from './types';
 
 const Login = (props: LoginProps) => {
-  const { host, onSuccess, onError, showRememberMe, showResetPassword, textFieldVariant, translations } = props;
+  const {
+    host,
+    showRememberMe,
+    showResetPassword,
+    resetPasswordMailTemplate,
+    textFieldVariant,
+    translations,
+    onSuccess,
+    onError,
+  } = props;
   const [showingResetPassword, setShowingResetPassword] = useState(false);
 
   const togglePasswordResetForm = (value: boolean) => {
@@ -18,12 +27,13 @@ const Login = (props: LoginProps) => {
       {showingResetPassword ? (
         <ResetPasswordForm
           host={host}
+          mailTemplate={resetPasswordMailTemplate}
           onBackToLogin={(value) => togglePasswordResetForm(value)}
-          resetPasswordButtonText={translations?.resetPasswordButton ?? 'FORGOT PASSWORD'}
           resetPasswordUserNamePlaceholder={
             translations?.resetPasswordUserNamePlaceholder ?? 'E-Mail Address or User ID'
           }
-          onResetPassword={() => console.log('Reset password not implemented.')}
+          resetPasswordButtonText={translations?.resetPasswordButton ?? 'FORGOT PASSWORD'}
+          resetPasswordErrorText={translations?.resetPasswordError}
           textFieldVariant={textFieldVariant}
         />
       ) : (
@@ -31,15 +41,15 @@ const Login = (props: LoginProps) => {
           host={host}
           onSuccess={onSuccess}
           onError={onError}
+          showRememberMe={showRememberMe}
+          showResetPassword={showResetPassword}
+          onResetPassword={(value) => togglePasswordResetForm(value)}
+          textFieldVariant={textFieldVariant}
           userNamePlaceholder={translations?.userNamePlaceholder ?? 'Username'}
           passwordPlaceholder={translations?.passwordPlaceholder ?? 'Password'}
-          showRememberMe={showRememberMe}
-          rememberMeLabelText={translations?.rememberMeLabel ?? 'Remember me'}
-          showResetPassword={showResetPassword}
-          resetPasswordLabelText={translations?.resetPasswordLabel ?? 'FORGOT PASSWORD?'}
-          onResetPassword={(value) => togglePasswordResetForm(value)}
           loginButtonText={translations?.loginButton ?? 'Login'}
-          textFieldVariant={textFieldVariant}
+          rememberMeLabelText={translations?.rememberMeLabel ?? 'Remember me'}
+          resetPasswordLabelText={translations?.resetPasswordLabel ?? 'FORGOT PASSWORD?'}
         />
       )}
       <div style={{ clear: 'both' }}></div>
