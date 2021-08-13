@@ -1,17 +1,17 @@
-import { MenuItem, Routes, Scenario, Status } from '../types';
+import { MenuItem, ScenarioOLD, Status } from '../types';
 
-interface ScenarioItemProps {
+// TODO: remove ScenarioItemProps
+interface ScenarioItemOLDProps {
   /**
    * Style of the scenario item
    */
   classes?: any;
   menu: MenuItem[];
-  scenario: Scenario;
+  scenario: ScenarioOLD;
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
-
+  onContextMenuClick: (menuItem: MenuItem, scenario: ScenarioOLD) => void;
   /**
    * Scenario item click event handler
    */
@@ -59,10 +59,6 @@ interface ScenarioItemProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
-  /**
-   * List of availables routes
-   */
-  routes?: Routes[];
 }
 
-export { ScenarioItemProps };
+export default ScenarioItemOLDProps;

@@ -40,10 +40,6 @@ const ScenarioMenu = ({ onContextMenuClick, scenario, menu, onClick }: ScenarioM
     }
   };
 
-  if (scenario.fullName === 'scenario-20210713020117-f517-12f6-2d0c-8603-24146c697467') {
-    console.log(menu[1]);
-  }
-
   return (
     <div style={{ position: 'relative', right: 5, color: '#0B4566' }}>
       {menu.some((item) => item.id === 'openPdf') && (

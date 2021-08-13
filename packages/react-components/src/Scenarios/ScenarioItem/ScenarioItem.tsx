@@ -3,7 +3,7 @@ import { format, parseISO } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
-import ScenarioItemOLDProps from './types';
+import { ScenarioItemProps } from './types';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import useStyles from './useStyles';
 import { Routes } from '../types';
@@ -23,7 +23,7 @@ const ScenarioItem = ({
   scenario,
   timeZone,
   routes,
-}: ScenarioItemOLDProps) => {
+}: ScenarioItemProps) => {
   const [hover, setHover] = useState(false);
   const [menuLinks] = useState<Routes[]>(routes);
   const classes = useStyles();
@@ -130,4 +130,4 @@ const ScenarioItem = ({
   );
 };
 
-export { ScenarioItemOLDProps as ScenarioItemProps, ScenarioItem };
+export { ScenarioItemProps, ScenarioItem };
