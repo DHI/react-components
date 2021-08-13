@@ -159,6 +159,9 @@ const mikeOverrides: Overrides = {
     },
     sizeSmall: {
       height: '2.5rem', // 40px
+      '&:disabled': {
+        height: '2.5rem', // 48px
+      },
       minWidth: 0,
       padding: '0 1rem', // 16px
     },
