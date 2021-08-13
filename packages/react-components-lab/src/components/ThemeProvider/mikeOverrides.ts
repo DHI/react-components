@@ -159,6 +159,9 @@ const mikeOverrides: Overrides = {
     },
     sizeSmall: {
       height: '2.5rem', // 40px
+      '&:disabled': {
+        height: '2.5rem', // 48px
+      },
       minWidth: 0,
       padding: '0 1rem', // 16px
     },
@@ -440,6 +443,14 @@ const mikeOverrides: Overrides = {
       overflow: 'inherit',
       float: 'right',
     },
+    sizeSmall: {
+      '& $switchBase': {
+        transform: 'translateX(-2px)',
+        '&$checked': {
+          transform: 'translateX(18px)',
+        },
+      },
+    },
     switchBase: {
       padding: 0,
       height: '100%',
@@ -479,7 +490,6 @@ const mikeOverrides: Overrides = {
       opacity: 1,
       backgroundColor: mikePalette.lightGrey.main,
     },
-    checked: {},
   },
 };
 
