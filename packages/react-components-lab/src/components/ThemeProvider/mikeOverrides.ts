@@ -440,6 +440,11 @@ const mikeOverrides: Overrides = {
       overflow: 'inherit',
       float: 'right',
     },
+    sizeSmall: {
+      '& + $switchBase': {
+        transform: 'translateX(0px)',
+      },
+    },
     switchBase: {
       padding: 0,
       height: '100%',
