@@ -56,6 +56,7 @@ const styles = () => ({
     alignItems: 'flex-end',
     flexDirection: 'column',
     padding: '0 10px',
+    justifyContent: 'space-between',
   },
   icon: {
     'display': 'flex',

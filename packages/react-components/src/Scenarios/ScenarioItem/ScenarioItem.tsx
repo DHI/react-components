@@ -24,7 +24,6 @@ const ScenarioItem = ({
   timeZone,
   routes,
 }: ScenarioItemOLDProps) => {
-  console.log(routes);
   const [hover, setHover] = useState(false);
   const [menuLinks] = useState<Routes[]>(routes);
   const classes = useStyles();
