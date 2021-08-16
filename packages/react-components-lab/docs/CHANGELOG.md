@@ -1,3 +1,11 @@
+## @dhi/react-components-lab [1.2.5](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.4...@dhi/react-components-lab@1.2.5) (2021-08-13)
+
+
+### Bug Fixes
+
+* **Button:** Fix theming for disabled size small ([1323911](https://github.com/DHI/react-components/commit/1323911d2b61f3bc2d0220cf97110770ab82714b))
+* **Switch-Theme:** Handle size small switch ([b09da4d](https://github.com/DHI/react-components/commit/b09da4d5faad044b846b85155a523460b00cbbc9))
+
 ## @dhi/react-components-lab [1.2.4](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.3...@dhi/react-components-lab@1.2.4) (2021-08-09)
 
 
