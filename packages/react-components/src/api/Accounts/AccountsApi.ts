@@ -91,7 +91,7 @@ const createAccount = (host: string, token: string, data: Record<any, any>) =>
 const resetPassword = (host: string, mailBody: string, emailAddress: string) =>
   fetchUrl(`${host}/api/accounts/passwordreset?mailBody=${mailBody}`, {
     method: 'POST',
-    body: emailAddress,
+    body: `"${emailAddress}"`,
   }).pipe(tap((res) => console.log('password reset', res)));
 
 /**
