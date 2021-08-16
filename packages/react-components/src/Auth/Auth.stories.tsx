@@ -29,7 +29,7 @@ export const LoginStory = () => {
         }}
         showRememberMe={true}
         showResetPassword={true}
-        resetPasswordMailTemplate={'NCOS'}
+        resetPasswordMailTemplate={'Template1'}
         onSuccess={(user, token) => {
           setState({ user, token });
         }}
