@@ -118,6 +118,10 @@ interface ScenariosProps {
    */
   status: Status[];
   /**
+   * Highlight name field with an accent colour if status matches this
+   */
+  highlightNameOnStatus: string;
+  /**
    * Customising scenario description field display
    */
   descriptionFields?: DescriptionField[];

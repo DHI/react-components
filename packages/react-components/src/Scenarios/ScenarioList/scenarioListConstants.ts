@@ -85,7 +85,7 @@ export const STATUS = [
     color: 'black',
     message: 'Unknown',
   },
-] as Status;
+] as Status[];
 
 export const TRANSLATIONS = {
   executeConfirmation:

@@ -17,11 +17,12 @@ const ScenarioList = (props: ScenarioListProps) => {
     showDate,
     menuItems,
     routes,
-    status,
     descriptionFields,
     onContextMenuClick,
     onScenarioSelected,
     showStatus,
+    status,
+    highlightNameOnStatus,
     showMenu,
     nameField,
     timeZone,
@@ -54,6 +55,9 @@ const ScenarioList = (props: ScenarioListProps) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario) => {
+        const itemStatus = checkStatus(scenario.lastJob, status);
+        console.log(itemStatus);
+
         return (
           <div
             key={scenario.fullName}
@@ -66,6 +70,7 @@ const ScenarioList = (props: ScenarioListProps) => {
           >
             <ScenarioItem
               name={getObjectProperty(scenario.data, nameField)}
+              nameAccentColour={highlightNameOnStatus === itemStatus.name ? itemStatus.color : null}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.fullName}
@@ -76,7 +81,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               showMenu={showMenu}
               showStatus={showStatus}
               scenario={scenario}
-              status={checkStatus(scenario.lastJob, status)}
+              status={itemStatus}
               timeZone={timeZone}
               onClick={() => onScenarioClick(scenario)}
               routes={routes}

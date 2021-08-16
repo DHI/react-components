@@ -15,6 +15,7 @@ const ScenarioItem = ({
   isSelected,
   status,
   name,
+  nameAccentColour,
   description,
   showMenu,
   onClick,
@@ -35,7 +36,7 @@ const ScenarioItem = ({
       return (
         <Typography className={classes.icon}>
           <Icon style={{ color: status.color }} />
-          <span>{status.name}</span>
+          <span style={{ color: status.color }}>{status.name}</span>
         </Typography>
       );
     } else {
@@ -97,7 +98,12 @@ const ScenarioItem = ({
         )}
         <div className={classes.verticalLine} />
         <Grid item className={classes.scenarioDetails}>
-          <Typography component="span" color="primary" className={classes.scenarioTitle}>
+          <Typography
+            component="span"
+            color="primary"
+            className={classes.scenarioTitle}
+            style={{ color: nameAccentColour }}
+          >
             {name}
           </Typography>
           {description.map((item: { name: string; value: string }) => (

@@ -45,6 +45,7 @@ const Scenarios = (props: ScenariosProps) => {
     showMenu,
     showStatus,
     status,
+    highlightNameOnStatus,
     queryDates,
     onContextMenuClick,
     onScenarioSelected,
@@ -563,6 +564,7 @@ const Scenarios = (props: ScenariosProps) => {
           showMenu={showMenu}
           showStatus={showStatus}
           status={status}
+          highlightNameOnStatus={highlightNameOnStatus}
           timeZone={timeZone}
         />
       )}

@@ -39,6 +39,10 @@ interface ScenarioItemProps {
    */
   name: string;
   /**
+   * An optional accent colour for the name field
+   */
+  nameAccentColour?: string;
+  /**
    * The Date of scenario creation
    */
   date: string | null;

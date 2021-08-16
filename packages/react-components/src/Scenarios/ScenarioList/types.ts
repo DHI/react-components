@@ -62,6 +62,10 @@ interface ScenarioListProps {
    */
   status: Status[];
   /**
+   * Highlight name field with an accent colour if status matches this
+   */
+  highlightNameOnStatus: string;
+  /**
    * Time zone (IANA format) for date display
    */
   timeZone?: string;

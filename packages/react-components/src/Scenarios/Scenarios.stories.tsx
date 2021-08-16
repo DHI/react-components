@@ -358,6 +358,7 @@ export const ScenariosJSONStory = () => {
               showMenu
               showStatus
               status={STATUS}
+              highlightNameOnStatus="Error"
               addScenario={newScenario}
               translations={TRANSLATIONS}
               debug
