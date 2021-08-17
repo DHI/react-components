@@ -10,11 +10,11 @@ interface ResetPasswordFormProps {
   /** Local text translation for reset password button */
   resetPasswordButtonText?: string;
   /** Local text translation for when there is an error resetting password */
-  resetPasswordErrorText?: string;
+  errorText?: string;
   /** Local text translation for when the request has been sent successfully */
-  resetPasswordRequestSentText?: string;
+  successText?: string;
   /** Placeholder text for password reset edit box. */
-  resetPasswordUserNamePlaceholder?: string;
+  userNamePlaceholder?: string;
   /** Variant of text fields */
   textFieldVariant?: string;
 }

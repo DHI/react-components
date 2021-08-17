@@ -11,10 +11,10 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
     mailTemplate,
     onResetPassword,
     onBackToLogin,
-    resetPasswordUserNamePlaceholder = 'Email Address',
+    userNamePlaceholder = 'Email Address',
     resetPasswordButtonText = 'Reset Password',
-    resetPasswordErrorText = 'The has been an error sending your password reset request. Please contact support if this problem continues.',
-    resetPasswordRequestSentText = 'Your password reset request has been sent to the above email address.',
+    errorText = 'The has been an error sending your password reset request. Please contact support if this problem continues.',
+    successText = 'Your password reset request has been sent to the above email address.',
     textFieldVariant,
   } = props;
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
           value={form.emailAddress}
           error={error}
           onChange={(e) => handleChange('emailAddress', e.target.value)}
-          label={resetPasswordUserNamePlaceholder}
+          label={userNamePlaceholder}
           variant={textFieldVariant as any}
         />
 
@@ -77,8 +77,8 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
           </Button>
         </div>
         <div className={classes.messages}>
-          {success && <Alert severity="success">{resetPasswordRequestSentText}</Alert>}
-          {error && <Alert severity="error">{resetPasswordErrorText}</Alert>}
+          {success && <Alert severity="success">{successText}</Alert>}
+          {error && <Alert severity="error">{errorText}</Alert>}
         </div>
       </form>
     </>
