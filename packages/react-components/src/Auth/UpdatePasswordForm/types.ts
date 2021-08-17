@@ -1,22 +1,22 @@
-interface ResetPasswordFormProps {
+interface UpdatePasswordFormProps {
   /** Authentication server */
   host: string | string[];
-  /** The mail template to use, utilised by server */
-  mailTemplate: string;
-  /** Action handler when back to login link clicked */
-  onBackToLogin?: (value: boolean) => void;
+  /** The reset password token */
+  token: string;
   /** Action handler when reset password button clicked */
-  onResetPassword?: () => void;
+  onPasswordUpdated?: () => void;
   /** Local text translation for reset password button */
-  resetPasswordButtonText?: string;
+  updatePasswordButtonText?: string;
   /** Local text translation for when there is an error resetting password */
   errorText?: string;
   /** Local text translation for when the request has been sent successfully */
   successText?: string;
-  /** Placeholder text for password reset edit box. */
-  userNamePlaceholder?: string;
+  /** Placeholder text for new password field */
+  newPasswordPlaceholder?: string;
+  /** Placeholder text for confirm password field */
+  confirmPasswordPlaceholder?: string;
   /** Variant of text fields */
   textFieldVariant?: string;
 }
 
-export default ResetPasswordFormProps;
+export default UpdatePasswordFormProps;

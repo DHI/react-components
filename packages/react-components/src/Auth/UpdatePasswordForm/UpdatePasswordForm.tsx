@@ -2,30 +2,31 @@ import { Button, CircularProgress, TextField, Typography } from '@material-ui/co
 import { Alert, AlertTitle } from '@material-ui/lab';
 import React, { useState } from 'react';
 import AuthService from '../AuthService';
-import ResetPasswordFormProps from './types';
+import UpdatePasswordFormProps from './types';
 import useStyles from './useStyles';
 
-const ResetPasswordForm = (props: ResetPasswordFormProps) => {
+const UpdatePasswordForm = (props: UpdatePasswordFormProps) => {
   const {
     host,
-    mailTemplate,
-    onResetPassword,
-    onBackToLogin,
-    userNamePlaceholder = 'Email Address',
-    resetPasswordButtonText = 'Reset Password',
-    errorText = 'The has been an error sending your password reset request. Please contact support if this problem continues.',
-    successText = 'Your password reset request has been sent to the above email address.',
+    token,
+    onPasswordUpdated,
+    newPasswordPlaceholder = 'New Password',
+    confirmPasswordPlaceholder = 'Confirm New Password',
+    updatePasswordButtonText = 'Confirm',
+    errorText = 'The has been an error resetting your password. Please contact support if this problem continues.',
+    successText = 'Your password has been reset successfully.',
     textFieldVariant,
   } = props;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [form, setForm] = useState({
-    emailAddress: '',
+    password: '',
+    confirmPassword: '',
   });
   const classes = useStyles();
   const auth = new AuthService(host);
-  const validate = () => form.emailAddress;
+  const validate = () => form.password && form.confirmPassword;
   const handleChange = (name: string, value: string) => setForm({ ...form, [name]: value });
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -35,11 +36,11 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
       setLoading(true);
     }
 
-    auth.requestResetPassword(
-      mailTemplate,
-      form.emailAddress,
+    auth.confirmResetPassword(
+      token,
+      form.password,
       () => {
-        if (onResetPassword) onResetPassword();
+        if (onPasswordUpdated) onPasswordUpdated();
 
         setError(false);
         setSuccess(true);
@@ -60,20 +61,29 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
         <TextField
           required
           fullWidth
+          type="password"
           margin="dense"
-          value={form.emailAddress}
+          value={form.password}
           error={error}
-          onChange={(e) => handleChange('emailAddress', e.target.value)}
-          label={userNamePlaceholder}
+          onChange={(e) => handleChange('password', e.target.value)}
+          label={newPasswordPlaceholder}
+          variant={textFieldVariant as any}
+        />
+        <TextField
+          required
+          fullWidth
+          type="password"
+          margin="dense"
+          value={form.confirmPassword}
+          error={error}
+          onChange={(e) => handleChange('confirmPassword', e.target.value)}
+          label={confirmPasswordPlaceholder}
           variant={textFieldVariant as any}
         />
 
         <div className={classes.resetBox}>
-          <Button className={classes.backButton} onClick={onBackToLogin ? () => onBackToLogin(false) : undefined}>
-            <Typography className={classes.labels}>Back</Typography>
-          </Button>
           <Button type="submit" color="primary" variant="contained" disabled={loading}>
-            {loading ? <CircularProgress color="inherit" size={24} /> : resetPasswordButtonText}
+            {loading ? <CircularProgress color="inherit" size={24} /> : updatePasswordButtonText}
           </Button>
         </div>
         <div className={classes.messages}>
@@ -85,4 +95,4 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
   );
 };
 
-export { ResetPasswordFormProps, ResetPasswordForm };
+export { UpdatePasswordFormProps, UpdatePasswordForm };

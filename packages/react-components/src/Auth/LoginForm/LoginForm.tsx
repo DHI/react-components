@@ -18,8 +18,8 @@ import useStyles from './useStyles';
 
 const LoginForm = (props: LoginFormProps) => {
   const {
-    userNamePlaceholder,
-    passwordPlaceholder,
+    userNamePlaceholder = 'Username',
+    passwordPlaceholder = 'Password',
     host,
     onSuccess,
     onError,

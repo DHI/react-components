@@ -1,4 +1,4 @@
-import { fetchAccount, fetchToken, resetPassword } from '../api';
+import { fetchAccount, fetchToken, resetPassword, updatePassword } from '../api';
 import { Form, OtpInfo, Token, User } from './types';
 
 export default class AuthService {
@@ -105,6 +105,22 @@ export default class AuthService {
     onError: (err: string) => void,
   ) => {
     return resetPassword(this.host as string, mailBody, emailAddress).subscribe(
+      (response) => {
+        if (onSuccess != null) {
+          onSuccess();
+        }
+      },
+      (error) => onError(error),
+    );
+  };
+
+  confirmResetPassword = (
+    token: string,
+    newPassword: string,
+    onSuccess: () => void,
+    onError: (err: string) => void,
+  ) => {
+    return updatePassword(this.host as string, token, newPassword).subscribe(
       (response) => {
         if (onSuccess != null) {
           onSuccess();
