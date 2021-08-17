@@ -5,6 +5,8 @@ interface UpdatePasswordFormProps {
   token: string;
   /** Action handler when reset password button clicked */
   onPasswordUpdated?: () => void;
+  /** Action handler when back to login link clicked */
+  onBackToLogin?: (value: boolean) => void;
   /** Local text translation for reset password button */
   updatePasswordButtonText?: string;
   /** Local text translation for when there is an error resetting password */

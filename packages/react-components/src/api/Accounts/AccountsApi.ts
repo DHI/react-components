@@ -104,9 +104,9 @@ const resetPassword = (host: string, mailBody: string, emailAddress: string) =>
  * @param newPassword
  */
 const updatePassword = (host: string, token: string, newPassword: string) =>
-  fetchUrl(`${host}/api/accounts/password/token=${token}`, {
+  fetchUrl(`${host}/api/accounts/password?token=${token}`, {
     method: 'PUT',
-    body: newPassword,
+    body: `"${newPassword}"`,
   }).pipe(tap((res) => console.log('password reset', res)));
 
 /**

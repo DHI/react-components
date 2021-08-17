@@ -13,6 +13,7 @@ const styles = () => ({
     marginTop: 15,
   },
   labels: { 'fontSize': 14, '& label': { fontSize: 14 } },
+  backButton: { margin: '0 15px' },
 });
 
 const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);

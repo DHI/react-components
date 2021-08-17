@@ -33,25 +33,25 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
 
     if (validate()) {
       setLoading(true);
+
+      auth.requestResetPassword(
+        mailTemplate,
+        form.emailAddress,
+        () => {
+          if (onResetPassword) onResetPassword();
+
+          setError(false);
+          setSuccess(true);
+          setLoading(false);
+        },
+        (err) => {
+          console.log(err);
+          setLoading(false);
+          setSuccess(false);
+          setError(true);
+        },
+      );
     }
-
-    auth.requestResetPassword(
-      mailTemplate,
-      form.emailAddress,
-      () => {
-        if (onResetPassword) onResetPassword();
-
-        setError(false);
-        setSuccess(true);
-        setLoading(false);
-      },
-      (err) => {
-        console.log(err);
-        setLoading(false);
-        setSuccess(false);
-        setError(true);
-      },
-    );
   };
 
   return (

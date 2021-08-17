@@ -16,6 +16,7 @@ const Login = (props: LoginProps) => {
     resetPasswordToken,
     textFieldVariant,
     translations,
+    onBackToLogin,
     onSuccess,
     onError,
   } = props;
@@ -47,6 +48,7 @@ const Login = (props: LoginProps) => {
           updatePasswordButtonText={translations?.updatePasswordConfirmButton}
           errorText={translations?.resetPasswordError}
           textFieldVariant={textFieldVariant}
+          onBackToLogin={onBackToLogin}
         />
       )}
       {!showingResetPassword && !showUpdatePassword && (
