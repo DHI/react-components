@@ -1,4 +1,4 @@
-import { DescriptionField, MenuItem, Scenario, ScenarioOLD, Status } from '../types';
+import { DescriptionField, MenuItem, Scenario, ScenarioOLD, Status, ActionButton } from '../types';
 
 interface ScenarioListProps {
   /**
@@ -9,6 +9,10 @@ interface ScenarioListProps {
    * List of menu items
    */
   menuItems: MenuItem[];
+  /**
+   * An action button which sits on the right hand side, below the menu
+   */
+  actionButton?: ActionButton;
   /**
    * The list of scenario
    */
@@ -57,6 +61,10 @@ interface ScenarioListProps {
    * Customising scenario status display
    */
   status: Status[];
+  /**
+   * Highlight name field with an accent colour if status matches this
+   */
+  highlightNameOnStatus: string;
   /**
    * Time zone (IANA format) for date display
    */

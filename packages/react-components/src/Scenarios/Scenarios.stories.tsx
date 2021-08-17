@@ -5,6 +5,7 @@ import addDays from 'date-fns/addDays';
 import React, { useState } from 'react';
 import { LoginGate } from '../Auth/LoginGate';
 import { uniqueId } from '../utils/Utils';
+import { MENU_ITEMS, STATUS, TRANSLATIONS } from './ScenarioList/scenarioListConstants';
 import { Scenarios } from './Scenarios/Scenarios';
 import { ScenariosOLD } from './ScenariosOLD/Scenarios';
 import { MenuItem, Scenario, ScenarioOLD } from './types';
@@ -85,7 +86,7 @@ export const ScenariosStory = () => {
                   field: 'data.mooring.berthName',
                   name: 'Berth Name',
                   condition: {
-                    field: 'lastJobStatus',
+                    field: 'status',
                     value: 'Completed',
                   },
                 },
@@ -255,6 +256,12 @@ export const ScenariosJSONStory = () => {
     to: addDays(new Date(), 1).toISOString(),
   };
 
+  const actionButton = {
+    name: 'Operational View',
+    color: '#00A4EC',
+    handleActionButton: () => console.log('Action Button Clicked'),
+  };
+
   return (
     <div>
       <Typography align="left" component="div" style={{ marginBottom: '20px' }}>
@@ -289,6 +296,7 @@ export const ScenariosJSONStory = () => {
               host={process.env.ENDPOINT_URL}
               scenarioConnection={'postgres-jsondocuments-scenarios'}
               jobConnection={'wf-jobs'}
+              actionButton={actionButton}
               dataFilterbyProperty={[
                 {
                   field: 'data.mooring',
@@ -308,7 +316,7 @@ export const ScenariosJSONStory = () => {
                   field: 'data.mooring.berthName',
                   name: 'Berth Name',
                   condition: {
-                    field: 'lastJobStatus',
+                    field: 'lastJob.status',
                     value: 'Completed',
                   },
                 },
@@ -335,41 +343,7 @@ export const ScenariosJSONStory = () => {
               ]}
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
-              menuItems={[
-                {
-                  id: 'execute',
-                  label: 'Execute',
-                  condition: {
-                    field: '!lastJobStatus', // Prefix with exclamation if you wish to inverse the condition test
-                    value: ['Pending', 'InProgress', 'Completed'],
-                  },
-                  taskId: 'workflowJsonDocument',
-                },
-                {
-                  id: 'edit',
-                  label: 'Edit',
-                },
-                {
-                  id: 'clone',
-                  label: 'Clone',
-                },
-                {
-                  id: 'delete',
-                  label: 'Delete',
-                },
-                {
-                  id: 'terminate',
-                  label: 'Terminate',
-                },
-                {
-                  id: 'openPdf',
-                  label: 'Open PDF',
-                  condition: {
-                    field: 'data.mooring.berthName',
-                    value: 'VIG Berth 2',
-                  },
-                },
-              ]}
+              menuItems={MENU_ITEMS}
               onContextMenuClick={(menuItem: MenuItem, scenario: Scenario) =>
                 console.log('Scenario menu item clicked', {
                   menuItem,
@@ -389,56 +363,10 @@ export const ScenariosJSONStory = () => {
               showHour
               showMenu
               showStatus
-              status={[
-                {
-                  name: 'Pending',
-                  color: 'orange',
-                  message: 'Pending',
-                },
-                {
-                  name: 'InProgress',
-                  color: 'orange',
-                  message: 'Running',
-                },
-                {
-                  name: 'Unknown',
-                  color: 'black',
-                  message: 'Unknown',
-                },
-                {
-                  name: 'ReadyToInitiate',
-                  color: 'red',
-                  message: 'Ready',
-                },
-                {
-                  name: 'Completed',
-                  color: 'green',
-                  message: 'Completed',
-                },
-                {
-                  name: 'Error',
-                  color: 'black',
-                  message: 'Error',
-                },
-                {
-                  name: 'Default',
-                  color: 'black',
-                  message: 'Unknown',
-                },
-              ]}
+              status={STATUS}
+              highlightNameOnStatus="Error"
               addScenario={newScenario}
-              translations={{
-                executeConfirmation:
-                  'Ini akan memulai pekerjaan baru di latar belakang. Status akan berubah setelah penyelesaian pekerjaan. Anda yakin ingin mengeksekusi',
-                terminateConfirmation:
-                  'Ini akan membatalkan pekerjaan yang sedang dieksekusi. Status akan berubah setelah pembatalan pekerjaan. Anda yakin ingin mengakhiri',
-                cloneConfirmation:
-                  'Ini akan memulai pekerjaan baru di latar belakang. Anda dapat menghapus skenario kloning ini nanti. Anda yakin ingin mengkloning',
-                deleteConfirmation:
-                  'Ini akan menghapus skenario yang dipilih dari daftar. Setelah dihapus, Anda tidak dapat mengambil data. Anda yakin ingin menghapus',
-                cancelLabel: 'Batal',
-                confirmLabel: 'Lanjut',
-              }}
+              translations={TRANSLATIONS}
               debug
             />
           </>
