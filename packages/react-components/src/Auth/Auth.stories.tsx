@@ -24,7 +24,7 @@ export const LoginStory = () => {
           rememberMeLabel: 'Remember me',
           resetPasswordLabel: 'FORGOT PASSWORD?',
           resetPasswordButton: 'FORGOT PASSWORD',
-          resetPasswordUserNamePlaceholder: 'E-Mail Address or User ID',
+          resetPasswordUserNamePlaceholder: 'Email Address or User ID',
           loginButton: 'Login',
         }}
         showRememberMe={true}

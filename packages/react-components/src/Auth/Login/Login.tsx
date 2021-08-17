@@ -30,7 +30,7 @@ const Login = (props: LoginProps) => {
           mailTemplate={resetPasswordMailTemplate}
           onBackToLogin={(value) => togglePasswordResetForm(value)}
           resetPasswordUserNamePlaceholder={
-            translations?.resetPasswordUserNamePlaceholder ?? 'E-Mail Address or User ID'
+            translations?.resetPasswordUserNamePlaceholder ?? 'Email Address or User ID'
           }
           resetPasswordButtonText={translations?.resetPasswordButton ?? 'FORGOT PASSWORD'}
           resetPasswordErrorText={translations?.resetPasswordError}
