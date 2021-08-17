@@ -81,9 +81,10 @@ interface MenuItem {
   disabled?: boolean;
 }
 
-interface Routes {
-  id: string;
+interface ActionButton {
   name: string;
+  color: string;
+  handleActionButton: () => void;
 }
 
 interface ScenarioOLD {
@@ -178,7 +179,7 @@ export {
   Status,
   DescriptionField,
   MenuItem,
-  Routes,
+  ActionButton,
   ScenarioOLD,
   Scenario,
   Condition,

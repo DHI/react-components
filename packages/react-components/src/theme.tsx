@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const DHITheme = createMuiTheme({
+const DHITheme = createTheme({
   palette: {
     primary: {
       main: '#0B4566', // DHI Primary color

@@ -1,4 +1,4 @@
-import { DescriptionField, MenuItem, Routes, Scenario, ScenarioOLD, Status } from '../types';
+import { DescriptionField, MenuItem, Scenario, ScenarioOLD, Status, ActionButton } from '../types';
 
 interface ScenarioListProps {
   /**
@@ -10,9 +10,9 @@ interface ScenarioListProps {
    */
   menuItems: MenuItem[];
   /**
-   * List of availables routes
+   * An action button which sits on the right hand side, below the menu
    */
-  routes: Routes[];
+  actionButton?: ActionButton;
   /**
    * The list of scenario
    */

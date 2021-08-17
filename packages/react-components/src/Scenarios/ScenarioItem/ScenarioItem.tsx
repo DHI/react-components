@@ -1,11 +1,10 @@
 import { Button, CircularProgress, Grid, Tooltip, Typography } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { utcToTz } from '../../utils/Utils';
 import { ScenarioMenu } from '../ScenarioMenu/ScenarioMenu';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import useStyles from './useStyles';
-import { Routes } from '../types';
 import ScenarioItemProps from './types';
 
 const ScenarioItem = ({
@@ -23,10 +22,9 @@ const ScenarioItem = ({
   menu,
   scenario,
   timeZone,
-  routes,
+  actionButton,
 }: ScenarioItemProps) => {
   const [hover, setHover] = useState(false);
-  const [menuLinks] = useState<Routes[]>(routes);
   const classes = useStyles();
 
   const rowIcon = () => {
@@ -123,16 +121,16 @@ const ScenarioItem = ({
           />
         )}
 
-        {menuLinks.some((item) => item.id === 'operationalView') && (
+        {actionButton && (
           <Button
-            style={{ color: '#00A4EC' }}
+            style={{ color: actionButton.color }}
             classes={{
               label: classes.buttonLabel,
             }}
             endIcon={<ArrowForwardOutlinedIcon />}
-            onClick={() => console.log('clicked')}
+            onClick={actionButton.handleActionButton}
           >
-            <span>Operational View</span>
+            <span>{actionButton.name}</span>
           </Button>
         )}
       </div>

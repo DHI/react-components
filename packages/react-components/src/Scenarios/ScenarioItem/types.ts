@@ -1,4 +1,4 @@
-import { MenuItem, Routes, Scenario, Status } from '../types';
+import { ActionButton, MenuItem, Scenario, Status } from '../types';
 
 interface ScenarioItemProps {
   /**
@@ -64,9 +64,9 @@ interface ScenarioItemProps {
    */
   timeZone?: string;
   /**
-   * List of availables routes
+   * An action button which sits on the right hand side, below the menu
    */
-  routes?: Routes[];
+  actionButton?: ActionButton;
 }
 
 export default ScenarioItemProps;

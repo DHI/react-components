@@ -99,10 +99,3 @@ export const TRANSLATIONS = {
   cancelLabel: 'Batal',
   confirmLabel: 'Lanjut',
 };
-
-export const ROUTES = [
-  {
-    id: 'operationalView',
-    name: 'Operational View',
-  },
-];

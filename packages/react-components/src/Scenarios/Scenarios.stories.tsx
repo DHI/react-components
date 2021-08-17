@@ -5,7 +5,7 @@ import addDays from 'date-fns/addDays';
 import React, { useState } from 'react';
 import { LoginGate } from '../Auth/LoginGate';
 import { uniqueId } from '../utils/Utils';
-import { MENU_ITEMS, ROUTES, STATUS, TRANSLATIONS } from './ScenarioList/scenarioListConstants';
+import { MENU_ITEMS, STATUS, TRANSLATIONS } from './ScenarioList/scenarioListConstants';
 import { Scenarios } from './Scenarios/Scenarios';
 import { ScenariosOLD } from './ScenariosOLD/Scenarios';
 import { MenuItem, Scenario, ScenarioOLD } from './types';
@@ -256,6 +256,12 @@ export const ScenariosJSONStory = () => {
     to: addDays(new Date(), 1).toISOString(),
   };
 
+  const actionButton = {
+    name: 'Operational View',
+    color: '#00A4EC',
+    handleActionButton: () => console.log('Action Button Clicked'),
+  };
+
   return (
     <div>
       <Typography align="left" component="div" style={{ marginBottom: '20px' }}>
@@ -290,6 +296,7 @@ export const ScenariosJSONStory = () => {
               host={process.env.ENDPOINT_URL}
               scenarioConnection={'postgres-jsondocuments-scenarios'}
               jobConnection={'wf-jobs'}
+              actionButton={actionButton}
               dataFilterbyProperty={[
                 {
                   field: 'data.mooring',
@@ -337,7 +344,6 @@ export const ScenariosJSONStory = () => {
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
               menuItems={MENU_ITEMS}
-              routes={ROUTES}
               onContextMenuClick={(menuItem: MenuItem, scenario: Scenario) =>
                 console.log('Scenario menu item clicked', {
                   menuItem,

@@ -16,7 +16,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     showHour,
     showDate,
     menuItems,
-    routes,
+    actionButton,
     descriptionFields,
     onContextMenuClick,
     onScenarioSelected,
@@ -56,7 +56,6 @@ const ScenarioList = (props: ScenarioListProps) => {
       .reverse()
       .map((scenario) => {
         const itemStatus = checkStatus(scenario.lastJob, status);
-        console.log(itemStatus);
 
         return (
           <div
@@ -84,7 +83,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               status={itemStatus}
               timeZone={timeZone}
               onClick={() => onScenarioClick(scenario)}
-              routes={routes}
+              actionButton={actionButton}
             />
           </div>
         );
