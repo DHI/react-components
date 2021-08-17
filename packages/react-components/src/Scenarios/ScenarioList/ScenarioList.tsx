@@ -16,11 +16,13 @@ const ScenarioList = (props: ScenarioListProps) => {
     showHour,
     showDate,
     menuItems,
-    status,
+    actionButton,
     descriptionFields,
     onContextMenuClick,
     onScenarioSelected,
     showStatus,
+    status,
+    highlightNameOnStatus,
     showMenu,
     nameField,
     timeZone,
@@ -53,6 +55,8 @@ const ScenarioList = (props: ScenarioListProps) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario) => {
+        const itemStatus = checkStatus(scenario.lastJob, status);
+
         return (
           <div
             key={scenario.fullName}
@@ -65,6 +69,7 @@ const ScenarioList = (props: ScenarioListProps) => {
           >
             <ScenarioItem
               name={getObjectProperty(scenario.data, nameField)}
+              nameAccentColour={highlightNameOnStatus === itemStatus.name ? itemStatus.color : null}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.fullName}
@@ -75,8 +80,10 @@ const ScenarioList = (props: ScenarioListProps) => {
               showMenu={showMenu}
               showStatus={showStatus}
               scenario={scenario}
-              status={checkStatus(scenario.lastJob, status)}
+              status={itemStatus}
               timeZone={timeZone}
+              onClick={() => onScenarioClick(scenario)}
+              actionButton={actionButton}
             />
           </div>
         );
@@ -87,17 +94,16 @@ const ScenarioList = (props: ScenarioListProps) => {
     const isoDate = timeZone ? utcToTz(date, timeZone) : parseISO(date);
     const dateObject = {
       day: format(isoDate, 'dd'),
-      dayName: format(isoDate, 'EEE'),
+      dayName: format(isoDate, 'EEEE'),
       monthName: format(isoDate, 'MMM'),
     };
-    const dateBlockwidth = showHour ? '97px' : '39px';
 
     return (
-      <div className={classes.dateBlock} style={{ width: dateBlockwidth }}>
+      <div className={classes.dateBlock}>
         <div className={classes.dateArea}>
-          <div className={classes.dayText}>{dateObject.day}</div>
-          <div className={classes.textFields}>{dateObject.monthName}</div>
-          <div className={classes.textFields}>{dateObject.dayName}</div>
+          <strong>
+            {`${dateObject.day} ${dateObject.monthName}`} <span>{` - ${dateObject.dayName}`} </span>
+          </strong>
         </div>
       </div>
     );
@@ -119,12 +125,9 @@ const ScenarioList = (props: ScenarioListProps) => {
       .sort()
       .reverse()
       .map((key) => (
-        <div key={key}>
+        <div key={key} className={classes.listBlock}>
           {showDate && key && buildDateArea(key)}
-          <div>
-            {key && buildScenariosList(groupedScenarios[key])}
-            <Divider variant="inset" className={classes.divider} />
-          </div>
+          <div>{key && buildScenariosList(groupedScenarios[key])}</div>
         </div>
       ));
   }

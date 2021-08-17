@@ -15,6 +15,10 @@ interface Status {
    * Scenario status progress percentage
    */
   progress?: number;
+  /**
+   * Scenario icon component
+   */
+  Icon?: any;
 }
 
 interface DescriptionField {
@@ -75,6 +79,12 @@ interface MenuItem {
    * Ability to disable a button
    */
   disabled?: boolean;
+}
+
+interface ActionButton {
+  name: string;
+  color: string;
+  handleActionButton: () => void;
 }
 
 interface ScenarioOLD {
@@ -169,6 +179,7 @@ export {
   Status,
   DescriptionField,
   MenuItem,
+  ActionButton,
   ScenarioOLD,
   Scenario,
   Condition,

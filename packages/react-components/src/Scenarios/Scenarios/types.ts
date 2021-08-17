@@ -1,5 +1,5 @@
 import { JobParameters } from '../../api/types';
-import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
+import { DescriptionField, MenuItem, QueryDates, Scenario, Status, ActionButton } from '../types';
 
 interface ScenariosProps {
   /**
@@ -118,6 +118,10 @@ interface ScenariosProps {
    */
   status: Status[];
   /**
+   * Highlight name field with an accent colour if status matches this
+   */
+  highlightNameOnStatus: string;
+  /**
    * Customising scenario description field display
    */
   descriptionFields?: DescriptionField[];
@@ -129,6 +133,10 @@ interface ScenariosProps {
    * The scenario menu options
    */
   menuItems: MenuItem[];
+  /**
+   * An action button which sits on the right hand side, below the menu
+   */
+  actionButton?: ActionButton;
   /**
    * The scenario menu function handlers
    */

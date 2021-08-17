@@ -4,8 +4,8 @@ import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
-import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
 import { Scenario, ScenarioOLD } from '../types';
+import { ScenarioItemOLD } from '../ScenarioItemOLD/ScenarioItem';
 import ScenarioListProps from './types';
 import useStyles from './useStyles';
 
@@ -64,7 +64,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'id'),
             })}
           >
-            <ScenarioItem
+            <ScenarioItemOLD
               name={getObjectProperty(scenario.data, nameField)}
               onClick={onScenarioClick}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
