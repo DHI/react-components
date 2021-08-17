@@ -13,7 +13,9 @@ const checkStatus = (response: Response) => {
     return of(response);
   }
 
-  return response.json();
+  return response.text().then((text) => {
+    return text ? JSON.parse(text) : {};
+  });
 };
 
 const fetchUrl = (endPoint: RequestInfo, options?: Options) => {

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import DHITheme from '../../theme';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { ResetPasswordForm } from '../ResetPasswordForm/ResetPasswordForm';
+import { UpdatePasswordForm } from '../UpdatePasswordForm/UpdatePasswordForm';
 import LoginProps from './types';
 
 const Login = (props: LoginProps) => {
@@ -10,9 +11,12 @@ const Login = (props: LoginProps) => {
     host,
     showRememberMe,
     showResetPassword,
+    showUpdatePassword,
     resetPasswordMailTemplate,
+    resetPasswordToken,
     textFieldVariant,
     translations,
+    onBackToLogin,
     onSuccess,
     onError,
   } = props;
@@ -24,19 +28,30 @@ const Login = (props: LoginProps) => {
 
   return (
     <ThemeProvider theme={DHITheme}>
-      {showingResetPassword ? (
+      {showingResetPassword && (
         <ResetPasswordForm
           host={host}
           mailTemplate={resetPasswordMailTemplate}
           onBackToLogin={(value) => togglePasswordResetForm(value)}
-          resetPasswordUserNamePlaceholder={
-            translations?.resetPasswordUserNamePlaceholder ?? 'Email Address or User ID'
-          }
-          resetPasswordButtonText={translations?.resetPasswordButton ?? 'FORGOT PASSWORD'}
-          resetPasswordErrorText={translations?.resetPasswordError}
+          userNamePlaceholder={translations?.updatePasswordEmailPlaceholder}
+          resetPasswordButtonText={translations?.resetPasswordButton}
+          errorText={translations?.resetPasswordError}
           textFieldVariant={textFieldVariant}
         />
-      ) : (
+      )}
+      {showUpdatePassword && (
+        <UpdatePasswordForm
+          host={host}
+          token={resetPasswordToken}
+          newPasswordPlaceholder={translations?.updatePasswordNewPasswordPlaceholder}
+          confirmPasswordPlaceholder={translations?.updatePasswordConfirmPasswordPlaceholder}
+          updatePasswordButtonText={translations?.updatePasswordConfirmButton}
+          errorText={translations?.resetPasswordError}
+          textFieldVariant={textFieldVariant}
+          onBackToLogin={onBackToLogin}
+        />
+      )}
+      {!showingResetPassword && !showUpdatePassword && (
         <LoginForm
           host={host}
           onSuccess={onSuccess}
@@ -45,11 +60,11 @@ const Login = (props: LoginProps) => {
           showResetPassword={showResetPassword}
           onResetPassword={(value) => togglePasswordResetForm(value)}
           textFieldVariant={textFieldVariant}
-          userNamePlaceholder={translations?.userNamePlaceholder ?? 'Username'}
-          passwordPlaceholder={translations?.passwordPlaceholder ?? 'Password'}
-          loginButtonText={translations?.loginButton ?? 'Login'}
-          rememberMeLabelText={translations?.rememberMeLabel ?? 'Remember me'}
-          resetPasswordLabelText={translations?.resetPasswordLabel ?? 'FORGOT PASSWORD?'}
+          userNamePlaceholder={translations?.userNamePlaceholder}
+          passwordPlaceholder={translations?.passwordPlaceholder}
+          loginButtonText={translations?.loginButton}
+          rememberMeLabelText={translations?.rememberMeLabel}
+          resetPasswordLabelText={translations?.resetPasswordLabel}
         />
       )}
       <div style={{ clear: 'both' }}></div>

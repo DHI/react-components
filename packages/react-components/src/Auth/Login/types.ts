@@ -23,6 +23,8 @@ interface LoginProps {
     /** Local text translation for field */
     loginButton?: string;
   };
+  /** Action handler when back to login link clicked */
+  onBackToLogin?: (value: boolean) => void;
   /** Should the remember me checkbox be displayed? */
   showRememberMe?: boolean;
   /** Should the reset password checkbox be displayed? */
