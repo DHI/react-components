@@ -38,12 +38,14 @@ const Scenarios = (props: ScenariosProps) => {
     descriptionFields,
     extraFields,
     menuItems,
+    actionButton,
     selectedScenarioId,
     showDate,
     showHour,
     showMenu,
     showStatus,
     status,
+    highlightNameOnStatus,
     queryDates,
     onContextMenuClick,
     onScenarioSelected,
@@ -561,7 +563,9 @@ const Scenarios = (props: ScenariosProps) => {
           showMenu={showMenu}
           showStatus={showStatus}
           status={status}
+          highlightNameOnStatus={highlightNameOnStatus}
           timeZone={timeZone}
+          actionButton={actionButton}
         />
       )}
       {dialog && (

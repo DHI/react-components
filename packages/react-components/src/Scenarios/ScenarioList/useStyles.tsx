@@ -9,24 +9,25 @@ const styles = () => ({
     height: '100%',
     marginTop: '30px',
   },
+  listBlock: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   dateBlock: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
   },
   dateArea: {
-    alignSelf: 'flex-start',
-    flexDirection: 'column',
-    marginTop: '-25px',
-    marginBottom: '-37px',
-    fontFamily: ['Source Sans Pro', 'sans-serif'],
-    fontSize: '16px',
-    lineHeight: 1.6,
-  },
-  dayText: {
-    fontWeight: 'bold',
-    fontSize: '15px',
-    color: 'gray',
+    'display': 'flex',
+    'backgroundColor': '#DBE4E9',
+    'padding': '5px 10px',
+    'fontFamily': ['Source Sans Pro', 'sans-serif'],
+    'fontSize': 16,
+    'lineHeight': 1.6,
+    '& span': {
+      fontWeight: 'normal',
+    },
   },
   textFields: {
     fontSize: '12px',
@@ -34,13 +35,12 @@ const styles = () => ({
   },
   divider: {
     marginLeft: '30px',
-    borderTop: '1px solid #c9c9c9',
   },
   listItem: {
     'display': 'flex',
     'flex': 1,
     'flexDirection': 'column',
-    'marginLeft': '30px',
+    'borderBottom': '1px solid #c3c3c3',
     '&:hover': {
       cursor: 'pointer',
       background: '#ebebeb',

@@ -3,6 +3,8 @@ import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
 import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import { ErrorRounded } from '@material-ui/icons';
 
 const dataObjectToArray = (data: { [x: string]: any }) => {
   return Object.keys(data).map((key) => ({
@@ -203,9 +205,11 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
 
   if (!scenarioStatus) {
     result = {
-      color: 'red',
-      message: 'Unknown Status Field',
-    };
+      color: '#FD3F75',
+      name: 'Error',
+      message: 'Unknown Status',
+      Icon: ErrorRounded,
+    } as Status;
   } else {
     result = currentStatus;
   }

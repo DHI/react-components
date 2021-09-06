@@ -1,17 +1,17 @@
-import { ActionButton, MenuItem, Scenario, Status } from '../types';
+import { MenuItem, ScenarioOLD, Status } from '../types';
 
-interface ScenarioItemProps {
+// TODO: remove ScenarioItemProps
+interface ScenarioItemOLDProps {
   /**
    * Style of the scenario item
    */
   classes?: any;
   menu: MenuItem[];
-  scenario: Scenario;
+  scenario: ScenarioOLD;
   /**
    * The scenario menu function handlers
    */
-  onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
-
+  onContextMenuClick: (menuItem: MenuItem, scenario: ScenarioOLD) => void;
   /**
    * Scenario item click event handler
    */
@@ -39,10 +39,6 @@ interface ScenarioItemProps {
    */
   name: string;
   /**
-   * An optional accent colour for the name field
-   */
-  nameAccentColour?: string;
-  /**
    * The Date of scenario creation
    */
   date: string | null;
@@ -63,10 +59,6 @@ interface ScenarioItemProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
-  /**
-   * An action button which sits on the right hand side, below the menu
-   */
-  actionButton?: ActionButton;
 }
 
-export default ScenarioItemProps;
+export default ScenarioItemOLDProps;
