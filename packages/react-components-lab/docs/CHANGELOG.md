@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.2.7](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.6...@dhi/react-components-lab@1.2.7) (2021-09-06)
+
+
+### Bug Fixes
+
+* **Loader:** Replace prop justify with justifyContent ([5e91098](https://github.com/DHI/react-components/commit/5e91098ba28c3cb866c3078c1327c72efbe5498a))
+
 ## @dhi/react-components-lab [1.2.6](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.5...@dhi/react-components-lab@1.2.6) (2021-09-06)
 
 
