@@ -15,7 +15,7 @@ const Loader: FC<LoaderProps> = ({
         <Grid
           container
           alignItems="center"
-          justify="center"
+          justifyContent="center"
           className={classes.blocking}
           style={{ ...style }}
         >
