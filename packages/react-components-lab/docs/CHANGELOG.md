@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.2.6](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.5...@dhi/react-components-lab@1.2.6) (2021-09-06)
+
+
+### Bug Fixes
+
+* **Theme:** Fix styling of disabled textfields ([b1f70e1](https://github.com/DHI/react-components/commit/b1f70e178963faf182c6490cd5969ca5723e2567))
+
 ## @dhi/react-components-lab [1.2.5](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.4...@dhi/react-components-lab@1.2.5) (2021-08-13)
 
 
