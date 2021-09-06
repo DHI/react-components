@@ -295,6 +295,27 @@ const mikeOverrides: Overrides = {
       },
     },
   },
+  MuiInputBase: {
+    input: {
+      '&$disabled': {
+        color: MIKE_COLORS.MEDIUMGREY_DARK,
+      },
+    },
+  },
+  MuiFilledInput: {
+    input: {
+      '&$disabled': {
+        backgroundColor: MIKE_COLORS.MEDIUMGREY_LIGHT,
+      },
+    },
+  },
+  MuiOutlinedInput: {
+    input: {
+      '&$disabled': {
+        backgroundColor: MIKE_COLORS.MEDIUMGREY_LIGHT,
+      },
+    },
+  },
   MuiTab: {
     root: {
       textTransform: 'none',
