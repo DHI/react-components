@@ -1,7 +1,7 @@
 import { JobParameters } from '../../api/types';
 import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
 
-interface ScenariosProps {
+interface ScenariosOLDProps {
   /**
    * Property field to specify the scenario name
    */
@@ -156,4 +156,4 @@ interface dataFilterbyPropertyObj {
   value?: string | null;
 }
 
-export default ScenariosProps;
+export default ScenariosOLDProps;
