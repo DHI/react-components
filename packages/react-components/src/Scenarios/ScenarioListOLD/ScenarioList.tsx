@@ -6,10 +6,10 @@ import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { Scenario, ScenarioOLD } from '../types';
 import { ScenarioItemOLD } from '../ScenarioItemOLD/ScenarioItem';
-import ScenarioListProps from './types';
+import ScenarioListOLDProps from './types';
 import useStyles from './useStyles';
 
-const ScenarioList = (props: ScenarioListProps) => {
+const ScenarioListOLD = (props: ScenarioListOLDProps) => {
   const {
     selectedScenarioId,
     scenarios,
@@ -136,4 +136,4 @@ const ScenarioList = (props: ScenarioListProps) => {
   return <div className={classes.root}>{printedScenarios}</div>;
 };
 
-export { ScenarioListProps, ScenarioList };
+export { ScenarioListOLDProps, ScenarioListOLD };
