@@ -228,6 +228,7 @@ export const ScenariosStory = () => {
 
 export const ScenariosJSONStory = () => {
   const [newScenario, setNewScenario] = useState<Scenario>();
+  const NOTIFICATION_HUB = '/notificationhub';
 
   const onAddScenario = () => {
     setNewScenario({
@@ -293,6 +294,7 @@ export const ScenariosJSONStory = () => {
               frequency={10}
               token={token.accessToken.token}
               // queryDates={queryDates}
+              signalRConnectionHubUrl={process.env.ENDPOINT_URL + NOTIFICATION_HUB}
               host={process.env.ENDPOINT_URL}
               scenarioConnection={'postgres-jsondocuments-scenarios'}
               jobConnection={'wf-jobs'}
