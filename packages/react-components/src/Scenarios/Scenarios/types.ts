@@ -165,6 +165,10 @@ interface ScenariosProps {
    * Set debug mode on to track what SignalR is emitting
    */
   debug?: boolean;
+  /**
+   * SignalR connection hub URL.
+   */
+  signalRConnectionHubUrl: string;
 }
 
 interface QueryBody {
