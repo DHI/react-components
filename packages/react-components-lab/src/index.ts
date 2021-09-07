@@ -1,8 +1,17 @@
-// Legend
+// Legend (for use with number & color range)
 export { default as Legend } from './components/Legend/Legend';
 export * from './components/Legend/Legend';
-export { default as LegendStyles } from './components/Legend/styles';
 export * from './components/Legend/types';
+
+// StaticLegend
+export { default as StaticLegend } from './components/StaticLegend/StaticLegend';
+export * from './components/StaticLegend/types';
+export { default as useStaticLegendStyles } from './components/StaticLegend/styles';
+
+// LegendBase
+export { default as LegendBase } from './components/LegendBase/LegendBase';
+export * from './components/LegendBase/types';
+export { default as useLegendBaseStyles } from './components/LegendBase/styles';
 
 // BarLegend
 export { default as BarLegend } from './components/BarLegend/BarLegend';

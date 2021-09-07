@@ -1,31 +1,46 @@
 import React, { FC } from 'react';
 import { Box, Typography } from '@material-ui/core';
-import { GapBox } from '../..';
 import { StaticLegendProps } from './types';
 import useStyles from './styles';
+import LegendBase from '../LegendBase/LegendBase';
 
-const StaticLegend: FC<StaticLegendProps> = ({ items, title, unit }) => {
+const StaticLegend: FC<StaticLegendProps> = ({
+  items,
+  unit,
+  title = 'Legend',
+  position = 'bottomRight',
+  defaultCollapsed = false,
+  collapsable = false,
+}) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.root}>
+    <LegendBase
+      unit={unit}
+      title={title}
+      position={position}
+      collapsable={collapsable}
+      defaultCollapsed={defaultCollapsed}
+    >
       {items.map((item, i) => (
-        <GapBox
-          mb={i === items.length - 1 ? 0 : 1}
-          gap={1}
+        <Box
           key={item.color}
+          mb={i === items.length - 1 ? 0 : 1}
           display="flex"
+          justifyContent="space-between"
+          width="100%"
         >
+          <Typography className={classes.truncate} variant="subtitle2">
+            {item.label}
+          </Typography>
+
           <Box
-            borderRadius={20}
             style={{ background: item.color }}
-            width={20}
-            height={20}
+            className={classes.colorBox}
           />
-          <Typography variant="subtitle2">{item.label}</Typography>
-        </GapBox>
+        </Box>
       ))}
-    </Box>
+    </LegendBase>
   );
 };
 

@@ -1,6 +1,6 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/react/types-6-0';
+import { Meta, Story } from '@storybook/react/types-6-0'; // eslint-disable-line import/no-extraneous-dependencies
+import { Typography } from '@material-ui/core';
 import React from 'react';
 import Legend from './Legend';
 import { LegendProps } from './types';
@@ -36,7 +36,15 @@ export default {
   },
 } as Meta;
 
-const Template: Story<LegendProps> = (args) => <Legend {...args} />;
+const Template: Story<LegendProps> = (args) => (
+  <div>
+    <Typography>
+      Adds dynamic legend items, based on a color array, and a number range to
+      LegendBase
+    </Typography>
+    <Legend {...args} />;
+  </div>
+);
 
 export const Primary = Template.bind({});
 Primary.args = {

@@ -1,16 +1,11 @@
-import { CSSProperties } from 'react';
+import { StaticLegendProps } from '../StaticLegend/types';
 
 export type ColorsArr = string[];
 
-export interface LegendProps {
-  title?: string;
-  unit?: string;
+export interface LegendProps extends StaticLegendProps {
   min: number;
   max: number;
   colors: ColorsArr;
   doMixColors?: boolean;
   maxItems?: number;
-  style?: CSSProperties;
-  headerBackground?: string;
-  legendBackground?: string;
 }
