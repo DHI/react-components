@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.3.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.7...@dhi/react-components-lab@1.3.0) (2021-09-08)
+
+
+### Features
+
+* **lab:** Add LegendBase, StaticLegend components ([dfb3bc8](https://github.com/DHI/react-components/commit/dfb3bc88795291a1b9ac6334d7afaf4f5c67bc2c))
+
 ## @dhi/react-components-lab [1.2.7](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.6...@dhi/react-components-lab@1.2.7) (2021-09-06)
 
 
