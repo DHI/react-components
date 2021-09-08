@@ -1,8 +1,8 @@
-import { StaticLegendProps } from '../StaticLegend/types';
+import { LegendBaseProps } from '../LegendBase/types';
 
 export type ColorsArr = string[];
 
-export interface LegendProps extends StaticLegendProps {
+export interface LegendProps extends Omit<LegendBaseProps, 'children'> {
   min: number;
   max: number;
   colors: ColorsArr;
