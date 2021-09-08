@@ -1,6 +1,6 @@
 import { Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import LegendBase from './LegendBase';
 import { LegendBaseProps } from './types';
 
@@ -10,12 +10,22 @@ export default {
 };
 
 const Template: Story<LegendBaseProps> = (args) => (
-  <div>
+  <>
     <Typography>
       This is a map overlay legend frame, used by StaticLegend and Legend
     </Typography>
-    <LegendBase {...args} />
-  </div>
+    <Box
+      position="relative"
+      height={500}
+      width={800}
+      p={2}
+      m={2}
+      style={{ backgroundColor: '#cccccc' }}
+    >
+      <Typography>Map</Typography>
+      <LegendBase {...args} />
+    </Box>
+  </>
 );
 
 const children = <Typography>Content</Typography>;

@@ -1,7 +1,7 @@
 // Legend (for use with number & color range)
-export { default as Legend } from './components/Legend/Legend';
-export * from './components/Legend/Legend';
-export * from './components/Legend/types';
+export { default as ContinuousLegend } from './components/ContinuousLegend/ContinuousLegend';
+export * from './components/ContinuousLegend/ContinuousLegend';
+export * from './components/ContinuousLegend/types';
 
 // StaticLegend
 export { default as StaticLegend } from './components/StaticLegend/StaticLegend';

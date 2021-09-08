@@ -1,6 +1,6 @@
 import { Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import StaticLegend from './StaticLegend';
 import { StaticLegendProps } from './types';
 
@@ -10,10 +10,21 @@ export default {
 };
 
 const Template: Story<StaticLegendProps> = (args) => (
-  <div>
+  <>
     <Typography>Adds legend items to LegendBase as children</Typography>
-    <StaticLegend {...args} />
-  </div>
+
+    <Box
+      position="relative"
+      height={500}
+      width={800}
+      p={2}
+      m={2}
+      style={{ backgroundColor: '#cccccc' }}
+    >
+      <Typography>Map</Typography>
+      <StaticLegend {...args} />
+    </Box>
+  </>
 );
 
 const items = [
