@@ -22,10 +22,12 @@ export default makeStyles<IMikeTheme>((theme) => ({
     width: '100%',
     height: theme.spacing(5),
     display: 'flex',
-    padding: theme.spacing(1),
     gap: theme.spacing(1),
     justifyContent: 'flex-end',
-    background: theme.palette.background.default,
+    '&.MuiButtonBase-root': {
+      background: theme.palette.background.default,
+      padding: theme.spacing(1),
+    },
   },
   contentBox: {
     margin: theme.spacing(1),
