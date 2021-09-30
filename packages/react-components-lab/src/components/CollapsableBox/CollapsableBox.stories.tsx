@@ -28,8 +28,8 @@ const Template: Story<CollapsableBoxProps> = (args) => (
   </Box>
 );
 
-export const AllProps = Template.bind({});
-AllProps.args = {
+export const Default = Template.bind({});
+Default.args = {
   collapseLabel: 'Collapse',
   expandLabel: 'Expand',
   style: {
