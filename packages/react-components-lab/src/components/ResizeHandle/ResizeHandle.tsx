@@ -17,7 +17,6 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
   orientation = 'horizontal',
   size = 'medium',
   onDrag,
-  // eslint-disable-next-line radar/cognitive-complexity
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [initialSize, setInitialSize] = useState(minDraggableSize * 2);
