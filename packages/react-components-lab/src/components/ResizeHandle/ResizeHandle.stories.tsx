@@ -20,14 +20,25 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TemplateHorizontal: Story<ResizeHandleProps> = (args) => {
-  const [height, setHeight] = useState(200);
+const Template: Story<ResizeHandleProps> = (args) => {
+  const defaultSize = 200;
+
+  const [height, setHeight] = useState(defaultSize);
+  const [width, setWidth] = useState(defaultSize);
   const classes = useStyles();
+
+  const { orientation, size } = args;
+
+  const isHorizontal = orientation === 'horizontal';
+  const isSizeSmall = size === 'small';
+  const isSizeMedium = size === 'medium';
+  const isSizeLarge = size === 'large';
   return (
     <Box
       display="flex"
-      flexDirection="column"
-      height="100vh"
+      flexDirection={isHorizontal ? 'column' : 'row'}
+      height={400}
+      width={400}
       position="relative"
     >
       <Box
@@ -40,21 +51,80 @@ const TemplateHorizontal: Story<ResizeHandleProps> = (args) => {
         <Typography variant="h3">Map</Typography>
       </Box>
       <Box position="relative">
-        <Box
-          width={1}
-          position="absolute"
-          display="flex"
-          justifyContent="center"
-          top={-16}
-        >
-          <ResizeHandle {...args} onDrag={setHeight} />
-        </Box>
+        {isHorizontal && isSizeLarge && (
+          <Box
+            width={1}
+            position="absolute"
+            display="flex"
+            justifyContent="center"
+            top={-34}
+          >
+            <ResizeHandle
+              {...args}
+              onDrag={setHeight}
+              wrapperSize={400}
+              draggableSize={height}
+            />
+          </Box>
+        )}
+
+        {isHorizontal && isSizeMedium && (
+          <Box
+            width={1}
+            position="absolute"
+            display="flex"
+            justifyContent="center"
+            top={-25}
+          >
+            <ResizeHandle
+              {...args}
+              onDrag={setHeight}
+              wrapperSize={400}
+              draggableSize={height}
+            />
+          </Box>
+        )}
+
+        {isHorizontal && isSizeSmall && (
+          <Box
+            width={1}
+            position="absolute"
+            display="flex"
+            justifyContent="center"
+            top={-16}
+          >
+            <ResizeHandle
+              {...args}
+              onDrag={setHeight}
+              wrapperSize={400}
+              draggableSize={height}
+            />
+          </Box>
+        )}
+
+        {!isHorizontal && (
+          <Box
+            height={1}
+            position="absolute"
+            display="flex"
+            justifyContent="center"
+            left={-16}
+          >
+            <ResizeHandle
+              {...args}
+              onDrag={setWidth}
+              wrapperSize={400}
+              draggableSize={width}
+            />
+          </Box>
+        )}
         {height !== 0 && (
           <Box
             display="flex"
             alignItems="center"
             justifyContent="center"
-            height={`${height}px`}
+            height={isHorizontal ? `${height}px` : 1}
+            width={!isHorizontal ? `${width}px` : 1}
             className={classes.background1}
           >
             <Typography variant="h3">Container</Typography>
@@ -65,63 +135,40 @@ const TemplateHorizontal: Story<ResizeHandleProps> = (args) => {
   );
 };
 
-const TemplateVertical: Story<ResizeHandleProps> = (args) => {
-  const [width, setWidth] = useState(200);
-  const classes = useStyles();
-  return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      height="50vh"
-      width="96vw"
-      position="relative"
-    >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        flexGrow={1}
-        className={classes.background2}
-      >
-        <Typography variant="h3">Map</Typography>
-      </Box>
-      <Box position="relative">
-        <Box
-          height={1}
-          position="absolute"
-          display="flex"
-          alignItems="center"
-          left={-16}
-        >
-          <ResizeHandle {...args} onDrag={setWidth} />
-        </Box>
-        {width !== 0 && (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width={`${width}px`}
-            height={1}
-            className={classes.background1}
-          >
-            <Typography variant="h3">Container</Typography>
-          </Box>
-        )}
-      </Box>
-    </Box>
-  );
-};
-
-export const Horizontal = TemplateHorizontal.bind({});
+export const Horizontal = Template.bind({});
 Horizontal.args = {
-  boxSize: 200,
-  minSize: 100,
+  draggableSize: 100,
+  minDraggableSize: 100,
+  minContainerSize: 100,
+  orientation: 'horizontal',
+  size: 'medium',
 };
 
-export const Vertical = TemplateVertical.bind({});
+export const Vertical = Template.bind({});
 
-TemplateVertical.args = {
+Vertical.args = {
+  draggableSize: 100,
+  minDraggableSize: 100,
+  minContainerSize: 100,
   orientation: 'vertical',
-  minSize: 100,
-  boxSize: 200,
+};
+
+export const HorizontalSmall = Template.bind({});
+
+HorizontalSmall.args = {
+  draggableSize: 100,
+  minDraggableSize: 100,
+  minContainerSize: 100,
+  orientation: 'horizontal',
+  size: 'small',
+};
+
+export const HorizontalBig = Template.bind({});
+
+HorizontalBig.args = {
+  draggableSize: 100,
+  minDraggableSize: 100,
+  minContainerSize: 100,
+  orientation: 'horizontal',
+  size: 'large',
 };

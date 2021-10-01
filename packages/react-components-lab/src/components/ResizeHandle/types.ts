@@ -1,13 +1,15 @@
 import { MouseEventHandler } from 'react';
 
 export type Orientation = 'horizontal' | 'vertical';
-
+export type Size = 'small' | 'medium' | 'large';
 export interface ResizeHandleProps {
-  boxSize: number;
-  onDrag: (h: number) => void;
-  minSize?: number;
-  minMapSize?: number;
+  wrapperSize: number;
+  draggableSize: number;
+  minDraggableSize?: number;
+  minContainerSize?: number;
   orientation?: Orientation;
+  onDrag: (h: number) => void;
+  size?: Size;
 }
 
 export interface HandleProps {
@@ -16,4 +18,5 @@ export interface HandleProps {
   isCollapsed: boolean;
   onClickExpand: () => void;
   orientation?: Orientation;
+  size?: Size;
 }

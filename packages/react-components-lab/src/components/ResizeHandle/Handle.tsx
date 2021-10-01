@@ -15,9 +15,13 @@ const Handle: FC<HandleProps> = ({
   isCollapsed,
   onClickExpand,
   orientation,
+  size,
 }) => {
   const classes = useStyles();
 
+  const isHorizontal = orientation === 'horizontal';
+  const isSizeSmall = size === 'small';
+  const isSizeLarge = size === 'large';
   return (
     <Box
       draggable={false}
@@ -25,21 +29,37 @@ const Handle: FC<HandleProps> = ({
       onMouseUp={onMouseUp}
       className={clsx(classes.root, isCollapsed && classes.collapsedRoot)}
       onClick={() => isCollapsed && onClickExpand()}
+      style={{ cursor: isHorizontal ? 's-resize' : 'w-resize' }}
     >
       <Box
         draggable={false}
-        className={classes.iconBox}
+        className={clsx(
+          classes.iconBox,
+          isSizeSmall && classes.sizeSmall,
+          isSizeLarge && classes.sizeLarge
+        )}
         style={{
-          transform:
-            orientation === 'vertical'
-              ? 'translate(-40%, 0) rotate(-90deg)'
-              : 'unset',
+          transform: !isHorizontal
+            ? 'translate(-40%, 0) rotate(-90deg)'
+            : 'unset',
         }}
       >
         {!isCollapsed ? (
-          <DragHandleIcon className={classes.icon} />
+          <DragHandleIcon
+            className={clsx(
+              classes.icon,
+              isSizeSmall && classes.iconSmall,
+              isSizeLarge && classes.iconLarge
+            )}
+          />
         ) : (
-          <ExpandLessIcon className={classes.icon} />
+          <ExpandLessIcon
+            className={clsx(
+              classes.icon,
+              isSizeSmall && classes.iconSmall,
+              isSizeLarge && classes.iconLarge
+            )}
+          />
         )}
       </Box>
     </Box>

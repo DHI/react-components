@@ -10,59 +10,60 @@ import Handle from './Handle';
 import { ResizeHandleProps } from './types';
 
 const VerticalHandle: FC<ResizeHandleProps> = ({
-  boxSize,
-  onDrag,
-  minSize = 0,
-  minMapSize = (20 / 100) * window.innerHeight,
+  wrapperSize,
+  draggableSize,
+  minDraggableSize = 0,
+  minContainerSize = 0,
   orientation = 'horizontal',
+  size = 'medium',
+  onDrag,
   // eslint-disable-next-line radar/cognitive-complexity
 }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [initialSize, setInitialSize] = useState(minSize * 2);
+  const [initialSize, setInitialSize] = useState(minDraggableSize * 2);
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      const windowHeight = window.innerHeight;
-      const windowWidth = window.innerWidth;
-      let h =
-        e.clientY < minMapSize
-          ? windowHeight - minMapSize
-          : windowHeight - e.clientY;
-
-      h = h < minSize ? 0 : h;
-
-      let w =
-        e.clientX < minMapSize
-          ? windowWidth - minMapSize
-          : windowWidth - e.clientX;
-
-      w = w < minSize ? 0 : w;
-
       if (orientation === 'horizontal') {
+        const wrappersHeight = wrapperSize;
+        let h =
+          e.clientY < minContainerSize
+            ? wrappersHeight - minContainerSize
+            : wrappersHeight - e.clientY;
+
+        h = h < minDraggableSize ? 0 : h;
+
         onDrag(h);
       }
 
       if (orientation === 'vertical') {
+        const wrappersWidth = wrapperSize;
+        let w =
+          e.clientX < minContainerSize
+            ? wrappersWidth - minContainerSize
+            : wrappersWidth - e.clientX;
+
+        w = w < minDraggableSize ? 0 : w;
         onDrag(w);
       }
     },
-    [orientation, minMapSize, minSize, onDrag]
+    [orientation, minContainerSize, minDraggableSize, onDrag]
   );
 
   const handleMouseDown = useCallback(
     (e: MouseEvent) => {
       setIsDragging(true);
-      const h = window.innerHeight - e.clientY;
-      const w = window.innerWidth - e.clientX;
+      const h = wrapperSize - e.clientY;
+      const w = wrapperSize - e.clientX;
       if (orientation === 'horizontal') {
-        setInitialSize(initialSize < minSize ? minSize : h);
+        setInitialSize(initialSize < minDraggableSize ? minDraggableSize : h);
       }
 
       if (orientation === 'vertical') {
-        setInitialSize(initialSize < minSize ? minSize : w);
+        setInitialSize(initialSize < minDraggableSize ? minDraggableSize : w);
       }
     },
-    [initialSize, minSize, orientation]
+    [initialSize, minDraggableSize, orientation]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -88,28 +89,31 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
     return remove;
   }, [isDragging, handleMouseMove, handleMouseDown, handleMouseUp]);
 
-  const expandWidth = (30 / 100) * window.innerWidth;
-  const expandHeight = (30 / 100) * window.innerHeight;
+  const expandWidth = (30 / 100) * wrapperSize;
+  const expandHeight = (30 / 100) * wrapperSize;
   const expandSize = Number(
     orientation === 'horizontal'
       ? expandHeight
       : orientation === 'vertical' && expandWidth
   );
+
   return (
     <Handle
+      size={size}
       orientation={orientation}
       onMouseDown={handleMouseDown as unknown as MouseEventHandler<HTMLElement>}
       onMouseUp={handleMouseUp}
-      isCollapsed={boxSize < minSize}
+      isCollapsed={draggableSize < minDraggableSize}
       onClickExpand={() => onDrag(expandSize)}
     />
   );
 };
 
 VerticalHandle.defaultProps = {
-  minSize: 0,
-  minMapSize: (20 / 100) * window.innerHeight,
+  minDraggableSize: 0,
+  minContainerSize: 0,
   orientation: 'horizontal',
+  size: 'medium',
 };
 
 export default VerticalHandle;
