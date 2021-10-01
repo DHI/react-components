@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.4.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.3.1...@dhi/react-components-lab@1.4.0) (2021-10-01)
+
+
+### Features
+
+* **CollapsableBox:** Add CollapsableBox component ([301cab1](https://github.com/DHI/react-components/commit/301cab142e66c4c9ed70bca5c2855f4b13b06678))
+
 ## @dhi/react-components-lab [1.3.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.3.0...@dhi/react-components-lab@1.3.1) (2021-09-10)
 
 
