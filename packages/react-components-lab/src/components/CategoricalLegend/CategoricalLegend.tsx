@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Box, Typography } from '@material-ui/core';
-import { Props } from './types';
+import { CategoricalLegendProps } from './types';
 import useCategoricalLegendStyles from './styles';
 
-const CategoricalLegend: FC<Props> = ({ items }) => {
+const CategoricalLegend: FC<CategoricalLegendProps> = ({ items }) => {
   const classes = useCategoricalLegendStyles();
 
   return (
