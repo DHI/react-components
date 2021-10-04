@@ -1,3 +1,15 @@
+# @dhi/react-components-lab [1.5.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.4.0...@dhi/react-components-lab@1.5.0) (2021-10-04)
+
+
+### Bug Fixes
+
+* **ResizeHandler:** Small fixes to the component. Adds vertical prop. ([94d96b6](https://github.com/DHI/react-components/commit/94d96b61b060fac1b9cf613503cad64e182ff06a))
+
+
+### Features
+
+* **ResizeHandle:** Add Resize handle component ([e9e63bc](https://github.com/DHI/react-components/commit/e9e63bc6506e3fb040d2a897bef7bb331b3a6756))
+
 # @dhi/react-components-lab [1.4.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.3.1...@dhi/react-components-lab@1.4.0) (2021-10-01)
 
 
