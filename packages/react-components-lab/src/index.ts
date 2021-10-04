@@ -23,6 +23,11 @@ export { default as LegendBase } from './components/LegendBase/LegendBase';
 export * from './components/LegendBase/types';
 export { default as useLegendBaseStyles } from './components/LegendBase/styles';
 
+// CategoricalLegend
+export { default as CategoricalLegend } from './components/CategoricalLegend/CategoricalLegend';
+export * from './components/CategoricalLegend/types';
+export { default as useCategoricalLegendStyles } from './components/CategoricalLegend/styles';
+
 // BarLegend
 export { default as BarLegend } from './components/BarLegend/BarLegend';
 export { default as BarLegendStyles } from './components/BarLegend/styles';
