@@ -1,5 +1,9 @@
-// CollapsableBox
+// ResizeHandle
+export { default as ResizeHandle } from './components/ResizeHandle/ResizeHandle';
+export * from './components/ResizeHandle/types';
+export { default as useHandleStyles } from './components/ResizeHandle/styles';
 
+// CollapsableBox
 export { default as CollapsableBox } from './components/CollapsableBox/CollapsableBox';
 export * from './components/CollapsableBox/types';
 export { default as CollapsableBoxStyles } from './components/CollapsableBox/styles';
@@ -26,12 +30,12 @@ export * from './components/BarLegend/types';
 
 // Loader
 export { default as Loader } from './components/Loader/Loader';
-export { default as LoaderStyles } from './components/Loader/styles';
+export { default as useLoaderStyles } from './components/Loader/styles';
 export * from './components/Loader/types';
 
 // GapBox
 export { default as GapBox } from './components/GapBox/GapBox';
-export { default as GapBoxStyles } from './components/GapBox/styles';
+export { default as useGapBoxStyles } from './components/GapBox/styles';
 export * from './components/GapBox/types';
 
 // Snackbar

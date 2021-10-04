@@ -10,7 +10,8 @@
         "install": "lerna bootstrap",
         "build": "lerna run build",
         "lint": "lerna exec yarn lint",
-        "sb": "yarn --cwd packages/react-components sb"
+        "sb": "yarn --cwd packages/react-components sb",
+        "lab:sb": "cd packages/react-components-lab && yarn run start-storybook"
     },
     "workspaces": [
         "./packages/*",
