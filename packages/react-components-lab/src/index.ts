@@ -3,6 +3,11 @@ export { default as ResizeHandle } from './components/ResizeHandle/ResizeHandle'
 export * from './components/ResizeHandle/types';
 export { default as useHandleStyles } from './components/ResizeHandle/styles';
 
+// CollapsableBox
+export { default as CollapsableBox } from './components/CollapsableBox/CollapsableBox';
+export * from './components/CollapsableBox/types';
+export { default as CollapsableBoxStyles } from './components/CollapsableBox/styles';
+
 // Legend (for use with number & color range)
 export { default as ContinuousLegend } from './components/ContinuousLegend/ContinuousLegend';
 export * from './components/ContinuousLegend/ContinuousLegend';
