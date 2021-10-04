@@ -5,18 +5,22 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 import { ResizeHandleProps } from './types';
 import ResizeHandle from './ResizeHandle';
+import mikePalette from '../ThemeProvider/mikePallete';
 
 export default {
   title: 'Example/ResizeHandle',
   component: ResizeHandle,
 };
 
+const DARKGREY_LIGHT = mikePalette.darkGrey.light;
+const ACTIONBLUE_PALE = mikePalette.secondary.light;
+
 const useStyles = makeStyles(() => ({
   background1: {
-    backgroundColor: '#CFDBE2',
+    backgroundColor: DARKGREY_LIGHT,
   },
   background2: {
-    backgroundColor: '#97DBF9',
+    backgroundColor: ACTIONBLUE_PALE,
   },
 }));
 
@@ -27,9 +31,9 @@ const Template: Story<ResizeHandleProps> = (args) => {
   const [width, setWidth] = useState(defaultSize);
   const classes = useStyles();
 
-  const { orientation, size } = args;
+  const { vertical, size } = args;
 
-  const isHorizontal = orientation === 'horizontal';
+  const isHorizontal = !vertical;
   const isSizeSmall = size === 'small';
   const isSizeMedium = size === 'medium';
   const isSizeLarge = size === 'large';
@@ -118,7 +122,19 @@ const Template: Story<ResizeHandleProps> = (args) => {
             />
           </Box>
         )}
-        {height !== 0 && (
+        {isHorizontal && height !== 0 && (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height={isHorizontal ? `${height}px` : 1}
+            width={!isHorizontal ? `${width}px` : 1}
+            className={classes.background1}
+          >
+            <Typography variant="h3">Container</Typography>
+          </Box>
+        )}
+        {!isHorizontal && width !== 0 && (
           <Box
             display="flex"
             alignItems="center"
@@ -140,7 +156,6 @@ Horizontal.args = {
   draggableSize: 100,
   minDraggableSize: 100,
   minContainerSize: 100,
-  orientation: 'horizontal',
   size: 'medium',
 };
 
@@ -150,7 +165,7 @@ Vertical.args = {
   draggableSize: 100,
   minDraggableSize: 100,
   minContainerSize: 100,
-  orientation: 'vertical',
+  vertical: true,
 };
 
 export const HorizontalSmall = Template.bind({});
@@ -159,7 +174,6 @@ HorizontalSmall.args = {
   draggableSize: 100,
   minDraggableSize: 100,
   minContainerSize: 100,
-  orientation: 'horizontal',
   size: 'small',
 };
 
@@ -169,6 +183,5 @@ HorizontalBig.args = {
   draggableSize: 100,
   minDraggableSize: 100,
   minContainerSize: 100,
-  orientation: 'horizontal',
   size: 'large',
 };

@@ -7,7 +7,7 @@ export interface ResizeHandleProps {
   draggableSize: number;
   minDraggableSize?: number;
   minContainerSize?: number;
-  orientation?: Orientation;
+  vertical?: boolean;
   onDrag: (h: number) => void;
   size?: Size;
 }
@@ -17,6 +17,6 @@ export interface HandleProps {
   onMouseDown: MouseEventHandler<HTMLElement> | undefined;
   isCollapsed: boolean;
   onClickExpand: () => void;
-  orientation?: Orientation;
+  vertical: boolean;
   size?: Size;
 }

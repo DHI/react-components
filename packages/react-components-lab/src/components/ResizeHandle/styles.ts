@@ -8,7 +8,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-around',
   },
   collapsedRoot: {
-    cursor: 'pointer',
+    cursor: 'pointer !important',
   },
   icon: {
     color: theme.palette.primary.main,

@@ -5,7 +5,6 @@ import React, {
   FC,
   MouseEventHandler,
 } from 'react';
-// eslint-disable-next-line import/no-cycle
 import Handle from './Handle';
 import { ResizeHandleProps } from './types';
 
@@ -14,7 +13,7 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
   draggableSize,
   minDraggableSize = 0,
   minContainerSize = 0,
-  orientation = 'horizontal',
+  vertical = false,
   size = 'medium',
   onDrag,
 }) => {
@@ -23,7 +22,7 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (orientation === 'horizontal') {
+      if (!vertical) {
         const wrappersHeight = wrapperSize;
         let h =
           e.clientY < minContainerSize
@@ -35,7 +34,7 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
         onDrag(h);
       }
 
-      if (orientation === 'vertical') {
+      if (vertical) {
         const wrappersWidth = wrapperSize;
         let w =
           e.clientX < minContainerSize
@@ -46,7 +45,7 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
         onDrag(w);
       }
     },
-    [orientation, minContainerSize, minDraggableSize, onDrag]
+    [vertical, minContainerSize, minDraggableSize, onDrag]
   );
 
   const handleMouseDown = useCallback(
@@ -54,15 +53,15 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
       setIsDragging(true);
       const h = wrapperSize - e.clientY;
       const w = wrapperSize - e.clientX;
-      if (orientation === 'horizontal') {
+      if (!vertical) {
         setInitialSize(initialSize < minDraggableSize ? minDraggableSize : h);
       }
 
-      if (orientation === 'vertical') {
+      if (vertical) {
         setInitialSize(initialSize < minDraggableSize ? minDraggableSize : w);
       }
     },
-    [initialSize, minDraggableSize, orientation]
+    [initialSize, minDraggableSize]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -90,20 +89,16 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
 
   const expandWidth = (30 / 100) * wrapperSize;
   const expandHeight = (30 / 100) * wrapperSize;
-  const expandSize = Number(
-    orientation === 'horizontal'
-      ? expandHeight
-      : orientation === 'vertical' && expandWidth
-  );
+  const expandSize = Number(!vertical ? expandHeight : expandWidth);
 
   return (
     <Handle
       size={size}
-      orientation={orientation}
       onMouseDown={handleMouseDown as unknown as MouseEventHandler<HTMLElement>}
       onMouseUp={handleMouseUp}
       isCollapsed={draggableSize < minDraggableSize}
       onClickExpand={() => onDrag(expandSize)}
+      vertical={vertical}
     />
   );
 };
@@ -111,7 +106,6 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
 VerticalHandle.defaultProps = {
   minDraggableSize: 0,
   minContainerSize: 0,
-  orientation: 'horizontal',
   size: 'medium',
 };
 

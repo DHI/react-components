@@ -14,12 +14,12 @@ const Handle: FC<HandleProps> = ({
   onMouseUp,
   isCollapsed,
   onClickExpand,
-  orientation,
+  vertical,
   size,
 }) => {
   const classes = useStyles();
 
-  const isHorizontal = orientation === 'horizontal';
+  const isHorizontal = !vertical;
   const isSizeSmall = size === 'small';
   const isSizeLarge = size === 'large';
   return (
