@@ -9,14 +9,12 @@ const Template: Story<CategoricalBarLegendProps> = (args) => (
   <CategoricalBarLegend {...args} />
 );
 
-export const PermanentWater = Template.bind({});
-PermanentWater.args = {
-  items: [{ color: mikePalette.darkGrey.light, label: 'Permanent water' }],
-};
-
-export const WaterExtent = Template.bind({});
-WaterExtent.args = {
-  items: [{ color: mikePalette.secondary.light, label: 'Water extent' }],
+export const Default = Template.bind({});
+Default.args = {
+  items: [
+    { color: mikePalette.darkGrey.light, label: 'Permanent water' },
+    { color: mikePalette.secondary.light, label: 'Water extent' },
+  ],
 };
 
 export default {
