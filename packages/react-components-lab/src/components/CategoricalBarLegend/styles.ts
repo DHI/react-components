@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useCategoricalLegendStyles = makeStyles(() => ({
+const useCategoricalBarLegendStyles = makeStyles(() => ({
   legendColor: {
     height: 7,
     borderRadius: 10,
@@ -10,4 +10,4 @@ const useCategoricalLegendStyles = makeStyles(() => ({
   },
 }));
 
-export default useCategoricalLegendStyles;
+export default useCategoricalBarLegendStyles;

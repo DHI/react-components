@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { Box, Typography } from '@material-ui/core';
-import { CategoricalLegendProps } from './types';
-import useCategoricalLegendStyles from './styles';
+import { CategoricalBarLegendProps } from './types';
+import useCategoricalBarLegendStyles from './styles';
 
-const CategoricalLegend: FC<CategoricalLegendProps> = ({ items }) => {
-  const classes = useCategoricalLegendStyles();
+const CategoricalBarLegend: FC<CategoricalBarLegendProps> = ({ items }) => {
+  const classes = useCategoricalBarLegendStyles();
 
   return (
     <Box mt={2}>
@@ -37,4 +37,4 @@ const CategoricalLegend: FC<CategoricalLegendProps> = ({ items }) => {
   );
 };
 
-export default CategoricalLegend;
+export default CategoricalBarLegend;

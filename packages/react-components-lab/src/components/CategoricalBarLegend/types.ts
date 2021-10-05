@@ -1,4 +1,4 @@
-export interface CategoricalLegendProps {
+export interface CategoricalBarLegendProps {
   items: LegendCategoricalItem[];
 }
 
