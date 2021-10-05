@@ -339,9 +339,6 @@ const JobList = (props: JobListProps) => {
   };
 
   const connectToSignalR = async () => {
-    const auth = new AuthService(process.env.ENDPOINT_URL);
-    const session = auth.getSession();
-
     // Open connections
     try {
       await dataSources.forEach((source) => {
@@ -351,7 +348,7 @@ const JobList = (props: JobListProps) => {
 
         const connection = new HubConnectionBuilder()
           .withUrl(source.host + NOTIFICATION_HUB, {
-            accessTokenFactory: () => session.accessToken,
+            accessTokenFactory: () => token,
           })
           .configureLogging(LogLevel.Information)
           .withAutomaticReconnect()
