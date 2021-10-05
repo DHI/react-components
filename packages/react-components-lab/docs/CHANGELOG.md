@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.6.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.5.0...@dhi/react-components-lab@1.6.0) (2021-10-05)
+
+
+### Features
+
+* **categoricalLegend:** Add CategoricalLegend component ([b39c485](https://github.com/DHI/react-components/commit/b39c485e171b7ce49d54f37f38bb3e1fd821d0f8))
+
 # @dhi/react-components-lab [1.5.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.4.0...@dhi/react-components-lab@1.5.0) (2021-10-04)
 
 
