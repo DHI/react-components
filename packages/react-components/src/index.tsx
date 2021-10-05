@@ -35,5 +35,6 @@ export * from './Scenarios/types';
 export * from './Timeseries/TimeseriesExplorer/Timeseries';
 export * from './Timeseries/TimeseriesExplorer/types';
 export * from './Timeseries/TimeseriesExporter/TimeseriesExporter';
+export * from './Timeseries/TimeseriesExporter/types';
 export * from './UserGroups/UserGroups';
 export * from './utils/Utils';
