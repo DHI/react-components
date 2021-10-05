@@ -25,7 +25,7 @@ const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, 
     }).pipe(
       tap(
         (res) => {
-          console.log('job executed', res);
+          console.log('job query executed', res);
         },
         (error) => {
           console.log(error);

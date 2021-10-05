@@ -374,10 +374,6 @@ const JobList = (props: JobListProps) => {
   };
 
   useEffect(() => {
-    fetchJobList();
-  }, []);
-
-  useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
     };
