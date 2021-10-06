@@ -465,11 +465,21 @@ const mikeOverrides: Overrides = {
       float: 'right',
     },
     sizeSmall: {
-      '& $colorSecondary': {
-        color: `${mikePalette.secondary.main}`,
-      },
       '& $colorPrimary': {
         color: `${mikePalette.primary.main}`,
+        '&$disabled': {
+          color: `${mikePalette.mediumGrey.main}`,
+          '& + $track': {
+            borderColor: `${mikePalette.darkGrey.dark}`,
+            backgroundColor: `${mikePalette.darkGrey.light}`,
+          },
+          '&$checked': {
+            '& + $track': {
+              borderColor: `${mikePalette.darkGrey.light}`,
+              backgroundColor: `${mikePalette.darkGrey.light}`,
+            },
+          },
+        },
       },
       '& $switchBase': {
         transform: 'translateX(-2px)',
@@ -513,18 +523,21 @@ const mikeOverrides: Overrides = {
           borderColor: `${mikePalette.primary.main}`,
         },
       },
+      '&$disabled': {
+        color: `${mikePalette.mediumGrey.main}`,
+        '& + $track': {
+          borderColor: `${mikePalette.darkGrey.dark}`,
+          backgroundColor: `${mikePalette.darkGrey.light}`,
+        },
+      },
     },
     colorSecondary: {
-      color: `${mikePalette.secondary.main}`,
-      '& + $track': {
-        backgroundColor: `${mikePalette.lightGrey.dark}`,
-        borderColor: `${mikePalette.secondary.main}`,
-      },
+      color: `${mikePalette.darkGrey.main}`,
       '&$checked': {
-        color: `${mikePalette.lightGrey.dark}`,
+        color: `${mikePalette.success.dark}`,
         '& + $track': {
-          backgroundColor: `${mikePalette.secondary.main}`,
-          borderColor: `${mikePalette.secondary.main}`,
+          backgroundColor: `${mikePalette.success.light}`,
+          borderColor: `${mikePalette.success.light}`,
         },
       },
       '&$disabled': {

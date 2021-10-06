@@ -657,16 +657,6 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <FormControlLabel
-                control={<Switch color="default" />}
-                label="Color default"
-              />
-            ),
-            codeExample:
-              '<FormControlLabel control={<Switch color="default" />} label="Color default" />',
-          },
-          {
-            component: (
-              <FormControlLabel
                 control={<Switch disabled />}
                 label="Disabled"
               />
@@ -684,11 +674,31 @@ const ComponentsData: ComponentList[] = [
             component: (
               <FormControlLabel
                 control={<Switch size="small" />}
-                label="Small"
+                label="Small secondary"
               />
             ),
             codeExample:
               '<FormControlLabel control={<Switch size="small" />} label="Small" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch size="small" color="primary" />}
+                label="Small primary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch size="small"  color="primary" />} label="Small primary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch size="small" color="primary" disabled />}
+                label="Small primary disabled"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch size="small" color="primary" disabled />} label="Small primary disabled" />',
           },
           {
             component: (
