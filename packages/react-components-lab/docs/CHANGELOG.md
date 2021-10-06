@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.6.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.6.0...@dhi/react-components-lab@1.6.1) (2021-10-06)
+
+
+### Bug Fixes
+
+* **Switch:** Add theme enhancements for color variants ([574ba6c](https://github.com/DHI/react-components/commit/574ba6c1333125c316869eaec4ebcc518bff0222))
+
 # @dhi/react-components-lab [1.6.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.5.0...@dhi/react-components-lab@1.6.0) (2021-10-05)
 
 
