@@ -465,6 +465,12 @@ const mikeOverrides: Overrides = {
       float: 'right',
     },
     sizeSmall: {
+      '& $colorSecondary': {
+        color: `${mikePalette.secondary.main}`,
+      },
+      '& $colorPrimary': {
+        color: `${mikePalette.primary.main}`,
+      },
       '& $switchBase': {
         transform: 'translateX(-2px)',
         '&$checked': {
@@ -475,22 +481,57 @@ const mikeOverrides: Overrides = {
     switchBase: {
       padding: 0,
       height: '100%',
-      color: `${mikePalette.darkGrey.main} !important`,
+      color: `${mikePalette.darkGrey.main}`,
       transform: 'translateX(5.6px)',
       '&:hover': {
         backgroundColor: 'transparent',
       },
       '&$checked': {
         transform: 'translateX(29px)',
-        color: `${mikePalette.success.dark} !important`,
+        color: `${mikePalette.success.dark}`,
         height: '100%',
         '& + $track': {
           opacity: 1,
-          backgroundColor: `${mikePalette.success.light} !important`,
-          borderColor: `${mikePalette.success.light} !important`,
+          backgroundColor: `${mikePalette.success.light}`,
+          borderColor: `${mikePalette.success.light}`,
         },
         '&:hover': {
           backgroundColor: 'transparent',
+        },
+      },
+    },
+    colorPrimary: {
+      color: `${mikePalette.primary.main}`,
+      '& + $track': {
+        backgroundColor: `${mikePalette.lightGrey.dark}`,
+        borderColor: `${mikePalette.primary.main}`,
+      },
+      '&$checked': {
+        color: `${mikePalette.lightGrey.dark}`,
+        '& + $track': {
+          backgroundColor: `${mikePalette.primary.main}`,
+          borderColor: `${mikePalette.primary.main}`,
+        },
+      },
+    },
+    colorSecondary: {
+      color: `${mikePalette.secondary.main}`,
+      '& + $track': {
+        backgroundColor: `${mikePalette.lightGrey.dark}`,
+        borderColor: `${mikePalette.secondary.main}`,
+      },
+      '&$checked': {
+        color: `${mikePalette.lightGrey.dark}`,
+        '& + $track': {
+          backgroundColor: `${mikePalette.secondary.main}`,
+          borderColor: `${mikePalette.secondary.main}`,
+        },
+      },
+      '&$disabled': {
+        color: `${mikePalette.mediumGrey.main}`,
+        '& + $track': {
+          borderColor: `${mikePalette.darkGrey.dark}`,
+          backgroundColor: `${mikePalette.darkGrey.light}`,
         },
       },
     },
@@ -506,7 +547,7 @@ const mikeOverrides: Overrides = {
       boxShadow: 'none',
     },
     track: {
-      border: `3px solid ${mikePalette.darkGrey.main} !important`,
+      border: `3px solid ${mikePalette.darkGrey.main}`,
       borderRadius: 16,
       opacity: 1,
       backgroundColor: mikePalette.lightGrey.main,
