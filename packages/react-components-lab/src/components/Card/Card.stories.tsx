@@ -48,7 +48,7 @@ WithImage.args = {
   title: 'Title',
   subTitle: 'Subtitle at DHI',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-  image: productImage,
+  image: productImage as string,
   children: (
     <Box>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
