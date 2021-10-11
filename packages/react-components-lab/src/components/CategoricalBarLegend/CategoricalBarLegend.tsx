@@ -17,14 +17,14 @@ const CategoricalBarLegend: FC<CategoricalBarLegendProps> = ({ items }) => {
           my={1}
         >
           <Box
-            width={legendItem.label.length ? '50%' : '100%'}
+            width={legendItem.label?.length ? '50%' : '100%'}
             className={classes.legendColor}
             style={{
               backgroundColor: legendItem.color,
-              width: legendItem.label.length ? '50%' : '100%',
+              width: legendItem.label?.length ? '50%' : '100%',
             }}
           />
-          {Boolean(legendItem.label.length) && (
+          {Boolean(legendItem.label) && (
             <Box ml={1} width="50%">
               <Typography variant="body2" className={classes.legendText}>
                 {legendItem.label}
