@@ -77,11 +77,11 @@ const CardControl: FC<Props> = ({
           <Box mt={2}>
             <Box mb={2}>
               {description &&
-                (Array.isArray(description) ? description : [description]).map(
-                  (elem: string | ReactNode, i: number) => (
+                [description]
+                  ?.flat()
+                  ?.map((elem: string | ReactNode, i: number) => (
                     <Typography
                       align="justify"
-                      // eslint-disable-next-line react/no-array-index-key
                       key={`text-${i}`}
                       variant="body2"
                       gutterBottom
@@ -89,8 +89,7 @@ const CardControl: FC<Props> = ({
                     >
                       {elem}
                     </Typography>
-                  )
-                )}
+                  ))}
             </Box>
             {children}
           </Box>
