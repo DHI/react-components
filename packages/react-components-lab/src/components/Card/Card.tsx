@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, Children } from 'react';
 import { Box, Typography, Checkbox, Card, Collapse } from '@material-ui/core';
 
 import { RadioButtonUnchecked, CheckCircle } from '@material-ui/icons';
@@ -77,19 +77,18 @@ const CardControl: FC<Props> = ({
           <Box mt={2}>
             <Box mb={2}>
               {description &&
-                [description]
-                  ?.flat()
-                  ?.map((elem: string | ReactNode, i: number) => (
+                [description]?.flat()?.map((elem: string | ReactNode) =>
+                  Children.toArray(
                     <Typography
                       align="justify"
-                      key={`text-${i}`}
                       variant="body2"
                       gutterBottom
                       style={{ fontSize: 12 }}
                     >
                       {elem}
                     </Typography>
-                  ))}
+                  )
+                )}
             </Box>
             {children}
           </Box>
