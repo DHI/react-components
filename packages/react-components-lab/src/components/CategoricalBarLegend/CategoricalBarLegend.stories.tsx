@@ -17,6 +17,14 @@ Default.args = {
   ],
 };
 
+export const NoLabel = Template.bind({});
+NoLabel.args = {
+  items: [
+    { color: mikePalette.darkGrey.light },
+    { color: mikePalette.secondary.light },
+  ],
+};
+
 export default {
   title: 'Example/CategoricalBarLegend',
   component: CategoricalBarLegend,
