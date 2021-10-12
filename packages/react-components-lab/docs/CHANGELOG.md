@@ -1,3 +1,15 @@
+# @dhi/react-components-lab [1.7.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.6.1...@dhi/react-components-lab@1.7.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* **CateogircalBarLegend:** label key not required. ([d8416e0](https://github.com/DHI/react-components/commit/d8416e09242d0eebd1a42bbb9e45dd43667cc622))
+
+
+### Features
+
+* **TimestepPlayer:** Add TimestepPlayer component ([b196467](https://github.com/DHI/react-components/commit/b196467c3668fce814c798496a7e39241d375950))
+
 ## @dhi/react-components-lab [1.6.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.6.0...@dhi/react-components-lab@1.6.1) (2021-10-06)
 
 
