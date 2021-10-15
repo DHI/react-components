@@ -336,9 +336,7 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
   if (hour === 0 && minute === 0) {
     return '<1m';
   } else if (hour !== 0) {
-    const minutes = minute - hour * 60;
-
-    return `${hour}h ${minutes < 10 ? '0' : ''}${minutes}m`;
+    return `${hour}h ${minute}m`;
   } else {
     return `${minute}m`;
   }
