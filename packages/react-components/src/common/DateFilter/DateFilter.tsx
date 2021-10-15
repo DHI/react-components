@@ -1,7 +1,7 @@
 import { Button, Grid } from '@material-ui/core';
 import React, { FC } from 'react';
-import { DateFilterProps } from '../types';
-import DateInput from './DateInput';
+import { DateFilterProps } from '../../Jobs/JobList/types';
+import DateInput from '../DateInput/DateInput';
 
 const DateFilter: FC<DateFilterProps> = ({
   dateTimeFormat,

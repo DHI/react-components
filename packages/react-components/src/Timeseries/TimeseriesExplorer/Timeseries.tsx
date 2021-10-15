@@ -9,6 +9,9 @@ import { recursive } from '../../utils/Utils';
 import TreeView from '../TreeView/TreeView';
 import { TimeseriesStyles } from './styles';
 import { TimeseriesProps } from './types';
+import { DateFilter } from '../../common/DateFilter/DateFilter';
+import { DateProps } from '../../common/types';
+import { useWindowSize } from '@react-hook/window-size/';
 
 const NAME_TEXT_STYLE = {
   padding: 12,
@@ -56,7 +59,7 @@ const X_AXIS = {
 };
 
 const Y_AXIS = {
-  name: 'Bench Levels',
+  name: '',
   nameLocation: 'center',
   nameTextStyle: NAME_TEXT_STYLE,
   axisLabel: AXIS_LABEL,
@@ -78,10 +81,22 @@ const TimeseriesExplorer = ({
   title,
   legendPosition = 'right',
   legendPositionOffset,
+  startTimeUtc,
+  dateTimeFormat,
+  timeZone,
 }: TimeseriesProps) => {
+  const initialDateState = {
+    from: new Date(startTimeUtc).toISOString(),
+    to: new Date().toISOString(),
+  };
+
+  const [width, height] = useWindowSize();
   const classes = TimeseriesStyles();
+  const [date, setDate] = useState<DateProps>(initialDateState);
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [ids, setIds] = useState<string[]>([]);
+
   const [options, setOptions] = useState({
     title: {
       text: title,
@@ -102,6 +117,10 @@ const TimeseriesExplorer = ({
     tooltip: {},
     series: [],
   });
+
+  const clearDateFilter = () => {
+    setDate(initialDateState);
+  };
 
   const fetchTopLevelTreeView = (group = '') => {
     fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
@@ -158,16 +177,26 @@ const TimeseriesExplorer = ({
     }
   };
 
-  const handleOnCheck = (ids) => {
+  useEffect(() => {
     dataSources[0].ids = ids;
+    dataSources[0].from = date.from;
+    dataSources[0].to = date.to;
 
     fetchTimeseriesValues(dataSources, token).subscribe((res) => {
-      const series = res.map((item) => ({
-        name: item.id.substring(item.id.lastIndexOf('/') + 1),
-        data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
-        type: 'line',
-        symbol: 'diamond',
-      }));
+      const series = res
+        .map((item) => {
+          if (item.data.length) {
+            return {
+              name: item.id,
+              data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
+              type: 'line',
+              symbol: 'diamond',
+            };
+          } else {
+            return null;
+          }
+        })
+        .filter((item) => item);
 
       const updatedOptions = {
         ...options,
@@ -194,7 +223,7 @@ const TimeseriesExplorer = ({
 
       setOptions(updatedOptions);
     });
-  };
+  }, [date, ids]);
 
   useEffect(() => {
     fetchTopLevelTreeView();
@@ -203,33 +232,32 @@ const TimeseriesExplorer = ({
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={3} className={classes.sidebar} style={{ height: window.innerHeight * 0.99 }}>
+        <Grid item xs={12} sm={3} className={classes.sidebar} style={{ height }}>
           <TreeView
             list={list}
             onExpand={(expand) => handleOnExpand(expand)}
-            onChecked={(checked) => handleOnCheck(checked)}
+            onChecked={(checked) => setIds(checked)}
           />
         </Grid>
         <Grid item xs={12} sm={9}>
           {options.series.length > 0 ? (
-            <BaseChart
-              className="standard_chat"
-              chartHeightFunc={() => window.innerHeight * 0.4}
-              options={options}
-              notMerge
-            />
+            <DateFilter
+              dateTimeFormat={dateTimeFormat}
+              startTimeUtc={startTimeUtc}
+              timeZone={timeZone}
+              date={date}
+              onSetDate={(date) => setDate(date)}
+              onClearDateFilter={clearDateFilter}
+            >
+              <BaseChart className="standard_chat" chartHeightFunc={() => height - 100} options={options} notMerge />
+            </DateFilter>
           ) : (
             <>
               <Typography variant="h6" className={classes.typography}>
-                No Timeseries Selected
+                No Timeseries Selected or no data available
               </Typography>
-              <Skeleton variant="rect" animation="wave" height={window.innerHeight * 0.2} />
-              <Skeleton
-                variant="text"
-                animation="wave"
-                height={window.innerHeight * 0.1}
-                className={classes.skeleton}
-              />
+              <Skeleton variant="rect" animation="wave" height={height * 0.2} />
+              <Skeleton variant="text" animation="wave" height={height * 0.1} className={classes.skeleton} />
             </>
           )}
         </Grid>
