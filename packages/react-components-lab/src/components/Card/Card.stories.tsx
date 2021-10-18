@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
 import { Box } from '@material-ui/core';
 import Card from './Card';
-import CardProps from './types';
+import { CardProps } from './types';
 import productImage from './product.png';
 
 const Template: Story<CardProps> = (args) => {
