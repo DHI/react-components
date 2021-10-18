@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-interface Props {
+export interface CardProps {
   description?: string[] | string | ReactNode;
   title: string;
   isOpen?: boolean;
@@ -10,5 +10,3 @@ interface Props {
   children?: ReactNode;
   isClickable?: boolean;
 }
-
-export default Props;
