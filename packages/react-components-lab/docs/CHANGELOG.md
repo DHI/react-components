@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.8.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.0...@dhi/react-components-lab@1.8.1) (2021-10-18)
+
+
+### Bug Fixes
+
+* **Card:** Add exports ([305c20a](https://github.com/DHI/react-components/commit/305c20ae9fcd27ebee8e3ee37bd3c7bd120cb561))
+
 # @dhi/react-components-lab [1.8.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.7.0...@dhi/react-components-lab@1.8.0) (2021-10-18)
 
 
