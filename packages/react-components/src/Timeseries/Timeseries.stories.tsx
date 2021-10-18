@@ -1,4 +1,5 @@
 import { withKnobs } from '@storybook/addon-knobs';
+import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesValues, fetchToken } from '../api';
 import { TimeseriesExplorer } from './TimeseriesExplorer/Timeseries';
@@ -109,5 +110,16 @@ export const TimeseriesExplorerEChart = () => {
     );
   }, []);
 
-  return token && <TimeseriesExplorer dataSources={dataSources} token={token} title="TimeSeries" />;
+  return (
+    token && (
+      <TimeseriesExplorer
+        dataSources={dataSources}
+        token={token}
+        title="TimeSeries"
+        dateTimeFormat="yyyy-MM-dd HH:mm:ss"
+        startTimeUtc="1980-10-13T05:24:35"
+        timeZone="Australia/Brisbane"
+      />
+    )
+  );
 };
