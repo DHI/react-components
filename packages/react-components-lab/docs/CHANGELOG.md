@@ -1,3 +1,15 @@
+# @dhi/react-components-lab [1.8.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.7.0...@dhi/react-components-lab@1.8.0) (2021-10-18)
+
+
+### Bug Fixes
+
+* **keys:** Fix keys for various components ([60e8747](https://github.com/DHI/react-components/commit/60e8747f931c6c3241ac480d8909eda3a438c7f4))
+
+
+### Features
+
+* **Card:** Add Card component ([d109af8](https://github.com/DHI/react-components/commit/d109af8ea9be5275d1980fe5a506477d10700fc6))
+
 # @dhi/react-components-lab [1.7.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.6.1...@dhi/react-components-lab@1.7.0) (2021-10-12)
 
 
