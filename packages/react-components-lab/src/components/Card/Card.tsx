@@ -5,9 +5,9 @@ import { RadioButtonUnchecked, CheckCircle } from '@material-ui/icons';
 import clsx from 'clsx';
 import cardStyles from './styles';
 
-import Props from './types';
+import { CardProps } from './types';
 
-const CardControl: FC<Props> = ({
+const CardControl: FC<CardProps> = ({
   isOpen = true,
   setIsOpen,
   description,
