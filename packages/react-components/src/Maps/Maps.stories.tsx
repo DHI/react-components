@@ -4,11 +4,11 @@ import * as React from 'react';
 import DeckGL from '@deck.gl/react';
 import { BitmapLayer } from '@deck.gl/layers';
 import { TileLayer } from '@deck.gl/geo-layers';
-import AnimationLayerDeckGL from './AnimationLayerDeckGL';
-import AnimationControl from './AnimationControl';
+import AnimationLayerDeckGL from './AnimationLayer/AnimationLayer';
+import AnimationControl from './AnimationControl/AnimationControl';
 
 export default {
-  title: 'Maps/Animation/DeckGL',
+  title: 'Animation',
 } as Meta;
 
 const INITIAL_VIEW_STATE = {

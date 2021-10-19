@@ -1,30 +1,8 @@
 import { CompositeLayer, BitmapLayer } from 'deck.gl';
-import { convertWGS84ToEPSG3857 } from './utils';
+import { convertWGS84ToEPSG3857 } from './helpers';
+import { AnimationLayerState, AnimationLayerProps } from './types';
 
-type AnimationLayerProps = {
-  id: string,
-  apiHost: string;
-  connectionString: string;
-  filename: string;
-  styles: string;
-  shadingType: string;
-  timesteps: string[];
-  itemNumber: number;
-  scale: number;
-  currentTimestepIndex: number;
-};
-
-type AnimationTimestep = {
-  url: string;
-};
-
-type AnimationLayerState = {
-  currentTimestamp: string;
-  timestepLayers: BitmapLayer<AnimationTimestep>[];
-  abortFetchController: AbortController | null;
-};
-
-class AnimationLayerDeckGL extends CompositeLayer<AnimationLayerState, AnimationLayerProps> {
+class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerProps> {
 
   initializeState() {
     this.fetchTimestepData();
@@ -158,4 +136,4 @@ class AnimationLayerDeckGL extends CompositeLayer<AnimationLayerState, Animation
   }
 }
 
-export default AnimationLayerDeckGL;
+export default AnimationLayer;
