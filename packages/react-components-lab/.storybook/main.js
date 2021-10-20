@@ -11,5 +11,6 @@ module.exports = {
   typescript: {
     // also valid 'react-docgen-typescript' | false
     reactDocgen: 'react-docgen-typescript',
+    tsconfigPath: "./../tsconfig.json"
   },
 }
