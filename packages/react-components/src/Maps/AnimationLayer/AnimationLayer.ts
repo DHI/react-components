@@ -139,7 +139,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
 
   renderLayers() {
     this.state.timestepLayers = this.state.timestepLayers.map((layer: any, index: number) => {
-      if (layer.lifecycle === 'Awaiting state' || layer.props.image === null || layer.props.bounds === null) {
+      if (layer.lifecycle === 'Awaiting state' || layer.props.image == null || layer.props.bounds == null) {
         return layer;
       }
 
