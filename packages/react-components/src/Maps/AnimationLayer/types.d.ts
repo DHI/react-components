@@ -4,8 +4,9 @@ interface AnimationLayerProps {
   id: string,
   apiHost: string;
   connectionString: string;
+  token: string,
   filename: string;
-  styles: string;
+  style: string;
   shadingType: string;
   timesteps: string[];
   itemNumber: number;

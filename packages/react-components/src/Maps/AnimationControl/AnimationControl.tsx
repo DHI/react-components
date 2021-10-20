@@ -1,19 +1,7 @@
 import * as React from 'react';
 import Box from '@material-ui/core/Box';
-import Slider from '@material-ui/core/Slider';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import SpeedIcon from '@material-ui/icons/Speed';
+import AnimationTimeline from './AnimationTimeline';
+import AnimationPlaybackControls from './AnimationPlaybackControls';
 
 import { format } from 'date-fns';
 
@@ -33,7 +21,7 @@ export type AnimationControlProps = {
   // classes: shape({}),
 
   // Datetime postfix appended to date to indicate the timezone
-  dateTimePostfix: string,
+  dateTimePostfix?: string,
   // Rate of change of selected value on slider when the animation is playing
   framesPerSecond: number,
   // Datetimes available for stepping to in animation control.
@@ -51,6 +39,9 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   framesPerSecond = 10,
   dateTimeDisplayFormat = 'yyyy/MM/dd HH:mm:ss',
   onDateTimeChange,
+  horizontal = true,
+  hideControls = false,
+  dateTimePostfix = null,
 }) => {
   const timestepIndex = React.useRef<number | null>(null);
   const isPlaying = React.useRef(false);
@@ -68,7 +59,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   React.useEffect(() => {
     const updateTimer = setInterval(() => {
       if (isPlaying.current) {
-        onStepForward(true);
+        stepForward(true);
         flagRerender();
       }
     }, 1000 / framesPerSecond);
@@ -82,7 +73,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     setDirtyFlag(prev => prev + 1);
   }
 
-  const onPlay = () => {
+  const play = () => {
     isPlaying.current = true;
     if (!timestepIndex.current && timestepIndex.current !== 0) {
       timestepIndex.current = 0;
@@ -91,50 +82,55 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     flagRerender();
   };
 
-  const onPause = () => {
+  const pause = () => {
     isPlaying.current = false;
     flagRerender();
   };
 
-  const onSkipToStart = () => {
+  const skipToStart = () => {
     if (isPlaying.current) {
-      onPause();
+      pause();
     }
     timestepIndex.current = 0;
     onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
-  const onSkipToEnd = () => {
+  const skipToEnd = () => {
     if (isPlaying) {
-      onPause();
+      pause();
     }
     timestepIndex.current = dateTimes.length - 1;
     onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
-  const onStepForward = (keepPlaying: boolean = false) => {
+  const stepForward = (keepPlaying: boolean = false) => {
     if (!timestepIndex.current && timestepIndex.current !== 0) {
       return;
     }
 
     if (!keepPlaying && isPlaying.current) {
-      onPause();
+      pause();
     }
 
-    timestepIndex.current = timestepIndex.current < dateTimes.length - 1 ? timestepIndex.current + 1 : dateTimes.length - 1;
+    if (timestepIndex.current < dateTimes.length - 1) {
+      timestepIndex.current = timestepIndex.current + 1
+    } else {
+      timestepIndex.current = dateTimes.length - 1;
+      pause();
+    }
     onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
-  const onStepBackward = () => {
+  const stepBackward = () => {
     if (!timestepIndex.current && timestepIndex.current !== 0) {
      return;
     }
 
     if (isPlaying) {
-      onPause();
+      pause();
     }
 
     timestepIndex.current = timestepIndex.current > 0 ? timestepIndex.current - 1 : 0;
@@ -142,9 +138,9 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     flagRerender();
   };
 
-  const handleTimestepChange = (_: React.ChangeEvent<{}>, newValue: number | number[]) => {
-    onPause();
-    timestepIndex.current = newValue as number;
+  const handleTimestepChange = (index: number) => {
+    pause();
+    timestepIndex.current = index;
     onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
@@ -166,71 +162,62 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     return format(currentDate, dateTimeDisplayFormat);
   };
 
-  const currentTimestepStr = formatCurrentDate();
-  
-  return (
-    <Box display="flex" flexDirection="column" justifyContent="center">
-      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" px={1}>
-        <Box> 
-          <Typography>{currentTimestepStr}</Typography>
+  let currentTimestepStr = formatCurrentDate();
+  if (dateTimePostfix) {
+    currentTimestepStr += ` ${dateTimePostfix}`;
+  }
+
+  if (horizontal) {
+    return (
+      <Box display="flex" flexDirection="row" justifyContent="center">
+        <Box>
+          <AnimationPlaybackControls 
+            isPlaying={isPlaying.current}
+            onPlay={play}
+            onPause={pause}
+            onSkipToStart={skipToStart}
+            onSkipToEnd={skipToEnd}
+            onStepForward={stepForward}
+            onStepBackward={stepBackward}
+          />
         </Box>
-        <Box px={5} width="calc(100% - 2rem)">
-          <Slider
-            value={timestepIndex?.current ?? 0}
-            min={0}
-            max={dateTimes.length - 1}
-            valueLabelDisplay="off"
-            aria-labelledby="range-slider"
-            onChange={handleTimestepChange}
+        <Box flexGrow={1}>
+          <AnimationTimeline
+            isHorizontal={horizontal}
+            timestepLabel={currentTimestepStr}
+            timestepIndex={timestepIndex?.current ?? 0}
+            maxTimestepIndex={dateTimes.length - 1}
+            onTimestepIndexChange={handleTimestepChange}
           />
         </Box>
       </Box>
-      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-        <Box>
-          <ToggleButtonGroup size="small" style={{ marginRight: '1ch' }}>
-            <ToggleButton value="skip-to-start" onClick={onSkipToStart}>
-              <SkipPreviousIcon />
-            </ToggleButton>
-            <ToggleButton value="step-backward" onClick={onStepBackward}>
-              <NavigateBeforeIcon />
-            </ToggleButton>
-            {isPlaying.current ? (
-              <ToggleButton value="pause" onClick={onPause}>
-                <PauseIcon />
-              </ToggleButton>
-            ) : (
-              <ToggleButton value="play" onClick={onPlay}>
-                <PlayArrowIcon />
-              </ToggleButton>
-            )}
-            <ToggleButton value="step-forward" onClick={() => onStepForward()}>
-              <NavigateNextIcon />
-            </ToggleButton>
-            <ToggleButton value="skip-to-end" onClick={onSkipToEnd}>
-              <SkipNextIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <ToggleButtonGroup size="small">
-            <ToggleButton value={framesPerSecond} onClick={handlePlaybackSpeedClick}>
-              <SpeedIcon />
-              <ArrowDropDownIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <Menu
-            id="playback-speed-selection-menu"
-            anchorEl={speedAnchorEl}
-            keepMounted
-            open={Boolean(speedAnchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>5 fps</MenuItem>
-            <MenuItem onClick={handleClose}>10 fps</MenuItem>
-            <MenuItem onClick={handleClose}>25 fps</MenuItem>
-          </Menu>
-        </Box>
+    );
+  } else {
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="center">
+        <AnimationTimeline
+          isHorizontal={horizontal}
+          timestepLabel={currentTimestepStr}
+          timestepIndex={timestepIndex?.current ?? 0}
+          maxTimestepIndex={dateTimes.length - 1}
+          onTimestepIndexChange={handleTimestepChange}
+        />
+        {!hideControls && (
+          <Box display="flex" justifyContent="center">
+            <AnimationPlaybackControls 
+              isPlaying={isPlaying.current}
+              onPlay={play}
+              onPause={pause}
+              onSkipToStart={skipToStart}
+              onSkipToEnd={skipToEnd}
+              onStepForward={stepForward}
+              onStepBackward={stepBackward}
+            />
+          </Box>
+        )}
       </Box>
-    </Box>
-  );
+    );
+  }
 };
 
 export default AnimationControl;

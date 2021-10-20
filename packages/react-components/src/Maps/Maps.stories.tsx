@@ -53,8 +53,9 @@ export const BasicLayerAndControls = () => {
     id: 'AnimationLayer',
     apiHost: 'https://domainservices.dhigroup.com',
     connectionString: 'dfsu-mapsource',
+    token: '',
     itemNumber: 3,
-    styles: 'Ecoli',
+    style: 'Ecoli',
     shadingType: 'ShadedContour',
     filename: 'KBHEC3dF012.dfsu',
     timesteps: timesteps,
@@ -76,14 +77,14 @@ export const BasicLayerAndControls = () => {
         controller={true}
         layers={layers}
       />
-      <div style={{ position: 'absolute', top: 0, left: 0, padding: '1rem', width: "40ch", backgroundColor: 'white' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, padding: '1rem', width: "50ch", backgroundColor: 'white' }}>
         <AnimationControl
           playing={false}
           enabled={true}
           onDateTimeChange={handleDateTimeChange}
-          horizontal={true}
+          horizontal={false}
           hideControls={false}
-          dateTimePostfix=""
+          dateTimePostfix="UTC"
           framesPerSecond={10}
           dateTimes={timesteps}
           timezoneOffsetData={0}
