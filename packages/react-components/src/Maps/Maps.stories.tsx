@@ -81,6 +81,7 @@ export const BasicLayerAndControls = () => {
         <AnimationControl
           playing={false}
           enabled={true}
+          loop={true}
           onDateTimeChange={handleDateTimeChange}
           horizontal={false}
           hideControls={false}

@@ -2,37 +2,8 @@ import * as React from 'react';
 import Box from '@material-ui/core/Box';
 import AnimationTimeline from './AnimationTimeline';
 import AnimationPlaybackControls from './AnimationPlaybackControls';
-
 import { format } from 'date-fns';
-
-export type AnimationControlProps = {
-  // Status of whether the component is currently playing or not
-  playing: boolean,
-  // Element is enabled if this is set to true. Disabled if set to false.
-  enabled: boolean,
-  // Returns current datetime out of all the time steps.
-  onDateTimeChange: (date: string) => void,
-  // Orientation of control.
-  horizontal: boolean,
-  // Hide controls.
-  hideControls: boolean,
-
-  // Required proptype by ESLint for React Material Library
-  // classes: shape({}),
-
-  // Datetime postfix appended to date to indicate the timezone
-  dateTimePostfix?: string,
-  // Rate of change of selected value on slider when the animation is playing
-  framesPerSecond: number,
-  // Datetimes available for stepping to in animation control.
-  dateTimes: string[],
-  // Time offset for data from UTC in hours
-  timezoneOffsetData: number,
-  // Time offset from UTC in hours
-  timezoneOffsetDisplay: number,
-  // Datetime display format. Default: 'YYYY/MM/DD HH:mm:ss'.
-  dateTimeDisplayFormat: string,
-};
+import { AnimationControlProps } from './types';
 
 const AnimationControl: React.FC<AnimationControlProps> = ({ 
   dateTimes,
@@ -42,6 +13,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   horizontal = true,
   hideControls = false,
   dateTimePostfix = null,
+  loop = true,
 }) => {
   const timestepIndex = React.useRef<number | null>(null);
   const isPlaying = React.useRef(false);
@@ -117,8 +89,12 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     if (timestepIndex.current < dateTimes.length - 1) {
       timestepIndex.current = timestepIndex.current + 1
     } else {
-      timestepIndex.current = dateTimes.length - 1;
-      pause();
+      if (loop) {
+        timestepIndex.current = 1;
+      } else {
+        timestepIndex.current = dateTimes.length - 1;
+        pause();
+      }
     }
     onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
