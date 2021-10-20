@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { IMikeTheme } from '../..';
+import { IMikeTheme } from '../ThemeProvider/types';
 
 export default makeStyles<IMikeTheme>((theme) => ({
   root: {
