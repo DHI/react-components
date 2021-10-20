@@ -27,14 +27,12 @@ const Card: FC<CardProps> = ({
   const classes = cardStyles();
   const collapseIn = isClickable && isOpen;
   return (
-    <MUICard
-      className={clsx(isClickable && classes.isClickable, classes.root)}
-      variant="outlined"
-    >
+    <MUICard className={clsx(classes.root)} variant="outlined">
       {disabled && <Box className={classes.disabled} />}
       <Box px={2} py={1.5}>
         <Box
           onClick={() => isClickable && setIsOpen(!isOpen)}
+          className={clsx(isClickable && classes.isClickable)}
           display="flex"
           justifyContent="space-between"
         >
