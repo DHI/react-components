@@ -1,12 +1,13 @@
 import { ReactNode } from 'react';
 
 export interface CardProps {
-  description?: string[] | string | ReactNode;
   title: string;
+  description?: string[] | string | ReactNode;
   isOpen?: boolean;
   subTitle?: string | null;
   setIsOpen?: (d: boolean) => void;
   image?: string;
   children?: ReactNode;
   isClickable?: boolean;
+  disabled?: boolean;
 }

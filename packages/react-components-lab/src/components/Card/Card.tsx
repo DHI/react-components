@@ -1,5 +1,11 @@
 import React, { FC, ReactNode, Children } from 'react';
-import { Box, Typography, Checkbox, Card, Collapse } from '@material-ui/core';
+import {
+  Box,
+  Typography,
+  Checkbox,
+  Card as MUICard,
+  Collapse,
+} from '@material-ui/core';
 
 import { RadioButtonUnchecked, CheckCircle } from '@material-ui/icons';
 import clsx from 'clsx';
@@ -7,7 +13,7 @@ import cardStyles from './styles';
 
 import { CardProps } from './types';
 
-const CardControl: FC<CardProps> = ({
+const Card: FC<CardProps> = ({
   isOpen = true,
   setIsOpen,
   description,
@@ -16,16 +22,21 @@ const CardControl: FC<CardProps> = ({
   image,
   children,
   isClickable = true,
+  disabled = false,
 }) => {
   const classes = cardStyles();
   const collapseIn = isClickable && isOpen;
   return (
-    <Card className={classes.root} variant="outlined">
+    <MUICard
+      className={clsx(isClickable && classes.isClickable, classes.root)}
+      variant="outlined"
+    >
+      {disabled && <Box className={classes.disabled} />}
       <Box px={2} py={1.5}>
         <Box
+          onClick={() => isClickable && setIsOpen(!isOpen)}
           display="flex"
           justifyContent="space-between"
-          onClick={() => isClickable && setIsOpen(!isOpen)}
         >
           <Box display="flex" flexDirection="column" justifyContent="center">
             <Typography variant="h5" className={classes.title}>
@@ -54,6 +65,7 @@ const CardControl: FC<CardProps> = ({
               <Box display="flex" alignItems="flex-end">
                 <Checkbox
                   checked={isOpen}
+                  disabled={disabled}
                   icon={
                     <RadioButtonUnchecked
                       color="primary"
@@ -94,8 +106,8 @@ const CardControl: FC<CardProps> = ({
           </Box>
         </Collapse>
       </Box>
-    </Card>
+    </MUICard>
   );
 };
 
-export default CardControl;
+export default Card;
