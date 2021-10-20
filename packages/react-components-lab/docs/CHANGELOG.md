@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.8.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.1...@dhi/react-components-lab@1.8.2) (2021-10-20)
+
+
+### Bug Fixes
+
+* **Card:** Add small UI fixes. Add disabled prop ([5820b78](https://github.com/DHI/react-components/commit/5820b789ca9b1729b798fd7fb14ba39794612855))
+
 ## @dhi/react-components-lab [1.8.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.0...@dhi/react-components-lab@1.8.1) (2021-10-18)
 
 
