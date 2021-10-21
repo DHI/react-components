@@ -29,6 +29,7 @@ const timesteps = [
 
 export const BasicLayerAndControls = () => {
   const [currentTimestepIndex, setCurrentTimestepIndex] = React.useState<number>(0);
+  const [_, isMapLoaded] = React.useState<boolean>(false);
 
   const tileLayer = new TileLayer({
     data: 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -76,6 +77,7 @@ export const BasicLayerAndControls = () => {
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         layers={layers}
+        onLoad={() => isMapLoaded(true)}
       />
       <div style={{ position: 'absolute', top: 0, left: 0, padding: '1rem', width: "50ch", backgroundColor: 'white' }}>
         <AnimationControl

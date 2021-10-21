@@ -41,6 +41,13 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     };
   }, [framesPerSecond, dateTimes]);
 
+  React.useEffect(() => {
+    if (timestepIndex.current !== null) {
+      onDateTimeChange(dateTimes[timestepIndex.current]);
+      flagRerender();
+    }
+  }, [timestepIndex.current]);
+
   const flagRerender = () => {
     setDirtyFlag(prev => prev + 1);
   }
@@ -49,7 +56,6 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     isPlaying.current = true;
     if (!timestepIndex.current && timestepIndex.current !== 0) {
       timestepIndex.current = 0;
-      onDateTimeChange(dateTimes[timestepIndex.current]);
     }
     flagRerender();
   };
@@ -64,7 +70,6 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
       pause();
     }
     timestepIndex.current = 0;
-    onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
@@ -73,7 +78,6 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
       pause();
     }
     timestepIndex.current = dateTimes.length - 1;
-    onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
@@ -96,7 +100,6 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
         pause();
       }
     }
-    onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
@@ -110,14 +113,12 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     }
 
     timestepIndex.current = timestepIndex.current > 0 ? timestepIndex.current - 1 : 0;
-    onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
   const handleTimestepChange = (index: number) => {
     pause();
     timestepIndex.current = index;
-    onDateTimeChange(dateTimes[timestepIndex.current]);
     flagRerender();
   };
 
