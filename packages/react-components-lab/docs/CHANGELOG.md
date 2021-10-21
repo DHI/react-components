@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.8.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.2...@dhi/react-components-lab@1.8.3) (2021-10-21)
+
+
+### Bug Fixes
+
+* **Tooltip-theme:** Remove maxHeight from ThemeOverrides ([44fe02a](https://github.com/DHI/react-components/commit/44fe02a1200af9c479b7304fbd0c91e80e6a5703))
+
 ## @dhi/react-components-lab [1.8.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.1...@dhi/react-components-lab@1.8.2) (2021-10-20)
 
 
