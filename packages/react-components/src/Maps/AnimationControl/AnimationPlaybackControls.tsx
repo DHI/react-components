@@ -8,11 +8,10 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import SpeedIcon from '@material-ui/icons/Speed';
 
 const AnimationPlaybackControls: React.FC<AnimationPlaybackControlsProps> = ({
   isPlaying,
+  isEnabled,
   onSkipToStart,
   onSkipToEnd,
   onStepBackward,
@@ -23,46 +22,28 @@ const AnimationPlaybackControls: React.FC<AnimationPlaybackControlsProps> = ({
   return (
     <>
       <ToggleButtonGroup size="small">
-        <ToggleButton value="skip-to-start" onClick={onSkipToStart}>
+        <ToggleButton value="skip-to-start" disabled={!isEnabled} onClick={onSkipToStart}>
           <SkipPreviousIcon />
         </ToggleButton>
-        <ToggleButton value="step-backward" onClick={onStepBackward}>
+        <ToggleButton value="step-backward" disabled={!isEnabled} onClick={onStepBackward}>
           <NavigateBeforeIcon />
         </ToggleButton>
         {isPlaying ? (
-          <ToggleButton value="pause" onClick={onPause}>
+          <ToggleButton value="pause" disabled={!isEnabled} onClick={onPause}>
             <PauseIcon />
           </ToggleButton>
         ) : (
-          <ToggleButton value="play" onClick={onPlay}>
+          <ToggleButton value="play" disabled={!isEnabled} onClick={onPlay}>
             <PlayArrowIcon />
           </ToggleButton>
         )}
-        <ToggleButton value="step-forward" onClick={() => onStepForward()}>
+        <ToggleButton value="step-forward" disabled={!isEnabled} onClick={() => onStepForward()}>
           <NavigateNextIcon />
         </ToggleButton>
-        <ToggleButton value="skip-to-end" onClick={onSkipToEnd}>
+        <ToggleButton value="skip-to-end" disabled={!isEnabled} onClick={onSkipToEnd}>
           <SkipNextIcon />
         </ToggleButton>
       </ToggleButtonGroup>
-      {/* <ToggleButtonGroup size="small">
-        <ToggleButton value={framesPerSecond} onClick={handlePlaybackSpeedClick}>
-          <SpeedIcon />
-          <ArrowDropDownIcon />
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <Menu
-        id="playback-speed-selection-menu"
-        anchorEl={speedAnchorEl}
-        keepMounted
-        open={Boolean(speedAnchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>5 fps</MenuItem>
-        <MenuItem onClick={handleClose}>10 fps</MenuItem>
-        <MenuItem onClick={handleClose}>25 fps</MenuItem>
-      </Menu>
-      */}
     </>
   )
 };

@@ -1,37 +1,34 @@
 
 export type AnimationControlProps = {
-  // Status of whether the component is currently playing or not
-  playing: boolean,
+  // Set whether the component should be playing or not.
+  playing?: boolean,
   // Element is enabled if this is set to true. Disabled if set to false.
-  enabled: boolean,
+  enabled?: boolean,
   // Loops the animation when reaching the last timestep.
-  loop: boolean;
+  loop?: boolean;
   // Returns current datetime out of all the time steps.
   onDateTimeChange: (date: string) => void,
   // Orientation of control.
-  horizontal: boolean,
+  horizontal?: boolean,
   // Hide controls.
-  hideControls: boolean,
-
-  // Required proptype by ESLint for React Material Library
-  // classes: shape({}),
-
+  hideControls?: boolean,
   // Datetime postfix appended to date to indicate the timezone
   dateTimePostfix?: string,
   // Rate of change of selected value on slider when the animation is playing
-  framesPerSecond: number,
+  framesPerSecond?: number,
   // Datetimes available for stepping to in animation control.
   dateTimes: string[],
   // Time offset for data from UTC in hours
-  timezoneOffsetData: number,
+  timezoneOffsetData?: number,
   // Time offset from UTC in hours
-  timezoneOffsetDisplay: number,
+  timezoneOffsetDisplay?: number,
   // Datetime display format. Default: 'YYYY/MM/DD HH:mm:ss'.
-  dateTimeDisplayFormat: string,
+  dateTimeDisplayFormat?: string,
 };
 
 export interface AnimationPlaybackControlsProps {
   isPlaying: boolean;
+  isEnabled: boolean;
   onSkipToStart: () => void;
   onSkipToEnd: () => void;
   onStepBackward: () => void;
@@ -42,6 +39,7 @@ export interface AnimationPlaybackControlsProps {
 
 
 export interface AnimationTimelineProps {
+  isEnabled: boolean;
   timestepIndex: number;
   maxTimestepIndex: number;
   timestepLabel: string;

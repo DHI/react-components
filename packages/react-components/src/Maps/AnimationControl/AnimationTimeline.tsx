@@ -10,19 +10,21 @@ const AnimationTimeline: React.FC<AnimationTimelineProps> = ({
   timestepLabel,
   onTimestepIndexChange,
   isHorizontal,
+  isEnabled,
 }) => {
   return (
     <Box display="flex" flexDirection={isHorizontal ? "row" : "column"} justifyContent="center" alignItems="center">
       <Box textAlign="center" mx={isHorizontal ? 2 : 0}> 
-        <Typography component="span" variant="caption" style={{ fontSize: '0.9rem' }}>{timestepLabel}</Typography>
+        <Typography component="span" variant="caption" style={{ fontSize: '0.9rem',  }}>{timestepLabel}</Typography>
       </Box>
       <Slider
         value={timestepIndex}
         min={0}
         max={maxTimestepIndex}
+        disabled={!isEnabled}
         valueLabelDisplay="off"
         aria-labelledby="range-slider"
-        onChange={(event, index) => onTimestepIndexChange(index as number)}
+        onChange={(_, index) => onTimestepIndexChange(index as number)}
       />
     </Box>
   );

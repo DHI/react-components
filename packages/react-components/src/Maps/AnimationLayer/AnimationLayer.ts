@@ -1,20 +1,13 @@
-import { CompositeLayer, BitmapLayer } from 'deck.gl';
+import { CompositeLayer, BitmapLayer, Position } from 'deck.gl';
 import { fetchMapAnimationFiles } from '../../api/Map/MapApi';
 import { convertWGS84ToEPSG3857 } from './helpers';
-import { AnimationLayerState, AnimationLayerProps } from './types';
-import { debounceTime, switchMap, catchError, mergeMap, map } from 'rxjs/operators';
+import { AnimationLayerState, AnimationLayerProps, AnimationImageRequest, BitmapLayerData } from './types';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { Subject, of, forkJoin } from 'rxjs';
 
-type MapRequest = {
-  requestDataSource: any;
-  requestConfig: any;
-  token: string;
-  bboxWGS84: number[];
-  bbox: string;
-}
-
 class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerProps> {
-  initializeState() { 
+
+  initializeState() {
     // Setup pipeline for fetching map animation images.
     const quickFetchPipeline = this.createImageRetrievalPipeline();
     const mainFetchPipeline = this.createImageRetrievalPipeline();
@@ -28,10 +21,6 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     };
 
     this.fetchTimestepData();
-  }
-
-  get isLoaded() {
-    return true;
   }
 
   fetchTimestepData() {
@@ -97,7 +86,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     this.state.mainFetchPipeline.next(pipelineInput);
   }
 
-  updateState({props, oldProps, context, changeFlags}: {props: any, oldProps: any, context: any, changeFlags: any}) {
+  updateState({oldProps, changeFlags}: {oldProps: any, changeFlags: any}) {
     if (Object.keys(oldProps).length === 0) {
       return;
     }
@@ -118,11 +107,13 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
   }
 
   createImageRetrievalPipeline() {
-    const fetchPipeline = new Subject<any>();
+    const self = this;
+
+    const fetchPipeline = new Subject<AnimationImageRequest>();
     fetchPipeline
       .pipe(
         debounceTime(500),
-        switchMap((imageRequest: any) => 
+        switchMap((imageRequest: AnimationImageRequest) => 
           fetchMapAnimationFiles(imageRequest.requestDataSource, imageRequest.requestConfig, imageRequest.token)
             .pipe(
               switchMap((response) => forkJoin(
@@ -155,14 +146,13 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
 
           if (request.timestepIndex !== null) {
             this.setState({
-              timestepLayers: this.state.timestepLayers.map((layer: BitmapLayer<any>) => {
+              timestepLayers: this.state.timestepLayers.map((layer: BitmapLayer<BitmapLayerData>) => {
                 if (layer.props.id.endsWith(`timestep=${request.timestepIndex}`)) {
-                  return new BitmapLayer({
+                  return new BitmapLayer<BitmapLayerData>({
                     id: `AnimationLayer-${currentTimestamp}-timestep=${request.timestepIndex}`,
-                    data: null,
                     image: timestepImageData[0].imageURL,
                     visible: true,
-                    bounds: request.bboxWGS84,
+                    bounds: request.bboxWGS84 as any,
                   }); 
                 } else {
                   return layer;
@@ -172,12 +162,11 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
           } else {
             this.setState({
               timestepLayers: timestepImageData.map((imageData, idx) => {
-                return new BitmapLayer({
+                return new BitmapLayer<BitmapLayerData>({
                   id: `AnimationLayer-${this.state.currentTimestamp}-timestep=${imageData.timestep}`,
-                  data: null,
                   image: imageData.imageURL,
-                  visible: idx === this.props.currentTimestepIndex,
-                  bounds: request.bboxWGS84,
+                  visible: idx === self.props.currentTimestepIndex,
+                  bounds: request.bboxWGS84 as any,
                 });
               })
             });
@@ -199,14 +188,14 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
 
   renderLayers() {
     this.setState({
-      timestepLayers: this.state.timestepLayers.map((layer: any, index: number) => {
+      timestepLayers: this.state.timestepLayers.map((layer: BitmapLayer<BitmapLayerData>, index: number) => {
         if (layer.lifecycle === 'Awaiting state' || layer.props.image == null || layer.props.bounds == null) {
           return layer;
         }
 
         const isVisible = index === this.props.currentTimestepIndex;
 
-        return new BitmapLayer({
+        return new BitmapLayer<BitmapLayerData>({
           id: layer.props.id,
           image: layer.props.image,
           visible: isVisible,

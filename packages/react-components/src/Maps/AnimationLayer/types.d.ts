@@ -1,4 +1,5 @@
 import { BitmapLayer } from "deck.gl";
+import { DataSource } from '../../api/types';
 
 interface AnimationLayerProps {
   id: string,
@@ -12,14 +13,22 @@ interface AnimationLayerProps {
   itemNumber: number;
   scale: number;
   currentTimestepIndex: number;
-}
-
-interface AnimationTimestep {
-  url: string;
+  flagBoundingBoxUpdate: number;
 }
 
 interface AnimationLayerState {
   currentTimestamp: string;
-  timestepLayers: BitmapLayer<AnimationTimestep>[];
+  timestepLayers: BitmapLayer<BitmapLayerData>[];
   abortFetchController: AbortController | null;
 }
+
+interface AnimationImageRequest {
+  requestDataSource: DataSource;
+  requestConfig: any;
+  token: string;
+  bboxWGS84: number[];
+  bbox: string;
+  timestepIndex: number;
+}
+
+interface BitmapLayerData {}

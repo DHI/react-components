@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@material-ui/core/Box';
 import AnimationTimeline from './AnimationTimeline';
 import AnimationPlaybackControls from './AnimationPlaybackControls';
-import { format } from 'date-fns';
+import { format, parseISO, addHours } from 'date-fns';
 import { AnimationControlProps } from './types';
 
 const AnimationControl: React.FC<AnimationControlProps> = ({ 
@@ -10,15 +10,19 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   framesPerSecond = 10,
   dateTimeDisplayFormat = 'yyyy/MM/dd HH:mm:ss',
   onDateTimeChange,
-  horizontal = true,
+  horizontal = false,
   hideControls = false,
   dateTimePostfix = null,
+  timezoneOffsetData = null,
+  timezoneOffsetDisplay = null,
+  playing = true,
   loop = true,
+  enabled = true,
 }) => {
   const timestepIndex = React.useRef<number | null>(null);
   const isPlaying = React.useRef(false);
   const [_, setDirtyFlag] = React.useState<number>(0);
-  const [speedAnchorEl, setSpeedAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [disableSlider, setDisableSlider] = React.useState(enabled);
 
   React.useEffect(() => {
     if (dateTimes && dateTimes.length > 0) {
@@ -26,6 +30,20 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
       flagRerender();
     }
   }, [dateTimes]);
+
+  React.useEffect(() => {
+    if (playing) {
+      play();
+    } else {
+      pause();
+    }
+  }, [playing]);
+
+  React.useEffect(() => {
+    if (!enabled) {
+      pause();
+    }
+  }, [enabled]);
 
   // Creates the animation update timer based on the user specified frequency.
   React.useEffect(() => {
@@ -122,27 +140,25 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     flagRerender();
   };
 
-  const handlePlaybackSpeedClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setSpeedAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setSpeedAnchorEl(null);
-  };
-
   const formatCurrentDate = () => {
     if (!timestepIndex.current && timestepIndex.current !== 0) {
-      return ;
+      return dateTimeDisplayFormat.replace(/\w/g, '-');
     }
 
-    const currentDate = new Date(dateTimes[timestepIndex.current]);
-    return format(currentDate, dateTimeDisplayFormat);
+    let currentDate = parseISO(dateTimes[timestepIndex.current]);
+    if (timezoneOffsetData && timezoneOffsetDisplay) {
+      currentDate = addHours(currentDate, timezoneOffsetDisplay - timezoneOffsetData);
+    }
+
+    let formattedDate = format(currentDate, dateTimeDisplayFormat)
+    if (dateTimePostfix) {
+      formattedDate += ` ${dateTimePostfix}`;
+    }
+
+    return formattedDate;
   };
 
   let currentTimestepStr = formatCurrentDate();
-  if (dateTimePostfix) {
-    currentTimestepStr += ` ${dateTimePostfix}`;
-  }
 
   if (horizontal) {
     return (
@@ -150,6 +166,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
         <Box>
           <AnimationPlaybackControls 
             isPlaying={isPlaying.current}
+            isEnabled={enabled}
             onPlay={play}
             onPause={pause}
             onSkipToStart={skipToStart}
@@ -160,6 +177,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
         </Box>
         <Box flexGrow={1}>
           <AnimationTimeline
+            isEnabled={enabled}
             isHorizontal={horizontal}
             timestepLabel={currentTimestepStr}
             timestepIndex={timestepIndex?.current ?? 0}
@@ -173,6 +191,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     return (
       <Box display="flex" flexDirection="column" justifyContent="center">
         <AnimationTimeline
+          isEnabled={enabled}
           isHorizontal={horizontal}
           timestepLabel={currentTimestepStr}
           timestepIndex={timestepIndex?.current ?? 0}
@@ -183,6 +202,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
           <Box display="flex" justifyContent="center">
             <AnimationPlaybackControls 
               isPlaying={isPlaying.current}
+              isEnabled={enabled}
               onPlay={play}
               onPause={pause}
               onSkipToStart={skipToStart}

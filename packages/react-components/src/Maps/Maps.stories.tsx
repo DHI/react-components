@@ -4,11 +4,12 @@ import * as React from 'react';
 import DeckGL from '@deck.gl/react';
 import { BitmapLayer } from '@deck.gl/layers';
 import { TileLayer } from '@deck.gl/geo-layers';
-import AnimationLayerDeckGL from './AnimationLayer/AnimationLayer';
+import AnimationLayer from './AnimationLayer/AnimationLayer';
 import AnimationControl from './AnimationControl/AnimationControl';
+import { Layer } from 'deck.gl';
 
 export default {
-  title: 'Animation',
+  title: 'Map Components',
 } as Meta;
 
 const INITIAL_VIEW_STATE = {
@@ -27,8 +28,9 @@ const timesteps = [
   '2018-09-12T22:00:00', '2018-09-12T22:30:00', '2018-09-12T23:00:00', '2018-09-12T23:30:00',
 ];
 
-export const BasicLayerAndControls = () => {
+export const AnimationLayerStory = () => {
   const [currentTimestepIndex, setCurrentTimestepIndex] = React.useState<number>(0);
+  const [flagBoundingBoxUpdate, setFlagBoundingBoxUpdate] = React.useState<number>(0);
   const [_, isMapLoaded] = React.useState<boolean>(false);
 
   const tileLayer = new TileLayer({
@@ -50,7 +52,7 @@ export const BasicLayerAndControls = () => {
     }
   });
 
-  const animationLayer = new AnimationLayerDeckGL({
+  const animationLayer = new AnimationLayer({
     id: 'AnimationLayer',
     apiHost: 'https://domainservices.dhigroup.com',
     connectionString: 'dfsu-mapsource',
@@ -62,13 +64,18 @@ export const BasicLayerAndControls = () => {
     timesteps: timesteps,
     currentTimestepIndex: currentTimestepIndex,
     scale: 1,
+    flagBoundingBoxUpdate,
   });
 
-  const layers: any = [tileLayer, animationLayer];
+  const layers: Layer<any>[] = [tileLayer, animationLayer];
 
   const handleDateTimeChange = (date: string) => {
     const index = timesteps.indexOf(date);
     setCurrentTimestepIndex(index);
+  }
+
+  const onViewStateChange = () => {
+    setFlagBoundingBoxUpdate(prev  => prev + 1);
   }
 
   return (
@@ -78,20 +85,21 @@ export const BasicLayerAndControls = () => {
         controller={true}
         layers={layers}
         onLoad={() => isMapLoaded(true)}
+        onViewStateChange={onViewStateChange}
       />
       <div style={{ position: 'absolute', top: 0, left: 0, padding: '1rem', width: "50ch", backgroundColor: 'white' }}>
         <AnimationControl
-          playing={false}
+          playing={true}
           enabled={true}
           loop={true}
           onDateTimeChange={handleDateTimeChange}
           horizontal={false}
           hideControls={false}
           dateTimePostfix="UTC"
-          framesPerSecond={10}
+          framesPerSecond={8}
           dateTimes={timesteps}
-          timezoneOffsetData={0}
-          timezoneOffsetDisplay={0}
+          timezoneOffsetData={null}
+          timezoneOffsetDisplay={null}
           dateTimeDisplayFormat="yyyy/MM/dd HH:mm:ss"
         />
       </div>
