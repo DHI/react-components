@@ -39,6 +39,11 @@ jobs:
         run: yarn install --frozen-lockfile
         env:
           CI: true
+
+      - name: Install dependencies lab
+        run: cd packages/react-components-lab && yarn install --frozen-lockfile
+        env:
+          CI: true
       
       - name: Lint
         run: cd packages/react-components-lab && yarn lint
