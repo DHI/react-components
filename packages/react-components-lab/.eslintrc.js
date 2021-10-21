@@ -1,5 +1,5 @@
 module.exports = {
-  ignorePatterns: ['node_modules', 'dist'],
+  ignorePatterns: ['node_modules', 'dist', 'storybook-static'],
   plugins: ['prettier', 'eslint-comments', 'import', '@typescript-eslint'],
   extends: [
     'airbnb-typescript',
