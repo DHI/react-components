@@ -58,10 +58,10 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     const requestBody: any = {};
     const currentTimestepRequest = {};
 
-    timesteps.forEach((timestep: string, index: number) => {
+    timesteps.forEach((timestep: string, idx: number) => {
       requestBody[timestep] = filename;
-      if (index === this.props.currentTimestepIndex) {
-        currentTimestepRequest[timestep] = filename;
+      if (this.props.currentTimestepIndex === idx) {
+        currentTimestepRequest[timesteps[idx]] = filename;
       }
     });
 
@@ -84,20 +84,27 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
         scale: scale,
       },
       bboxWGS84: bbox,
-      timestepIndex: null,
+      timestepIndex: this.props.currentTimestepIndex,
       token,
     };
 
-    this.state.quickFetchPipeline.next({
-      ...pipelineInput,
-      requestDataSource: {
-        ...pipelineInput.requestDataSource,
-        ids: currentTimestepRequest,
-      },
-      timestepIndex: this.props.currentTimestepIndex,
-    });
-  
-    this.state.mainFetchPipeline.next(pipelineInput);
+    // TODO: This image pipeline tries to replace the current time step when fetching a single image.
+    // There is an issue with the this.props.currentTimestepIndex not being updated between renders
+    // in the pipeline as it is only created once initially. As a workaround the time step index at the
+    // time of the request is displayed on the screen. This will not affect the user when the animation
+    // is paused, but can result in a slight flicker to an incorrect timestep when the animation is
+    // running.
+    if (timesteps.length > 0) {
+      this.state.quickFetchPipeline.next({
+        ...pipelineInput,
+        requestDataSource: {
+          ...pipelineInput.requestDataSource,
+          ids: currentTimestepRequest,
+        },
+      });
+
+      this.state.mainFetchPipeline.next(pipelineInput);
+    }
   }
 
   /**
@@ -112,11 +119,11 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
 
     let shouldFetchData = false;
 
-    if (changeFlags.viewportChanged || changeFlags.dataChanged) {
+    if (changeFlags.dataChanged) {
       shouldFetchData = true;
     }
 
-    if (changeFlags.propsChanged && changeFlags.propsChanged !== 'props.currentTimestepIndex changed shallowly') {
+    if (changeFlags.propsChanged === 'props.flagBoundingBoxUpdate changed shallowly') {
       shouldFetchData = true;
     }
 
@@ -170,9 +177,21 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
             return 0;
           });
 
-          if (request.timestepIndex !== null) {
-            this.setState({
-              timestepLayers: this.state.timestepLayers.map((layer: BitmapLayer<BitmapLayerData>) => {
+          // Single image to replace.
+          if (self.state.timestepLayers.length === 0 && timestepImageData.length === 1) {
+            self.setState({
+              timestepLayers: [
+                new BitmapLayer<BitmapLayerData>({
+                  id: `AnimationLayer-${currentTimestamp}-timestep=${request.timestepIndex}`,
+                  image: timestepImageData[0].imageURL,
+                  visible: true,
+                  bounds: request.bboxWGS84 as any,
+                }),
+              ],
+            });
+          } else if (timestepImageData.length === 1) {
+            self.setState({
+              timestepLayers: self.state.timestepLayers.map((layer: BitmapLayer<BitmapLayerData>) => {
                 if (layer.props.id.endsWith(`timestep=${request.timestepIndex}`)) {
                   return new BitmapLayer<BitmapLayerData>({
                     id: `AnimationLayer-${currentTimestamp}-timestep=${request.timestepIndex}`,
@@ -183,23 +202,33 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
                 } else {
                   return layer;
                 }
-              })
+              }),
             });
+
+          // Multiple images to replace.
           } else {
-            this.setState({
+            const alreadyUpdatedLayerIndex = self.state.timestepLayers
+              .findIndex(l => l.id.endsWith(`timestep=${request.timestepIndex}`));
+            const alreadyUpdatedLayer = alreadyUpdatedLayerIndex >= 0 ? self.state.timestepLayers[alreadyUpdatedLayerIndex] : null;
+
+            self.setState({
               timestepLayers: timestepImageData.map((imageData, idx) => {
+                if (alreadyUpdatedLayerIndex === idx) {
+                  return alreadyUpdatedLayer;
+                }
+
                 return new BitmapLayer<BitmapLayerData>({
                   id: `AnimationLayer-${this.state.currentTimestamp}-timestep=${imageData.timestep}`,
                   image: imageData.imageURL,
-                  visible: idx === self.props.currentTimestepIndex,
+                  visible: idx === request.timestepIndex,
                   bounds: request.bboxWGS84 as any,
                 });
               })
             });
           }
-      },
-      error: e => console.error(e),
-    });
+        },
+        error: e => console.error(e),
+      });
 
     return fetchPipeline;
   }
@@ -215,7 +244,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
   renderLayers() {
     this.setState({
       timestepLayers: this.state.timestepLayers.map((layer: BitmapLayer<BitmapLayerData>, index: number) => {
-        if (layer.lifecycle === 'Awaiting state' || layer.props.image == null || layer.props.bounds == null) {
+        if (layer.props.image == null || layer.props.bounds == null) {
           return layer;
         }
 
