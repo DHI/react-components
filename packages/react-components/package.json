@@ -32,8 +32,6 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@danmarshall/deckgl-typings": "^4.9.7",
-    "@storybook/addon-actions": "^6.1.14",
-    "@storybook/addon-docs": "^6.1.14",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-docs": "^6.3.12",
     "@storybook/addon-info": "^5.3.21",
