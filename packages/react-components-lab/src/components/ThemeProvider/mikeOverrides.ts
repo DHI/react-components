@@ -409,7 +409,6 @@ const mikeOverrides: Overrides = {
       border: `1px solid ${mikePalette.darkGrey.main}`,
       maxWidth: SPACING * 46, // 368px
       minHeight: SPACING * 4, // 32px
-      maxHeight: SPACING * 6.5, // 52px
       fontSize: FONT_SIZE,
       fontWeight: 'normal',
       fontFamily: FONT_FAMILY,
