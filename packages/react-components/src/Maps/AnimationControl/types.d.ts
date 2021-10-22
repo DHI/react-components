@@ -37,7 +37,6 @@ export interface AnimationPlaybackControlsProps {
   onPause: () => void;
 }
 
-
 export interface AnimationTimelineProps {
   isEnabled: boolean;
   timestepIndex: number;

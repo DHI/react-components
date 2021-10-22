@@ -9,6 +9,10 @@ import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 
+/**
+ * Set of playback control buttons for navigating timesteps in the AnimationLayer.
+ * Allows pausing, playing, and stepping through timesteps.
+ */
 const AnimationPlaybackControls: React.FC<AnimationPlaybackControlsProps> = ({
   isPlaying,
   isEnabled,
@@ -20,31 +24,29 @@ const AnimationPlaybackControls: React.FC<AnimationPlaybackControlsProps> = ({
   onPause,
 }) => {
   return (
-    <>
-      <ToggleButtonGroup size="small">
-        <ToggleButton value="skip-to-start" disabled={!isEnabled} onClick={onSkipToStart}>
-          <SkipPreviousIcon />
+    <ToggleButtonGroup size="small">
+      <ToggleButton value="skip-to-start" disabled={!isEnabled} onClick={onSkipToStart}>
+        <SkipPreviousIcon />
+      </ToggleButton>
+      <ToggleButton value="step-backward" disabled={!isEnabled} onClick={onStepBackward}>
+        <NavigateBeforeIcon />
+      </ToggleButton>
+      {isPlaying ? (
+        <ToggleButton value="pause" disabled={!isEnabled} onClick={onPause}>
+          <PauseIcon />
         </ToggleButton>
-        <ToggleButton value="step-backward" disabled={!isEnabled} onClick={onStepBackward}>
-          <NavigateBeforeIcon />
+      ) : (
+        <ToggleButton value="play" disabled={!isEnabled} onClick={onPlay}>
+          <PlayArrowIcon />
         </ToggleButton>
-        {isPlaying ? (
-          <ToggleButton value="pause" disabled={!isEnabled} onClick={onPause}>
-            <PauseIcon />
-          </ToggleButton>
-        ) : (
-          <ToggleButton value="play" disabled={!isEnabled} onClick={onPlay}>
-            <PlayArrowIcon />
-          </ToggleButton>
-        )}
-        <ToggleButton value="step-forward" disabled={!isEnabled} onClick={() => onStepForward()}>
-          <NavigateNextIcon />
-        </ToggleButton>
-        <ToggleButton value="skip-to-end" disabled={!isEnabled} onClick={onSkipToEnd}>
-          <SkipNextIcon />
-        </ToggleButton>
-      </ToggleButtonGroup>
-    </>
+      )}
+      <ToggleButton value="step-forward" disabled={!isEnabled} onClick={() => onStepForward()}>
+        <NavigateNextIcon />
+      </ToggleButton>
+      <ToggleButton value="skip-to-end" disabled={!isEnabled} onClick={onSkipToEnd}>
+        <SkipNextIcon />
+      </ToggleButton>
+    </ToggleButtonGroup>
   )
 };
 

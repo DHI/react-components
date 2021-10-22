@@ -4,6 +4,9 @@ import Box from '@material-ui/core/Box';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 
+/**
+ * Creates a timelime that the user can scrub through for the AnimationControls component
+ */
 const AnimationTimeline: React.FC<AnimationTimelineProps> = ({
   timestepIndex,
   maxTimestepIndex,

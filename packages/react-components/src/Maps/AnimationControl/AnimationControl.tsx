@@ -5,6 +5,13 @@ import AnimationPlaybackControls from './AnimationPlaybackControls';
 import { format, parseISO, addHours } from 'date-fns';
 import { AnimationControlProps } from './types';
 
+/**
+ * Simple controls for managing the current timestep of the DeckGL animation layer.
+ * Provides both a slider and buttons for navigating between the time steps.
+ * 
+ * Some flexibility has been added to allow a user specified date format as well as adding/subtracting any
+ * time zone offsets if required.
+ */
 const AnimationControl: React.FC<AnimationControlProps> = ({ 
   dateTimes,
   framesPerSecond = 10,
@@ -22,7 +29,6 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   const timestepIndex = React.useRef<number | null>(null);
   const isPlaying = React.useRef(false);
   const [_, setDirtyFlag] = React.useState<number>(0);
-  const [disableSlider, setDisableSlider] = React.useState(enabled);
 
   React.useEffect(() => {
     if (dateTimes && dateTimes.length > 0) {

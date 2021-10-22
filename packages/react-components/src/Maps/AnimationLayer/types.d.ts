@@ -13,6 +13,11 @@ interface AnimationLayerProps {
   itemNumber: number;
   scale: number;
   currentTimestepIndex: number;
+
+  // Note: The updateState DeckGL lifecycle method has a viewportChanged flag to check for changes to the
+  // viewport while the user is panning and zooming. This event isn't triggered until a re-render occurs in
+  // the parent component. To ensure this occurs and that the image data is fetched the "flagBoundingBoxUpdate" 
+  // property was added.
   flagBoundingBoxUpdate: number;
 }
 

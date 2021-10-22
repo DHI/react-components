@@ -5,17 +5,25 @@ import { AnimationLayerState, AnimationLayerProps, AnimationImageRequest, Bitmap
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { Subject, of, forkJoin } from 'rxjs';
 
+/**
+ * This is a DeckGL port of the original LeafletAnimation component in the original DHI/react-components repository.
+ * Created as a composite DeckGL layer so that it can be used directly as a DeckGL layer.
+ */
 class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerProps> {
 
   initializeState() {
+
     // Setup pipeline for fetching map animation images.
+    // The "quick pipeline" is used to fetch the currently display image for faster feedback.
+    // The "main pipeline" is used to fetch all time step images.
     const quickFetchPipeline = this.createImageRetrievalPipeline();
     const mainFetchPipeline = this.createImageRetrievalPipeline();
 
     this.state = {
-      currentTimestamp: new Date().getTime().toString(),
+      // The current time stamp is used to prevent duplicate layer IDs from occuring. This may cause the WebGL context 
+      // to be lost, as the same layer ID can not be used after the "finalize" method is.
+      currentTimestamp: new Date().getTime(),
       timestepLayers: [],
-      abortFetchController: null,
       quickFetchPipeline: quickFetchPipeline,
       mainFetchPipeline: mainFetchPipeline,
     };
@@ -23,7 +31,13 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     this.fetchTimestepData();
   }
 
-  fetchTimestepData() {
+  /**
+   * Fetches the time step image data based on the viewport extents. It does this by sending a request to the
+   * image pipeline ("mainFetchPipeline.next(...)").
+   * Two requests are sent from this method, one for retrieving the image for the current timestep quickly,
+   * and one for retrieving all timestep images.
+   */
+  fetchTimestepData(): void {
     const { apiHost, connectionString, token, filename, timesteps, style, shadingType, itemNumber, scale } = this.props;
 
     if (this.context.viewport.width === 1 || this.context.viewport.height === 1) {
@@ -86,7 +100,12 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     this.state.mainFetchPipeline.next(pipelineInput);
   }
 
-  updateState({oldProps, changeFlags}: {oldProps: any, changeFlags: any}) {
+  /**
+   * Lifecycle hook used by DeckGL layers in order to update state/detect changes.
+   * Used to determine whether animation image data needs to be updated after the viewport has moved 
+   * or the props have changed.
+   */
+  updateState({oldProps, changeFlags}: {oldProps: any, changeFlags: any}): void {
     if (Object.keys(oldProps).length === 0) {
       return;
     }
@@ -106,7 +125,14 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     }
   }
 
-  createImageRetrievalPipeline() {
+  /**
+   * Creates an image retrieval pipeline for fetching timestep image data to the domain services API and
+   * updates the timestepLayers state to the latest images.
+   * 
+   * The pipeline will ensure that any outgoing/outdated requests are cancelled before running the next API
+   * call (through switchMap), and that requests are debounced to not overload the API.
+   */
+  createImageRetrievalPipeline(): Subject<AnimationImageRequest> {
     const self = this;
 
     const fetchPipeline = new Subject<AnimationImageRequest>();
