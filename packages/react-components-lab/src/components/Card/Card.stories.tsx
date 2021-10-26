@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Switch } from '@material-ui/core';
 import Card from './Card';
 import { CardProps } from './types';
 import productImage from './product.png';
@@ -80,6 +80,22 @@ Disabled.args = {
   image: productImage as string,
   disabled: true,
   isOpen: true,
+  children: (
+    <Box>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
+    </Box>
+  ),
+};
+
+export const CustomCheckbox = Template.bind({});
+CustomCheckbox.args = {
+  title: 'Title',
+  subTitle: 'Subtitle at DHI',
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+  customCheckbox: <Switch />,
   children: (
     <Box>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
