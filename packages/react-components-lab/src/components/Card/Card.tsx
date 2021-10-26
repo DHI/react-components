@@ -61,7 +61,7 @@ const Card: FC<CardProps> = ({
               <img src={image} alt={image} className={classes.image} />
             </Box>
             {isClickable && (
-              <Box display="flex" alignItems="flex-end">
+              <Box display="flex" alignItems="center">
                 {customCheckbox ? (
                   React.cloneElement(customCheckbox, { checked: isOpen })
                 ) : (
