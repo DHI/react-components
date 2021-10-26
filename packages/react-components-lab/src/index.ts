@@ -1,3 +1,8 @@
+// Card
+export { default as Card } from './components/Card/Card';
+export * from './components/Card/types';
+export { default as useCardStyles } from './components/Card/styles';
+
 // ResizeHandle
 export { default as ResizeHandle } from './components/ResizeHandle/ResizeHandle';
 export * from './components/ResizeHandle/types';

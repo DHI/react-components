@@ -4,7 +4,6 @@ import DHITheme from '../../theme';
 export const TimeseriesStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
-    height: '100%',
     display: 'flex',
     width: '100%',
   },

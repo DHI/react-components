@@ -1,5 +1,5 @@
 {
-  "version": "1.7.0",
+  "version": "1.8.3",
   "license": "MIT",
   "main": "dist/index.js",
   "name": "@dhi/react-components-lab",
@@ -66,6 +66,7 @@
     "fork-ts-checker-webpack-plugin": "^5.0.14",
     "lerna": "^4.0.0",
     "prettier": "^2.2.1",
+    "react-docgen-typescript-loader": "^3.7.2",
     "react-is": "^17.0.2",
     "ts-loader": "^8.0.2",
     "tsdx": "^0.13.2",

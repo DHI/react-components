@@ -1,3 +1,36 @@
+## @dhi/react-components-lab [1.8.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.2...@dhi/react-components-lab@1.8.3) (2021-10-21)
+
+
+### Bug Fixes
+
+* **Tooltip-theme:** Remove maxHeight from ThemeOverrides ([44fe02a](https://github.com/DHI/react-components/commit/44fe02a1200af9c479b7304fbd0c91e80e6a5703))
+
+## @dhi/react-components-lab [1.8.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.1...@dhi/react-components-lab@1.8.2) (2021-10-20)
+
+
+### Bug Fixes
+
+* **Card:** Add small UI fixes. Add disabled prop ([5820b78](https://github.com/DHI/react-components/commit/5820b789ca9b1729b798fd7fb14ba39794612855))
+
+## @dhi/react-components-lab [1.8.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.0...@dhi/react-components-lab@1.8.1) (2021-10-18)
+
+
+### Bug Fixes
+
+* **Card:** Add exports ([305c20a](https://github.com/DHI/react-components/commit/305c20ae9fcd27ebee8e3ee37bd3c7bd120cb561))
+
+# @dhi/react-components-lab [1.8.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.7.0...@dhi/react-components-lab@1.8.0) (2021-10-18)
+
+
+### Bug Fixes
+
+* **keys:** Fix keys for various components ([60e8747](https://github.com/DHI/react-components/commit/60e8747f931c6c3241ac480d8909eda3a438c7f4))
+
+
+### Features
+
+* **Card:** Add Card component ([d109af8](https://github.com/DHI/react-components/commit/d109af8ea9be5275d1980fe5a506477d10700fc6))
+
 # @dhi/react-components-lab [1.7.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.6.1...@dhi/react-components-lab@1.7.0) (2021-10-12)
 
 

@@ -1,5 +1,6 @@
 import { DataSource } from '../../api/types';
 import { LogData } from '../../Logs/LogList/types';
+import { DateProps } from '../../common/types';
 
 interface JobListProps {
   /** Data source to get the logs data */
@@ -87,11 +88,6 @@ interface JobDetailProps {
   onClose: () => void;
 }
 
-interface DateProps {
-  from: string;
-  to: string;
-}
-
 interface DateFilterProps {
   dateTimeFormat: string;
   startTimeUtc: string;
@@ -102,4 +98,4 @@ interface DateFilterProps {
 }
 
 export default JobListProps;
-export { JobData, FilterProps, JobDetailProps, DateFilterProps, DateProps };
+export { JobData, FilterProps, JobDetailProps, DateFilterProps };

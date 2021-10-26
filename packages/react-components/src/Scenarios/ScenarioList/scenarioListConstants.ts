@@ -3,6 +3,8 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 
 export const MENU_ITEMS = [
   {
@@ -52,6 +54,12 @@ export const STATUS = [
     Icon: HourglassEmptyIcon,
   },
   {
+    name: 'Starting',
+    color: 'orange',
+    message: 'Starting',
+    Icon: HourglassEmptyIcon,
+  },
+  {
     name: 'InProgress',
     color: 'orange',
     message: 'Running',
@@ -79,11 +87,37 @@ export const STATUS = [
     name: 'Error',
     color: 'black',
     message: 'Error',
+    Icon: FiberManualRecordIcon,
+  },
+  {
+    name: 'Unknown',
+    color: 'purple',
+    message: 'Unknown',
+    Icon: FiberManualRecordIcon,
   },
   {
     name: 'Default',
     color: 'black',
+    message: 'Cancel',
+    Icon: FiberManualRecordIcon,
+  },
+  {
+    name: 'Cancelling',
+    color: 'orange',
+    message: 'Cancelling',
+    Icon: FiberManualRecordIcon,
+  },
+  {
+    name: 'Cancelled',
+    color: 'grey',
+    message: 'Cancelled',
+    Icon: RadioButtonUncheckedIcon,
+  },
+  {
+    name: 'Cancel',
+    color: 'grey',
     message: 'Unknown',
+    Icon: RadioButtonUncheckedIcon,
   },
 ] as Status[];
 

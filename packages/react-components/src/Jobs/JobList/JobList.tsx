@@ -22,15 +22,15 @@ import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/c
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import React, { useEffect, useRef, useState } from 'react';
 import { executeJobQuery, fetchLogs } from '../../api';
-import AuthService from '../../Auth/AuthService';
 import Loading from '../../common/Loading/Loading';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
 import { calcTimeDifference, zonedTimeFromUTC } from '../../utils/Utils';
-import { DateFilter } from './helpers/DateFilter';
+import { DateFilter } from '../../common/DateFilter/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
 import JobDetail from './helpers/JobDetail';
 import { JobPanelStyles } from './styles';
-import JobListProps, { DateProps, JobData } from './types';
+import JobListProps, { JobData } from './types';
+import { DateProps } from '../../common/types';
 
 const DEFAULT_COLUMNS = [
   { title: 'Task Id', name: 'taskId' },

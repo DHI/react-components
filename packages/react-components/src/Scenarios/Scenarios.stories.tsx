@@ -20,12 +20,12 @@ export const ScenariosStory = () => {
 
   const onAddScenario = () => {
     setNewScenario({
-      data: `{"testProperty":true,"name":"My Scenario","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
+      data: `{"testProperty":false,"name":"My Scenario test","startTime":"${new Date().toISOString()}","vessel":{"vesselName":"MSC Pamela"},"mooring":{"berthName":"VIG Berth 2"}}`,
     });
   };
 
   const queryDates = {
-    from: addDays(new Date(), -3).toISOString(),
+    from: addDays(new Date(), -1).toISOString(),
     to: addDays(new Date(), 1).toISOString(),
   };
 
@@ -121,7 +121,7 @@ export const ScenariosStory = () => {
                 {
                   id: 'execute',
                   label: 'Execute',
-                  disabled: true,
+                  // disabled: true,
                   condition: {
                     field: '!lastJobStatus', // Prefix with exclamation if you wish to inverse the condition test
                     value: ['Pending', 'InProgress', 'Completed'],
@@ -173,6 +173,26 @@ export const ScenariosStory = () => {
                   name: 'Pending',
                   color: 'orange',
                   message: 'Pending',
+                },
+                {
+                  name: 'Starting',
+                  color: 'orange',
+                  message: 'Starting',
+                },
+                {
+                  name: 'Cancel',
+                  color: 'grey',
+                  message: 'Cancel',
+                },
+                {
+                  name: 'Cancelling',
+                  color: 'orange',
+                  message: 'Cancelling',
+                },
+                {
+                  name: 'Cancelled',
+                  color: 'grey',
+                  message: 'Cancelled',
                 },
                 {
                   name: 'InProgress',

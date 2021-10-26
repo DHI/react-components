@@ -1,5 +1,5 @@
 {
-  "version": "0.6.44",
+  "version": "0.6.45",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -31,14 +31,14 @@
   "module": "dist/react-components.esm.js",
   "devDependencies": {
     "@babel/core": "^7.9.6",
-    "@storybook/addon-actions": "^6.1.14",
-    "@storybook/addon-docs": "^6.1.14",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-docs": "^6.3.12",
     "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-knobs": "^6.1.14",
-    "@storybook/addon-links": "^6.1.14",
-    "@storybook/addon-storysource": "^6.1.14",
-    "@storybook/addons": "^6.1.14",
-    "@storybook/react": "^6.1.14",
+    "@storybook/addon-knobs": "^6.3.1",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/addon-storysource": "^6.3.12",
+    "@storybook/addons": "^6.3.12",
+    "@storybook/react": "^6.3.12",
     "@types/classnames": "^2.2.10",
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.150",
@@ -81,6 +81,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
     "@microsoft/signalr": "^5.0.7",
+    "@react-hook/window-size": "^3.0.7",
     "@types/match-sorter": "^4.0.0",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "classnames": "^2.2.6",
@@ -91,8 +92,6 @@
     "jsonpath": "^1.1.1",
     "lodash": "^4.17.21",
     "match-sorter": "^4.2.0",
-    "react-virtualized-auto-sizer": "^1.0.2",
-    "react-window": "^1.8.5",
     "rxjs": "^6.5.5"
   }
 }
