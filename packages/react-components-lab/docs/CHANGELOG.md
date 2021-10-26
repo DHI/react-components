@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.9.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.3...@dhi/react-components-lab@1.9.0) (2021-10-26)
+
+
+### Features
+
+* **CustomCheckboxCard:** add custom checkbox ([c6a56ad](https://github.com/DHI/react-components/commit/c6a56ad26b6122907b7dc8926b2d2aafb0ebdf00))
+
 ## @dhi/react-components-lab [1.8.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.2...@dhi/react-components-lab@1.8.3) (2021-10-21)
 
 
