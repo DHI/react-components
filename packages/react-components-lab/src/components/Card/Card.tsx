@@ -23,6 +23,7 @@ const Card: FC<CardProps> = ({
   children,
   isClickable = true,
   disabled = false,
+  customCheckbox,
 }) => {
   const classes = cardStyles();
   const collapseIn = isClickable && isOpen;
@@ -60,25 +61,29 @@ const Card: FC<CardProps> = ({
               <img src={image} alt={image} className={classes.image} />
             </Box>
             {isClickable && (
-              <Box display="flex" alignItems="flex-end">
-                <Checkbox
-                  checked={isOpen}
-                  disabled={disabled}
-                  icon={
-                    <RadioButtonUnchecked
-                      color="primary"
-                      className={classes.checkIcon}
-                    />
-                  }
-                  checkedIcon={
-                    <CheckCircle
-                      className={clsx(
-                        classes.checkIcon,
-                        isOpen && classes.checkIconActive
-                      )}
-                    />
-                  }
-                />
+              <Box display="flex" alignItems="center">
+                {customCheckbox ? (
+                  React.cloneElement(customCheckbox, { checked: isOpen })
+                ) : (
+                  <Checkbox
+                    checked={isOpen}
+                    disabled={disabled}
+                    icon={
+                      <RadioButtonUnchecked
+                        color="primary"
+                        className={classes.checkIcon}
+                      />
+                    }
+                    checkedIcon={
+                      <CheckCircle
+                        className={clsx(
+                          classes.checkIcon,
+                          isOpen && classes.checkIconActive
+                        )}
+                      />
+                    }
+                  />
+                )}
               </Box>
             )}
           </Box>

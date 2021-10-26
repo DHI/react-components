@@ -10,4 +10,5 @@ export interface CardProps {
   children?: ReactNode;
   isClickable?: boolean;
   disabled?: boolean;
+  customCheckbox?: any;
 }
