@@ -23,7 +23,15 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'no-multiple-empty-lines': ['warn', { max: 2 }],
     'prettier/prettier': 'error',
-    '@typescript-eslint/no-unsafe-assignment': 'warn',
-    '@typescript-eslint/no-unsafe-return': 'warn',
+
+    // Rules disabled for lab
+    'no-console': 'off',
+    'prefer-destructuring': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/naming-convention': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };
