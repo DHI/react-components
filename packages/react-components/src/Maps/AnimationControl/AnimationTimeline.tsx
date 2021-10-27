@@ -16,9 +16,11 @@ const AnimationTimeline: React.FC<AnimationTimelineProps> = ({
   isEnabled,
 }) => {
   return (
-    <Box display="flex" flexDirection={isHorizontal ? "row" : "column"} justifyContent="center" alignItems="center">
-      <Box textAlign="center" mx={isHorizontal ? 2 : 0}> 
-        <Typography component="span" variant="caption" style={{ fontSize: '0.9rem',  }}>{timestepLabel}</Typography>
+    <Box display="flex" flexDirection={isHorizontal ? 'row' : 'column'} justifyContent="center" alignItems="center">
+      <Box textAlign="center" mx={isHorizontal ? 2 : 0}>
+        <Typography component="span" variant="caption" style={{ fontSize: '0.9rem' }}>
+          {timestepLabel}
+        </Typography>
       </Box>
       <Slider
         value={timestepIndex}

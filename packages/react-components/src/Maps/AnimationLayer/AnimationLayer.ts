@@ -10,9 +10,7 @@ import { Subject, of, forkJoin } from 'rxjs';
  * Created as a composite DeckGL layer so that it can be used directly as a DeckGL layer.
  */
 class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerProps> {
-
   initializeState() {
-
     // Setup pipeline for fetching map animation images.
     // The "quick pipeline" is used to fetch the currently display image for faster feedback.
     // The "main pipeline" is used to fetch all time step images.
@@ -20,7 +18,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     const mainFetchPipeline = this.createImageRetrievalPipeline();
 
     this.state = {
-      // The current time stamp is used to prevent duplicate layer IDs from occuring. This may cause the WebGL context 
+      // The current time stamp is used to prevent duplicate layer IDs from occuring. This may cause the WebGL context
       // to be lost, as the same layer ID can not be used after the "finalize" method is.
       currentTimestamp: new Date().getTime(),
       timestepLayers: [],
@@ -72,7 +70,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
       requestDataSource: {
         host: apiHost,
         connection: connectionString,
-        ids: requestBody
+        ids: requestBody,
       },
       requestConfig: {
         style: style,
@@ -90,7 +88,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
 
     // TODO: This image pipeline tries to replace the current time step when fetching a single image.
     // There is an issue with the this.props.currentTimestepIndex not being updated between renders
-    // in the pipeline as it is only created once initially. As a workaround the time step index at the
+    // in the pipeline, as it is only created once initially. As a workaround, the time step index at the
     // time of the request is displayed on the screen. This will not affect the user when the animation
     // is paused, but can result in a slight flicker to an incorrect timestep when the animation is
     // running.
@@ -109,10 +107,10 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
 
   /**
    * Lifecycle hook used by DeckGL layers in order to update state/detect changes.
-   * Used to determine whether animation image data needs to be updated after the viewport has moved 
+   * Used to determine whether animation image data needs to be updated after the viewport has moved
    * or the props have changed.
    */
-  updateState({oldProps, changeFlags}: {oldProps: any, changeFlags: any}): void {
+  updateState({ oldProps, changeFlags }: { oldProps: any; changeFlags: any }): void {
     if (Object.keys(oldProps).length === 0) {
       return;
     }
@@ -135,7 +133,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
   /**
    * Creates an image retrieval pipeline for fetching timestep image data to the domain services API and
    * updates the timestepLayers state to the latest images.
-   * 
+   *
    * The pipeline will ensure that any outgoing/outdated requests are cancelled before running the next API
    * call (through switchMap), and that requests are debounced to not overload the API.
    */
@@ -146,15 +144,10 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
     fetchPipeline
       .pipe(
         debounceTime(500),
-        switchMap((imageRequest: AnimationImageRequest) => 
-          fetchMapAnimationFiles(imageRequest.requestDataSource, imageRequest.requestConfig, imageRequest.token)
-            .pipe(
-              switchMap((response) => forkJoin(
-                of(imageRequest),
-                response.json()
-              ),
-            )
-          )
+        switchMap((imageRequest: AnimationImageRequest) =>
+          fetchMapAnimationFiles(imageRequest.requestDataSource, imageRequest.requestConfig, imageRequest.token).pipe(
+            switchMap((response) => forkJoin(of(imageRequest), response.json())),
+          ),
         ),
       )
       .subscribe({
@@ -162,18 +155,15 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
           const currentTimestamp = new Date().getTime();
           this.setState({ currentTimestamp });
 
-          const timestepImageData = Object.entries(encodedImages)
-            .map(([timestepStr, encodedImage]) => {
-              return {
-                timestep: timestepStr,
-                imageURL:  `data:image/png;base64,${encodedImage}`, 
-              }
-            });
+          const timestepImageData = Object.entries(encodedImages).map(([timestepStr, encodedImage]) => {
+            return {
+              timestep: timestepStr,
+              imageURL: `data:image/png;base64,${encodedImage}`,
+            };
+          });
           timestepImageData.sort((a, b) => {
-            if (a.timestep < b.timestep)
-              return -1;
-            if (a.timestep > b.timestep)
-              return 1;
+            if (a.timestep < b.timestep) return -1;
+            if (a.timestep > b.timestep) return 1;
             return 0;
           });
 
@@ -198,18 +188,20 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
                     image: timestepImageData[0].imageURL,
                     visible: true,
                     bounds: request.bboxWGS84 as any,
-                  }); 
+                  });
                 } else {
                   return layer;
                 }
               }),
             });
 
-          // Multiple images to replace.
+            // Multiple images to replace.
           } else {
-            const alreadyUpdatedLayerIndex = self.state.timestepLayers
-              .findIndex(l => l.id.endsWith(`timestep=${request.timestepIndex}`));
-            const alreadyUpdatedLayer = alreadyUpdatedLayerIndex >= 0 ? self.state.timestepLayers[alreadyUpdatedLayerIndex] : null;
+            const alreadyUpdatedLayerIndex = self.state.timestepLayers.findIndex((l) =>
+              l.id.endsWith(`timestep=${request.timestepIndex}`),
+            );
+            const alreadyUpdatedLayer =
+              alreadyUpdatedLayerIndex >= 0 ? self.state.timestepLayers[alreadyUpdatedLayerIndex] : null;
 
             self.setState({
               timestepLayers: timestepImageData.map((imageData, idx) => {
@@ -223,11 +215,11 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
                   visible: idx === request.timestepIndex,
                   bounds: request.bboxWGS84 as any,
                 });
-              })
+              }),
             });
           }
         },
-        error: e => console.error(e),
+        error: (e) => console.error(e),
       });
 
     return fetchPipeline;
@@ -236,7 +228,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
   finaliseState() {
     if (this.state.timestepLayers) {
       this.setState({
-        timestepLayers: []
+        timestepLayers: [],
       });
     }
   }

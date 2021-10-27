@@ -1,29 +1,28 @@
-
 export type AnimationControlProps = {
   // Set whether the component should be playing or not.
-  playing?: boolean,
+  playing?: boolean;
   // Element is enabled if this is set to true. Disabled if set to false.
-  enabled?: boolean,
+  enabled?: boolean;
   // Loops the animation when reaching the last timestep.
   loop?: boolean;
   // Returns current datetime out of all the time steps.
-  onDateTimeChange: (date: string) => void,
+  onDateTimeChange: (date: string) => void;
   // Orientation of control.
-  horizontal?: boolean,
+  horizontal?: boolean;
   // Hide controls.
-  hideControls?: boolean,
+  hideControls?: boolean;
   // Datetime postfix appended to date to indicate the timezone
-  dateTimePostfix?: string,
+  dateTimePostfix?: string;
   // Rate of change of selected value on slider when the animation is playing
-  framesPerSecond?: number,
+  framesPerSecond?: number;
   // Datetimes available for stepping to in animation control.
-  dateTimes: string[],
+  dateTimes: string[];
   // Time offset for data from UTC in hours
-  timezoneOffsetData?: number,
+  timezoneOffsetData?: number;
   // Time offset from UTC in hours
-  timezoneOffsetDisplay?: number,
+  timezoneOffsetDisplay?: number;
   // Datetime display format. Default: 'YYYY/MM/DD HH:mm:ss'.
-  dateTimeDisplayFormat?: string,
+  dateTimeDisplayFormat?: string;
 };
 
 export interface AnimationPlaybackControlsProps {

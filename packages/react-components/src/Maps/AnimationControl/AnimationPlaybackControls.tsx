@@ -47,7 +47,7 @@ const AnimationPlaybackControls: React.FC<AnimationPlaybackControlsProps> = ({
         <SkipNextIcon />
       </ToggleButton>
     </ToggleButtonGroup>
-  )
+  );
 };
 
 export default AnimationPlaybackControls;

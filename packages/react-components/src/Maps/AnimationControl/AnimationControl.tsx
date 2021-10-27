@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import AnimationTimeline from './AnimationTimeline';
 import AnimationPlaybackControls from './AnimationPlaybackControls';
@@ -8,11 +8,11 @@ import { AnimationControlProps } from './types';
 /**
  * Simple controls for managing the current timestep of the DeckGL animation layer.
  * Provides both a slider and buttons for navigating between the time steps.
- * 
+ *
  * Some flexibility has been added to allow a user specified date format as well as adding/subtracting any
  * time zone offsets if required.
  */
-const AnimationControl: React.FC<AnimationControlProps> = ({ 
+const AnimationControl: React.FC<AnimationControlProps> = ({
   dateTimes,
   framesPerSecond = 10,
   dateTimeDisplayFormat = 'yyyy/MM/dd HH:mm:ss',
@@ -30,14 +30,14 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   const isPlaying = React.useRef(false);
   const [_, setDirtyFlag] = React.useState<number>(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (dateTimes && dateTimes.length > 0) {
       timestepIndex.current = 0;
       flagRerender();
     }
   }, [dateTimes]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (playing) {
       play();
     } else {
@@ -45,14 +45,14 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     }
   }, [playing]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!enabled) {
       pause();
     }
   }, [enabled]);
 
   // Creates the animation update timer based on the user specified frequency.
-  React.useEffect(() => {
+  useEffect(() => {
     const updateTimer = setInterval(() => {
       if (isPlaying.current) {
         stepForward(true);
@@ -65,7 +65,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     };
   }, [framesPerSecond, dateTimes]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (timestepIndex.current !== null) {
       onDateTimeChange(dateTimes[timestepIndex.current]);
       flagRerender();
@@ -73,8 +73,8 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   }, [timestepIndex.current]);
 
   const flagRerender = () => {
-    setDirtyFlag(prev => prev + 1);
-  }
+    setDirtyFlag((prev) => prev + 1);
+  };
 
   const play = () => {
     isPlaying.current = true;
@@ -115,7 +115,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     }
 
     if (timestepIndex.current < dateTimes.length - 1) {
-      timestepIndex.current = timestepIndex.current + 1
+      timestepIndex.current = timestepIndex.current + 1;
     } else {
       if (loop) {
         timestepIndex.current = 1;
@@ -129,7 +129,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
 
   const stepBackward = () => {
     if (!timestepIndex.current && timestepIndex.current !== 0) {
-     return;
+      return;
     }
 
     if (isPlaying) {
@@ -156,7 +156,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
       currentDate = addHours(currentDate, timezoneOffsetDisplay - timezoneOffsetData);
     }
 
-    let formattedDate = format(currentDate, dateTimeDisplayFormat)
+    let formattedDate = format(currentDate, dateTimeDisplayFormat);
     if (dateTimePostfix) {
       formattedDate += ` ${dateTimePostfix}`;
     }
@@ -170,7 +170,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
     return (
       <Box display="flex" flexDirection="row" justifyContent="center">
         <Box>
-          <AnimationPlaybackControls 
+          <AnimationPlaybackControls
             isPlaying={isPlaying.current}
             isEnabled={enabled}
             onPlay={play}
@@ -206,7 +206,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
         />
         {!hideControls && (
           <Box display="flex" justifyContent="center">
-            <AnimationPlaybackControls 
+            <AnimationPlaybackControls
               isPlaying={isPlaying.current}
               isEnabled={enabled}
               onPlay={play}

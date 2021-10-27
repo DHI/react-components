@@ -1,4 +1,3 @@
-
 /**
  * Converts a WGS84 longitude/latitude to EPSG:3857.
  * Useful for creating an EPSG:3857 based bounding box for /api/maps
