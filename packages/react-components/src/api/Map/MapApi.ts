@@ -1,4 +1,4 @@
-import { fetchUrl } from '../helpers';
+import { fromFetch } from 'rxjs/fetch';
 import { DataSource } from '../types';
 
 /**
@@ -21,12 +21,13 @@ const fetchMapAnimationFiles = (
   },
   token: string,
 ) => {
-  const url = `${dataSource.host}/api/maps/${dataSource.connection}?&style=${config.style}&item=${config.item}&width=${config.width}&height=${config.height}&bbox=${config.bbox}&shadingtype=${config.shadingType}&scale=${config.scale}`;
+  const url = `${dataSource.host}/api/maps/${dataSource.connection}?&styles=${config.style}&items=${config.item}&width=${config.width}&height=${config.height}&bbox=${config.bbox}&shadingtype=${config.shadingType}&scale=${config.scale}`;
 
-  return fetchUrl(url, {
+  return fromFetch(url, {
     method: 'POST',
-    additionalHeaders: {
+    headers: {
       Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(dataSource.ids),
   });
