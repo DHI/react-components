@@ -17,15 +17,34 @@ const INITIAL_VIEW_STATE = {
   latitude: 55.686408,
   zoom: 9,
   pitch: 0,
-  bearing: 0
+  bearing: 0,
 };
 
 const timesteps = [
-  '2018-09-12T12:00:00', '2018-09-12T12:30:00', '2018-09-12T13:00:00', '2018-09-12T13:30:00', '2018-09-12T14:00:00',
-  '2018-09-12T14:30:00', '2018-09-12T15:00:00', '2018-09-12T15:30:00', '2018-09-12T16:00:00', '2018-09-12T16:30:00',
-  '2018-09-12T17:00:00', '2018-09-12T17:30:00', '2018-09-12T18:00:00', '2018-09-12T18:30:00', '2018-09-12T19:00:00',
-  '2018-09-12T19:30:00', '2018-09-12T20:00:00', '2018-09-12T20:30:00', '2018-09-12T21:00:00', '2018-09-12T21:30:00',
-  '2018-09-12T22:00:00', '2018-09-12T22:30:00', '2018-09-12T23:00:00', '2018-09-12T23:30:00',
+  '2018-09-12T12:00:00',
+  '2018-09-12T12:30:00',
+  '2018-09-12T13:00:00',
+  '2018-09-12T13:30:00',
+  '2018-09-12T14:00:00',
+  '2018-09-12T14:30:00',
+  '2018-09-12T15:00:00',
+  '2018-09-12T15:30:00',
+  '2018-09-12T16:00:00',
+  '2018-09-12T16:30:00',
+  '2018-09-12T17:00:00',
+  '2018-09-12T17:30:00',
+  '2018-09-12T18:00:00',
+  '2018-09-12T18:30:00',
+  '2018-09-12T19:00:00',
+  '2018-09-12T19:30:00',
+  '2018-09-12T20:00:00',
+  '2018-09-12T20:30:00',
+  '2018-09-12T21:00:00',
+  '2018-09-12T21:30:00',
+  '2018-09-12T22:00:00',
+  '2018-09-12T22:30:00',
+  '2018-09-12T23:00:00',
+  '2018-09-12T23:30:00',
 ];
 
 export const AnimationLayerStory = () => {
@@ -41,15 +60,15 @@ export const AnimationLayerStory = () => {
 
     renderSubLayers: (props: any) => {
       const {
-        bbox: {west, south, east, north}
+        bbox: { west, south, east, north },
       } = props.tile;
 
       return new BitmapLayer(props, {
         data: null,
         image: props.data,
-        bounds: [west, south, east, north]
+        bounds: [west, south, east, north],
       });
-    }
+    },
   });
 
   const animationLayer = new AnimationLayer({
@@ -72,11 +91,11 @@ export const AnimationLayerStory = () => {
   const handleDateTimeChange = (date: string) => {
     const index = timesteps.indexOf(date);
     setCurrentTimestepIndex(index);
-  }
+  };
 
   const onViewStateChange = () => {
-    setFlagBoundingBoxUpdate(prev  => prev + 1);
-  }
+    setFlagBoundingBoxUpdate((prev) => prev + 1);
+  };
 
   return (
     <div>
@@ -87,7 +106,7 @@ export const AnimationLayerStory = () => {
         onLoad={() => isMapLoaded(true)}
         onViewStateChange={onViewStateChange}
       />
-      <div style={{ position: 'absolute', top: 0, left: 0, padding: '1rem', width: "50ch", backgroundColor: 'white' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, padding: '1rem', width: '50ch', backgroundColor: 'white' }}>
         <AnimationControl
           playing={true}
           enabled={true}

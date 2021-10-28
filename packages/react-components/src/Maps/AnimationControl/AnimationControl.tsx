@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import AnimationTimeline from './AnimationTimeline';
 import AnimationPlaybackControls from './AnimationPlaybackControls';
@@ -26,14 +26,12 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   loop = true,
   enabled = true,
 }) => {
-  const timestepIndex = React.useRef<number | null>(null);
-  const isPlaying = React.useRef(false);
-  const [_, setDirtyFlag] = React.useState<number>(0);
+  const [timestepIndex, setTimestepIndex] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   useEffect(() => {
     if (dateTimes && dateTimes.length > 0) {
-      timestepIndex.current = 0;
-      flagRerender();
+      setTimestepIndex(0);
     }
   }, [dateTimes]);
 
@@ -54,81 +52,72 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
   // Creates the animation update timer based on the user specified frequency.
   useEffect(() => {
     const updateTimer = setInterval(() => {
-      if (isPlaying.current) {
+      if (isPlaying) {
         stepForward(true);
-        flagRerender();
       }
     }, 1000 / framesPerSecond);
 
     return () => {
       clearInterval(updateTimer);
     };
-  }, [framesPerSecond, dateTimes]);
+  }, [framesPerSecond, dateTimes, isPlaying]);
 
   useEffect(() => {
-    if (timestepIndex.current !== null) {
-      onDateTimeChange(dateTimes[timestepIndex.current]);
-      flagRerender();
+    if (timestepIndex !== null) {
+      onDateTimeChange(dateTimes[timestepIndex]);
     }
-  }, [timestepIndex.current]);
-
-  const flagRerender = () => {
-    setDirtyFlag((prev) => prev + 1);
-  };
+  }, [timestepIndex]);
 
   const play = () => {
-    isPlaying.current = true;
-    if (!timestepIndex.current && timestepIndex.current !== 0) {
-      timestepIndex.current = 0;
+    setIsPlaying(true);
+    if (!timestepIndex && timestepIndex !== 0) {
+      setTimestepIndex(0);
     }
-    flagRerender();
   };
 
   const pause = () => {
-    isPlaying.current = false;
-    flagRerender();
+    setIsPlaying(false);
   };
 
   const skipToStart = () => {
-    if (isPlaying.current) {
+    if (isPlaying) {
       pause();
     }
-    timestepIndex.current = 0;
-    flagRerender();
+    setTimestepIndex(0);
   };
 
   const skipToEnd = () => {
     if (isPlaying) {
       pause();
     }
-    timestepIndex.current = dateTimes.length - 1;
-    flagRerender();
+    setTimestepIndex(dateTimes.length - 1);
   };
 
   const stepForward = (keepPlaying: boolean = false) => {
-    if (!timestepIndex.current && timestepIndex.current !== 0) {
+    if (!timestepIndex && timestepIndex !== 0) {
       return;
     }
 
-    if (!keepPlaying && isPlaying.current) {
+    if (!keepPlaying && isPlaying) {
       pause();
     }
 
-    if (timestepIndex.current < dateTimes.length - 1) {
-      timestepIndex.current = timestepIndex.current + 1;
-    } else {
-      if (loop) {
-        timestepIndex.current = 1;
-      } else {
-        timestepIndex.current = dateTimes.length - 1;
-        pause();
+    setTimestepIndex((prevTimestepIndex) => {
+      if (prevTimestepIndex < dateTimes.length - 1) {
+        return prevTimestepIndex + 1;
       }
-    }
-    flagRerender();
+
+      if (loop) {
+        return 0;
+      }
+
+      pause();
+      return dateTimes.length - 1;
+    });
   };
 
   const stepBackward = () => {
-    if (!timestepIndex.current && timestepIndex.current !== 0) {
+    if (!timestepIndex && timestepIndex !== 0) {
       return;
     }
 
@@ -136,22 +125,20 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
       pause();
     }
 
-    timestepIndex.current = timestepIndex.current > 0 ? timestepIndex.current - 1 : 0;
-    flagRerender();
+    setTimestepIndex((prevTimestepIndex) => (prevTimestepIndex > 0 ? prevTimestepIndex - 1 : 0));
   };
 
   const handleTimestepChange = (index: number) => {
     pause();
-    timestepIndex.current = index;
-    flagRerender();
+    setTimestepIndex(index);
   };
 
   const formatCurrentDate = () => {
-    if (!timestepIndex.current && timestepIndex.current !== 0) {
+    if (!timestepIndex && timestepIndex !== 0) {
       return dateTimeDisplayFormat.replace(/\w/g, '-');
     }
 
-    let currentDate = parseISO(dateTimes[timestepIndex.current]);
+    let currentDate = parseISO(dateTimes[timestepIndex]);
     if (timezoneOffsetData && timezoneOffsetDisplay) {
       currentDate = addHours(currentDate, timezoneOffsetDisplay - timezoneOffsetData);
     }
@@ -171,7 +158,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
       <Box display="flex" flexDirection="row" justifyContent="center">
         <Box>
           <AnimationPlaybackControls
-            isPlaying={isPlaying.current}
+            isPlaying={isPlaying}
             isEnabled={enabled}
             onPlay={play}
             onPause={pause}
@@ -186,7 +173,7 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
             isEnabled={enabled}
             isHorizontal={horizontal}
             timestepLabel={currentTimestepStr}
-            timestepIndex={timestepIndex?.current ?? 0}
+            timestepIndex={timestepIndex ?? 0}
             maxTimestepIndex={dateTimes.length - 1}
             onTimestepIndexChange={handleTimestepChange}
           />
@@ -200,14 +187,14 @@ const AnimationControl: React.FC<AnimationControlProps> = ({
           isEnabled={enabled}
           isHorizontal={horizontal}
           timestepLabel={currentTimestepStr}
-          timestepIndex={timestepIndex?.current ?? 0}
+          timestepIndex={timestepIndex ?? 0}
           maxTimestepIndex={dateTimes.length - 1}
           onTimestepIndexChange={handleTimestepChange}
         />
         {!hideControls && (
           <Box display="flex" justifyContent="center">
             <AnimationPlaybackControls
-              isPlaying={isPlaying.current}
+              isPlaying={isPlaying}
               isEnabled={enabled}
               onPlay={play}
               onPause={pause}
