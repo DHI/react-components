@@ -23,8 +23,8 @@ export default makeStyles<IMikeTheme>((theme) => ({
     opacity: 0.7,
   },
   title: {
-    fontSize: 14,
-    fontWeight: 500,
+    paddingTop: 4,
+    paddingBottom: 4,
   },
   subTitle: {
     fontSize: 12,
@@ -41,5 +41,9 @@ export default makeStyles<IMikeTheme>((theme) => ({
   image: {
     width: '90%',
     height: 'auto',
+  },
+  titlePaddingNonClickable: {
+    paddingTop: 4,
+    paddingBottom: 4,
   },
 }));

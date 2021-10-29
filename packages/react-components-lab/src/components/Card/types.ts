@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 export interface CardProps {
-  title: string;
+  title: string | ReactNode;
   description?: string[] | string | ReactNode;
   isOpen?: boolean;
   subTitle?: string | null;
