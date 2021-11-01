@@ -38,9 +38,16 @@ const Card: FC<CardProps> = ({
           justifyContent="space-between"
         >
           <Box display="flex" flexDirection="column" justifyContent="center">
-            <Typography variant="h5" className={classes.title}>
+            <Typography
+              variant="h5"
+              className={clsx(
+                !isClickable && classes.titlePaddingNonClickable,
+                classes.title
+              )}
+            >
               {title}
             </Typography>
+
             {subTitle && (
               <Typography variant="subtitle1" className={classes.subTitle}>
                 {subTitle}
