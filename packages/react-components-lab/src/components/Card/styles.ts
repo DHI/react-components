@@ -23,8 +23,8 @@ export default makeStyles<IMikeTheme>((theme) => ({
     opacity: 0.7,
   },
   title: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
   subTitle: {
     fontSize: 12,
@@ -43,7 +43,7 @@ export default makeStyles<IMikeTheme>((theme) => ({
     height: 'auto',
   },
   titlePaddingNonClickable: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
 }));
