@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.9.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.9.0...@dhi/react-components-lab@1.9.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **Card:** Enhance styling for the card ([e2dfd7f](https://github.com/DHI/react-components/commit/e2dfd7f29303bb4c882273ad4080083645f7ec49))
+
 # @dhi/react-components-lab [1.9.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.3...@dhi/react-components-lab@1.9.0) (2021-10-26)
 
 
