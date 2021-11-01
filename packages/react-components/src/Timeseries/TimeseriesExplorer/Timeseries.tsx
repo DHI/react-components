@@ -11,7 +11,7 @@ import { TimeseriesStyles } from './styles';
 import { TimeseriesProps } from './types';
 import { DateFilter } from '../../common/DateFilter/DateFilter';
 import { DateProps } from '../../common/types';
-import { useWindowSize } from '@react-hook/window-size/';
+import { useWindowSize } from '@react-hook/window-size';
 
 const NAME_TEXT_STYLE = {
   padding: 12,
