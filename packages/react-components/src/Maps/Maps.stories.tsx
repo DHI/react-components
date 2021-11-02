@@ -6,6 +6,7 @@ import { BitmapLayer } from '@deck.gl/layers';
 import { TileLayer } from '@deck.gl/geo-layers';
 import AnimationLayer from './AnimationLayer/AnimationLayer';
 import AnimationControl from './AnimationControl/AnimationControl';
+import { viewStateToBBox } from './AnimationLayer/helpers';
 import { Layer } from 'deck.gl';
 
 export default {
@@ -49,7 +50,7 @@ const timesteps = [
 
 export const AnimationLayerStory = () => {
   const [currentTimestepIndex, setCurrentTimestepIndex] = React.useState<number>(0);
-  const [flagBoundingBoxUpdate, setFlagBoundingBoxUpdate] = React.useState<number>(0);
+  const [bbox, setBbox] = React.useState<any>();
   const [_, isMapLoaded] = React.useState<boolean>(false);
 
   const tileLayer = new TileLayer({
@@ -83,7 +84,7 @@ export const AnimationLayerStory = () => {
     timesteps: timesteps,
     currentTimestepIndex: currentTimestepIndex,
     scale: 1,
-    flagBoundingBoxUpdate,
+    bbox,
   });
 
   const layers: Layer<any>[] = [tileLayer, animationLayer];
@@ -93,8 +94,11 @@ export const AnimationLayerStory = () => {
     setCurrentTimestepIndex(index);
   };
 
-  const onViewStateChange = () => {
-    setFlagBoundingBoxUpdate((prev) => prev + 1);
+  const onViewStateChange = ({ viewState }) => {
+    if (viewState) {
+      const bbox = viewStateToBBox(viewState);
+      setBbox(bbox);
+    }
   };
 
   return (
