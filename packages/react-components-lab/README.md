@@ -21,7 +21,7 @@ We are aiming for making it as easy as possible for a component to be added to t
 
 # Showcase
 
-Our library is showcased on the [Lab Storybook](https://storybooklab.z16.web.core.windows.net/)
+Our library is showcased on the [Lab Storybook](https://green-glacier-08aae7903.azurestaticapps.net/)
 
 ## Installing the package
 
