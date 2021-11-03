@@ -50,7 +50,7 @@ const timesteps = [
 
 export const AnimationLayerStory = () => {
   const [currentTimestepIndex, setCurrentTimestepIndex] = React.useState<number>(0);
-  const [bbox, setBbox] = React.useState<any>();
+  const [bbox, setBbox] = React.useState<[number, number, number, number] | null>();
   const [_, isMapLoaded] = React.useState<boolean>(false);
 
   const tileLayer = new TileLayer({
