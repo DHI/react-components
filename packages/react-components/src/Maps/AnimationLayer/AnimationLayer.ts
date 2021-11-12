@@ -36,22 +36,16 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
    * and one for retrieving all timestep images.
    */
   fetchTimestepData(): void {
-    const { apiHost, connectionString, token, filename, timesteps, style, shadingType, itemNumber, scale } = this.props;
+    const { apiHost, connectionString, token, filename, timesteps, style, shadingType, itemNumber, scale, bbox } = this.props;
 
-    if (this.context.viewport.width === 1 || this.context.viewport.height === 1) {
+    if (!bbox) {
       return;
     }
 
     // Create EPSG:3857 bounding box for use with domain services.
-    const nw = this.context.viewport.unproject([0, 0]);
-    const se = this.context.viewport.unproject([this.context.viewport.width, this.context.viewport.height]);
-
-    const epsg3857se = convertWGS84ToEPSG3857(se[0], se[1]);
-    const epsg3857nw = convertWGS84ToEPSG3857(nw[0], nw[1]);
-
-    // Create WGS84 bounding box for use with DeckGL.
-    const bbox: any = [nw[0], se[1], se[0], nw[1]];
-
+    const epsg3857se = convertWGS84ToEPSG3857(bbox[2], bbox[1]);
+    const epsg3857nw = convertWGS84ToEPSG3857(bbox[0], bbox[3]);
+    
     // Generate the request body to retrieve the images for the timesteps of interest.
     const requestBody: any = {};
     const currentTimestepRequest = {};
@@ -121,7 +115,7 @@ class AnimationLayer extends CompositeLayer<AnimationLayerState, AnimationLayerP
       shouldFetchData = true;
     }
 
-    if (changeFlags.propsChanged === 'props.flagBoundingBoxUpdate changed shallowly') {
+    if (changeFlags.propsChanged && changeFlags.propsChanged !== 'props.currentTimestepIndex changed shallowly') {
       shouldFetchData = true;
     }
 

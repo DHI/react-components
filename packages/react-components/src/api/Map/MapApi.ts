@@ -11,13 +11,13 @@ import { DataSource } from '../types';
 const fetchMapAnimationFiles = (
   dataSource: DataSource,
   config: {
-    style: any;
-    item: any;
-    width: any;
-    height: any;
-    bbox: any;
-    shadingType: any;
-    scale: any;
+    style: string;
+    item: number;
+    width: number;
+    height: number;
+    bbox: string;
+    shadingType: string;
+    scale: number;
   },
   token: string,
 ) => {
