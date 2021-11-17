@@ -28,7 +28,7 @@ const MultiField: FC<MultiFieldProps> = ({
   const classes = useStyles({ fontSize });
 
   const lengthIndex = length - 1;
-  // TOdo move to state?
+  // TODO add support for dynamic length
   const [refs, setRefs] = useState(
     Array.from({ length }, () => useRef<HTMLInputElement>(null))
   );
@@ -86,12 +86,12 @@ const MultiField: FC<MultiFieldProps> = ({
       return;
     }
 
-    // 111-111 - Handles paste
+    // 111-111 - Handles paste  for string with seperator
     const withDashRe = new RegExp(
-      `^[a-zA-Z0-9]]{${seperationInterval}}${seperatorChar}[a-zA-Z0-9]{${seperationInterval}}$'`
+      `[a-zA-Z0-9]{${seperationInterval}}${seperatorChar}[a-zA-Z0-9]{${seperationInterval}}$`
     );
     if (withDashRe.test(eventValue)) {
-      onChange(eventValue.replace(placeholderChar, ''));
+      onChange(eventValue.replace(seperatorChar, ''));
       focus();
 
       return;
@@ -118,7 +118,7 @@ const MultiField: FC<MultiFieldProps> = ({
     // ------ - Handles value reset
     const emptyRe = new RegExp(`^${seperatorChar}{${length}}$`);
     if (emptyRe.test(valueWithFallback)) refs[0].current?.focus();
-  }, [length, refs, valueWithFallback]);
+  }, [length, refs, valueWithFallback, seperatorChar]);
 
   return (
     <Box
