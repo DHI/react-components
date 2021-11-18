@@ -54,12 +54,12 @@ const ScenarioList = (props: ScenarioListProps) => {
   const buildScenariosList = (scenarios: Scenario[]) => {
     return sortBy(scenarios, ['dateTime'])
       .reverse()
-      .map((scenario) => {
+      .map((scenario, index) => {
         const itemStatus = checkStatus(scenario.lastJob, status);
 
         return (
           <div
-            key={scenario.fullName}
+            key={`${scenario.fullName}_${index}`}
             onClick={() => onScenarioClick(scenario)}
             onKeyPress={() => onScenarioClick(scenario)}
             role="presentation"
