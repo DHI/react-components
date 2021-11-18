@@ -1,4 +1,4 @@
-// Card
+// MultiField
 export { default as MultiField } from './components/MultiField/MultiField';
 export * from './components/MultiField/types';
 export { default as useMultiFieldStyles } from './components/MultiField/styles';
