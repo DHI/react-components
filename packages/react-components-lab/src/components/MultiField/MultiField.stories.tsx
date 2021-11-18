@@ -12,11 +12,11 @@ export default {
 const Template: Story<MultiFieldProps> = (args) => {
   const [value, setValue] = useState<string | undefined>();
 
-  console.log(value);
-
   return (
     <>
       <Typography>MultiField</Typography>
+      <Typography>Value: {value}</Typography>
+
       <Box
         position="inline"
         height={500}
@@ -29,9 +29,6 @@ const Template: Story<MultiFieldProps> = (args) => {
         <MultiField
           {...args}
           value={value}
-          length={6}
-          seperatorChar="-"
-          seperationInterval={3}
           onChange={(newValue) => setValue(newValue)}
         />
       </Box>
@@ -41,3 +38,11 @@ const Template: Story<MultiFieldProps> = (args) => {
 
 export const Minimal = Template.bind({});
 Minimal.args = {};
+
+export const AllProps = Template.bind({});
+AllProps.args = {
+  length: 8,
+  seperationInterval: 2,
+  fontSize: 40,
+  seperatorChar: ':',
+};

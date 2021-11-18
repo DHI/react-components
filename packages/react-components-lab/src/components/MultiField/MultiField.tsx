@@ -3,7 +3,6 @@ import React, {
   FC,
   KeyboardEvent,
   useRef,
-  useState,
   Fragment,
   useEffect,
 } from 'react';
@@ -15,7 +14,7 @@ import useStyles from './styles';
 const MultiField: FC<MultiFieldProps> = ({
   value,
   onChange,
-  length = 6,
+  length = 6, // NOTE: Changing dynamically not yet supported
   seperationInterval = 3,
   fontSize = 50,
 
@@ -23,15 +22,15 @@ const MultiField: FC<MultiFieldProps> = ({
 
   // Replaces the value of empty fields with the placeholder value, to maintain a consistent length of the value string,
   // to determine which fields are empty, allowing any preceding field value to be empty
-  placeholderChar = ' ',
+  placeholderChar = ' ', // NOTE: Changing dynamically not yet supported
 }) => {
   const classes = useStyles({ fontSize });
 
   const lengthIndex = length - 1;
-  // TODO add support for dynamic length
-  const [refs, setRefs] = useState(
-    Array.from({ length }, () => useRef<HTMLInputElement>(null))
-  );
+
+  // Dynamically changing length is not supported. To add support, refs need to be updated to change correctly on rerender &
+  // value truncated on length change
+  const refs = Array.from({ length }, () => useRef<HTMLInputElement>(null));
 
   const valueWithFallback =
     value ?? Array.from({ length }, () => placeholderChar).join('');
@@ -114,10 +113,10 @@ const MultiField: FC<MultiFieldProps> = ({
     return fieldValue;
   };
 
+  // Focuses on first input if value set to empty
   useEffect(() => {
-    // ------ - Handles value reset
-    const emptyRe = new RegExp(`^${seperatorChar}{${length}}$`);
-    if (emptyRe.test(valueWithFallback)) refs[0].current?.focus();
+    const emptyRe = new RegExp(`^${placeholderChar}{${length}}$`);
+    if (emptyRe.test(valueWithFallback)) refs[0]?.current?.focus();
   }, [length, refs, valueWithFallback, seperatorChar]);
 
   return (
