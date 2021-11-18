@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Story } from '@storybook/react';
 import { Typography, Box } from '@material-ui/core';
+import { useArgs } from '@storybook/client-api';
 import MultiField from './MultiField';
 import { MultiFieldProps } from './types';
 
@@ -10,12 +11,16 @@ export default {
 };
 
 const Template: Story<MultiFieldProps> = (args) => {
-  const [value, setValue] = useState<string | undefined>();
+  const [{ value }, updateArgs] = useArgs();
+  const setValue = (newValue: string) => updateArgs({ value: newValue });
 
   return (
     <>
       <Typography>MultiField</Typography>
-      <Typography>Value: {value}</Typography>
+      <Typography variant="subtitle2">
+        Note: changing the length and placeholderChar props dynamically is not
+        yet supported
+      </Typography>
 
       <Box
         position="inline"
@@ -25,7 +30,8 @@ const Template: Story<MultiFieldProps> = (args) => {
         m={2}
         style={{ backgroundColor: '#cccccc' }}
       >
-        <Typography>Parent view</Typography>
+        <Typography variant="h4">Parent view</Typography>
+        <Typography>Value: {value}</Typography>
         <MultiField
           {...args}
           value={value}
