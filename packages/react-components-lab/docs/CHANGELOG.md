@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.10.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.9.1...@dhi/react-components-lab@1.10.0) (2021-11-19)
+
+
+### Features
+
+* **lab:** Add MultiField ([6997b24](https://github.com/DHI/react-components/commit/6997b24eebc5317915d4bd4a9e4e4846d7c4337d))
+
 ## @dhi/react-components-lab [1.9.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.9.0...@dhi/react-components-lab@1.9.1) (2021-11-01)
 
 
