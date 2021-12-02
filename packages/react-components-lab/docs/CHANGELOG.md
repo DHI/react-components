@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.10.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.10.0...@dhi/react-components-lab@1.10.1) (2021-12-02)
+
+
+### Bug Fixes
+
+* **ResizeHandle:** Fix use-case when window is resized. ([8096f6c](https://github.com/DHI/react-components/commit/8096f6cddaed2261e67c3f7c0e09d285cf85e79a))
+
 # @dhi/react-components-lab [1.10.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.9.1...@dhi/react-components-lab@1.10.0) (2021-11-19)
 
 
