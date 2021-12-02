@@ -4,6 +4,7 @@ import React, {
   useCallback,
   FC,
   MouseEventHandler,
+  useMemo,
 } from 'react';
 import Handle from './Handle';
 import { ResizeHandleProps } from './types';
@@ -45,7 +46,7 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
         onDrag(w);
       }
     },
-    [vertical, minContainerSize, minDraggableSize, onDrag]
+    [vertical, minContainerSize, minDraggableSize, onDrag, wrapperSize]
   );
 
   const handleMouseDown = useCallback(
@@ -61,7 +62,7 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
         setInitialSize(initialSize < minDraggableSize ? minDraggableSize : w);
       }
     },
-    [initialSize, minDraggableSize]
+    [initialSize, minDraggableSize, wrapperSize]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -87,8 +88,8 @@ const VerticalHandle: FC<ResizeHandleProps> = ({
     return remove;
   }, [isDragging, handleMouseMove, handleMouseDown, handleMouseUp]);
 
-  const expandWidth = (30 / 100) * wrapperSize;
-  const expandHeight = (30 / 100) * wrapperSize;
+  const expandWidth = useMemo(() => (30 / 100) * wrapperSize, [wrapperSize]);
+  const expandHeight = useMemo(() => expandWidth, [expandWidth]);
   const expandSize = Number(!vertical ? expandHeight : expandWidth);
 
   return (
