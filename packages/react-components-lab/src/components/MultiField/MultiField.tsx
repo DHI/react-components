@@ -2,7 +2,8 @@ import React, {
   ChangeEvent,
   FC,
   KeyboardEvent,
-  useRef,
+  RefObject,
+  createRef,
   Fragment,
   useEffect,
 } from 'react';
@@ -17,6 +18,7 @@ const MultiField: FC<MultiFieldProps> = ({
   length = 6, // NOTE: Changing dynamically not yet supported
   seperationInterval = 3,
   fontSize = 50,
+  autoFocus = true,
 
   seperatorChar = '-',
 
@@ -30,7 +32,9 @@ const MultiField: FC<MultiFieldProps> = ({
 
   // Dynamically changing length is not supported. To add support, refs need to be updated to change correctly on rerender &
   // value truncated on length change
-  const refs = Array.from({ length }, () => useRef<HTMLInputElement>(null));
+  const refs: RefObject<HTMLElement>[] = Array.from({ length }, () =>
+    createRef()
+  );
 
   const valueWithFallback =
     value ?? Array.from({ length }, () => placeholderChar).join('');
@@ -75,8 +79,8 @@ const MultiField: FC<MultiFieldProps> = ({
 
     // 111111 - Handles paste
     const withoutDashRe = new RegExp(`^[a-zA-Z0-9]{${length}}$`);
-
     const focus = () => refs[lengthIndex].current?.focus();
+    const focusNext = () => refs[position + 1].current?.focus();
 
     if (withoutDashRe.test(eventValue)) {
       onChange(eventValue);
@@ -99,9 +103,9 @@ const MultiField: FC<MultiFieldProps> = ({
     // Prevents more than 1 char
     if (eventValue.length > 1 || eventValue === placeholderChar) return;
 
-    if (position !== lengthIndex && eventValue !== '')
-      refs[position + 1].current?.focus();
-
+    if (position !== lengthIndex && eventValue !== '') {
+      focusNext();
+    }
     const newChars = getValue(eventValue, position);
     onChange(newChars);
   };
@@ -136,7 +140,7 @@ const MultiField: FC<MultiFieldProps> = ({
             variant="filled"
             className={classes.field}
             inputRef={item}
-            autoFocus={i === 0}
+            autoFocus={autoFocus && i === 0}
           />
           {(i + 1) % seperationInterval === 0 && i !== lengthIndex && (
             <Typography className={classes.dash}>{seperatorChar}</Typography>

@@ -33,6 +33,7 @@ const Template: Story<MultiFieldProps> = (args) => {
         <Typography variant="h4">Parent view</Typography>
         <Typography>Value: {value}</Typography>
         <MultiField
+          autoFocus={false}
           {...args}
           value={value}
           onChange={(newValue) => setValue(newValue)}
@@ -43,7 +44,9 @@ const Template: Story<MultiFieldProps> = (args) => {
 };
 
 export const Minimal = Template.bind({});
-Minimal.args = {};
+Minimal.args = {
+  autoFocus: false,
+};
 
 export const AllProps = Template.bind({});
 AllProps.args = {

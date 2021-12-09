@@ -10,4 +10,5 @@ export interface MultiFieldProps {
   placeholderChar?: string;
   seperatorChar?: string;
   fontSize?: number;
+  autoFocus?: boolean;
 }
