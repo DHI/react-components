@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.11.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.10.1...@dhi/react-components-lab@1.11.0) (2021-12-14)
+
+
+### Features
+
+* **useSessionStorage:** Add sessionStorage hook ([29ecd17](https://github.com/DHI/react-components/commit/29ecd176b71e51c9430f7f4010940f652d4cb6d7))
+
 ## @dhi/react-components-lab [1.10.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.10.0...@dhi/react-components-lab@1.10.1) (2021-12-02)
 
 
