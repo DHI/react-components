@@ -66,4 +66,5 @@ export * from './components/ThemeProvider/types';
 // Hooks
 export { default as useBelow } from './hooks/useBelow';
 export { default as useLocalStorage } from './hooks/useLocalStorage';
+export { default as useSessionStorage } from './hooks/useSessionStorage';
 export { default as useDebounce } from './hooks/useDebounce';
