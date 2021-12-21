@@ -140,13 +140,15 @@ const Scenarios = (props: ScenariosProps) => {
             values,
           },
         ];
+
         const dataSources = {
+          token,
           host,
           connection: jobConnection,
         };
 
         try {
-          executeJobQuery(dataSources, token, query).subscribe((jobs) => {
+          executeJobQuery(dataSources, query).subscribe((jobs) => {
             newScenarios.map((scenario) => {
               const latestJob = filterToLastJob(scenario, jobs);
               let sce = {};

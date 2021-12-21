@@ -11,6 +11,7 @@ interface DataSource {
   /**
    * Host url, normally set on .env
    */
+  token?: string;
   host: string;
   connection: string;
   /**
@@ -24,6 +25,8 @@ interface DataSource {
    */
   to?: string;
   sheetName?: string;
+  tokenJobLog?: string;
+  hostJobLog?: string;
   connectionJobLog?: string;
   /**
    * NOTE: Only applicable if the connection type is grouped (hierarchical).
