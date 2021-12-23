@@ -66,7 +66,7 @@ const fetchTimeseriesByGroup = (dataSources: DataSource[], token: string) => {
  * @param dataSources connectionId is required
  * @param token
  */
-const fetchTimeseriesFullNames = (dataSources: DataSource[], token: string, group: any) => {
+const fetchTimeseriesFullNames = (dataSources: DataSource, group: any) => {
   const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
   const requests = dataSourcesArray.flatMap((source) =>
@@ -75,7 +75,7 @@ const fetchTimeseriesFullNames = (dataSources: DataSource[], token: string, grou
       {
         method: 'GET',
         additionalHeaders: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${source.token}`,
         },
       },
     ).pipe(
