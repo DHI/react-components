@@ -122,7 +122,7 @@ const TimeseriesExplorer = ({
   };
 
   const fetchTopLevelTreeView = (group = '') => {
-    fetchTimeseriesFullNames(dataSource, group.replace(/\/$/, '')).subscribe(
+    fetchTimeseriesFullNames([dataSource], group.replace(/\/$/, '')).subscribe(
       (res) => {
         const children = addChildren(res, group, true);
 
@@ -158,7 +158,7 @@ const TimeseriesExplorer = ({
     setLoading(true);
 
     if (group.slice(-1) === '/' || group === '') {
-      fetchTimeseriesFullNames(dataSource, group.replace(/\/$/, '')).subscribe(
+      fetchTimeseriesFullNames([dataSource], group.replace(/\/$/, '')).subscribe(
         (res) => {
           const children = addChildren(res, group);
           list.map((item) => recursive(item, group, children));
