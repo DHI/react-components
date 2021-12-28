@@ -214,6 +214,7 @@ const deleteJobs = (dataSource: DataSource, token: string, query: JobQuery) =>
       },
     },
   ).pipe(tap((res) => console.log('jobs deleted', res)));
+
 /**
  * /api/jobs/{connectionId}/last
  * Gets the last job meeting the criteria specified by the given parameters.
