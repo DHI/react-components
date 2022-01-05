@@ -84,6 +84,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/system": "^4.12.1",
     "clsx": "^1.1.1",
+    "date-fns": "^2.27.0",
     "lodash": "^4.17.21",
     "lodash.assignin": "^4.2.0",
     "prismjs": "^1.24.1"
