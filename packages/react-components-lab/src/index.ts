@@ -1,11 +1,11 @@
-// CalendarBox
-export { default as CalendarBox } from './components/CalendarBox/CalendarBox';
-export * from './components/CalendarBox/types';
-
 // CalendarItem
 export { default as CalendarItem } from './components/CalendarItem/CalendarItem';
 export * from './components/CalendarItem/types';
 export { default as useCalendarItemStyles } from './components/CalendarItem/styles';
+
+// CalendarBox
+export { default as CalendarBox } from './components/CalendarBox/CalendarBox';
+export * from './components/CalendarBox/types';
 
 // MultiField
 export { default as MultiField } from './components/MultiField/MultiField';
