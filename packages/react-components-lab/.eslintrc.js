@@ -33,5 +33,6 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/naming-convention': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'react/default-props-match-prop-types': 'off'
   },
 };
