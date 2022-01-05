@@ -1,3 +1,12 @@
+// CalendarBox
+export { default as CalendarBox } from './components/CalendarBox/CalendarBox';
+export * from './components/CalendarBox/types';
+
+// CalendarItem
+export { default as CalendarItem } from './components/CalendarItem/CalendarItem';
+export * from './components/CalendarItem/types';
+export { default as useCalendarItemStyles } from './components/CalendarItem/styles';
+
 // MultiField
 export { default as MultiField } from './components/MultiField/MultiField';
 export * from './components/MultiField/types';
@@ -16,7 +25,7 @@ export { default as useHandleStyles } from './components/ResizeHandle/styles';
 // CollapsableBox
 export { default as CollapsableBox } from './components/CollapsableBox/CollapsableBox';
 export * from './components/CollapsableBox/types';
-export { default as CollapsableBoxStyles } from './components/CollapsableBox/styles';
+export { default as useCollapsableBoxStyles } from './components/CollapsableBox/styles';
 
 // Legend (for use with number & color range)
 export { default as ContinuousLegend } from './components/ContinuousLegend/ContinuousLegend';
@@ -40,7 +49,7 @@ export { default as useCategoricalBarLegendStyles } from './components/Categoric
 
 // BarLegend
 export { default as BarLegend } from './components/BarLegend/BarLegend';
-export { default as BarLegendStyles } from './components/BarLegend/styles';
+export { default as useBarLegendStyles } from './components/BarLegend/styles';
 export * from './components/BarLegend/types';
 
 // Loader
@@ -56,7 +65,7 @@ export * from './components/GapBox/types';
 // Snackbar
 export { default as SnackbarProvider } from './components/Snackbar/SnackbarProvider';
 export { default as useSnackbar } from './components/Snackbar/useSnackbar';
-export { default as SnackbarStyles } from './components/Snackbar/styles';
+export { default as useSnackbarStyles } from './components/Snackbar/styles';
 export * from './components/Snackbar/types';
 
 // ThemeProvider

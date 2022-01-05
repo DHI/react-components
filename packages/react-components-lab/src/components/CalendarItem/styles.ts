@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { IMikeTheme } from '../..';
 
-export default makeStyles<IMikeTheme>((theme) => ({
+const useCalendarItemStyles = makeStyles<IMikeTheme>((theme) => ({
   button: {
     backgroundColor: theme.palette.mediumGrey.light,
     borderRadius: 4,
@@ -28,3 +28,5 @@ export default makeStyles<IMikeTheme>((theme) => ({
     backgroundColor: theme.palette.mediumGrey.main,
   },
 }));
+
+export default useCalendarItemStyles;

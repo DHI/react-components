@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import useStyles from './styles';

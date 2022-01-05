@@ -5,7 +5,7 @@ import { CalendarBoxProps } from './types';
 const CalendarBox: FC<CalendarBoxProps> = ({ children, title }) => (
   <Box>
     {title && (
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         {title}
       </Typography>
     )}
