@@ -1,3 +1,11 @@
+# @dhi/react-components-lab [1.12.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.11.0...@dhi/react-components-lab@1.12.0) (2022-01-05)
+
+
+### Features
+
+* **CalendarBox:** Add CalendarBox component for wrapping up the items ([b64a850](https://github.com/DHI/react-components/commit/b64a85037d06079be3e022c963c70b8a7c8e10de))
+* **CalendarItem:** Add CalendarItem component ([de78e38](https://github.com/DHI/react-components/commit/de78e38f0c9832ef0d0cafefeb207b6459dda78c))
+
 # @dhi/react-components-lab [1.11.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.10.1...@dhi/react-components-lab@1.11.0) (2021-12-14)
 
 
