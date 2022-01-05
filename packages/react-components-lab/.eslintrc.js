@@ -15,7 +15,13 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2019,
     project: 'tsconfig.json',
-    // tsconfigRootDir: __dirname,
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
   rules: {
     'react/prop-types': 'off',
@@ -33,5 +39,6 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/naming-convention': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'react/default-props-match-prop-types': 'off',
   },
 };

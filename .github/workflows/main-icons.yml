@@ -28,11 +28,6 @@ jobs:
           node-version: '14'
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@dhi'
-          
-      - name: Install dependencies icons
-        run: cd packages/icons && yarn install --frozen-lockfile
-        env:
-          CI: true
             
       - name: Install dependencies repo
         run: yarn install --frozen-lockfile
