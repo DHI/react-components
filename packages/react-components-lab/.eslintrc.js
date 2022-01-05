@@ -15,7 +15,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2019,
     project: 'tsconfig.json',
-    // tsconfigRootDir: __dirname,
   },
   settings: {
     'import/resolver': {
