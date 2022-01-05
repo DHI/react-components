@@ -12,11 +12,15 @@ import {
   TextField,
   InputAdornment,
 } from '@material-ui/core';
-import {Add,PermIdentity} from '@material-ui/icons';
+import { Add, PermIdentity } from '@material-ui/icons';
 
 // #region Local imports
 import { ComponentList } from './types';
 import mikePalette from '../mikePallete';
+
+const whiteColor = {
+  color: '#FFF',
+};
 // #endregion
 
 // make sure that the title value is the same as the name of the exported component from @material-ui/core.
@@ -1072,38 +1076,39 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <Fab color="primary">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary">\n\t<Add color="white" />\n</Fab>',
+              '<Fab color="primary">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="secondary">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="secondary">\n\t<Add color="white" />\n</Fab>',
+              '<Fab color="secondary">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab variant="extended">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
                 Extended
               </Fab>
             ),
             codeExample:
-              '<Fab variant="extended">\n\t<Add color="white" />\n</Fab>',
+              '<Fab variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab disabled>
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
-            codeExample: '<Fab disabled>\n\t<Add color="white" />\n</Fab>',
+            codeExample:
+              '<Fab disabled>\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
         ],
       },
@@ -1114,59 +1119,59 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <Fab color="primary" size="small">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="small">\n\t<Add color="white" />\n</Fab>',
+              '<Fab color="primary" size="small">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="medium">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="medium">\n\t<Add color="white" />\n</Fab>',
+              '<Fab color="primary" size="medium">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="large">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab variant="extended" size="large">\n\t<Add color="white" />\n</Fab>',
+              '<Fab variant="extended" size="large">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="small" variant="extended">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
                 Small
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="small" variant="extended">\n\t<Add color="white" />\n</Fab>',
+              '<Fab color="primary" size="small" variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="medium" variant="extended">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
                 Medium
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="medium" variant="extended">\n\t<Add color="white" />\n</Fab>',
+              '<Fab color="primary" size="medium" variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="large" variant="extended">
-                <Add color="white" />
+                <Add style={{ ...whiteColor }} />
                 Large
               </Fab>
             ),
             codeExample:
-              '<Fab variant="extended" size="large" variant="extended">\n\t<Add color="white" />\n</Fab>',
+              '<Fab variant="extended" size="large" variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
         ],
       },
