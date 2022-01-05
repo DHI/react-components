@@ -17,6 +17,13 @@ module.exports = {
     project: 'tsconfig.json',
     // tsconfigRootDir: __dirname,
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
+  },
   rules: {
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
