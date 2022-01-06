@@ -25,13 +25,13 @@ jobs:
             nodeModules-
 
       - name: Install dependencies
-        run: cd packages/react-components && yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
         env:
           CI: true
 
       - name: Lint
         run: |
-          export NODE_OPTIONS="--max-old-space-size=6144"
+          export NODE_OPTIONS="--max-old-space-size=8192"
           cd packages/react-components && yarn lint
         env:
           CI: true
