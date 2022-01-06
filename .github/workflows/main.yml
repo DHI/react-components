@@ -30,7 +30,9 @@ jobs:
           CI: true
 
       - name: Lint
-        run: cd packages/react-components && yarn lint
+        run: |
+          export NODE_OPTIONS="--max-old-space-size=2048"
+          cd packages/react-components && yarn lint
         env:
           CI: true
 
