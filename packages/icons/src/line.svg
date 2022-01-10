@@ -1,9 +1,0 @@
-<svg
-  width="40"
-  height="40"
-  viewbox="0 0 40 40"
-  fill="var(--BrandBlue--default)"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path d="M17 11h-2v22h2V11zM22 13h-2v14h2V13zM32 9h-2v8h2V9z" />
-</svg>

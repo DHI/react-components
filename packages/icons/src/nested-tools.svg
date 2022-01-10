@@ -2,7 +2,7 @@
   width="40"
   height="40"
   viewbox="0 0 40 40"
-  fill="var(--BrandBlue--default)"
+  fill="#0B4566"
   xmlns="http://www.w3.org/2000/svg"
 >
   <path d="M36 33l-3-3v6l3-3z"/>
