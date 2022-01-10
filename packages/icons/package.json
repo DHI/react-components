@@ -14,7 +14,8 @@
     "build": "node build-icons.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "semantic-release": "npx semantic-release"
+    "semantic-release": "npx semantic-release",
+    "postinstall": "yarn build"
   },
   "main": "./dist/index.js",
   "files": [
@@ -69,5 +70,8 @@
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
+  },
+  "dependencies": {
+    "undefined": "C:\\development\\react-components\\packages\\icons"
   }
 }
