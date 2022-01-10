@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import * as DhiIcons from '@dhi/icons';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     // backgroundColor: '#000',
   },
@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Icons: FC = () => {
   const classes = useStyles();
-  console.log(DhiIcons);
+  const DhiIconsTyped = DhiIcons as Record<string, FC>;
   return (
     <Box width={1} className={classes.root}>
-      {Object.keys(DhiIcons).map((item) => createElement(DhiIcons[item]))}
+      {Object.keys(DhiIconsTyped).map((item) => createElement(DhiIcons[item]))}
     </Box>
   );
 };

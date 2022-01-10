@@ -11,18 +11,11 @@ module.exports = {
     'plugin:import/typescript',
     'prettier',
   ],
+  root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2019,
     project: 'tsconfig.json',
-  },
-  settings: {
-    'import/extensions': 0,
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
-    },
   },
   rules: {
     'react/prop-types': 'off',

@@ -27,7 +27,8 @@
     "prepare": "tsdx build",
     "semantic-release": "npx semantic-release",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "generate-lock": "yarn generate-lock-entry; yarn import"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
