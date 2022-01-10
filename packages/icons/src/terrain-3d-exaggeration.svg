@@ -2,7 +2,7 @@
   width="40"
   height="40"
   viewbox="0 0 40 40"
-  fill="var(--BrandBlue--default)"
+  fill="#0B4566"
   xmlns="http://www.w3.org/2000/svg"
 >
   <path d="M22 14l-4.22 5.63 1.25 1.67L22 17.33 27 24h-8.46l-4.01-5.37L9 26h22l-9-12zm-9 10l1.52-2.03L16.04 24H13z"/>
