@@ -1,3 +1,10 @@
+# @dhi/icons [1.2.0](https://github.com/DHI/react-components/compare/@dhi/icons@1.1.0...@dhi/icons@1.2.0) (2022-01-10)
+
+
+### Features
+
+* **icon:** Weed out logo icons. Fix other logos. ([6654176](https://github.com/DHI/react-components/commit/6654176998dd6e4974b42987461319538eb6e7d2))
+
 # @dhi/icons [1.1.0](https://github.com/DHI/react-components/compare/@dhi/icons@1.0.1...@dhi/icons@1.1.0) (2021-07-12)
 
 
