@@ -29,7 +29,7 @@ export interface ActionsButtonsProps {
   /**
    * string to overwrite the confirm button label
    *
-   * Example: 'Update', 'Delete', 'Submit', 'Send'
+   * Examples: 'Update', 'Delete', 'Submit', 'Send'
    */
   confirmButtonText: string;
   /**

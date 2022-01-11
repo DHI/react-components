@@ -5,7 +5,7 @@ import StaticLegend from './StaticLegend';
 import { StaticLegendProps } from './types';
 
 export default {
-  title: 'Example/StaticLegend',
+  title: 'Components/StaticLegend',
   component: StaticLegend,
 };
 

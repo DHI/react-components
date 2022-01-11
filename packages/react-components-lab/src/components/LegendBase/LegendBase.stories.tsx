@@ -5,7 +5,7 @@ import LegendBase from './LegendBase';
 import { LegendBaseProps } from './types';
 
 export default {
-  title: 'Example/LegendBase',
+  title: 'Components/LegendBase',
   component: LegendBase,
 };
 

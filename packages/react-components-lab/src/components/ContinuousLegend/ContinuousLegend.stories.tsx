@@ -29,7 +29,7 @@ const colors = [
 ];
 
 export default {
-  title: 'Example/Legend',
+  title: 'Components/Legend',
   component: Legend,
 } as Meta;
 

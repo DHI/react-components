@@ -6,7 +6,7 @@ import CollapsableBox from './CollapsableBox';
 import { CollapsableBoxProps } from './types';
 
 export default {
-  title: 'Example/CollapsableBox',
+  title: 'Components/CollapsableBox',
   component: CollapsableBox,
 } as Meta;
 
