@@ -1,7 +1,7 @@
 import React, { FC, createElement, useState } from 'react';
 import { Box, Typography, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import * as DhiIcons from '@dhi/icons'; // eslint-disable-line import/no-unresolved
+import * as DhiIcons from '@dhi/icons/dist'; // eslint-disable-line import/no-unresolved
 import copy from 'copy-to-clipboard';
 import { IMikeTheme } from '../components/ThemeProvider/types';
 
@@ -33,8 +33,8 @@ const Icons: FC = () => {
     undefined
   );
   const classes = useStyles();
-  const DhiIconsTyped = DhiIcons as Record<string, FC>;
-
+  const { __esModule, ...DhiIconsTyped } = DhiIcons as Record<string, FC>;
+  console.log(DhiIconsTyped)
   const handleIcon = (item: string) => {
     copy(`import { ${item} } from "@dhi/icons";`);
     showTooltipText(item);
@@ -51,30 +51,32 @@ const Icons: FC = () => {
       display="flex"
       justifyContent="center"
     >
-      {Object.keys(DhiIconsTyped).map((item) => (
-        <Tooltip
-          open={Boolean(tooltipText && tooltipText === item)}
-          title={`Copied ${item} to clipboard.`}
-        >
-          <Box
-            onClick={() => handleIcon(item)}
-            className={classes.iconWrapper}
-            m={0.5}
-            p={1}
-            width={100}
-            height={70}
-            display="flex"
-            flexDirection="column"
+      {Object.keys(DhiIconsTyped).map((item) => {
+        return (
+          <Tooltip
+            open={Boolean(tooltipText && tooltipText === item)}
+            title={`Copied ${item} to clipboard.`}
           >
-            <Box height={1} display="flex" justifyContent="center">
-              {createElement(DhiIconsTyped[item])}
+            <Box
+              onClick={() => handleIcon(item)}
+              className={classes.iconWrapper}
+              m={0.5}
+              p={1}
+              width={100}
+              height={70}
+              display="flex"
+              flexDirection="column"
+            >
+              <Box height={1} display="flex" justifyContent="center">
+                {createElement(DhiIconsTyped[item])}
+              </Box>
+              <Typography variant="body2" className={classes.iconText}>
+                {item}
+              </Typography>
             </Box>
-            <Typography variant="body2" className={classes.iconText}>
-              {item}
-            </Typography>
-          </Box>
-        </Tooltip>
-      ))}
+          </Tooltip>
+        )
+      })}
     </Box>
   );
 };

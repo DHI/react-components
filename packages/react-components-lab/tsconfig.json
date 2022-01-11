@@ -4,5 +4,5 @@
   "include": ["src/**/*", ".eslintrc.js"],
   "compilerOptions": {
     "resolveJsonModule": true
-  }
+  },
 }
