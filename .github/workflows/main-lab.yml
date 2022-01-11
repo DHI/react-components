@@ -38,7 +38,7 @@ jobs:
       
       - name: Install dependencies repo
         run: |
-          npx lerna bootstrap --force-local
+          npx lerna bootstrap --force-local --no-ci
         env:
           CI: true
       
