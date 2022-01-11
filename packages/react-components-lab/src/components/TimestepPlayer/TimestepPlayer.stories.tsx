@@ -7,7 +7,7 @@ import TimestepPlayer from './TimestepPlayer';
 import { TimestepPlayerProps } from './types';
 
 export default {
-  title: 'Example/TimestepPlayer',
+  title: 'Components/TimestepPlayer',
   component: TimestepPlayer,
 };
 

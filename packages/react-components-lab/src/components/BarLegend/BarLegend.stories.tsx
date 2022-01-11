@@ -14,7 +14,7 @@ const RDPULegend =
   'https://terracotta-python.readthedocs.io/en/latest/_images/cmap-rdpu-bar.png';
 
 export default {
-  title: 'Example/BarLegend',
+  title: 'Components/BarLegend',
   component: BarLegend,
   argTypes: {
     src: { control: 'text' },

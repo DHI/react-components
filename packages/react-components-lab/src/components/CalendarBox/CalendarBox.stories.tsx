@@ -36,6 +36,6 @@ Default.args = {
 };
 
 export default {
-  title: 'Example/CalendarBox',
+  title: 'Components/CalendarBox',
   component: CalendarBox,
 } as Meta;

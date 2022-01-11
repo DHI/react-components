@@ -6,7 +6,7 @@ import MultiField from './MultiField';
 import { MultiFieldProps } from './types';
 
 export default {
-  title: 'Example/MultiField',
+  title: 'Components/MultiField',
   component: MultiField,
 };
 

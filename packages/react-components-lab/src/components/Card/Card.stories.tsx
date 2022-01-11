@@ -7,7 +7,7 @@ import { CardProps } from './types';
 import productImage from './product.png';
 
 export default {
-  title: 'Example/Card',
+  title: 'Components/Card',
   component: Card,
   argTypes: {
     title: { type: 'string' },

@@ -14,14 +14,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2019,
-    project: 'tsconfig.json',
-  },
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
-    },
+    project: './tsconfig.json',
   },
   rules: {
     'react/prop-types': 'off',

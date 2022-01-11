@@ -6,7 +6,7 @@ import Loader from './Loader';
 import { LoaderProps } from './types';
 
 export default {
-  title: 'Example/Loader',
+  title: 'Components/Loader',
   component: Loader,
   argTypes: {
     isLoading: { control: 'boolean' },

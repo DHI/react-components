@@ -36,7 +36,9 @@ jobs:
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
       
       - name: Install dependencies repo
-        run: yarn install --frozen-lockfile
+        run: |
+          npx lerna bootstrap --force-local --no-ci
+          npx lerna link
         env:
           CI: true
       

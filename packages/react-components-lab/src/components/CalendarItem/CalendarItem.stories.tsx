@@ -33,6 +33,6 @@ ActiveSemiButton.args = {
 };
 
 export default {
-  title: 'Example/CalendarItem',
+  title: 'Components/CalendarItem',
   component: CalendarItem,
 } as Meta;
