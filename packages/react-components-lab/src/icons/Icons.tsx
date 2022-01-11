@@ -34,7 +34,7 @@ const Icons: FC = () => {
   );
   const classes = useStyles();
   const { __esModule, ...DhiIconsTyped } = DhiIcons as Record<string, FC>;
-  console.log(DhiIconsTyped)
+  console.log(DhiIconsTyped);
   const handleIcon = (item: string) => {
     copy(`import { ${item} } from "@dhi/icons";`);
     showTooltipText(item);
@@ -51,32 +51,30 @@ const Icons: FC = () => {
       display="flex"
       justifyContent="center"
     >
-      {Object.keys(DhiIconsTyped).map((item) => {
-        return (
-          <Tooltip
-            open={Boolean(tooltipText && tooltipText === item)}
-            title={`Copied ${item} to clipboard.`}
+      {Object.keys(DhiIconsTyped).map((item) => (
+        <Tooltip
+          open={Boolean(tooltipText && tooltipText === item)}
+          title={`Copied ${item} to clipboard.`}
+        >
+          <Box
+            onClick={() => handleIcon(item)}
+            className={classes.iconWrapper}
+            m={0.5}
+            p={1}
+            width={100}
+            height={70}
+            display="flex"
+            flexDirection="column"
           >
-            <Box
-              onClick={() => handleIcon(item)}
-              className={classes.iconWrapper}
-              m={0.5}
-              p={1}
-              width={100}
-              height={70}
-              display="flex"
-              flexDirection="column"
-            >
-              <Box height={1} display="flex" justifyContent="center">
-                {createElement(DhiIconsTyped[item])}
-              </Box>
-              <Typography variant="body2" className={classes.iconText}>
-                {item}
-              </Typography>
+            <Box height={1} display="flex" justifyContent="center">
+              {createElement(DhiIconsTyped[item])}
             </Box>
-          </Tooltip>
-        )
-      })}
+            <Typography variant="body2" className={classes.iconText}>
+              {item}
+            </Typography>
+          </Box>
+        </Tooltip>
+      ))}
     </Box>
   );
 };

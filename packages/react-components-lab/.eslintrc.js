@@ -11,7 +11,6 @@ module.exports = {
     'plugin:import/typescript',
     'prettier',
   ],
-  root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2019,
