@@ -38,7 +38,6 @@ jobs:
       
       - name: Install dependencies repo
         run: |
-          yarn install --frozen-lockfile
           cd packages/react-components-lab
           yarn install
         env:
