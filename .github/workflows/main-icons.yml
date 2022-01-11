@@ -30,17 +30,16 @@ jobs:
           scope: '@dhi'
             
       - name: Install dependencies repo
-        run: yarn install --frozen-lockfile
+        run: |
+          npx lerna bootstrap --force-local --no-ci
+          npx lerna link
+          cd packages/icons
+          yarn install
         env:
           CI: true
 
       - name: Lint
         run: cd packages/icons && yarn lint
-        env:
-          CI: true
-      
-      - name: Build
-        run: cd packages/icons && yarn build
         env:
           CI: true
 

@@ -18,7 +18,6 @@
     "node": ">=10"
   },
   "scripts": {
-    "preinstall": "cd ../icons && yarn install",
     "dev": "yarn sb",
     "start": "start-storybook -p 6006",
     "build": "tsdx build",
