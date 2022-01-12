@@ -2,7 +2,7 @@
   width="40"
   height="40"
   viewbox="0 0 40 40"
-  fill="#0B4566"
+  fill="colorPrimary"
   xmlns="http://www.w3.org/2000/svg"
 >
   <path d="M10 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM13 27a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM16 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM24 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM27 28a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>

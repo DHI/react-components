@@ -5,11 +5,19 @@ const path = require('path');
 const glob = require('glob');
 const { exec } = require('child_process');
 const xmlParser = require('xml2json');
+const traverse = require('traverse');
 
 const distDir = './dist/';
 const srcDir = './src/';
 
-const iconColor = '#0B4566';
+const colorMap = {
+  colorPrimary: '#0B4566',
+  colorSecondary: '#00A4EC',
+  colorDarkGreyMain: '#86A2B3',
+  colorWhite: '#FFF',
+  colorError: '#FD3F75',
+  colorWarning: '#FFC20A',
+};
 
 const template = ({ template }, opts, { imports, componentName, jsx }) =>
   template.smart({ plugins: ['typescript'] }).ast`
@@ -35,24 +43,29 @@ for (const svgFile of svgFiles) {
     .join('');
 
   const { svg: svgObj } = JSON.parse(xmlParser.toJson(svg));
+
+  const updatedSVG = traverse(svgObj).map(function (x) {
+    if (!this.isLeaf) return;
+    if (!Object.keys(colorMap).includes(x)) return;
+
+    this.update(colorMap[x]);
+  });
+
+  const newSvg = xmlParser.toXml(JSON.stringify({ svg: { ...updatedSVG } }));
   const height = svgObj.height ?? 40;
   const width = svgObj.width ?? 40;
-
   const componentCode = svgr.sync(
-    svg,
+    newSvg,
     {
       template,
       plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
       svgoConfig: {
-        plugins: [
-          { convertColors: { currentColor: true } },
-          { removeXMLNS: { active: true } },
-        ],
+        plugins: [{ removeXMLNS: { active: true } }],
       },
       svgProps: {
         height,
         width,
-        color: iconColor,
+        color: colorMap['colorPrimary'],
         viewBox: `0 0 ${height} ${width}`,
       },
     },
