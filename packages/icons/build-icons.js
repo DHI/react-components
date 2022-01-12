@@ -45,22 +45,12 @@ for (const svgFile of svgFiles) {
   const { svg: svgObj } = JSON.parse(xmlParser.toJson(svg));
 
   const updatedSVG = traverse(svgObj).map(function (x) {
-    if (this.isLeaf && x === 'colorPrimary')
-      this.update(colorMap[colorPrimary]);
+    if (!this.isLeaf) return;
+    if (!Object.keys(colorMap).includes(x)) return;
 
-    if (this.isLeaf && x === 'colorSecondary')
-      this.update(colorMap[colorSecondary]);
-
-    if (this.isLeaf && x === 'colorWhite') this.update(colorMap[colorWhite]);
-
-    if (this.isLeaf && x === 'colorError') this.update(colorMap[colorError]);
-
-    if (this.isLeaf && x === 'colorWarning')
-      this.update(colorMap[colorWarning]);
-
-    if (this.isLeaf && x === 'colorDarkGreyMain')
-      this.update(colorMap[colorDarkGreyMain]);
+    this.update(colorMap[x]);
   });
+
   const newSvg = xmlParser.toXml(JSON.stringify({ svg: { ...updatedSVG } }));
   const height = svgObj.height ?? 40;
   const width = svgObj.width ?? 40;
