@@ -13,6 +13,10 @@ const srcDir = './src/';
 const colorPrimary = '#0B4566';
 const colorWhite = '#FFF';
 const colorError = '#FD3F75';
+const colorWarning = '#FFC20A';
+const colorSecondary = '#00A4EC';
+const colorDarkGreyMain = '#86A2B3';
+
 const template = ({ template }, opts, { imports, componentName, jsx }) =>
   template.smart({ plugins: ['typescript'] }).ast`
         ${imports}
@@ -40,8 +44,11 @@ for (const svgFile of svgFiles) {
 
   const updatedSVG = traverse(svgObj).map(function (x) {
     if (this.isLeaf && x === 'colorPrimary') this.update(colorPrimary);
+    if (this.isLeaf && x === 'colorSecondary') this.update(colorSecondary);
     if (this.isLeaf && x === 'colorWhite') this.update(colorWhite);
     if (this.isLeaf && x === 'colorError') this.update(colorError);
+    if (this.isLeaf && x === 'colorWarning') this.update(colorWarning);
+    if (this.isLeaf && x === 'colorDarkGreyMain') this.update(colorDarkGreyMain);
   });
   const newSvg = xmlParser.toXml(JSON.stringify({ svg: { ...updatedSVG } }));
   const height = svgObj.height ?? 40;

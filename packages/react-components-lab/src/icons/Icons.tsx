@@ -1,32 +1,8 @@
 import React, { FC, createElement, useState } from 'react';
 import { Box, Typography, Tooltip } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import * as DhiIcons from '@dhi/icons/dist'; // eslint-disable-line import/no-unresolved
 import copy from 'copy-to-clipboard';
-import { IMikeTheme } from '../components/ThemeProvider/types';
-
-const useStyles = makeStyles<IMikeTheme>((theme) => ({
-  root: {
-    backgroundColor: theme.palette.mediumGrey.main,
-  },
-  iconWrapper: {
-    backgroundColor: theme.palette.lightGrey.light,
-    borderRadius: 4,
-    cursor: 'pointer',
-    transition: theme.transitions[1],
-    '&:hover': {
-      backgroundColor: '#FFF',
-    },
-  },
-  icon: {
-    width: 20,
-    height: 20,
-  },
-  iconText: {
-    fontSize: 10,
-    textAlign: 'center',
-  },
-}));
+import useStyles from './styles';
 
 const Icons: FC = () => {
   const [tooltipText, showTooltipText] = useState<string | undefined>(
@@ -34,7 +10,6 @@ const Icons: FC = () => {
   );
   const classes = useStyles();
   const { __esModule, ...DhiIconsTyped } = DhiIcons as Record<string, FC>;
-  console.log(DhiIconsTyped);
   const handleIcon = (item: string) => {
     copy(`import { ${item} } from "@dhi/icons";`);
     showTooltipText(item);
