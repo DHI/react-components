@@ -65,7 +65,7 @@ for (const svgFile of svgFiles) {
       svgProps: {
         height,
         width,
-        color: colorPrimary,
+        color: colorMap[colorPrimary],
         viewBox: `0 0 ${height} ${width}`,
       },
     },
