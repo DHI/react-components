@@ -6,14 +6,14 @@ import GapBox from './GapBox';
 import { Props } from './types';
 
 export default {
-  title: 'Example/GapBox',
+  title: 'Components/GapBox',
   component: GapBox,
 };
 
 const Template: Story<Props> = (args) => <GapBox {...args} />;
 
 const Chips = ['Ocean', 'Waves', 'Sea', 'Tides'].map((label) => (
-  <Chip label={label} />
+  <Chip key={`chip-${label}`} label={label} />
 ));
 
 export const Flex = Template.bind({});

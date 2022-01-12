@@ -4,12 +4,12 @@ import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
-import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
 import { Scenario, ScenarioOLD } from '../types';
-import ScenarioListProps from './types';
+import { ScenarioItemOLD } from '../ScenarioItemOLD/ScenarioItem';
+import ScenarioListOLDProps from './types';
 import useStyles from './useStyles';
 
-const ScenarioList = (props: ScenarioListProps) => {
+const ScenarioListOLD = (props: ScenarioListOLDProps) => {
   const {
     selectedScenarioId,
     scenarios,
@@ -64,7 +64,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'id'),
             })}
           >
-            <ScenarioItem
+            <ScenarioItemOLD
               name={getObjectProperty(scenario.data, nameField)}
               onClick={onScenarioClick}
               description={getDescriptions(scenario, descriptionFields, timeZone)}
@@ -86,7 +86,8 @@ const ScenarioList = (props: ScenarioListProps) => {
   };
 
   const buildDateArea = (date: string) => {
-    const isoDate = timeZone ? utcToTz(date, timeZone) : parseISO(date);
+    const isoDate = parseISO(date);
+
     const dateObject = {
       day: format(isoDate, 'dd'),
       dayName: format(isoDate, 'EEE'),
@@ -135,4 +136,4 @@ const ScenarioList = (props: ScenarioListProps) => {
   return <div className={classes.root}>{printedScenarios}</div>;
 };
 
-export { ScenarioListProps, ScenarioList };
+export { ScenarioListOLDProps, ScenarioListOLD };

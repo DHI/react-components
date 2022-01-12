@@ -1,5 +1,5 @@
 {
-  "version": "1.2.1",
+  "version": "1.12.0",
   "license": "MIT",
   "main": "dist/index.js",
   "name": "@dhi/react-components-lab",
@@ -19,14 +19,12 @@
   },
   "scripts": {
     "dev": "yarn sb",
-    "start": "tsdx watch",
+    "start": "start-storybook -p 6006",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "tsdx build",
     "semantic-release": "npx semantic-release",
-    "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
@@ -65,6 +63,9 @@
     "fork-ts-checker-webpack-plugin": "^5.0.14",
     "lerna": "^4.0.0",
     "prettier": "^2.2.1",
+    "react": "^17.0.2",
+    "react-docgen-typescript-loader": "^3.7.2",
+    "react-dom": "^17.0.2",
     "react-is": "^17.0.2",
     "ts-loader": "^8.0.2",
     "tsdx": "^0.13.2",
@@ -78,10 +79,13 @@
   },
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.0",
-    "@dhi/icons": "^1.1.0",
-    "@material-ui/core": "^4.9.5",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/system": "^4.11.3",
+    "@dhi/icons": "^1.2.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/system": "^4.12.1",
+    "clsx": "^1.1.1",
+    "copy-to-clipboard": "^3.3.1",
+    "date-fns": "^2.27.0",
     "lodash": "^4.17.21",
     "lodash.assignin": "^4.2.0",
     "prismjs": "^1.24.1"

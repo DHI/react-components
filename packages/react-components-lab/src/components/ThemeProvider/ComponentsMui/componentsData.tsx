@@ -12,11 +12,15 @@ import {
   TextField,
   InputAdornment,
 } from '@material-ui/core';
-import { Plus, User } from '@dhi/icons';
+import { Add, PermIdentity } from '@material-ui/icons';
 
 // #region Local imports
 import { ComponentList } from './types';
 import mikePalette from '../mikePallete';
+
+const whiteColor = {
+  color: '#FFF',
+};
 // #endregion
 
 // make sure that the title value is the same as the name of the exported component from @material-ui/core.
@@ -657,16 +661,6 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <FormControlLabel
-                control={<Switch color="default" />}
-                label="Color default"
-              />
-            ),
-            codeExample:
-              '<FormControlLabel control={<Switch color="default" />} label="Color default" />',
-          },
-          {
-            component: (
-              <FormControlLabel
                 control={<Switch disabled />}
                 label="Disabled"
               />
@@ -684,11 +678,31 @@ const ComponentsData: ComponentList[] = [
             component: (
               <FormControlLabel
                 control={<Switch size="small" />}
-                label="Small"
+                label="Small secondary"
               />
             ),
             codeExample:
               '<FormControlLabel control={<Switch size="small" />} label="Small" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch size="small" color="primary" />}
+                label="Small primary"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch size="small"  color="primary" />} label="Small primary" />',
+          },
+          {
+            component: (
+              <FormControlLabel
+                control={<Switch size="small" color="primary" disabled />}
+                label="Small primary disabled"
+              />
+            ),
+            codeExample:
+              '<FormControlLabel control={<Switch size="small" color="primary" disabled />} label="Small primary disabled" />',
           },
           {
             component: (
@@ -1062,38 +1076,39 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <Fab color="primary">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab color="primary">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="secondary">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="secondary">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab color="secondary">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab variant="extended">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
                 Extended
               </Fab>
             ),
             codeExample:
-              '<Fab variant="extended">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab disabled>
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
-            codeExample: '<Fab disabled>\n\t<Plus color="white" />\n</Fab>',
+            codeExample:
+              '<Fab disabled>\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
         ],
       },
@@ -1104,59 +1119,59 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <Fab color="primary" size="small">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="small">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab color="primary" size="small">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="medium">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="medium">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab color="primary" size="medium">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="large">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
               </Fab>
             ),
             codeExample:
-              '<Fab variant="extended" size="large">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab variant="extended" size="large">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="small" variant="extended">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
                 Small
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="small" variant="extended">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab color="primary" size="small" variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="medium" variant="extended">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
                 Medium
               </Fab>
             ),
             codeExample:
-              '<Fab color="primary" size="medium" variant="extended">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab color="primary" size="medium" variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
           {
             component: (
               <Fab color="primary" size="large" variant="extended">
-                <Plus color="white" />
+                <Add style={{ ...whiteColor }} />
                 Large
               </Fab>
             ),
             codeExample:
-              '<Fab variant="extended" size="large" variant="extended">\n\t<Plus color="white" />\n</Fab>',
+              '<Fab variant="extended" size="large" variant="extended">\n\t<Add style={{ ...whiteColor }} />\n</Fab>',
           },
         ],
       },
@@ -1351,7 +1366,7 @@ const ComponentsData: ComponentList[] = [
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <User />
+                      <PermIdentity />
                     </InputAdornment>
                   ),
                 }}
@@ -1362,7 +1377,7 @@ const ComponentsData: ComponentList[] = [
               'InputProps={{' +
               'startAdornment: (' +
               '<InputAdornment position="start">' +
-              '<User />' +
+              '<PermIdentity />' +
               '</InputAdornment>' +
               '),' +
               '}}' +
@@ -1375,7 +1390,7 @@ const ComponentsData: ComponentList[] = [
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <User />
+                      <PermIdentity />
                     </InputAdornment>
                   ),
                 }}
@@ -1386,7 +1401,7 @@ const ComponentsData: ComponentList[] = [
               'InputProps={{' +
               'endAdornment: (' +
               '<InputAdornment position="end">' +
-              '<User />' +
+              '<PermIdentity />' +
               '</InputAdornment>' +
               '),' +
               '}}' +
@@ -1400,7 +1415,7 @@ const ComponentsData: ComponentList[] = [
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <User />
+                      <PermIdentity />
                     </InputAdornment>
                   ),
                 }}
@@ -1411,7 +1426,7 @@ const ComponentsData: ComponentList[] = [
               'InputProps={{' +
               'startAdornment: (' +
               '<InputAdornment position="start">' +
-              '<User />' +
+              '<PermIdentity />' +
               '</InputAdornment>' +
               '),' +
               '}}' +
@@ -1425,7 +1440,7 @@ const ComponentsData: ComponentList[] = [
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <User />
+                      <PermIdentity />
                     </InputAdornment>
                   ),
                 }}
@@ -1436,7 +1451,7 @@ const ComponentsData: ComponentList[] = [
               'InputProps={{' +
               'endAdornment: (' +
               '<InputAdornment position="end">' +
-              '<User />' +
+              '<PermIdentity />' +
               '</InputAdornment>' +
               '),' +
               '}}' +
@@ -1450,7 +1465,7 @@ const ComponentsData: ComponentList[] = [
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <User />
+                      <PermIdentity />
                     </InputAdornment>
                   ),
                 }}
@@ -1461,7 +1476,7 @@ const ComponentsData: ComponentList[] = [
               'InputProps={{' +
               'startAdornment: (' +
               '<InputAdornment position="start">' +
-              '<User />' +
+              '<PermIdentity />' +
               '</InputAdornment>' +
               '),' +
               '}}' +
@@ -1475,7 +1490,7 @@ const ComponentsData: ComponentList[] = [
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <User />
+                      <PermIdentity />
                     </InputAdornment>
                   ),
                 }}
@@ -1486,7 +1501,7 @@ const ComponentsData: ComponentList[] = [
               'InputProps={{' +
               'endAdornment: (' +
               '<InputAdornment position="end">' +
-              '<User />' +
+              '<PermIdentity />' +
               '</InputAdornment>' +
               '),' +
               '}}' +

@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { Overrides } from '@material-ui/core/styles/overrides';
 
 // #region Local imports
@@ -7,7 +7,7 @@ import { SPACING, FONT_SIZE, FONT_FAMILY } from './types';
 import mikePalette from './mikePallete';
 // #endregion
 
-const defaultTheme = createMuiTheme();
+const defaultTheme = createTheme();
 
 const mikeOverrides: Overrides = {
   MuiCssBaseline: {
@@ -159,6 +159,9 @@ const mikeOverrides: Overrides = {
     },
     sizeSmall: {
       height: '2.5rem', // 40px
+      '&:disabled': {
+        height: '2.5rem', // 48px
+      },
       minWidth: 0,
       padding: '0 1rem', // 16px
     },
@@ -292,6 +295,27 @@ const mikeOverrides: Overrides = {
       },
     },
   },
+  MuiInputBase: {
+    input: {
+      '&$disabled': {
+        color: MIKE_COLORS.MEDIUMGREY_DARK,
+      },
+    },
+  },
+  MuiFilledInput: {
+    input: {
+      '&$disabled': {
+        backgroundColor: MIKE_COLORS.MEDIUMGREY_LIGHT,
+      },
+    },
+  },
+  MuiOutlinedInput: {
+    input: {
+      '&$disabled': {
+        backgroundColor: MIKE_COLORS.MEDIUMGREY_LIGHT,
+      },
+    },
+  },
   MuiTab: {
     root: {
       textTransform: 'none',
@@ -385,7 +409,6 @@ const mikeOverrides: Overrides = {
       border: `1px solid ${mikePalette.darkGrey.main}`,
       maxWidth: SPACING * 46, // 368px
       minHeight: SPACING * 4, // 32px
-      maxHeight: SPACING * 6.5, // 52px
       fontSize: FONT_SIZE,
       fontWeight: 'normal',
       fontFamily: FONT_FAMILY,
@@ -440,25 +463,87 @@ const mikeOverrides: Overrides = {
       overflow: 'inherit',
       float: 'right',
     },
+    sizeSmall: {
+      '& $colorPrimary': {
+        color: `${mikePalette.primary.main}`,
+        '&$disabled': {
+          color: `${mikePalette.mediumGrey.main}`,
+          '& + $track': {
+            borderColor: `${mikePalette.darkGrey.dark}`,
+            backgroundColor: `${mikePalette.darkGrey.light}`,
+          },
+          '&$checked': {
+            '& + $track': {
+              borderColor: `${mikePalette.darkGrey.light}`,
+              backgroundColor: `${mikePalette.darkGrey.light}`,
+            },
+          },
+        },
+      },
+      '& $switchBase': {
+        transform: 'translateX(-2px)',
+        '&$checked': {
+          transform: 'translateX(18px)',
+        },
+      },
+    },
     switchBase: {
       padding: 0,
       height: '100%',
-      color: `${mikePalette.darkGrey.main} !important`,
+      color: `${mikePalette.darkGrey.main}`,
       transform: 'translateX(5.6px)',
       '&:hover': {
         backgroundColor: 'transparent',
       },
       '&$checked': {
         transform: 'translateX(29px)',
-        color: `${mikePalette.success.dark} !important`,
+        color: `${mikePalette.success.dark}`,
         height: '100%',
         '& + $track': {
           opacity: 1,
-          backgroundColor: `${mikePalette.success.light} !important`,
-          borderColor: `${mikePalette.success.light} !important`,
+          backgroundColor: `${mikePalette.success.light}`,
+          borderColor: `${mikePalette.success.light}`,
         },
         '&:hover': {
           backgroundColor: 'transparent',
+        },
+      },
+    },
+    colorPrimary: {
+      color: `${mikePalette.primary.main}`,
+      '& + $track': {
+        backgroundColor: `${mikePalette.lightGrey.dark}`,
+        borderColor: `${mikePalette.primary.main}`,
+      },
+      '&$checked': {
+        color: `${mikePalette.lightGrey.dark}`,
+        '& + $track': {
+          backgroundColor: `${mikePalette.primary.main}`,
+          borderColor: `${mikePalette.primary.main}`,
+        },
+      },
+      '&$disabled': {
+        color: `${mikePalette.mediumGrey.main}`,
+        '& + $track': {
+          borderColor: `${mikePalette.darkGrey.dark}`,
+          backgroundColor: `${mikePalette.darkGrey.light}`,
+        },
+      },
+    },
+    colorSecondary: {
+      color: `${mikePalette.darkGrey.main}`,
+      '&$checked': {
+        color: `${mikePalette.success.dark}`,
+        '& + $track': {
+          backgroundColor: `${mikePalette.success.light}`,
+          borderColor: `${mikePalette.success.light}`,
+        },
+      },
+      '&$disabled': {
+        color: `${mikePalette.mediumGrey.main}`,
+        '& + $track': {
+          borderColor: `${mikePalette.darkGrey.dark}`,
+          backgroundColor: `${mikePalette.darkGrey.light}`,
         },
       },
     },
@@ -474,12 +559,11 @@ const mikeOverrides: Overrides = {
       boxShadow: 'none',
     },
     track: {
-      border: `3px solid ${mikePalette.darkGrey.main} !important`,
+      border: `3px solid ${mikePalette.darkGrey.main}`,
       borderRadius: 16,
       opacity: 1,
       backgroundColor: mikePalette.lightGrey.main,
     },
-    checked: {},
   },
 };
 

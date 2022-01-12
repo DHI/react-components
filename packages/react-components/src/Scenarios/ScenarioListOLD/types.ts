@@ -1,6 +1,6 @@
 import { DescriptionField, MenuItem, Scenario, Status } from '../types';
 
-interface ScenarioListProps {
+interface ScenarioListOLDProps {
   /**
    * Style of the list
    */
@@ -63,4 +63,4 @@ interface ScenarioListProps {
   timeZone?: string;
 }
 
-export default ScenarioListProps;
+export default ScenarioListOLDProps;

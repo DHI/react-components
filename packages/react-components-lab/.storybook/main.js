@@ -1,7 +1,6 @@
 module.exports = {
   "stories": [
-    "../src/**/*.stories.mdx",
-    "../src/**/*.stories.@(js|jsx|ts|tsx)"
+    "../src/**/*.stories.@(js|jsx|ts|tsx|mdx)"
   ],
   "addons": [
     "@storybook/addon-links",
@@ -11,5 +10,6 @@ module.exports = {
   typescript: {
     // also valid 'react-docgen-typescript' | false
     reactDocgen: 'react-docgen-typescript',
+    tsconfigPath: "./../tsconfig.json"
   },
 }

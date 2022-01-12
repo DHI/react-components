@@ -20,8 +20,6 @@ import { MenuItem, Scenario } from '../types';
 import ScenariosProps from './types';
 import useStyles from './useStyles';
 
-const NOTIFICATION_HUB = '/notificationhub';
-
 const Scenarios = (props: ScenariosProps) => {
   const {
     host,
@@ -33,17 +31,20 @@ const Scenarios = (props: ScenariosProps) => {
     jobParameters,
     module,
     dataFilterbyProperty,
+    signalRConnectionHubUrl,
     taskId,
     hostGroup,
     descriptionFields,
     extraFields,
     menuItems,
+    actionButton,
     selectedScenarioId,
     showDate,
     showHour,
     showMenu,
     showStatus,
     status,
+    highlightNameOnStatus,
     queryDates,
     onContextMenuClick,
     onScenarioSelected,
@@ -513,7 +514,7 @@ const Scenarios = (props: ScenariosProps) => {
       }
 
       const connection = new HubConnectionBuilder()
-        .withUrl(process.env.ENDPOINT_URL + NOTIFICATION_HUB, {
+        .withUrl(signalRConnectionHubUrl, {
           accessTokenFactory: () => session.accessToken,
         })
         .configureLogging(LogLevel.Information)
@@ -561,7 +562,9 @@ const Scenarios = (props: ScenariosProps) => {
           showMenu={showMenu}
           showStatus={showStatus}
           status={status}
+          highlightNameOnStatus={highlightNameOnStatus}
           timeZone={timeZone}
+          actionButton={actionButton}
         />
       )}
       {dialog && (

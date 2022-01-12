@@ -9,8 +9,8 @@ const styles = () => ({
     height: '100%',
   },
   labels: { 'fontSize': 14, '& label': { fontSize: 14 } },
-  rememberMe: { float: 'left', marginTop: 15 },
-  rememberMeLink: { marginTop: 6, marginRight: 15 },
+  rememberMe: { float: 'left', marginTop: 12 },
+  rememberMeLink: { marginRight: 15 },
   submit: {
     float: 'right',
     marginTop: 15,

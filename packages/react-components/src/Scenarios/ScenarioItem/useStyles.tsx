@@ -13,24 +13,30 @@ const styles = () => ({
   },
   dayText: {
     fontWeight: 'bold',
-    fontSize: '18px',
+    fontSize: 18,
     color: 'gray',
   },
   hourText: {
-    fontSize: '15px',
-    color: 'gray',
+    fontSize: 15,
+    padding: '0 15px',
   },
   scenarioHour: {
     padding: '10px',
+    fontSize: 14,
+    color: '#0B4566',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   scenarioTitle: {
     fontWeight: 'bold',
-    fontSize: '18px',
+    fontSize: 16,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
+    color: '#0B4566',
   },
   scenarioProgress: {
-    fontSize: '10px',
+    fontSize: 10,
     color: 'gray',
   },
   scenarioDetails: {
@@ -38,13 +44,27 @@ const styles = () => ({
     width: '100%',
     display: 'grid',
   },
-  textFields: {
-    padding: '3px',
-    fontSize: '12px',
-    color: 'gray',
+  buttonLabel: {
+    textTransform: 'capitalize',
   },
-  status: {
-    display: 'contents',
+  textFields: {
+    fontSize: 14,
+    color: '#86A2B3',
+  },
+  actions: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    flexDirection: 'column',
+    padding: '0 10px',
+    justifyContent: 'space-between',
+  },
+  icon: {
+    'display': 'flex',
+    'flexDirection': 'column',
+    'alignItems': 'center',
+    '& span': {
+      fontSize: 10,
+    },
   },
   verticalLine: {
     marginLeft: '8px',

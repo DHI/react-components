@@ -14,12 +14,12 @@ import { JobParameters } from '../../api/types';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
 import { checkConditions, getObjectProperty, setObjectProperty } from '../../utils/Utils';
-import { ScenarioList } from '../ScenarioListOLD/ScenarioList';
+import { ScenarioListOLD } from '../ScenarioListOLD/ScenarioList';
 import { MenuItem, QueryDates, ScenarioOLD } from '../types';
-import ScenariosProps from './types';
+import ScenariosOLDProps from './types';
 import useStyles from './useStyles';
 
-const ScenariosOLD = (props: ScenariosProps) => {
+const ScenariosOLD = (props: ScenariosOLDProps) => {
   const {
     host,
     token,
@@ -398,7 +398,7 @@ const ScenariosOLD = (props: ScenariosProps) => {
 
   if (scenarios) {
     printedScenarios = (
-      <ScenarioList
+      <ScenarioListOLD
         nameField={nameField}
         descriptionFields={descriptionFields}
         extraFields={extraFields}
@@ -439,4 +439,4 @@ const ScenariosOLD = (props: ScenariosProps) => {
   );
 };
 
-export { ScenariosProps, ScenariosOLD };
+export { ScenariosOLDProps, ScenariosOLD };

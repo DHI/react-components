@@ -10,7 +10,8 @@
         "install": "lerna bootstrap",
         "build": "lerna run build",
         "lint": "lerna exec yarn lint",
-        "sb": "yarn --cwd packages/react-components sb"
+        "sb": "yarn --cwd packages/react-components sb",
+        "lab:sb": "cd packages/react-components-lab && yarn run start-storybook"
     },
     "workspaces": [
         "./packages/*",
@@ -21,6 +22,6 @@
         "typescript": "3.9.9"
     },
     "devDependencies": {
-        "@qiwi/multi-semantic-release": "^3.14.2"
+        "@qiwi/multi-semantic-release": "^3.17.1"
     }
 }

@@ -3,6 +3,8 @@ import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
 import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import { ErrorRounded } from '@material-ui/icons';
 
 const dataObjectToArray = (data: { [x: string]: any }) => {
   return Object.keys(data).map((key) => ({
@@ -203,9 +205,11 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
 
   if (!scenarioStatus) {
     result = {
-      color: 'red',
-      message: 'Unknown Status Field',
-    };
+      color: '#FD3F75',
+      name: 'Error',
+      message: 'Unknown Status',
+      Icon: ErrorRounded,
+    } as Status;
   } else {
     result = currentStatus;
   }
@@ -332,9 +336,7 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
   if (hour === 0 && minute === 0) {
     return '<1m';
   } else if (hour !== 0) {
-    const minutes = minute - hour * 60;
-
-    return `${hour}h ${minutes < 10 ? '0' : ''}${minutes}m`;
+    return `${hour}h ${minute}m`;
   } else {
     return `${minute}m`;
   }

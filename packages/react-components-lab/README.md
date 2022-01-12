@@ -5,7 +5,7 @@
 </div>
 <h1 align="left">@dhi/react-components-lab</h1>
 
-This package primarily serves as the incubator for components that are not yet ready to move to the core package/library
+This package primarily serves as the incubator for components that are not yet ready to move to the core package/library.
 
 As developers use and test the components and report issues, the maintainers learn more about shortcomings of the components: missing features, accessibility issues, bugs, API design, etc. The older and more used a component is, the less likely it is that new issues will be found and subsequently need to introduce breaking changes.
 
@@ -21,14 +21,14 @@ We are aiming for making it as easy as possible for a component to be added to t
 
 # Showcase
 
-Our library is showcased on the [Lab Storybook](https://storybooklab.z16.web.core.windows.net/)
+Our library is showcased on the [Lab Storybook](https://green-glacier-08aae7903.azurestaticapps.net/)
 
 ## Installing the package
 
 Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
 1. Visit Github.com &rarr; Your Profile (top right) &rarr; Settings.
-2. Develop settings (bottom of sidebar)
+2. Develop settings (bottom of sidebar).
 3. Personal access tokens
 4. "Generate new token"
 5. Note: `GitHub Packages`

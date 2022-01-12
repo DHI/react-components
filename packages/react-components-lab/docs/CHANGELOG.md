@@ -1,3 +1,181 @@
+# @dhi/react-components-lab [1.12.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.11.0...@dhi/react-components-lab@1.12.0) (2022-01-05)
+
+
+### Features
+
+* **CalendarBox:** Add CalendarBox component for wrapping up the items ([b64a850](https://github.com/DHI/react-components/commit/b64a85037d06079be3e022c963c70b8a7c8e10de))
+* **CalendarItem:** Add CalendarItem component ([de78e38](https://github.com/DHI/react-components/commit/de78e38f0c9832ef0d0cafefeb207b6459dda78c))
+
+# @dhi/react-components-lab [1.11.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.10.1...@dhi/react-components-lab@1.11.0) (2021-12-14)
+
+
+### Features
+
+* **useSessionStorage:** Add sessionStorage hook ([29ecd17](https://github.com/DHI/react-components/commit/29ecd176b71e51c9430f7f4010940f652d4cb6d7))
+
+## @dhi/react-components-lab [1.10.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.10.0...@dhi/react-components-lab@1.10.1) (2021-12-02)
+
+
+### Bug Fixes
+
+* **ResizeHandle:** Fix use-case when window is resized. ([8096f6c](https://github.com/DHI/react-components/commit/8096f6cddaed2261e67c3f7c0e09d285cf85e79a))
+
+# @dhi/react-components-lab [1.10.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.9.1...@dhi/react-components-lab@1.10.0) (2021-11-19)
+
+
+### Features
+
+* **lab:** Add MultiField ([6997b24](https://github.com/DHI/react-components/commit/6997b24eebc5317915d4bd4a9e4e4846d7c4337d))
+
+## @dhi/react-components-lab [1.9.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.9.0...@dhi/react-components-lab@1.9.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **Card:** Enhance styling for the card ([e2dfd7f](https://github.com/DHI/react-components/commit/e2dfd7f29303bb4c882273ad4080083645f7ec49))
+
+# @dhi/react-components-lab [1.9.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.3...@dhi/react-components-lab@1.9.0) (2021-10-26)
+
+
+### Features
+
+* **CustomCheckboxCard:** add custom checkbox ([c6a56ad](https://github.com/DHI/react-components/commit/c6a56ad26b6122907b7dc8926b2d2aafb0ebdf00))
+
+## @dhi/react-components-lab [1.8.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.2...@dhi/react-components-lab@1.8.3) (2021-10-21)
+
+
+### Bug Fixes
+
+* **Tooltip-theme:** Remove maxHeight from ThemeOverrides ([44fe02a](https://github.com/DHI/react-components/commit/44fe02a1200af9c479b7304fbd0c91e80e6a5703))
+
+## @dhi/react-components-lab [1.8.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.1...@dhi/react-components-lab@1.8.2) (2021-10-20)
+
+
+### Bug Fixes
+
+* **Card:** Add small UI fixes. Add disabled prop ([5820b78](https://github.com/DHI/react-components/commit/5820b789ca9b1729b798fd7fb14ba39794612855))
+
+## @dhi/react-components-lab [1.8.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.8.0...@dhi/react-components-lab@1.8.1) (2021-10-18)
+
+
+### Bug Fixes
+
+* **Card:** Add exports ([305c20a](https://github.com/DHI/react-components/commit/305c20ae9fcd27ebee8e3ee37bd3c7bd120cb561))
+
+# @dhi/react-components-lab [1.8.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.7.0...@dhi/react-components-lab@1.8.0) (2021-10-18)
+
+
+### Bug Fixes
+
+* **keys:** Fix keys for various components ([60e8747](https://github.com/DHI/react-components/commit/60e8747f931c6c3241ac480d8909eda3a438c7f4))
+
+
+### Features
+
+* **Card:** Add Card component ([d109af8](https://github.com/DHI/react-components/commit/d109af8ea9be5275d1980fe5a506477d10700fc6))
+
+# @dhi/react-components-lab [1.7.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.6.1...@dhi/react-components-lab@1.7.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* **CateogircalBarLegend:** label key not required. ([d8416e0](https://github.com/DHI/react-components/commit/d8416e09242d0eebd1a42bbb9e45dd43667cc622))
+
+
+### Features
+
+* **TimestepPlayer:** Add TimestepPlayer component ([b196467](https://github.com/DHI/react-components/commit/b196467c3668fce814c798496a7e39241d375950))
+
+## @dhi/react-components-lab [1.6.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.6.0...@dhi/react-components-lab@1.6.1) (2021-10-06)
+
+
+### Bug Fixes
+
+* **Switch:** Add theme enhancements for color variants ([574ba6c](https://github.com/DHI/react-components/commit/574ba6c1333125c316869eaec4ebcc518bff0222))
+
+# @dhi/react-components-lab [1.6.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.5.0...@dhi/react-components-lab@1.6.0) (2021-10-05)
+
+
+### Features
+
+* **categoricalLegend:** Add CategoricalLegend component ([b39c485](https://github.com/DHI/react-components/commit/b39c485e171b7ce49d54f37f38bb3e1fd821d0f8))
+
+# @dhi/react-components-lab [1.5.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.4.0...@dhi/react-components-lab@1.5.0) (2021-10-04)
+
+
+### Bug Fixes
+
+* **ResizeHandler:** Small fixes to the component. Adds vertical prop. ([94d96b6](https://github.com/DHI/react-components/commit/94d96b61b060fac1b9cf613503cad64e182ff06a))
+
+
+### Features
+
+* **ResizeHandle:** Add Resize handle component ([e9e63bc](https://github.com/DHI/react-components/commit/e9e63bc6506e3fb040d2a897bef7bb331b3a6756))
+
+# @dhi/react-components-lab [1.4.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.3.1...@dhi/react-components-lab@1.4.0) (2021-10-01)
+
+
+### Features
+
+* **CollapsableBox:** Add CollapsableBox component ([301cab1](https://github.com/DHI/react-components/commit/301cab142e66c4c9ed70bca5c2855f4b13b06678))
+
+## @dhi/react-components-lab [1.3.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.3.0...@dhi/react-components-lab@1.3.1) (2021-09-10)
+
+
+### Bug Fixes
+
+* **lab:** fix legendbase style specificity ([6a5dc42](https://github.com/DHI/react-components/commit/6a5dc42f5d8b79821309471cb76ab30247a8eff3))
+
+# @dhi/react-components-lab [1.3.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.7...@dhi/react-components-lab@1.3.0) (2021-09-08)
+
+
+### Features
+
+* **lab:** Add LegendBase, StaticLegend components ([dfb3bc8](https://github.com/DHI/react-components/commit/dfb3bc88795291a1b9ac6334d7afaf4f5c67bc2c))
+
+## @dhi/react-components-lab [1.2.7](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.6...@dhi/react-components-lab@1.2.7) (2021-09-06)
+
+
+### Bug Fixes
+
+* **Loader:** Replace prop justify with justifyContent ([5e91098](https://github.com/DHI/react-components/commit/5e91098ba28c3cb866c3078c1327c72efbe5498a))
+
+## @dhi/react-components-lab [1.2.6](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.5...@dhi/react-components-lab@1.2.6) (2021-09-06)
+
+
+### Bug Fixes
+
+* **Theme:** Fix styling of disabled textfields ([b1f70e1](https://github.com/DHI/react-components/commit/b1f70e178963faf182c6490cd5969ca5723e2567))
+
+## @dhi/react-components-lab [1.2.5](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.4...@dhi/react-components-lab@1.2.5) (2021-08-13)
+
+
+### Bug Fixes
+
+* **Button:** Fix theming for disabled size small ([1323911](https://github.com/DHI/react-components/commit/1323911d2b61f3bc2d0220cf97110770ab82714b))
+* **Switch-Theme:** Handle size small switch ([b09da4d](https://github.com/DHI/react-components/commit/b09da4d5faad044b846b85155a523460b00cbbc9))
+
+## @dhi/react-components-lab [1.2.4](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.3...@dhi/react-components-lab@1.2.4) (2021-08-09)
+
+
+### Bug Fixes
+
+* **theming:** Update mui to latest version ([bb689b4](https://github.com/DHI/react-components/commit/bb689b4e155102a4f36173f3f10938bb16805633))
+
+## @dhi/react-components-lab [1.2.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.2...@dhi/react-components-lab@1.2.3) (2021-08-05)
+
+
+### Bug Fixes
+
+* **ThemeProvider:** Update material-ui to latest ([5ce5b85](https://github.com/DHI/react-components/commit/5ce5b85f2a264b2725802be88becd0a1a5a8bc4f))
+
+## @dhi/react-components-lab [1.2.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.1...@dhi/react-components-lab@1.2.2) (2021-08-03)
+
+
+### Bug Fixes
+
+* **Loader:** Remove required style prop ([61b8a67](https://github.com/DHI/react-components/commit/61b8a678f1256777aeb51cc33b3fdb9b10e4d6e6))
+
 ## @dhi/react-components-lab [1.2.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.2.0...@dhi/react-components-lab@1.2.1) (2021-07-22)
 
 

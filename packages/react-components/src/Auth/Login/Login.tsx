@@ -3,10 +3,23 @@ import React, { useState } from 'react';
 import DHITheme from '../../theme';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { ResetPasswordForm } from '../ResetPasswordForm/ResetPasswordForm';
+import { UpdatePasswordForm } from '../UpdatePasswordForm/UpdatePasswordForm';
 import LoginProps from './types';
 
 const Login = (props: LoginProps) => {
-  const { host, onSuccess, onError, showRememberMe, showResetPassword, textFieldVariant, translations } = props;
+  const {
+    host,
+    showRememberMe,
+    showResetPassword,
+    showUpdatePassword,
+    resetPasswordMailTemplate,
+    resetPasswordToken,
+    textFieldVariant,
+    translations,
+    onBackToLogin,
+    onSuccess,
+    onError,
+  } = props;
   const [showingResetPassword, setShowingResetPassword] = useState(false);
 
   const togglePasswordResetForm = (value: boolean) => {
@@ -15,31 +28,43 @@ const Login = (props: LoginProps) => {
 
   return (
     <ThemeProvider theme={DHITheme}>
-      {showingResetPassword ? (
+      {showingResetPassword && (
         <ResetPasswordForm
           host={host}
+          mailTemplate={resetPasswordMailTemplate}
           onBackToLogin={(value) => togglePasswordResetForm(value)}
-          resetPasswordButtonText={translations?.resetPasswordButton ?? 'FORGOT PASSWORD'}
-          resetPasswordUserNamePlaceholder={
-            translations?.resetPasswordUserNamePlaceholder ?? 'E-Mail Address or User ID'
-          }
-          onResetPassword={() => console.log('Reset password not implemented.')}
+          userNamePlaceholder={translations?.updatePasswordEmailPlaceholder}
+          resetPasswordButtonText={translations?.resetPasswordButton}
+          errorText={translations?.resetPasswordError}
           textFieldVariant={textFieldVariant}
         />
-      ) : (
+      )}
+      {showUpdatePassword && (
+        <UpdatePasswordForm
+          host={host}
+          token={resetPasswordToken}
+          newPasswordPlaceholder={translations?.updatePasswordNewPasswordPlaceholder}
+          confirmPasswordPlaceholder={translations?.updatePasswordConfirmPasswordPlaceholder}
+          updatePasswordButtonText={translations?.updatePasswordConfirmButton}
+          errorText={translations?.resetPasswordError}
+          textFieldVariant={textFieldVariant}
+          onBackToLogin={onBackToLogin}
+        />
+      )}
+      {!showingResetPassword && !showUpdatePassword && (
         <LoginForm
           host={host}
           onSuccess={onSuccess}
           onError={onError}
-          userNamePlaceholder={translations?.userNamePlaceholder ?? 'Username'}
-          passwordPlaceholder={translations?.passwordPlaceholder ?? 'Password'}
           showRememberMe={showRememberMe}
-          rememberMeLabelText={translations?.rememberMeLabel ?? 'Remember me'}
           showResetPassword={showResetPassword}
-          resetPasswordLabelText={translations?.resetPasswordLabel ?? 'FORGOT PASSWORD?'}
           onResetPassword={(value) => togglePasswordResetForm(value)}
-          loginButtonText={translations?.loginButton ?? 'Login'}
           textFieldVariant={textFieldVariant}
+          userNamePlaceholder={translations?.userNamePlaceholder}
+          passwordPlaceholder={translations?.passwordPlaceholder}
+          loginButtonText={translations?.loginButton}
+          rememberMeLabelText={translations?.rememberMeLabel}
+          resetPasswordLabelText={translations?.resetPasswordLabel}
         />
       )}
       <div style={{ clear: 'both' }}></div>
