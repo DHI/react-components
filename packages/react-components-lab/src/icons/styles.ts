@@ -10,6 +10,7 @@ export default makeStyles<IMikeTheme>((theme) => ({
     borderRadius: 4,
     cursor: 'pointer',
     transition: theme.transitions[1],
+    flexGrow: 1,
     '&:hover': {
       backgroundColor: '#FFF',
     },

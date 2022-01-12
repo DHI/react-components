@@ -24,7 +24,8 @@ const Icons: FC = () => {
       width={1}
       className={classes.root}
       display="flex"
-      justifyContent="center"
+      justifyContent="flex-start"
+      p={1}
     >
       {Object.keys(DhiIconsTyped)
         .sort()
@@ -38,7 +39,7 @@ const Icons: FC = () => {
               className={classes.iconWrapper}
               m={0.5}
               p={1}
-              width={100}
+              width={130}
               height={70}
               display="flex"
               flexDirection="column"
