@@ -50,6 +50,8 @@ jobs:
 
       - name: Build app
         run: cd packages/react-components-lab && yarn build-storybook
+        env:
+          CI: true
 
       - name: Build And Deploy
         if: (github.ref != 'master' && ${{ failure() }}) || ${{ success() }}
