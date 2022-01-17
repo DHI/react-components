@@ -22,8 +22,8 @@
     "start": "start-storybook -p 6006",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "../../node_modules/eslint/bin/eslint .",
+    "lint:fix": "../../node_modules/eslint/bin/eslint . --fix",
     "semantic-release": "npx semantic-release",
     "build-storybook": "build-storybook"
   },

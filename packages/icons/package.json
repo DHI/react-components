@@ -12,8 +12,8 @@
   },
   "scripts": {
     "build": "node build-icons.js",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "../../node_modules/eslint/bin/eslint .",
+    "lint:fix": "../../node_modules/eslint/bin/eslint . --fix",
     "semantic-release": "npx semantic-release"
   },
   "main": "./dist/index.js",
