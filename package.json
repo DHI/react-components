@@ -22,5 +22,8 @@
     "devDependencies": {
         "@qiwi/multi-semantic-release": "^3.17.1",
         "eslint": "^7.21.0"
+    },
+    "resolutions": {
+        "node-gyp": "^7.0.1"
     }
 }
