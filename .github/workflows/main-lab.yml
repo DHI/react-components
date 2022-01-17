@@ -43,13 +43,13 @@ jobs:
         env:
           CI: true
       
-      - name: Lint
-        run: cd packages/react-components-lab && yarn lint
+      - name: Build app
+        run: cd packages/react-components-lab && yarn build-storybook
         env:
           CI: true
 
-      - name: Build app
-        run: cd packages/react-components-lab && yarn build-storybook
+      - name: Lint
+        run: cd packages/react-components-lab && yarn run lint
         env:
           CI: true
 
