@@ -31,9 +31,6 @@ jobs:
             
       - name: Install dependencies repo
         run: |
-          npx lerna bootstrap --force-local --no-ci
-          npx lerna link
-          cd packages/icons
           yarn install
         env:
           CI: true

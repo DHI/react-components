@@ -14,8 +14,7 @@
     "build": "node build-icons.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "semantic-release": "npx semantic-release",
-    "postinstall": "yarn build"
+    "semantic-release": "npx semantic-release"
   },
   "main": "./dist/index.js",
   "files": [
