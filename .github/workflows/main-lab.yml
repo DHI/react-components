@@ -37,8 +37,7 @@ jobs:
       
       - name: Install dependencies repo
         run: |
-          npx lerna bootstrap --force-local --hoist
-          npx lerna link
+          yarn install
         env:
           CI: true
       
