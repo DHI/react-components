@@ -38,8 +38,6 @@ jobs:
       - name: Install dependencies repo
         run: |
           yarn install
-          cd node_modules
-          ls
         env:
           CI: true
       
