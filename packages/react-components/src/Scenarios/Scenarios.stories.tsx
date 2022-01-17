@@ -363,6 +363,7 @@ export const ScenariosJSONStory = () => {
                   name: 'Vessel LOA',
                 },
               ]}
+              jobQueryItemKey={'ScenarioId'}
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
               menuItems={MENU_ITEMS}

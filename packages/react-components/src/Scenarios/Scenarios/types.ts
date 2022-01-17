@@ -69,6 +69,10 @@ interface ScenariosProps {
    */
   jobParameters?: JobParameters;
   /**
+   * Job query item key (eg. ScenarioId / EventId)
+   */
+  jobQueryItemKey: string;
+  /**
    * Temporary for discarding modules which do not match
    */
   module?: string;

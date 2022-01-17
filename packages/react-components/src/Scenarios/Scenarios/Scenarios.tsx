@@ -29,6 +29,7 @@ const Scenarios = (props: ScenariosProps) => {
     nameField,
     jobConnection,
     jobParameters,
+    jobQueryItemKey,
     module,
     dataFilterbyProperty,
     signalRConnectionHubUrl,
@@ -135,7 +136,7 @@ const Scenarios = (props: ScenariosProps) => {
 
         const query = [
           {
-            item: 'ScenarioId',
+            item: jobQueryItemKey,
             queryOperator: 'Any',
             values,
           },
