@@ -7,21 +7,20 @@
     "author": "DHI",
     "private": true,
     "scripts": {
-        "install": "lerna bootstrap",
-        "build": "lerna run build",
         "lint": "lerna exec yarn lint",
         "sb": "yarn --cwd packages/react-components sb",
         "lab:sb": "cd packages/react-components-lab && yarn run start-storybook"
     },
     "workspaces": [
-        "./packages/*",
+        "./packages/icons",
+        "./packages/react-components-lab",
         "!packages/react-components/**"
     ],
     "dependencies": {
-        "lerna": "^4.0.0",
         "typescript": "3.9.9"
     },
     "devDependencies": {
-        "@qiwi/multi-semantic-release": "^3.17.1"
+        "@qiwi/multi-semantic-release": "^3.17.1",
+        "eslint": "^7.21.0"
     }
 }
