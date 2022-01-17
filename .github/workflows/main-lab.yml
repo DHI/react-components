@@ -49,7 +49,7 @@ jobs:
           CI: true
 
       - name: Build app
-        run: cd packages/react-components-lab && yarn build
+        run: cd packages/react-components-lab && yarn build-storybook
 
       - name: Build And Deploy
         if: (github.ref != 'master' && ${{ failure() }}) || ${{ success() }}
