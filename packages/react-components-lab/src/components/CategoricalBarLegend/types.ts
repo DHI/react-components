@@ -3,6 +3,6 @@ export interface CategoricalBarLegendProps {
 }
 
 export type LegendCategoricalItem = {
-  label?: string;
+  label?: string | undefined;
   color: string;
 };
