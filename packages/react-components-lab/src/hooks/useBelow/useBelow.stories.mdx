@@ -1,0 +1,43 @@
+<!-- useBelow.stories.mdx -->
+
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
+import Syntax from '../../components/Syntax/Syntax';
+
+<Meta
+  title="Hooks/useBelow"
+  parameters={{
+    viewMode: 'docs',
+    previewTabs: {
+      canvas: { hidden: true }
+     },
+  }}
+/>
+
+# useBelow
+
+The `useBelow` hook leverages the [MaterialUI breakpoints](https://mui.com/customization/breakpoints/) and can be used within and outside the JSX to render components conditionally based on various screen sizes.
+
+## Usage
+
+<Story name="useBelow">
+  <Syntax code={`
+    import { FC } from "react";
+    import { useBelow } from "@dhi/react-components-lab";\n
+    const App: FC = () => {
+      const isBelowMd = useBelow('md')
+      const isBelowSm = useBelow('sm')\n
+      if(isBelowSm){
+        return (
+          <p>Text shown below 600px</p>
+        )
+      }\n
+      return (
+        <div>
+          {isBelowMd && <p>Text shown below 900px</p>}
+        </div>
+      )
+    }
+  `}/>
+</Story>
+
+
