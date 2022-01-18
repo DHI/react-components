@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.12.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.0...@dhi/react-components-lab@1.12.1) (2022-01-18)
+
+
+### Bug Fixes
+
+* **CategoricalBarLegend:** update types ([c0ed13d](https://github.com/DHI/react-components/commit/c0ed13dc3baba2bc5c849e4a535096b20199fb9f))
+
 # @dhi/react-components-lab [1.12.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.11.0...@dhi/react-components-lab@1.12.0) (2022-01-05)
 
 
