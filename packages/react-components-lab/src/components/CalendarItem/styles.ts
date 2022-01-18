@@ -24,6 +24,15 @@ const useCalendarItemStyles = makeStyles<IMikeTheme>((theme) => ({
       backgroundColor: theme.palette.secondary.main,
     },
   },
+  disabled: {
+    backgroundColor: theme.palette.lightGrey.main,
+    color: theme.palette.mediumGrey.dark,
+    cursor: 'default',
+    '&:hover': {
+      backgroundColor: theme.palette.lightGrey.main,
+      color: theme.palette.mediumGrey.dark,
+    },
+  },
   semiActive: {
     backgroundColor: theme.palette.mediumGrey.main,
   },

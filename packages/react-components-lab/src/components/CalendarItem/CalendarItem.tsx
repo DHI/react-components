@@ -5,26 +5,33 @@ import useStyles from './styles';
 import { CalendarItemProps } from './types';
 
 const CalendarItem: FC<CalendarItemProps> = ({
-  active = false,
   variant,
   onClick,
   children,
+  active = false,
+  disabled = false,
 }) => {
   const classes = useStyles();
 
   return (
     <Box
       className={clsx(
-        variant === 'button' && {
+        disabled && {
           [classes.button]: true,
-          [classes.active]: active,
+          [classes.disabled]: true,
         },
-        variant === 'semi-button' && {
-          [classes.button]: true,
-          [classes.semiActive]: active,
-        }
+        variant === 'button' &&
+          !disabled && {
+            [classes.button]: true,
+            [classes.active]: active,
+          },
+        variant === 'semi-button' &&
+          !disabled && {
+            [classes.button]: true,
+            [classes.semiActive]: active,
+          }
       )}
-      onClick={onClick}
+      onClick={() => !disabled && onClick()}
     >
       <Typography variant="body2" style={{ color: 'inherit' }}>
         {children}

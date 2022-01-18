@@ -12,6 +12,13 @@ Button.args = {
   children: 'March',
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  variant: 'button',
+  children: 'March',
+  disabled: true,
+};
+
 export const ActiveButton = Template.bind({});
 ActiveButton.args = {
   variant: 'button',
