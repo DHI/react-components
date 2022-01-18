@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.12.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.1...@dhi/react-components-lab@1.12.2) (2022-01-18)
+
+
+### Bug Fixes
+
+* **CalendarItem:** Add disabled prop ([bec23b4](https://github.com/DHI/react-components/commit/bec23b440cd03fb46f8bdd7d5a32794fdf38b09d))
+
 ## @dhi/react-components-lab [1.12.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.0...@dhi/react-components-lab@1.12.1) (2022-01-18)
 
 
