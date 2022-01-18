@@ -2,6 +2,7 @@
 
 import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
 import Syntax from '../../components/Syntax/Syntax';
+import LocalStorageExample from "./LocalStorageExample";
 
 <Meta
   title="Hooks/useLocalStorage"
@@ -13,25 +14,16 @@ import Syntax from '../../components/Syntax/Syntax';
   }}
 />
 
-# useBelow
+# useLocalStorage
 
 The `useLocalStorage` hook leverages the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) getter and setter functions, in a React friendly way.
-
-## Usage
-
-The hook works as follows:
-```
-const [getter, setter] = useLocalStorage<type>('localStorageKeyName');
-
-// getter - the variable that you can use in JSX, which will hold the value of the "localStorageKeyName" localStorage value.
-// setter - the function that will set/update the "localStorageKeyName" localStorage value.
-// type - the type of the localStorage value.
-// localStorageKeyName - the key name you would like to use as the localStorage key-value pair.
-```
 
 ## Example
 
 <Story name="useLocalStorage">
+  <Canvas>
+    <LocalStorageExample />
+  </Canvas>
   <Syntax code={`
     import { FC } from "react";
     import { useLocalStorage } from "@dhi/react-components-lab";\n
@@ -39,7 +31,7 @@ const [getter, setter] = useLocalStorage<type>('localStorageKeyName');
       const [showData, setShowData] = useLocalStorage<boolean | undefined>('showTheData');\n
       return (
         <div>
-          {showData && <p>Data shown</p>}
+          {\`showTheData: \${String(showData)}\`}
           <button onClick={() => setShowData(!Boolean(showData))}>
             Toggle "showTheData" local storage value
           </button>
