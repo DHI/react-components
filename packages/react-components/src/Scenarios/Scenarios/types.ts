@@ -49,9 +49,17 @@ interface ScenariosProps {
    */
   host: string;
   /**
+   * Backend host for jobs (if omitted, will use regular `host`)
+   */
+  jobHost?: string;
+  /**
    * Authorization header to backend call
    */
   token: string;
+  /**
+   * Backend token for jobs (if omitted, will use regular `token`)
+   */
+  jobToken?: string;
   /**
    * Object to filter data
    */

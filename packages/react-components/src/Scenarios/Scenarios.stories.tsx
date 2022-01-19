@@ -318,6 +318,7 @@ export const ScenariosJSONStory = () => {
               host={process.env.ENDPOINT_URL}
               scenarioConnection={'postgres-jsondocuments-scenarios'}
               jobConnection={'wf-jobs'}
+              jobQueryItemKey={'ScenarioId'}
               actionButton={actionButton}
               dataFilterbyProperty={[
                 {
@@ -363,7 +364,6 @@ export const ScenariosJSONStory = () => {
                   name: 'Vessel LOA',
                 },
               ]}
-              jobQueryItemKey={'ScenarioId'}
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
               menuItems={MENU_ITEMS}

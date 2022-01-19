@@ -23,7 +23,9 @@ import useStyles from './useStyles';
 const Scenarios = (props: ScenariosProps) => {
   const {
     host,
+    jobHost,
     token,
+    jobToken,
     scenarioConnection,
     queryBody,
     nameField,
@@ -141,13 +143,13 @@ const Scenarios = (props: ScenariosProps) => {
             values,
           },
         ];
-        const dataSources = {
-          host,
+        const jobSources = {
+          host: jobHost || host,
           connection: jobConnection,
         };
 
         try {
-          executeJobQuery(dataSources, token, query).subscribe((jobs) => {
+          executeJobQuery(jobSources, jobToken || token, query).subscribe((jobs) => {
             newScenarios.map((scenario) => {
               const latestJob = filterToLastJob(scenario, jobs);
               let sce = {};
@@ -184,7 +186,7 @@ const Scenarios = (props: ScenariosProps) => {
   const filterToLastJob = (scenario, jobs) => {
     if (jobs) {
       const latestJobByScenario = jobs
-        .filter((job) => job.data.parameters.ScenarioId === scenario.fullName)
+        .filter((job) => job.data.parameters[jobQueryItemKey] === scenario.fullName)
         .sort((a, b) => b.requested - a.requested);
 
       return latestJobByScenario[0];
@@ -209,9 +211,9 @@ const Scenarios = (props: ScenariosProps) => {
   const onExecuteScenario = (scenario: Scenario, menuItem: MenuItem) => {
     closeDialog();
 
-    // Define Job Parameter with ScenarioId
+    // Define Job Parameter with jobQueryItemKey
     const parameters = {
-      ScenarioId: scenario.fullName,
+      [jobQueryItemKey]: scenario.fullName,
     } as JobParameters;
 
     // Append Job Parameters from Menu Item
@@ -226,10 +228,10 @@ const Scenarios = (props: ScenariosProps) => {
 
     executeJob(
       {
-        host,
+        host: jobHost || host,
         connection: menuItem.connection || jobConnection,
       },
-      token,
+      jobToken || token,
       menuItem.taskId || taskId,
       parameters,
       menuItem.hostGroup || hostGroup,
@@ -239,7 +241,7 @@ const Scenarios = (props: ScenariosProps) => {
       }
 
       const newScenarios = scenarios.map((sce) =>
-        sce.fullName === job.parameters.ScenarioId ? { ...sce, lastJob: job } : { ...sce },
+        sce.fullName === job.parameters[jobQueryItemKey] ? { ...sce, lastJob: job } : { ...sce },
       );
 
       setScenarios(newScenarios);
@@ -255,10 +257,10 @@ const Scenarios = (props: ScenariosProps) => {
 
     cancelJob(
       {
-        host,
+        host: jobHost || host,
         connection: menuItem.connection || jobConnection,
       },
-      token,
+      jobToken || token,
       scenario.lastJob.id,
     );
   };
@@ -485,7 +487,7 @@ const Scenarios = (props: ScenariosProps) => {
     }
 
     const updateScenario = latestScenarios.current.map((scenario) =>
-      scenario.fullName === job.Parameters.ScenarioId && scenario.lastJob.status !== 'Completed'
+      scenario.fullName === job.Parameters[jobQueryItemKey] && scenario.lastJob.status !== 'Completed'
         ? {
             ...scenario,
             lastJob: {
