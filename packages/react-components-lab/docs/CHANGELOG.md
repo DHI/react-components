@@ -1,3 +1,11 @@
+## @dhi/react-components-lab [1.12.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.2...@dhi/react-components-lab@1.12.3) (2022-01-19)
+
+
+### Bug Fixes
+
+* **hooks:** Update hooks export ([6e75987](https://github.com/DHI/react-components/commit/6e75987adec7df8800a897eef00ef597c6c2bedd))
+* **stories:** Add stories for the hooks ([04930ea](https://github.com/DHI/react-components/commit/04930eacd0760e2e1588628b1b473078b976170e))
+
 ## @dhi/react-components-lab [1.12.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.1...@dhi/react-components-lab@1.12.2) (2022-01-18)
 
 
