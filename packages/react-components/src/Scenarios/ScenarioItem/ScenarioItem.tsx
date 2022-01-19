@@ -38,7 +38,11 @@ const ScenarioItem = ({
         </Typography>
       );
     } else {
-      return null;
+      return (
+        <Typography className={classes.icon}>
+          <span style={{ color: status.color }}>{status.name}</span>
+        </Typography>
+      );
     }
   };
 
