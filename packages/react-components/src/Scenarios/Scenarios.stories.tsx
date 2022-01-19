@@ -320,7 +320,15 @@ export const ScenariosJSONStory = () => {
               jobConnection={'wf-jobs'}
               jobQueryItemKey={'ScenarioId'}
               actionButton={actionButton}
-              dataFilterbyProperty={[]}
+              dataFilterbyProperty={[
+                {
+                  field: 'data.mooring',
+                },
+                {
+                  field: 'data.stillShowListWithNoExistantProperty',
+                  value: 'false',
+                },
+              ]}
               nameField="name"
               descriptionFields={[
                 {
