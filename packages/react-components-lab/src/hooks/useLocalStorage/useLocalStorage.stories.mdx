@@ -25,17 +25,18 @@ The `useLocalStorage` hook leverages the [localStorage](https://developer.mozill
     <LocalStorageExample />
   </Canvas>
   <Syntax code={`
-    import { FC } from "react";
+    import React, { FC } from "react";
+    import { Box, Button } from "@material-ui/core";
     import { useLocalStorage } from "@dhi/react-components-lab";\n
     const App: FC = () => {
       const [showData, setShowData] = useLocalStorage<boolean | undefined>('showTheData');\n
       return (
-        <div>
+        <Box>
           {\`showTheData: \${String(showData)}\`}
-          <button onClick={() => setShowData(!Boolean(showData))}>
+          <Button onClick={() => setShowData(!Boolean(showData))}>
             Toggle "showTheData" local storage value
-          </button>
-        </div>
+          </Button>
+        </Box>
       )
     }
   `}/>

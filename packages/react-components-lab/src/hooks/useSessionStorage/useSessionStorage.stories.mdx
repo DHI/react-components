@@ -25,17 +25,18 @@ The `useSessionStorage` hook leverages the [sessionStorage](https://developer.mo
     <SessionStorageExample />
   </Canvas>
   <Syntax code={`
-    import { FC } from "react";
+    import React, { FC } from "react";
+    import { Box, Button } from "@material-ui/core";
     import { useSessionStorage } from "@dhi/react-components-lab";\n
     const App: FC = () => {
       const [showData, setShowData] = useSessionStorage<boolean | undefined>('showTheData');\n
       return (
-        <div>
+        <Box>
           {\`showTheData: \${String(showData)}\`}
-          <button onClick={() => setShowData(!Boolean(showData))}>
+          <Button onClick={() => setShowData(!Boolean(showData))}>
             Toggle "showTheData" session storage value
-          </button>
-        </div>
+          </Button>
+        </Box>
       )
     }
   `}/>

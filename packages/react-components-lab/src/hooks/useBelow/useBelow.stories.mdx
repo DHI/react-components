@@ -2,6 +2,7 @@
 
 import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
 import Syntax from '../../components/Syntax/Syntax';
+import BelowExample from "./BelowExample"
 
 <Meta
   title="Hooks/useBelow"
@@ -17,25 +18,29 @@ import Syntax from '../../components/Syntax/Syntax';
 
 The `useBelow` hook leverages the [MaterialUI breakpoints](https://mui.com/customization/breakpoints/) and can be used within and outside the JSX to render components conditionally based on various screen sizes.
 
-## Usage
+**Note:** If the `md` value is between 900px and 1200px, the `useBelow('md')` will return true if the screen width is lower than `1200px`.
+
+## Example
+
+Resize the window and see the text changing.
 
 <Story name="useBelow">
+  <Canvas>
+    <BelowExample />
+  </Canvas>
   <Syntax code={`
-    import { FC } from "react";
+    import React, { FC } from "react";
     import { useBelow } from "@dhi/react-components-lab";\n
     const App: FC = () => {
-      const isBelowMd = useBelow('md')
-      const isBelowSm = useBelow('sm')\n
-      if(isBelowSm){
-        return (
-          <p>Text shown below 600px</p>
-        )
-      }\n
-      return (
-        <div>
-          {isBelowMd && <p>Text shown below 900px</p>}
-        </div>
-      )
+        const isBelowMd = useBelow('md');
+        const isBelowSm = useBelow('sm');\n
+        if (isBelowSm) {
+          return <p>Window width is below 900px</p>;
+        }
+        if (isBelowMd) {
+          return <p>Window width is below 1200px</p>;
+        }
+        return <p>Window width is above 1200px</p>;
     }
   `}/>
 </Story>

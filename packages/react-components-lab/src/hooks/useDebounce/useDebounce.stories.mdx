@@ -1,0 +1,58 @@
+<!-- useBelow.stories.mdx -->
+
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
+import Syntax from '../../components/Syntax/Syntax';
+import DebounceExample from "./DebounceExample";
+
+<Meta
+  title="Hooks/useDebounce"
+  parameters={{
+    viewMode: 'docs',
+    previewTabs: {
+      canvas: { hidden: true }
+     },
+  }}
+/>
+
+# useDebounce
+
+The `useDebounce` hook creates a temporal block where the first value passed will be returned in the given time only if it hasn't been modified in the meantime.
+The function can be used when limiting the API calls based on the user input.
+
+**Note:** If the value has changed in the meantime, the timer will reset to the initial value.
+
+## Example
+
+In the following interactive example when clicking on the button the value changes. We can notice that everytime the value changes, the timer resets and once the timer is over, the value is returned.
+
+<Story name="useDebounce">
+  <Canvas>
+    <DebounceExample />
+  </Canvas>
+  <Syntax code={`
+  import React, { FC, useState, useEffect } from "react";
+  import { Box, Button } from "@material-ui/core";
+  import { useDebounce } from "@dhi/react-components-lab";\n
+  const App: FC = () => {
+    const [localValue, setLocalValue] = useState<number>(0);
+    const isDebounced = useDebounce(localValue, 4000);\n
+    const handleDebounce = useCallback(() => {
+      setLocalValue(Number(localValue) + 1);
+    }, [localValue, setLocalValue]);\n
+    useEffect(() => {
+      if (isDebounced) {
+        // make API call
+      }
+    }, [isDebounced]);\n
+    return (
+      <Box display="flex">
+        <Button onClick={handleDebounce} variant="contained">
+          Debounce me
+        </Button>
+      </Box>
+    );
+  };
+  `}/>
+</Story>
+
+
