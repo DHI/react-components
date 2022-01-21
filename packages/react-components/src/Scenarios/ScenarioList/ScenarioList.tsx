@@ -25,6 +25,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     onContextMenuClick,
     onScenarioSelected,
     onRenderScenarioItem,
+    onRenderScenarioIcon,
     showStatus,
     status,
     highlightNameOnStatus,
@@ -87,6 +88,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               status={itemStatus}
               timeZone={timeZone}
               onRenderScenarioItem={onRenderScenarioItem}
+              onRenderScenarioIcon={onRenderScenarioIcon}
               onClick={() => onScenarioClick(scenario)}
               actionButton={actionButton}
               showReportButton={showReportButton}

@@ -69,7 +69,16 @@ interface ScenarioListProps {
    * Emit event to client when scenario selected by user
    */
   onScenarioSelected: (scenario: Scenario) => void;
-  onRenderScenarioItem: (scenario: Scenario) => void;
+  /**
+   * A ReactElement which is overridable to change the row's display.
+   * @param scenario
+   */
+  onRenderScenarioItem?: (scenario: Scenario) => void;
+  /**
+   * A ReactElement which is overridable to change the icon's display.
+   * @param scenario
+   */
+  onRenderScenarioIcon?: (scenario: Scenario) => void;
   /**
    * Customising scenario status display
    */

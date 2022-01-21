@@ -183,6 +183,11 @@ interface ScenariosProps {
    */
   onRenderScenarioItem?: (scenario: Scenario) => void;
   /**
+   * A ReactElement which is overridable to change the icon's display.
+   * @param scenario
+   */
+  onRenderScenarioIcon?: (scenario: Scenario) => void;
+  /**
    * The object data to be added as new scenario (optional)
    */
   addScenario?: Scenario | undefined;

@@ -20,6 +20,7 @@ const ScenarioItem = ({
   onClick,
   onContextMenuClick,
   onRenderScenarioItem,
+  onRenderScenarioIcon,
   menu,
   scenario,
   timeZone,
@@ -36,8 +37,16 @@ const ScenarioItem = ({
 
       return (
         <Typography className={classes.icon}>
-          <Icon style={{ color: status.color }} />
-          <span style={{ color: status.color }}>{status.name}</span>
+          <>
+            {onRenderScenarioIcon ? (
+              onRenderScenarioIcon(scenario)
+            ) : (
+              <>
+                <Icon style={{ color: status.color }} />
+                <span style={{ color: status.color }}>{status.name}</span>
+              </>
+            )}
+          </>
         </Typography>
       );
     } else {

@@ -57,6 +57,7 @@ const Scenarios = (props: ScenariosProps) => {
     onScenarioReceived,
     onScenariosReceived,
     onRenderScenarioItem,
+    onRenderScenarioIcon,
     addScenario,
     translations,
     timeZone,
@@ -565,6 +566,7 @@ const Scenarios = (props: ScenariosProps) => {
           onScenarioSelected={onScenarioSelectedHandler}
           onContextMenuClick={onContextMenuClickHandler}
           onRenderScenarioItem={onRenderScenarioItem}
+          onRenderScenarioIcon={onRenderScenarioIcon}
           showDate={showDate}
           showDateGroups={showDateGroups}
           showHour={showHour}
