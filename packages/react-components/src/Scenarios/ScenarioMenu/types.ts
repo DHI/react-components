@@ -9,6 +9,17 @@ interface ScenarioMenuProps {
    * On click event on the menu item list wrapper to send the current scenario so the menu item list can be built.
    */
   onClick: (scenario: Scenario) => void;
+  /**
+   * Should show the report button?
+   */
+  showReportButton: boolean;
+  /**
+   * Should show the edit button?
+   */
+  showEditButton: boolean;
+  /**
+   * Context menu
+   */
   menu: {
     /**
      * The id of scenario option menu

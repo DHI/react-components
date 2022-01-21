@@ -11,7 +11,7 @@ interface ScenarioItemProps {
    * The scenario menu function handlers
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
-
+  onRenderScenarioItem: (scenario: Scenario) => void;
   /**
    * Scenario item click event handler
    */
@@ -67,6 +67,14 @@ interface ScenarioItemProps {
    * An action button which sits on the right hand side, below the menu
    */
   actionButton?: ActionButton;
+  /**
+   * Should show the report button?
+   */
+  showReportButton: boolean;
+  /**
+   * Should show the edit button?
+   */
+  showEditButton: boolean;
 }
 
 export default ScenarioItemProps;

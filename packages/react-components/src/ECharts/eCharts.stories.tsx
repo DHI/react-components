@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react/types-6-0.d';
 import React from 'react';
-import DHITheme from '../theme';
 import { BaseChart } from './BaseChart';
+import mikeColors from '../ThemeProvider/mikeColors';
 
 export default {
   title: 'Chart Components',
@@ -18,7 +18,7 @@ export const eChartBase = () => {
     title: {
       text: 'ECharts Base example',
       textStyle: {
-        color: DHITheme.palette.primary.main,
+        color: mikeColors.BRANDBLUE_DEFAULT,
         fontSize: 20,
         fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       },

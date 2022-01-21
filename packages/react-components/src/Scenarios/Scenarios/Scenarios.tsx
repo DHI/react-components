@@ -28,7 +28,6 @@ const Scenarios = (props: ScenariosProps) => {
     jobToken,
     scenarioConnection,
     queryBody,
-    nameField,
     jobConnection,
     jobParameters,
     jobQueryItemKey,
@@ -37,12 +36,16 @@ const Scenarios = (props: ScenariosProps) => {
     signalRConnectionHubUrl,
     taskId,
     hostGroup,
+    nameField,
     descriptionFields,
     extraFields,
     menuItems,
     actionButton,
+    showReportButton,
+    showEditButton,
     selectedScenarioId,
-    showDate,
+    showDate = true,
+    showDateGroups = true,
     showHour,
     showMenu,
     showStatus,
@@ -53,6 +56,7 @@ const Scenarios = (props: ScenariosProps) => {
     onScenarioSelected,
     onScenarioReceived,
     onScenariosReceived,
+    onRenderScenarioItem,
     addScenario,
     translations,
     timeZone,
@@ -560,7 +564,9 @@ const Scenarios = (props: ScenariosProps) => {
           selectedScenarioId={selectedScenarioId}
           onScenarioSelected={onScenarioSelectedHandler}
           onContextMenuClick={onContextMenuClickHandler}
+          onRenderScenarioItem={onRenderScenarioItem}
           showDate={showDate}
+          showDateGroups={showDateGroups}
           showHour={showHour}
           showMenu={showMenu}
           showStatus={showStatus}
@@ -568,6 +574,8 @@ const Scenarios = (props: ScenariosProps) => {
           highlightNameOnStatus={highlightNameOnStatus}
           timeZone={timeZone}
           actionButton={actionButton}
+          showReportButton={showReportButton}
+          showEditButton={showEditButton}
         />
       )}
       {dialog && (

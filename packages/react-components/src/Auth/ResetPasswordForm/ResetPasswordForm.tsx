@@ -70,10 +70,10 @@ const ResetPasswordForm = (props: ResetPasswordFormProps) => {
 
         <div className={classes.resetBox}>
           <Button className={classes.backButton} onClick={onBackToLogin ? () => onBackToLogin(false) : undefined}>
-            <Typography className={classes.labels}>Back</Typography>
+            <Typography className={classes.labels}>BACK</Typography>
           </Button>
           <Button type="submit" color="primary" variant="contained" disabled={loading}>
-            {loading ? <CircularProgress color="inherit" size={24} /> : resetPasswordButtonText}
+            {loading ? <CircularProgress color="inherit" size={24} /> : resetPasswordButtonText.toUpperCase()}
           </Button>
         </div>
         <div className={classes.messages}>

@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { WithStylesOptions } from '@material-ui/styles/withStyles';
+import mikeColors from '../../ThemeProvider/mikeColors';
 
 const styles = () => ({
   scenario: {
@@ -23,7 +24,7 @@ const styles = () => ({
   scenarioHour: {
     padding: '10px',
     fontSize: 14,
-    color: '#0B4566',
+    color: mikeColors.BRANDBLUE_DEFAULT,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -33,7 +34,7 @@ const styles = () => ({
     fontSize: 16,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    color: '#0B4566',
+    color: mikeColors.BRANDBLUE_DEFAULT,
   },
   scenarioProgress: {
     fontSize: 10,
@@ -49,13 +50,13 @@ const styles = () => ({
   },
   textFields: {
     fontSize: 14,
-    color: '#86A2B3',
+    color: mikeColors.DARKGREY_DARK,
   },
   actions: {
     display: 'flex',
     alignItems: 'flex-end',
     flexDirection: 'column',
-    padding: '0 10px',
+    padding: '5px 0px',
     justifyContent: 'space-between',
   },
   icon: {
