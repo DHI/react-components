@@ -8,7 +8,6 @@ const styles = () => ({
     flex: 1,
     flexDirection: 'column',
     height: '100%',
-    marginTop: '30px',
   },
   listBlock: {
     display: 'flex',
