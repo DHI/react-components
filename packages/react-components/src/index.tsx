@@ -38,3 +38,4 @@ export * from './Timeseries/TimeseriesExporter/TimeseriesExporter';
 export * from './Timeseries/TimeseriesExporter/types';
 export * from './UserGroups/UserGroups';
 export * from './utils/Utils';
+export * from './ThemeProvider/mikeColors';
