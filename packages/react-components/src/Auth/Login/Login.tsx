@@ -1,10 +1,9 @@
-import { ThemeProvider } from '@material-ui/styles';
 import React, { useState } from 'react';
-import DHITheme from '../../theme';
 import { LoginForm } from '../LoginForm/LoginForm';
 import { ResetPasswordForm } from '../ResetPasswordForm/ResetPasswordForm';
 import { UpdatePasswordForm } from '../UpdatePasswordForm/UpdatePasswordForm';
 import LoginProps from './types';
+import ThemeProvider from '../../ThemeProvider/ThemeProvider';
 
 const Login = (props: LoginProps) => {
   const {
@@ -27,7 +26,7 @@ const Login = (props: LoginProps) => {
   };
 
   return (
-    <ThemeProvider theme={DHITheme}>
+    <ThemeProvider>
       {showingResetPassword && (
         <ResetPasswordForm
           host={host}

@@ -19,22 +19,31 @@ const ScenarioItem = ({
   showMenu,
   onClick,
   onContextMenuClick,
+  onRenderScenarioItem,
+  onRenderScenarioIcon,
   menu,
   scenario,
   timeZone,
   actionButton,
+  showReportButton,
+  showEditButton,
 }: ScenarioItemProps) => {
   const [hover, setHover] = useState(false);
   const classes = useStyles();
 
   const rowIcon = () => {
-    if (status.Icon) {
+    if (onRenderScenarioIcon) {
+      return onRenderScenarioIcon(scenario);
+    } else if (status.Icon) {
       const { Icon } = status;
-
       return (
         <Typography className={classes.icon}>
-          <Icon style={{ color: status.color }} />
-          <span style={{ color: status.color }}>{status.name}</span>
+          <>
+            <>
+              <Icon style={{ color: status.color }} />
+              <span style={{ color: status.color }}>{status.name}</span>
+            </>
+          </>
         </Typography>
       );
     } else {
@@ -98,7 +107,7 @@ const ScenarioItem = ({
             {status.progress ? showStatus && showSpinner() : rowIcon()}
           </Grid>
         )}
-        <div className={classes.verticalLine} />
+        {date && <div className={classes.verticalLine} />}
         <Grid item className={classes.scenarioDetails}>
           <Typography
             component="span"
@@ -108,11 +117,13 @@ const ScenarioItem = ({
           >
             {name}
           </Typography>
-          {description.map((item: { name: string; value: string }) => (
-            <Typography key={item.name} component="span" className={classes.textFields}>
-              {`${item.name}: ${item.value}`}
-            </Typography>
-          ))}
+          {onRenderScenarioItem
+            ? onRenderScenarioItem(scenario)
+            : description.map((item: { name: string; value: string }) => (
+                <Typography key={item.name} component="span" className={classes.textFields}>
+                  {`${item.name}: ${item.value}`}
+                </Typography>
+              ))}
         </Grid>
       </div>
       <div className={classes.actions}>
@@ -122,6 +133,8 @@ const ScenarioItem = ({
             onClick={() => onClick(scenario)}
             menu={menu}
             scenario={scenario}
+            showEditButton={showEditButton}
+            showReportButton={showReportButton}
           />
         )}
 

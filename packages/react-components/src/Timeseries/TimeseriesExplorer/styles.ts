@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import DHITheme from '../../theme';
+import mikeColors from '../../ThemeProvider/mikeColors';
 
 export const TimeseriesStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,7 +26,7 @@ export const TimeseriesStyles = makeStyles((theme: Theme) => ({
     },
   },
   skeleton: {
-    backgroundColor: DHITheme.palette.secondary.main,
+    backgroundColor: mikeColors.BRANDBLUE_DARK,
     opacity: 0.2,
   },
   typography: {

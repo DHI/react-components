@@ -5,8 +5,16 @@ import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutli
 import React, { useState } from 'react';
 import { MenuItem, Scenario } from '../types';
 import ScenarioMenuProps from './types';
+import mikeColors from '../../ThemeProvider/mikeColors';
 
-const ScenarioMenu = ({ onContextMenuClick, scenario, menu, onClick }: ScenarioMenuProps) => {
+const ScenarioMenu = ({
+  onContextMenuClick,
+  scenario,
+  menu,
+  showReportButton,
+  showEditButton,
+  onClick,
+}: ScenarioMenuProps) => {
   const [showMenu, setShowMenuState] = useState(false);
   const [showElement, setshowElementState] = useState();
 
@@ -41,23 +49,23 @@ const ScenarioMenu = ({ onContextMenuClick, scenario, menu, onClick }: ScenarioM
   };
 
   return (
-    <div style={{ position: 'relative', right: 5, color: '#0B4566' }}>
-      {menu.some((item) => item.id === 'openPdf') && (
+    <div style={{ position: 'relative', right: 5, color: mikeColors.BRANDBLUE_DEFAULT }}>
+      {showReportButton && (
         <IconButton
           aria-owns={showMenu ? 'simple-menu' : undefined}
           aria-haspopup="true"
           onClick={handlePDF}
-          style={{ color: '#0B4566' }}
+          style={{ color: mikeColors.BRANDBLUE_DEFAULT }}
         >
           <InsertDriveFileOutlinedIcon />
         </IconButton>
       )}
-      {menu.some((item) => item.id === 'edit') && (
+      {showEditButton && (
         <IconButton
           aria-owns={showMenu ? 'simple-menu' : undefined}
           aria-haspopup="true"
           onClick={handleEdit}
-          style={{ color: '#0B4566' }}
+          style={{ color: mikeColors.BRANDBLUE_DEFAULT }}
         >
           <CreateOutlinedIcon />
         </IconButton>
@@ -66,7 +74,7 @@ const ScenarioMenu = ({ onContextMenuClick, scenario, menu, onClick }: ScenarioM
         aria-owns={showMenu ? 'simple-menu' : undefined}
         aria-haspopup="true"
         onClick={(e) => setShowMenu(true, e.currentTarget)}
-        style={{ color: '#0B4566' }}
+        style={{ color: mikeColors.BRANDBLUE_DEFAULT }}
       >
         <MoreVertIcon />
       </IconButton>

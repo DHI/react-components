@@ -11,7 +11,16 @@ interface ScenarioItemProps {
    * The scenario menu function handlers
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
-
+  /**
+   * A ReactElement which is overridable to change the row's display.
+   * @param scenario
+   */
+  onRenderScenarioItem?: (scenario: Scenario) => void;
+  /**
+   * A ReactElement which is overridable to change the icon's display.
+   * @param scenario
+   */
+  onRenderScenarioIcon?: (scenario: Scenario) => void;
   /**
    * Scenario item click event handler
    */
@@ -67,6 +76,14 @@ interface ScenarioItemProps {
    * An action button which sits on the right hand side, below the menu
    */
   actionButton?: ActionButton;
+  /**
+   * Should show the report button?
+   */
+  showReportButton: boolean;
+  /**
+   * Should show the edit button?
+   */
+  showEditButton: boolean;
 }
 
 export default ScenarioItemProps;

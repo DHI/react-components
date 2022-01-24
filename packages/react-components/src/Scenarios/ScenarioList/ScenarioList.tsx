@@ -11,20 +11,25 @@ import useStyles from './useStyles';
 
 const ScenarioList = (props: ScenarioListProps) => {
   const {
+    nameField,
+    descriptionFields,
     selectedScenarioId,
     scenarios,
     showHour,
     showDate,
+    showDateGroups,
     menuItems,
     actionButton,
-    descriptionFields,
+    showReportButton,
+    showEditButton,
     onContextMenuClick,
     onScenarioSelected,
+    onRenderScenarioItem,
+    onRenderScenarioIcon,
     showStatus,
     status,
     highlightNameOnStatus,
     showMenu,
-    nameField,
     timeZone,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
@@ -37,7 +42,7 @@ const ScenarioList = (props: ScenarioListProps) => {
 
   const groupScenarios = (scenarios: Scenario[]) => {
     setGroupedScenarios(
-      showHour || showDate
+      showHour || showDate || showDateGroups
         ? groupBy(scenarios, (scenario) => {
             return scenario.dateTime ? format(parseISO(scenario.dateTime.split('.')[0]), 'yyyy-MM-dd') : '';
           })
@@ -82,8 +87,12 @@ const ScenarioList = (props: ScenarioListProps) => {
               scenario={scenario}
               status={itemStatus}
               timeZone={timeZone}
+              onRenderScenarioItem={onRenderScenarioItem}
+              onRenderScenarioIcon={onRenderScenarioIcon}
               onClick={() => onScenarioClick(scenario)}
               actionButton={actionButton}
+              showReportButton={showReportButton}
+              showEditButton={showEditButton}
             />
           </div>
         );
@@ -126,7 +135,7 @@ const ScenarioList = (props: ScenarioListProps) => {
       .reverse()
       .map((key) => (
         <div key={key} className={classes.listBlock}>
-          {showDate && key && buildDateArea(key)}
+          {showDateGroups && key && buildDateArea(key)}
           <div>{key && buildScenariosList(groupedScenarios[key])}</div>
         </div>
       ));
