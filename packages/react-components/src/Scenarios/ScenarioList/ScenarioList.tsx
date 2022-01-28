@@ -2,7 +2,7 @@ import { Divider } from '@material-ui/core';
 import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
 import { Scenario } from '../types';
@@ -26,6 +26,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     onScenarioSelected,
     onRenderScenarioItem,
     onRenderScenarioIcon,
+    onRowRefsUpdated,
     showStatus,
     status,
     highlightNameOnStatus,
@@ -35,6 +36,8 @@ const ScenarioList = (props: ScenarioListProps) => {
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
+
+  const elRowRefs = React.useRef([]);
 
   useEffect(() => {
     groupScenarios(scenarios);
@@ -57,6 +60,15 @@ const ScenarioList = (props: ScenarioListProps) => {
   };
 
   const buildScenariosList = (scenarios: Scenario[]) => {
+    if (elRowRefs.current.length !== scenarios.length) {
+      // add or remove refs
+      elRowRefs.current = Array(scenarios.length)
+        .fill(0)
+        .map((_, i) => elRowRefs.current[i] || createRef());
+
+      if (onRowRefsUpdated) onRowRefsUpdated(elRowRefs);
+    }
+
     return sortBy(scenarios, ['dateTime'])
       .reverse()
       .map((scenario, index) => {
@@ -65,6 +77,7 @@ const ScenarioList = (props: ScenarioListProps) => {
         return (
           <div
             key={`${scenario.fullName}_${index}`}
+            ref={elRowRefs.current[index]}
             onClick={() => onScenarioClick(scenario)}
             onKeyPress={() => onScenarioClick(scenario)}
             role="presentation"

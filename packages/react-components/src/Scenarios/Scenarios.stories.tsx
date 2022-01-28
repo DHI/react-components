@@ -395,6 +395,9 @@ export const ScenariosJSONStory = () => {
               //     </>
               //   );
               // }}
+              onRowRefsUpdated={(refs) => {
+                console.log('Accessible list of row refs if required by developer', refs);
+              }}
               //actionButton={actionButton}
               showDate={true}
               showDateGroups={true}
