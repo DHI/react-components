@@ -79,7 +79,7 @@ interface ScenarioListProps {
    * @param scenario
    */
   onRenderScenarioIcon?: (scenario: Scenario) => void;
-  onRowRefsUpdated?: (refs: React.MutableRefObject<HTMLElement[]>) => void;
+  onRowRefsUpdated?: (refs: HTMLDivElement[]) => void;
   /**
    * Customising scenario status display
    */

@@ -191,7 +191,7 @@ interface ScenariosProps {
    * `Array` of HTML ref objects representing each row in the list.
    * @param refs
    */
-  onRowRefsUpdated?: (refs: React.MutableRefObject<HTMLElement[]>) => void;
+  onRowRefsUpdated?: (refs: HTMLDivElement[]) => void;
   /**
    * The object data to be added as new scenario (optional)
    */
