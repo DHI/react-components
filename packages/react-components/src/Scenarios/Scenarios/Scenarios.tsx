@@ -149,7 +149,9 @@ const Scenarios = (props: ScenariosProps) => {
             values,
           },
         ];
+
         const jobSources = {
+          token,
           host: jobHost || host,
           connection: jobConnection,
         };

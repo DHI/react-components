@@ -328,13 +328,14 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
   const difference = differenceInMinutes(new Date(endDate), new Date(beginDate));
   const hour = Math.floor(difference / 60);
   const minute = Math.floor(difference - hour * 60);
+  const second = Math.floor(difference - minute * 60);
 
   if (isNaN(difference)) {
     return '';
   }
 
   if (hour === 0 && minute === 0) {
-    return '<1m';
+    return `${second}s`;
   } else if (hour !== 0) {
     return `${hour}h ${minute}m`;
   } else {

@@ -76,8 +76,7 @@ const LEGEND_STYLE = {
 };
 
 const TimeseriesExplorer = ({
-  token,
-  dataSources,
+  dataSource,
   title,
   legendPosition = 'right',
   legendPositionOffset,
@@ -123,32 +122,27 @@ const TimeseriesExplorer = ({
   };
 
   const fetchTopLevelTreeView = (group = '') => {
-    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+    fetchTimeseriesFullNames([dataSource], group.replace(/\/$/, '')).subscribe(
       (res) => {
-        const data = res.map((d) => ({
-          value: d,
-          label: d,
-          topLevel: true,
-          ...(d.slice(-1) === '/' && {
-            children: [
-              {
-                value: '',
-                label: '',
-              },
-            ],
-          }),
-        }));
+        const children = addChildren(res, group, true);
 
-        setList(data);
+        setList(children);
+        setLoading(false);
       },
-      (err) => console.log(err),
+      (error) => console.log(error),
     );
   };
 
-  const addChildren = (childrenList, group) => {
-    return childrenList.map((child) => ({
+  const addChildren = (childrenList, group, topLevel = false) => {
+    const children = [
+      ...childrenList.filter((child: string) => child.endsWith('/')).sort(),
+      ...childrenList.filter((child: string) => !child.endsWith('/')).sort(),
+    ];
+
+    return children.map((child) => ({
       value: child,
       label: child.replace(group, ''),
+      topLevel,
       ...(child.slice(-1) === '/' && {
         children: [
           {
@@ -164,13 +158,13 @@ const TimeseriesExplorer = ({
     setLoading(true);
 
     if (group.slice(-1) === '/' || group === '') {
-      fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+      fetchTimeseriesFullNames([dataSource], group.replace(/\/$/, '')).subscribe(
         (res) => {
           const children = addChildren(res, group);
           list.map((item) => recursive(item, group, children));
 
           setList(list);
-          setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
+          setLoading(false);
         },
         (error) => console.log(error),
       );
@@ -178,11 +172,11 @@ const TimeseriesExplorer = ({
   };
 
   useEffect(() => {
-    dataSources[0].ids = ids;
-    dataSources[0].from = date.from;
-    dataSources[0].to = date.to;
+    dataSource.ids = ids;
+    dataSource.from = date.from;
+    dataSource.to = date.to;
 
-    fetchTimeseriesValues(dataSources, token).subscribe((res) => {
+    fetchTimeseriesValues([dataSource], dataSource.token).subscribe((res) => {
       const series = res
         .map((item) => {
           return {

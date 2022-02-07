@@ -19,7 +19,7 @@ interface User extends OtpInfo {
   /** Name of user */
   name: string;
   /** Roles of user */
-  roles: string[];
+  userGroups: string[];
   /** Metadata of user */
   metadata: any;
 }

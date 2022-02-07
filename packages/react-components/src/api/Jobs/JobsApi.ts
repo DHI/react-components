@@ -12,14 +12,14 @@ import { fetchUrl } from '../helpers';
  *
  *  Gets all the jobs meeting the criteria specified by the given query.
  */
-const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, query: JobParameters[]) => {
+const executeJobQuery = (dataSources: DataSource | DataSource[], query: JobParameters[]) => {
   const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
 
-  const requests = dataSourcesArray.map((source: DataSource) =>
-    fetchUrl(`${source.host}/api/jobs/${source.connection}/query`, {
+  const requests = dataSourcesArray.map((dataSource: DataSource) =>
+    fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}/query`, {
       method: 'POST',
       additionalHeaders: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${dataSource.token}`,
       },
       body: JSON.stringify(query),
     }).pipe(
@@ -32,9 +32,13 @@ const executeJobQuery = (dataSources: DataSource | DataSource[], token: string, 
         },
       ),
       map((job) => {
-        return dataObjectToArray(job).sort((a, b) => {
-          return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
-        });
+        return dataObjectToArray(job)
+          .sort((a, b) => {
+            return new Date(b.data.requested).getTime() - new Date(a.data.requested).getTime();
+          })
+          .map((item) => {
+            return { id: item.id, data: { ...item.data, dataSource } };
+          });
       }),
     ),
   );
@@ -210,6 +214,7 @@ const deleteJobs = (dataSource: DataSource, token: string, query: JobQuery) =>
       },
     },
   ).pipe(tap((res) => console.log('jobs deleted', res)));
+
 /**
  * /api/jobs/{connectionId}/last
  * Gets the last job meeting the criteria specified by the given parameters.

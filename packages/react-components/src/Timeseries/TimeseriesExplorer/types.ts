@@ -1,8 +1,7 @@
 import { DataSource } from '../../api/types';
 
 export interface TimeseriesProps {
-  token: string;
-  dataSources: DataSource[];
+  dataSource: DataSource;
   title: string;
   legendPosition?: 'left' | 'right';
   legendPositionOffset?: number;
