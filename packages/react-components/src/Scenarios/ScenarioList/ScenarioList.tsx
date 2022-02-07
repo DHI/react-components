@@ -2,7 +2,7 @@ import { Divider } from '@material-ui/core';
 import classNames from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { Dictionary, groupBy, sortBy } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { createRef, MutableRefObject, useEffect, useState } from 'react';
 import { checkCondition, checkStatus, getDescriptions, getObjectProperty, utcToTz } from '../../utils/Utils';
 import { ScenarioItem } from '../ScenarioItem/ScenarioItem';
 import { Scenario } from '../types';
@@ -26,6 +26,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     onScenarioSelected,
     onRenderScenarioItem,
     onRenderScenarioIcon,
+    onRowRefsUpdated,
     showStatus,
     status,
     highlightNameOnStatus,
@@ -36,9 +37,18 @@ const ScenarioList = (props: ScenarioListProps) => {
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
 
+  const elRowRefs = React.useRef<HTMLDivElement[]>([]);
+
   useEffect(() => {
+    elRowRefs.current = [];
     groupScenarios(scenarios);
   }, [scenarios]);
+
+  useEffect(() => {
+    if (onRowRefsUpdated && elRowRefs.current.length > 0) {
+      onRowRefsUpdated(elRowRefs.current);
+    }
+  }, [elRowRefs.current]);
 
   const groupScenarios = (scenarios: Scenario[]) => {
     setGroupedScenarios(
@@ -56,8 +66,8 @@ const ScenarioList = (props: ScenarioListProps) => {
     });
   };
 
-  const buildScenariosList = (scenarios: Scenario[]) => {
-    return sortBy(scenarios, ['dateTime'])
+  const buildScenariosList = (scenarioGroup: Scenario[]) => {
+    return sortBy(scenarioGroup, ['dateTime'])
       .reverse()
       .map((scenario, index) => {
         const itemStatus = checkStatus(scenario.lastJob, status);
@@ -65,6 +75,7 @@ const ScenarioList = (props: ScenarioListProps) => {
         return (
           <div
             key={`${scenario.fullName}_${index}`}
+            ref={(el) => elRowRefs.current.push(el)}
             onClick={() => onScenarioClick(scenario)}
             onKeyPress={() => onScenarioClick(scenario)}
             role="presentation"
@@ -133,12 +144,14 @@ const ScenarioList = (props: ScenarioListProps) => {
     printedScenarios = Object.keys(groupedScenarios)
       .sort()
       .reverse()
-      .map((key) => (
-        <div key={key} className={classes.listBlock}>
-          {showDateGroups && key && buildDateArea(key)}
-          <div>{key && buildScenariosList(groupedScenarios[key])}</div>
-        </div>
-      ));
+      .map((key, index) => {
+        return (
+          <div key={key} className={classes.listBlock}>
+            {showDateGroups && key && buildDateArea(key)}
+            <div>{key && buildScenariosList(groupedScenarios[key])}</div>
+          </div>
+        );
+      });
   }
 
   return <div className={classes.root}>{printedScenarios}</div>;
