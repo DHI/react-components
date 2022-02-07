@@ -6,7 +6,7 @@ import GapBox from './GapBox';
 import { Props } from './types';
 
 export default {
-  title: 'Example/GapBox',
+  title: 'Components/GapBox',
   component: GapBox,
 };
 

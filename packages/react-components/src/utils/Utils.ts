@@ -124,7 +124,7 @@ const checkConditions = (scenarioData: Scenario, conditions: Condition[]) => {
   let isInverse = false;
   const check = [];
 
-  conditions.forEach((condition) => {
+  (conditions || []).forEach((condition) => {
     if (condition) {
       if (condition!.field.indexOf('!') === 0) {
         isInverse = true;

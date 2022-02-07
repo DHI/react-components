@@ -2,7 +2,7 @@
   width="40"
   height="40"
   viewbox="0 0 40 40"
-  fill="var(--BrandBlue--default)"
+  fill="colorPrimary"
   xmlns="http://www.w3.org/2000/svg"
 >
   <path fill-rule="evenodd" clip-rule="evenodd" d="M32 8H8v24h24V8zm-2.182 2.182H10.182v19.636h19.636V10.182z" /><path d="M27.5 14.003a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM15.5 14.003a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM15.5 20a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM27.5 25.997a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM21.5 20a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM21.5 25.997a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />

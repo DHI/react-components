@@ -1,8 +1,6 @@
 export interface CategoricalBarLegendProps {
-  items: LegendCategoricalItem[];
+  items: {
+    label?: string | undefined;
+    color: string;
+  }[];
 }
-
-export type LegendCategoricalItem = {
-  label?: string;
-  color: string;
-};

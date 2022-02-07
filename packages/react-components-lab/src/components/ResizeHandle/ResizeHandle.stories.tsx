@@ -8,7 +8,7 @@ import ResizeHandle from './ResizeHandle';
 import mikePalette from '../ThemeProvider/mikePallete';
 
 export default {
-  title: 'Example/ResizeHandle',
+  title: 'Components/ResizeHandle',
   component: ResizeHandle,
 };
 

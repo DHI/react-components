@@ -1,11 +1,10 @@
 ## This PR
 
-- [ ] Ticks this box and Closes #100000
+Closes #xxx
 
+## Notes
 
-## Submission criteria
-
-Please review the below criteria before asking for a review.
+- No notes to add
 
 ### Fulfilled the scope of this repo?
 

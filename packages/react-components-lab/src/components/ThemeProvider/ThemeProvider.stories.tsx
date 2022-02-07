@@ -22,7 +22,7 @@ import { ComponentList } from './ComponentsMui/types';
 // #endregion
 
 export default {
-  title: 'Example/ThemeProvider',
+  title: 'Components/ThemeProvider',
   component: ThemeProvider,
   argTypes: {},
   parameters: {

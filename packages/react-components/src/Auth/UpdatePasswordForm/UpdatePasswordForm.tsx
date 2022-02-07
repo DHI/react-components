@@ -91,10 +91,10 @@ const UpdatePasswordForm = (props: UpdatePasswordFormProps) => {
 
         <div className={classes.resetBox}>
           <Button className={classes.backButton} onClick={onBackToLogin ? () => onBackToLogin(false) : undefined}>
-            <Typography className={classes.labels}>Login</Typography>
+            <Typography className={classes.labels}>LOGIN</Typography>
           </Button>
           <Button type="submit" color="primary" variant="contained" disabled={loading}>
-            {loading ? <CircularProgress color="inherit" size={24} /> : updatePasswordButtonText}
+            {loading ? <CircularProgress color="inherit" size={24} /> : updatePasswordButtonText.toUpperCase()}
           </Button>
         </div>
         <div className={classes.messages}>

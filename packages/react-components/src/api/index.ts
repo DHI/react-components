@@ -26,6 +26,7 @@ import {
   fetchJsonDocument,
   fetchJsonDocuments,
   postJsonDocuments,
+  updateJsonDocument,
 } from './JsonDocuments/JsonDocumentsApi';
 import { fetchLogs } from './Logs/LogsApi';
 import {
@@ -66,6 +67,7 @@ export {
   fetchJsonDocument,
   postJsonDocuments,
   deleteJsonDocument,
+  updateJsonDocument,
   executeJobQuery,
   executeJob,
   cancelJob,

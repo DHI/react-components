@@ -11,6 +11,10 @@ interface ScenariosProps {
    */
   showDate: boolean;
   /**
+   * Indicates if the date groups of the scenario list should be shown
+   */
+  showDateGroups?: boolean;
+  /**
    * Indicates if the hour of the scenario should be shown
    */
   showHour: boolean;
@@ -49,9 +53,17 @@ interface ScenariosProps {
    */
   host: string;
   /**
+   * Backend host for jobs (if omitted, will use regular `host`)
+   */
+  jobHost?: string;
+  /**
    * Authorization header to backend call
    */
   token: string;
+  /**
+   * Backend token for jobs (if omitted, will use regular `token`)
+   */
+  jobToken?: string;
   /**
    * Object to filter data
    */
@@ -68,6 +80,10 @@ interface ScenariosProps {
    * Set of job parameters
    */
   jobParameters?: JobParameters;
+  /**
+   * Job query item key (eg. ScenarioId / EventId)
+   */
+  jobQueryItemKey: string;
   /**
    * Temporary for discarding modules which do not match
    */
@@ -138,6 +154,14 @@ interface ScenariosProps {
    */
   actionButton?: ActionButton;
   /**
+   * Should show the report button?
+   */
+  showReportButton: boolean;
+  /**
+   * Should show the edit button?
+   */
+  showEditButton: boolean;
+  /**
    * The scenario menu function handlers
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
@@ -153,6 +177,21 @@ interface ScenariosProps {
    * Emit even to client when list of scenarios received from the server
    */
   onScenariosReceived: (scenarios: Scenario[]) => void;
+  /**
+   * A ReactElement which is overridable to change the row's display.
+   * @param scenario
+   */
+  onRenderScenarioItem?: (scenario: Scenario) => void;
+  /**
+   * A ReactElement which is overridable to change the icon's display.
+   * @param scenario
+   */
+  onRenderScenarioIcon?: (scenario: Scenario) => void;
+  /**
+   * `Array` of HTML ref objects representing each row in the list.
+   * @param refs
+   */
+  onRowRefsUpdated?: (refs: HTMLDivElement[]) => void;
   /**
    * The object data to be added as new scenario (optional)
    */

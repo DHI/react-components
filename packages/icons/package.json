@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "MIT",
   "name": "@dhi/icons",
   "author": "DHI",
@@ -14,7 +14,8 @@
     "build": "node build-icons.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "semantic-release": "npx semantic-release"
+    "semantic-release": "npx semantic-release",
+    "postinstall": "yarn build"
   },
   "main": "./dist/index.js",
   "files": [
@@ -49,6 +50,7 @@
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.3",
     "@types/react-window": "^1.8.2",
+    "@types/traverse": "^0.6.32",
     "babel-loader": "^8.2.2",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.2.0",
@@ -62,6 +64,7 @@
     "glob": "^7.1.7",
     "prettier": "^2.2.1",
     "react-is": "^17.0.2",
+    "traverse": "^0.6.6",
     "tslint-plugin-prettier": "^2.3.0",
     "typescript": "^4.2.3",
     "xml2json": "^0.12.0"

@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Story } from '@storybook/react';
 import { Typography, Box } from '@material-ui/core';
-import { useArgs } from '@storybook/client-api';
 import MultiField from './MultiField';
 import { MultiFieldProps } from './types';
 
 export default {
-  title: 'Example/MultiField',
+  title: 'Components/MultiField',
   component: MultiField,
 };
 
 const Template: Story<MultiFieldProps> = (args) => {
-  const [{ value }, updateArgs] = useArgs();
-  const setValue = (newValue: string) => updateArgs({ value: newValue });
+  const [value, updateValue] = useState<string | undefined>();
+  const setValue = (v: string) => updateValue(v);
 
   return (
     <>

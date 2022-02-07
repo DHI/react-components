@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesFullNames, fetchTimeseriesValues } from '../../api';
 import { BaseChart } from '../../ECharts/BaseChart';
-import DHITheme from '../../theme';
 import { recursive } from '../../utils/Utils';
 import TreeView from '../TreeView/TreeView';
 import { TimeseriesStyles } from './styles';
@@ -12,6 +11,7 @@ import { TimeseriesProps } from './types';
 import { DateFilter } from '../../common/DateFilter/DateFilter';
 import { DateProps } from '../../common/types';
 import { useWindowSize } from '@react-hook/window-size';
+import mikeColors from '../../ThemeProvider/mikeColors';
 
 const NAME_TEXT_STYLE = {
   padding: 12,
@@ -27,7 +27,7 @@ const DATA_ZOOM = [
     type: 'slider',
     height: 40,
     bottom: 10,
-    labelFormatter: (value) => format(value, 'dd MMM yyyy'),
+    labelFormatter: (value) => (value ? format(value, 'dd MMM yyyy') : ''),
   },
 ];
 
@@ -38,7 +38,7 @@ const GRID = {
 
 const TEXT_STYLE = {
   width: '100%',
-  color: DHITheme.palette.primary.main,
+  color: mikeColors.BRANDBLUE_DEFAULT,
   fontWeight: 'bold',
   fontSize: window.innerHeight >= 1200 ? 24 : 18,
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -47,7 +47,7 @@ const TEXT_STYLE = {
 const AXIS_LABEL = {
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   fontSize: 12,
-  color: DHITheme.palette.primary.main,
+  color: mikeColors.BRANDBLUE_DEFAULT,
 };
 
 const X_AXIS = {
@@ -179,16 +179,12 @@ const TimeseriesExplorer = ({
     fetchTimeseriesValues([dataSource], dataSource.token).subscribe((res) => {
       const series = res
         .map((item) => {
-          if (item.data.length) {
-            return {
-              name: item.id,
-              data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
-              type: 'line',
-              symbol: 'diamond',
-            };
-          } else {
-            return null;
-          }
+          return {
+            name: item.id,
+            data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
+            type: 'line',
+            symbol: 'diamond',
+          };
         })
         .filter((item) => item);
 

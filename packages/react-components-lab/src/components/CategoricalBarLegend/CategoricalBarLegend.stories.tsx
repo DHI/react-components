@@ -26,7 +26,7 @@ NoLabel.args = {
 };
 
 export default {
-  title: 'Example/CategoricalBarLegend',
+  title: 'Components/CategoricalBarLegend',
   component: CategoricalBarLegend,
   argTypes: { items: [{ color: 'text', label: 'text' }] },
 } as Meta;

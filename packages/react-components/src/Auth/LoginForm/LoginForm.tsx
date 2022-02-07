@@ -213,17 +213,17 @@ const LoginForm = (props: LoginFormProps) => {
                 : undefined
             }
           >
-            <Typography className={classes.labels}>{resetPasswordLabelText}</Typography>
+            <Typography className={classes.labels}>{resetPasswordLabelText.toUpperCase()}</Typography>
           </Button>
         )}
         {twoFA && (
           <Button className={classes.button} color="secondary" variant="contained" onClick={handleBack}>
-            {backButtonText}
+            {backButtonText.toUpperCase()}
           </Button>
         )}
 
         <Button type="submit" color="primary" variant="contained">
-          {loading ? <CircularProgress color="inherit" size={24} /> : loginButtonText}
+          {loading ? <CircularProgress color="inherit" size={24} /> : loginButtonText.toUpperCase()}
         </Button>
       </div>
     </form>

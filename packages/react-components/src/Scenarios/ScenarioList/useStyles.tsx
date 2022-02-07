@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { WithStylesOptions } from '@material-ui/styles/withStyles';
+import mikeColors from '../../ThemeProvider/mikeColors';
 
 const styles = () => ({
   root: {
@@ -7,7 +8,6 @@ const styles = () => ({
     flex: 1,
     flexDirection: 'column',
     height: '100%',
-    marginTop: '30px',
   },
   listBlock: {
     display: 'flex',
@@ -20,7 +20,8 @@ const styles = () => ({
   },
   dateArea: {
     'display': 'flex',
-    'backgroundColor': '#DBE4E9',
+    'backgroundColor': mikeColors.MEDIUMGREY_LIGHT,
+    'color': mikeColors.BRANDBLUE_DEFAULT,
     'padding': '5px 10px',
     'fontFamily': ['Source Sans Pro', 'sans-serif'],
     'fontSize': 16,

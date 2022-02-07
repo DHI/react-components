@@ -14,9 +14,17 @@ interface ScenarioListProps {
    */
   actionButton?: ActionButton;
   /**
+   * Should show the report button?
+   */
+  showReportButton: boolean;
+  /**
+   * Should show the edit button?
+   */
+  showEditButton: boolean;
+  /**
    * The list of scenario
    */
-  scenarios: ScenarioOLD[];
+  scenarios: Scenario[];
   /**
    * Property field to specify the scenario name
    */
@@ -33,6 +41,10 @@ interface ScenarioListProps {
    * Indicates if the date of the scenario should be shown
    */
   showDate: boolean;
+  /**
+   * Indicates if the date groups of the scenario list should be shown
+   */
+  showDateGroups?: boolean;
   /**
    * Indicates if the hour of the scenario should be shown
    */
@@ -57,6 +69,17 @@ interface ScenarioListProps {
    * Emit event to client when scenario selected by user
    */
   onScenarioSelected: (scenario: Scenario) => void;
+  /**
+   * A ReactElement which is overridable to change the row's display.
+   * @param scenario
+   */
+  onRenderScenarioItem?: (scenario: Scenario) => void;
+  /**
+   * A ReactElement which is overridable to change the icon's display.
+   * @param scenario
+   */
+  onRenderScenarioIcon?: (scenario: Scenario) => void;
+  onRowRefsUpdated?: (refs: HTMLDivElement[]) => void;
   /**
    * Customising scenario status display
    */
