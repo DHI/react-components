@@ -1,6 +1,7 @@
 import { Meta } from '@storybook/react/types-6-0.d';
 import { addDays } from 'date-fns';
 import React from 'react';
+import { DataSource } from '../api/types';
 import { LoginGate } from '../Auth/LoginGate';
 import { JobList } from './JobList/JobList';
 
@@ -10,17 +11,15 @@ export default {
 } as Meta;
 
 export const JobListStory = () => {
-  const dataSources = [
+  const dataSources = (token) => [
     {
+      token,
       host: 'https://domainservices.dhigroup.com',
       connection: 'wf-jobs',
+      tokenJobLog: `ssss${token}`,
+      hostJobLog: 'https://domainservices.dhigroup.com',
       connectionJobLog: 'postgres-workflowLogging',
-    },
-    // {
-    //   host: "https://api-dev.seaportopx.com",
-    //   connection: "MarineAid-Jobs-NCOS",
-    //   connectionJobLog: "MarineAid-Logs-NCOS"
-    // }
+    } as DataSource,
   ];
 
   const disabledColumns = ['accountId', 'Area'];
@@ -36,8 +35,7 @@ export const JobListStory = () => {
     <LoginGate host={process.env.ENDPOINT_URL} showRememberMe={true} textFieldVariant={'outlined'}>
       {({ token: { accessToken } }) => (
         <JobList
-          token={accessToken.token}
-          dataSources={dataSources}
+          dataSources={dataSources(accessToken.token)}
           disabledColumns={disabledColumns}
           parameters={parameters}
           dateTimeFormat="yyyy-MM-dd HH:mm:ss"

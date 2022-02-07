@@ -9,6 +9,7 @@ import useSnackbar from './useSnackbar';
 import { SnackbarProviderProps } from './types';
 // #endregion
 
+// eslint-disable-next-line storybook/default-exports
 const onActionClick = action('onActionClick');
 const messageContent = 'Hi, I am a snackbar!';
 

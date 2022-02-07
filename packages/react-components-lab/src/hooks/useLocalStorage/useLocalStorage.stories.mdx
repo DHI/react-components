@@ -1,0 +1,45 @@
+<!-- useLocalStorage.stories.mdx -->
+
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
+import Syntax from '../../components/Syntax/Syntax';
+import LocalStorageExample from "./LocalStorageExample";
+
+<Meta
+  title="Hooks/useLocalStorage"
+  parameters={{
+    viewMode: 'docs',
+    previewTabs: {
+      canvas: { hidden: true }
+     },
+  }}
+/>
+
+# useLocalStorage
+
+The `useLocalStorage` hook leverages the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) getter and setter functions, in a React friendly way.
+
+## Example
+
+<Story name="useLocalStorage">
+  <Canvas>
+    <LocalStorageExample />
+  </Canvas>
+  <Syntax code={`
+    import React, { FC } from "react";
+    import { Box, Button } from "@material-ui/core";
+    import { useLocalStorage } from "@dhi/react-components-lab";\n
+    const App: FC = () => {
+      const [showData, setShowData] = useLocalStorage<boolean | undefined>('showTheData');\n
+      return (
+        <Box>
+          {\`showTheData: \${String(showData)}\`}
+          <Button onClick={() => setShowData(!Boolean(showData))}>
+            Toggle "showTheData" local storage value
+          </Button>
+        </Box>
+      )
+    }
+  `}/>
+</Story>
+
+

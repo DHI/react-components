@@ -14,7 +14,20 @@ const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose
     return (
       <div className={classes.paper}>
         {Object.entries(detail).map(([key, value], i) => {
-          if (key !== 'taskId' && key !== 'id' && key !== 'logs' && value !== '') {
+          if (
+            [
+              'accountId',
+              'status',
+              'hostId',
+              'duration',
+              'delay',
+              'requested',
+              'started',
+              'finished',
+              'progress',
+            ].includes(key) &&
+            value !== ''
+          ) {
             return (
               <span key={i} className={classes.item}>
                 {key}: <strong>{value}</strong>

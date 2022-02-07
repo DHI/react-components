@@ -10,6 +10,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -20,9 +21,13 @@ module.exports = {
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'no-multiple-empty-lines': ['warn', { max: 2 }],
+    'no-multiple-empty-lines': [
+      'warn',
+      {
+        max: 2,
+      },
+    ],
     'prettier/prettier': 'error',
-
     // Rules disabled for lab
     'no-console': 'off',
     'prefer-destructuring': 'off',

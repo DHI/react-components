@@ -4,7 +4,6 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesFullNames, fetchTimeseriesValues } from '../../api';
 import { BaseChart } from '../../ECharts/BaseChart';
-import DHITheme from '../../theme';
 import { recursive } from '../../utils/Utils';
 import TreeView from '../TreeView/TreeView';
 import { TimeseriesStyles } from './styles';
@@ -12,6 +11,7 @@ import { TimeseriesProps } from './types';
 import { DateFilter } from '../../common/DateFilter/DateFilter';
 import { DateProps } from '../../common/types';
 import { useWindowSize } from '@react-hook/window-size';
+import mikeColors from '../../ThemeProvider/mikeColors';
 
 const NAME_TEXT_STYLE = {
   padding: 12,
@@ -27,7 +27,7 @@ const DATA_ZOOM = [
     type: 'slider',
     height: 40,
     bottom: 10,
-    labelFormatter: (value) => format(value, 'dd MMM yyyy'),
+    labelFormatter: (value) => (value ? format(value, 'dd MMM yyyy') : ''),
   },
 ];
 
@@ -38,7 +38,7 @@ const GRID = {
 
 const TEXT_STYLE = {
   width: '100%',
-  color: DHITheme.palette.primary.main,
+  color: mikeColors.BRANDBLUE_DEFAULT,
   fontWeight: 'bold',
   fontSize: window.innerHeight >= 1200 ? 24 : 18,
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -47,7 +47,7 @@ const TEXT_STYLE = {
 const AXIS_LABEL = {
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   fontSize: 12,
-  color: DHITheme.palette.primary.main,
+  color: mikeColors.BRANDBLUE_DEFAULT,
 };
 
 const X_AXIS = {
@@ -76,8 +76,7 @@ const LEGEND_STYLE = {
 };
 
 const TimeseriesExplorer = ({
-  token,
-  dataSources,
+  dataSource,
   title,
   legendPosition = 'right',
   legendPositionOffset,
@@ -123,32 +122,27 @@ const TimeseriesExplorer = ({
   };
 
   const fetchTopLevelTreeView = (group = '') => {
-    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+    fetchTimeseriesFullNames([dataSource], group.replace(/\/$/, '')).subscribe(
       (res) => {
-        const data = res.map((d) => ({
-          value: d,
-          label: d,
-          topLevel: true,
-          ...(d.slice(-1) === '/' && {
-            children: [
-              {
-                value: '',
-                label: '',
-              },
-            ],
-          }),
-        }));
+        const children = addChildren(res, group, true);
 
-        setList(data);
+        setList(children);
+        setLoading(false);
       },
-      (err) => console.log(err),
+      (error) => console.log(error),
     );
   };
 
-  const addChildren = (childrenList, group) => {
-    return childrenList.map((child) => ({
+  const addChildren = (childrenList, group, topLevel = false) => {
+    const children = [
+      ...childrenList.filter((child: string) => child.endsWith('/')).sort(),
+      ...childrenList.filter((child: string) => !child.endsWith('/')).sort(),
+    ];
+
+    return children.map((child) => ({
       value: child,
       label: child.replace(group, ''),
+      topLevel,
       ...(child.slice(-1) === '/' && {
         children: [
           {
@@ -164,13 +158,13 @@ const TimeseriesExplorer = ({
     setLoading(true);
 
     if (group.slice(-1) === '/' || group === '') {
-      fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+      fetchTimeseriesFullNames([dataSource], group.replace(/\/$/, '')).subscribe(
         (res) => {
           const children = addChildren(res, group);
           list.map((item) => recursive(item, group, children));
 
           setList(list);
-          setLoading(false); // in place to forceUpdate after the recursive fn updates the object.
+          setLoading(false);
         },
         (error) => console.log(error),
       );
@@ -178,23 +172,19 @@ const TimeseriesExplorer = ({
   };
 
   useEffect(() => {
-    dataSources[0].ids = ids;
-    dataSources[0].from = date.from;
-    dataSources[0].to = date.to;
+    dataSource.ids = ids;
+    dataSource.from = date.from;
+    dataSource.to = date.to;
 
-    fetchTimeseriesValues(dataSources, token).subscribe((res) => {
+    fetchTimeseriesValues([dataSource], dataSource.token).subscribe((res) => {
       const series = res
         .map((item) => {
-          if (item.data.length) {
-            return {
-              name: item.id,
-              data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
-              type: 'line',
-              symbol: 'diamond',
-            };
-          } else {
-            return null;
-          }
+          return {
+            name: item.id,
+            data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
+            type: 'line',
+            symbol: 'diamond',
+          };
         })
         .filter((item) => item);
 

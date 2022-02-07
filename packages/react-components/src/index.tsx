@@ -38,3 +38,8 @@ export * from './Timeseries/TimeseriesExporter/TimeseriesExporter';
 export * from './Timeseries/TimeseriesExporter/types';
 export * from './UserGroups/UserGroups';
 export * from './utils/Utils';
+
+// ThemeProvider
+export { default as ThemeProvider } from './ThemeProvider/ThemeProvider';
+export * from './ThemeProvider/types';
+export * from './ThemeProvider/mikeColors';

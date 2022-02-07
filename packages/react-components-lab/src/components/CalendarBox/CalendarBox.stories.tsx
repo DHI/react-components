@@ -24,7 +24,11 @@ const months = [
 const monthsComponents = months.map((month) => {
   const currentMonth = format(new Date(), 'MMM');
   return (
-    <CelendarItem active={month === currentMonth} variant="semi-button">
+    <CelendarItem
+      active={month === currentMonth}
+      disabled={month === 'Aug'}
+      variant="semi-button"
+    >
       {month}
     </CelendarItem>
   );

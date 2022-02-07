@@ -1,8 +1,8 @@
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography, Chip, Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Meta } from '@storybook/react/types-6-0.d';
 import addDays from 'date-fns/addDays';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoginGate } from '../Auth/LoginGate';
 import { uniqueId } from '../utils/Utils';
 import { MENU_ITEMS, STATUS, TRANSLATIONS } from './ScenarioList/scenarioListConstants';
@@ -246,9 +246,14 @@ export const ScenariosStory = () => {
   );
 };
 
+const randomWithSeed = function (s) {
+  s = Math.sin(s) * 10000;
+  return s - Math.floor(s);
+};
+
 export const ScenariosJSONStory = () => {
-  const [newScenario, setNewScenario] = useState<Scenario>();
   const NOTIFICATION_HUB = '/notificationhub';
+  const [newScenario, setNewScenario] = useState<Scenario>();
 
   const onAddScenario = () => {
     setNewScenario({
@@ -318,6 +323,7 @@ export const ScenariosJSONStory = () => {
               host={process.env.ENDPOINT_URL}
               scenarioConnection={'postgres-jsondocuments-scenarios'}
               jobConnection={'wf-jobs'}
+              jobQueryItemKey={'ScenarioId'}
               actionButton={actionButton}
               dataFilterbyProperty={[
                 {
@@ -381,10 +387,25 @@ export const ScenariosJSONStory = () => {
               onScenariosReceived={(scenarios: Scenario[]) => {
                 console.log('Received new scenarios!', scenarios);
               }}
-              showDate
+              // onRenderScenarioIcon={(scenario: Scenario) => {
+              //   return (
+              //     <>
+              //       <AddIcon />
+              //       <span style={{ color: 'purple' }}>Test override</span>
+              //     </>
+              //   );
+              // }}
+              onRowRefsUpdated={(refs) => {
+                console.log('Accessible list of row refs if required by developer', refs);
+              }}
+              //actionButton={actionButton}
+              showDate={true}
+              showDateGroups={true}
               showHour
               showMenu
               showStatus
+              showReportButton
+              showEditButton={false}
               status={STATUS}
               highlightNameOnStatus="Error"
               addScenario={newScenario}

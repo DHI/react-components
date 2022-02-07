@@ -9,8 +9,6 @@ interface JobListProps {
   disabledColumns?: string[];
   /** Data source to get the logs specific parameters */
   parameters?: Parameters[];
-  /** Authorization header to backend call */
-  token: string;
   /** The date time format that the dates shown in */
   dateTimeFormat: string;
   /** Selected date for log entries from */
@@ -57,6 +55,10 @@ interface JobData {
   finished: string;
   /** Progress when job status still in progress */
   progress: number;
+  /** Token for the job log */
+  tokenJobLog: string;
+  /** Host for the job log job log */
+  hostJobLog: string;
   /** From where the connection job log is */
   connectionJobLog: string;
   /** Logs based on the connectionJobLog */

@@ -1,0 +1,43 @@
+<!-- usesessionStorage.stories.mdx -->
+
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
+import Syntax from '../../components/Syntax/Syntax';
+import SessionStorageExample from "./SessionStorageExample";
+
+<Meta
+  title="Hooks/useSessionStorage"
+  parameters={{
+    viewMode: 'docs',
+    previewTabs: {
+      canvas: { hidden: true }
+     },
+  }}
+/>
+
+# useSessionStorage
+
+The `useSessionStorage` hook leverages the [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) getter and setter functions, in a React friendly way.
+
+## Example
+
+<Story name="useSessionStorage">
+  <Canvas>
+    <SessionStorageExample />
+  </Canvas>
+  <Syntax code={`
+    import React, { FC } from "react";
+    import { Box, Button } from "@material-ui/core";
+    import { useSessionStorage } from "@dhi/react-components-lab";\n
+    const App: FC = () => {
+      const [showData, setShowData] = useSessionStorage<boolean | undefined>('showTheData');\n
+      return (
+        <Box>
+          {\`showTheData: \${String(showData)}\`}
+          <Button onClick={() => setShowData(!Boolean(showData))}>
+            Toggle "showTheData" session storage value
+          </Button>
+        </Box>
+      )
+    }
+  `}/>
+</Story>
