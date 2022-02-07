@@ -27,7 +27,7 @@ const DATA_ZOOM = [
     type: 'slider',
     height: 40,
     bottom: 10,
-    labelFormatter: (value) => format(value, 'dd MMM yyyy'),
+    labelFormatter: (value) => (value ? format(value, 'dd MMM yyyy') : ''),
   },
 ];
 
@@ -185,16 +185,12 @@ const TimeseriesExplorer = ({
     fetchTimeseriesValues(dataSources, token).subscribe((res) => {
       const series = res
         .map((item) => {
-          if (item.data.length) {
-            return {
-              name: item.id,
-              data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
-              type: 'line',
-              symbol: 'diamond',
-            };
-          } else {
-            return null;
-          }
+          return {
+            name: item.id,
+            data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
+            type: 'line',
+            symbol: 'diamond',
+          };
         })
         .filter((item) => item);
 
