@@ -48,6 +48,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           yarn install --immutable
+          echo steps.cache.outputs.cache-hit
         env:
           CI: true
 
