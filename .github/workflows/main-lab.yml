@@ -37,7 +37,7 @@ jobs:
 
 
       - name: Use cached node_modules
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: .yarn/cache/
           key: yarnCache-${{ hashFiles('**/yarn.lock') }}
@@ -47,8 +47,6 @@ jobs:
       - name: Install dependencies repo
         run: |
           yarn install
-        env:
-          CI: true
       
       - name: Build app
         run: cd packages/react-components-lab && yarn build-storybook
