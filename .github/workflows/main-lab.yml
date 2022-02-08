@@ -37,6 +37,7 @@ jobs:
 
 
       - name: Use cached node_modules
+        id: cache-modules
         uses: actions/cache@v2
         with:
           path: .yarn/cache/
@@ -45,7 +46,7 @@ jobs:
             yarnCache-
       
       - name: Install dependencies without cache
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-modules.outputs.cache-hit != 'true'
         run: |
           echo $steps.cache.outputs.cache-hit
           yarn install --immutable
@@ -53,7 +54,7 @@ jobs:
           CI: true
 
       - name: Install dependencies with cache
-        if: steps.cache.outputs.cache-hit == 'true'
+        if: steps.cache-modules.outputs.cache-hit == 'true'
         run: |
           yarn install --immutable-cache
         env:
