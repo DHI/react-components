@@ -46,7 +46,7 @@ jobs:
       
       - name: Install dependencies repo
         run: |
-          yarn install --frozen-lockfile
+          yarn install --immutable-cache
         env:
           CI: true
       
