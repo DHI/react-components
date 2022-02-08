@@ -44,7 +44,15 @@ jobs:
           restore-keys: |
             yarnCache-
       
-      - name: Install dependencies repo
+      - name: Install dependencies without cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          yarn install --immutable
+        env:
+          CI: true
+
+      - name: Install dependencies with cache
+        if: steps.cache.outputs.cache-hit == 'true'
         run: |
           yarn install --immutable-cache
         env:
