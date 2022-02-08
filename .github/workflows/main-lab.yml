@@ -46,7 +46,7 @@ jobs:
       
       - name: Install dependencies repo
         run: |
-          yarn install --immutable-cache
+          yarn install --immutable
         env:
           CI: true
       
