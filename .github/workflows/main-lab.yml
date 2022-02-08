@@ -46,7 +46,9 @@ jobs:
       
       - name: Install dependencies repo
         run: |
-          yarn install
+          yarn install --frozen-lockfile
+        env:
+          CI: true
       
       - name: Build app
         run: cd packages/react-components-lab && yarn build-storybook
