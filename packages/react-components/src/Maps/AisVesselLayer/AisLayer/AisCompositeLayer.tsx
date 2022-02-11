@@ -11,8 +11,7 @@ import { vesselsToGeoJson3D, vesselsToTextLayerData } from './vesselsToMapFeatur
  * 3. GeoJSON layer (3D) - to show the general vessel shape.
  */
 class AisCompositeLayer extends CompositeLayer<any, any> {
-  shouldUpdateState({ changeFlags }: { changeFlags: any }) {
-    console.log({ changeFlags });
+  shouldUpdateState({ props, oldProps, changeFlags }: { props: any, oldProps: any, changeFlags: any }) {
     return changeFlags.somethingChanged;
   }
 
@@ -28,9 +27,6 @@ class AisCompositeLayer extends CompositeLayer<any, any> {
       lengthRange,
     } = this.props;
     const { zoom } = this.context.viewport;
-
-    console.log(`In render method: ${tileX}, ${tileY}, ${tileZ}`);
-    console.log({ selectedShipTypes, selectedNavStatus, draftRange, lengthRange });
 
     const dataToShow = {
       ...data,

@@ -9,24 +9,22 @@ export const renderAisLayer = (
   selectedNavStatus: number[],
   draftRange: [number, number] | null,
   lengthRange: [number, number] | null,
-  fetchAisTileData: (x: number, y: number, z: number, bbox: { west: number, south: number, east: number, north: number }) => void,
+  fetchAisTileData: (x: number, y: number, z: number) => Promise<any>,
 ) => {
-  console.log('RENDER AIS: ', selectedShipTypes, selectedNavStatus, draftRange, lengthRange);
-
   return new TileLayer({
-    id: "tilelayertest", // TODO: Should not have hardcoded AIS Layer.
-    minZoom: 2,
-    maxZoom: 10,
-    maxRequests: 20,
+    id: "ais-layer",
+    maxCacheByteSize: 0,
     extent: [-179, -89, 179, 89],
-    getTileData: (tile: any): any => {
+    getTileData: async (tile: any): Promise<any> => {
       const { x, y, z, signal, bbox } = tile;
 
       if (signal.aborted) {
         return false;
       }
 
-      return fetchAisTileData(x, y, z, bbox); 
+      const data = await fetchAisTileData(x, y, z, bbox); 
+
+      return data;
     },
     renderSubLayers: (props: any) => {
       const { x, y, z } = props.tile;

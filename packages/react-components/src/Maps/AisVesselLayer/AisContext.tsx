@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, FC } from 'react';
+import { createContext, useContext, useState, useEffect, FC, useRef } from 'react';
+import { getTileFromCache } from './AisTileCache';
 import { AisContextProps, AisProviderProps } from './types';
 
 const AisContext = createContext<AisContextProps>(undefined);
@@ -8,9 +9,14 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, children }) => {
   const [selectedNavStatus, setSelectedNavStatus] = useState<number[]>([]);
   const [draftRange, setDraftRange] = useState<[number, number] | null>(null);
   const [lengthRange, setLengthRange] = useState<[number, number] | null>(null);
-  
-  // TODO: AIS data cache.
-  // const [aisData, setAisData] = useState<AisDataCache>();
+  const aisFeatureCollection = useRef<any>();
+
+  useEffect(() => {
+    fetchVesselData([-180.0, -85.0, 180.0, 85.0])
+      .then((geojson) => {
+        aisFeatureCollection.current = geojson;
+      });
+  }, []);
 
   const onVesselTypeChange = (shipTypeIDs: number[]) => {
     setSelectedVessselTypes(shipTypeIDs);
@@ -28,16 +34,9 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, children }) => {
     setLengthRange(lengthRange);
   };
 
-  const fetchAisTileData = async (x: number, y: number, z: number, bbox: { west: number, south: number, east: number, north: number }) => {
-    console.log(`Fetching ais tile: ${x}, ${y}, ${z}`);
+  const fetchAisTileData = async (x: number, y: number, z: number): Promise<any> => {
 
-    const { west, south, east, north } = bbox;
-
-    const vesselGeoJSON = await fetchVesselData([west, south, east, north]);
-
-    // TODO: Cache AIS data so we don't pull down unnecessary data + performance improvements.
-
-    return vesselGeoJSON;
+    return getTileFromCache(aisFeatureCollection.current, x, y, z);
   }
 
   return (
