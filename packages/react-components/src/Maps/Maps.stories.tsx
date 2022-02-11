@@ -14,10 +14,11 @@ import { AisFilterMenu } from './AisVesselLayer/AisFilterMenu/AisFilterMenu';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import { renderAisLayer } from './AisVesselLayer/AisLayer/AisLayer';
-import { renderAisLayer } from './AisVesselLayer/AisLayer/AisLayerV2';
+import { renderAisLayer } from './AisVesselLayer/AisLayer/AisLayer';
 import { AisProvider, useAis } from './AisVesselLayer/AisContext';
 import { fetchVessels } from '../api/Map/AisApi';
+import { VisualizationConfig } from './AisVesselLayer/types';
+import { useState } from 'react';
 
 export default {
   title: 'Map Components',
@@ -168,6 +169,15 @@ const INITIAL_VIEW_STATE_AIS_STORY = {
 
 export const AisVesselLayerStory = () => {
   const [authToken, setAuthToken] = React.useState<string>();
+  const [visualizationConfig, setVisualizationConfig] = useState<VisualizationConfig>({
+    refreshIntervalSeconds: 20,
+    vesselLabel: (properties: any) => {
+      if (properties.Name) {
+        return properties.Name;
+      }
+      return "";
+    }
+  });
 
   const login = async (username: string, password: string) => {
     const response = await fetch("https://auth-dev.seaportopx.com/api/tokens", {
@@ -210,7 +220,7 @@ export const AisVesselLayerStory = () => {
   return (
     <div>
       {authToken && (
-        <AisProvider fetchVesselData={fetchVesselData}>
+        <AisProvider fetchVesselData={fetchVesselData} visualizationConfig={visualizationConfig}>
           <AisVesselMapLayer authToken={authToken} />
         </AisProvider>
       )}
@@ -232,7 +242,16 @@ export const AisVesselLayerStory = () => {
 
 const AisVesselMapLayer = ({ authToken }) => {
   const [bbox, setBbox] = React.useState<[number, number, number, number] | null>();
-  const { selectedVesselTypes, selectedNavStatus, draftRange, lengthRange, fetchAisTileData, triggerLayerUpdate } = useAis(); 
+  const {
+    selectedVesselTypes,
+    selectedNavStatus,
+    draftRange,
+    lengthRange,
+    fetchAisTileData,
+    triggerAisDataUpdate,
+    triggerAisSelectionUpdate,
+    visualizationConfig,
+  } = useAis(); 
 
   const onViewStateChange = ({ viewState }) => {
     if (viewState) {
@@ -249,7 +268,9 @@ const AisVesselMapLayer = ({ authToken }) => {
       draftRange,
       lengthRange,
       fetchAisTileData,
-      triggerLayerUpdate,
+      triggerAisDataUpdate,
+      triggerAisSelectionUpdate,
+      visualizationConfig,
     ) : null
   ].filter(layer => layer != null);
 

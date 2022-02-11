@@ -1,4 +1,5 @@
 import { TileLayer } from "@deck.gl/geo-layers";
+import { VisualizationConfig } from "../types";
 import { AisCompositeLayer } from "./AisCompositeLayer";
 
 /**
@@ -10,36 +11,19 @@ export const renderAisLayer = (
   draftRange: [number, number] | null,
   lengthRange: [number, number] | null,
   fetchAisTileData: (x: number, y: number, z: number) => Promise<any>,
+  triggerAisDataUpdate: number,
+  triggerAisSelectionUpdate: number,
+  visualizationConfig: VisualizationConfig,
 ) => {
-  return new TileLayer({
-    id: "ais-layer",
-    maxCacheByteSize: 0,
-    extent: [-179, -89, 179, 89],
-    getTileData: async (tile: any): Promise<any> => {
-      const { x, y, z, signal, bbox } = tile;
-
-      if (signal.aborted) {
-        return false;
-      }
-
-      const data = await fetchAisTileData(x, y, z); 
-
-      return data;
-    },
-    renderSubLayers: (props: any) => {
-      const { x, y, z } = props.tile;
-
-      return new AisCompositeLayer({
-        id: `AisTile-${x}-${y}-${z}`,
-        data: props.tile.content,
-        tileX: x,
-        tileY: y,
-        tileZ: z,
-        selectedShipTypes,
-        selectedNavStatus,
-        draftRange,
-        lengthRange,
-      });
-    },
+  return new AisCompositeLayer({
+    id: 'vessel-layer',
+    selectedShipTypes,
+    selectedNavStatus,
+    draftRange,
+    lengthRange,
+    fetchAisTileData,
+    triggerAisDataUpdate,
+    triggerAisSelectionUpdate,
+    visualizationConfig,
   });
 }

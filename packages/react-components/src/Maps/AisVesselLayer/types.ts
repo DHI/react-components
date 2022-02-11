@@ -8,9 +8,17 @@ export interface AisContextProps {
   onDraftChange: (range: [number, number]) => void;
   onLengthChange: (range: [number, number]) => void;
   fetchAisTileData: (x: number, y: number, z: number) => Promise<any>;
-  triggerLayerUpdate: number,
+  triggerAisDataUpdate: number,
+  triggerAisSelectionUpdate: number,
+  visualizationConfig: VisualizationConfig,
 }
 
 export interface AisProviderProps {
+  visualizationConfig?: VisualizationConfig;
   fetchVesselData: (boundingBox: [number, number, number, number]) => Promise<any>;
+}
+
+export interface VisualizationConfig {
+  refreshIntervalSeconds?: number;
+  vesselLabel: (properties: any) => string;
 }

@@ -1,5 +1,6 @@
 import { CompositeLayer } from "@deck.gl/core";
 import { GeoJsonLayer, TextLayer } from "@deck.gl/layers";
+import { TileLayer } from "deck.gl";
 import { isSelectedVessel } from "./helpers";
 import { vesselsToGeoJson3D, vesselsToTextLayerData } from './vesselsToMapFeature';
 
@@ -17,109 +18,170 @@ class AisCompositeLayer extends CompositeLayer<any, any> {
 
   renderLayers() {
     const {
-      data,
-      tileX,
-      tileY,
-      tileZ,
       selectedShipTypes,
       selectedNavStatus,
       draftRange,
       lengthRange,
+      fetchAisTileData,
+      triggerAisDataUpdate,
+      triggerAisSelectionUpdate,
+      visualizationConfig,
     } = this.props;
     const { zoom } = this.context.viewport;
 
-    const dataToShow = {
-      ...data,
-      features: data.features.filter((feature: any) =>
-        isSelectedVessel(
-          feature.properties,
-          selectedShipTypes,
-          selectedNavStatus,
-          draftRange,
-          lengthRange
-        )
-      ),
-    };
-
-    let vessel3DFeature;
-    let textLayerData;
-    if (zoom >= 12) {
-      vessel3DFeature = vesselsToGeoJson3D(dataToShow);
-      textLayerData = vesselsToTextLayerData(dataToShow);
-    }
-
     return [
-      zoom >= 12
-        ? new GeoJsonLayer({
-            id: `Vessel-GeoJSON-3D-${tileX}-${tileY}-${tileZ}`,
-            data: vessel3DFeature,
+      new TileLayer({
+        id: 'tile-vessel-points',
+        getTileData: async (tile: any) => {
+          const { x, y, z, signal, bbox } = tile;
+          if (signal.aborted) {
+            return false;
+          }
+          return await fetchAisTileData(x, y, z); 
+        },
+        renderSubLayers: (props: any) => {   
+          const { x, y, z, signal, bbox } = props.tile;
+
+          return new GeoJsonLayer(props, {
+            id: `Vessel-Points-${x}-${y}-${z}`,
+            data: props.data,
             extruded: true,
             filled: true,
-            getElevation: (ship: any) => ship.properties.elevation,
-            getFillColor: (ship: any) => ship.properties.style.fillColor,
-            getLineColor: [240, 160, 180, 200],
+            getElevation: 5,
+            getFillColor: (f: any) => {
+              if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                return [186, 35, 63, 200];
+              }
+              return [255, 255, 255, 0];
+            },
+            getLineColor: (f: any) => {
+              if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                return [100, 15, 43, 200];
+              }
+              return [255, 255, 255, 0];
+            },
             pickable: true,
-            stroked: false,
-            visible: zoom >= 12,
-          })
-        : null,
-      zoom >= 12
-        ? new TextLayer({
-            id: `Vessel-Text-Layer-${tileX}-${tileY}-${tileZ}`,
-            data: textLayerData,
-            visible: zoom >= 10,
-            getPosition: (f: any) => {
-              return [
-                f.geometry.coordinates[0],
-                f.geometry.coordinates[1],
-                50,
-              ] as any;
-            },
-            getText: (f: any) => {
-              if (f.properties.Name) {
-                return f.properties.Name;
-              }
-              return "";
-            },
-            background: true,
-            getColor: (f: any) => {
-              if (f.properties.Name) {
-                return [255, 255, 255, 255];
-              }
-              return [0, 0, 0, 0];
-            },
-            getBackgroundColor: (f: any) => {
-              if (f.properties.Name) {
-                return [0, 0, 0, 200];
-              }
-              return [0, 0, 0, 0];
-            },
-            backgroundPadding: [5, 5],
-            getSize: 12,
-            // TODO: Update triggers.
-          })
-        : null,
-      new GeoJsonLayer({
-        id: `Vessel-Points-${tileX}-${tileY}-${tileZ}`,
-        data: data,
-        extruded: true,
-        filled: true,
-        getElevation: 5,
-        getFillColor: [186, 35, 63, 200],
-        getLineColor: [100, 15, 43, 200],
-        pickable: true,
-        getLineWidth: 10,
-        pointRadiusMinPixels: 4,
-        lineWidthMinPixels: 2,
-        pointType: "circle",
-        pointRadiusUnits: "meters",
-        stroked: true,
-        visible: true,
+            getLineWidth: 10,
+            pointRadiusMinPixels: 4,
+            lineWidthMinPixels: 2,
+            pointType: "circle",
+            pointRadiusUnits: "meters",
+            stroked: true,
+            visible: true,
+            updateTriggers: {
+              getFillColor: triggerAisSelectionUpdate,
+              getLineColor: triggerAisSelectionUpdate,
+            }
+          });
+        },
+        updateTriggers: {
+          renderSubLayers: triggerAisSelectionUpdate,
+          getTileData: triggerAisDataUpdate,
+        }
       }),
-    ].filter((layer) => layer != null);
+      zoom >= 12 ?
+        new TileLayer({
+          id: 'tile-vessel-labels',
+          getTileData: async (tile: any) => {
+            const { x, y, z, signal, bbox } = tile;
+            if (signal.aborted) {
+              return false;
+            }
+            const data = await fetchAisTileData(x, y, z); 
+            return data.features;
+          },
+          renderSubLayers: (props: any) => {
+            const { x, y, z, signal, bbox } = props.tile;
+
+            return new TextLayer({
+              id: `Vessel-Text-Layer-${x}-${y}-${z}`,
+              data: props.data,
+              visible: zoom >= 10,
+              getPosition: (f: any) => {
+                return [
+                  f.geometry.coordinates[0],
+                  f.geometry.coordinates[1],
+                  50,
+                ] as any;
+              },
+              getText: (f: any) => visualizationConfig.vesselLabel(f.properties),
+              background: true,
+              getColor: (f: any): any => {
+                if (f.properties.Name && isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                  return [255, 255, 255, 255];
+                }
+                return [0, 0, 0, 0];
+              },
+              getBackgroundColor: (f: any) => {
+                if (f.properties.Name && isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                  return [0, 0, 0, 200];
+                }
+                return [0, 0, 0, 0];
+              },
+              backgroundPadding: [5, 5],
+              getSize: 12,
+              updateTriggers: {
+                getColor: triggerAisSelectionUpdate,
+                getBackgroundColor: triggerAisSelectionUpdate,
+              }
+            })
+          },
+          updateTriggers: {
+            renderSubLayers: triggerAisSelectionUpdate,
+            getTileData: triggerAisDataUpdate,
+          }
+        }) : null,
+      zoom >= 12 ?
+        new TileLayer({
+          id: 'tile-vessel-3D',
+          getTileData: async (tile: any) => {
+            const { x, y, z, signal, bbox } = tile;
+            if (signal.aborted) {
+              return false;
+            }
+            const data = await fetchAisTileData(x, y, z); 
+            const data3D = vesselsToGeoJson3D(data);
+            return data3D;
+          },
+          renderSubLayers: (props: any) => {   
+            const { x, y, z, } = props.tile;
+  
+            return new GeoJsonLayer(props, {
+              id: `Vessel-3D-${x}-${y}-${z}`,
+              data: props.data,
+              extruded: true,
+              filled: true,
+              getElevation: (f: any) => f.properties.elevation,
+              getFillColor: (f: any) => {
+                if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                  return f.properties.style.fillColor
+                }
+                return [0, 0, 0, 0];
+              },
+              getLineColor: (f: any) => {
+                if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                  return [240, 160, 180, 200];
+                }
+                return [0, 0, 0, 0];
+              },
+              pickable: true,
+              stroked: false,
+              visible: zoom >= 12,
+              updateTriggers: {
+                getFillColor: triggerAisSelectionUpdate,
+                getLineColor: triggerAisSelectionUpdate,
+              }
+            });
+          },
+          updateTriggers: {
+            renderSubLayers: triggerAisSelectionUpdate,
+            getTileData: triggerAisDataUpdate,
+          }
+        }) : null,
+    ].filter(layer => layer != null);
   }
 }
 
-AisCompositeLayer.layerName = "AisLayer";
+AisCompositeLayer.layerName = "AisLayerV2";
 
 export { AisCompositeLayer };

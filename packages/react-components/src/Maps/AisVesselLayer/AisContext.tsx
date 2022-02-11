@@ -4,43 +4,60 @@ import { AisContextProps, AisProviderProps } from './types';
 
 const AisContext = createContext<AisContextProps>(undefined);
 
-const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, children }) => {
+const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, visualizationConfig, children }) => {
   const [selectedVesselTypes, setSelectedVessselTypes] = useState<number[]>([]);
   const [selectedNavStatus, setSelectedNavStatus] = useState<number[]>([]);
   const [draftRange, setDraftRange] = useState<[number, number] | null>(null);
   const [lengthRange, setLengthRange] = useState<[number, number] | null>(null);
-  const [triggerLayerUpdate, setTriggerLayerUpdate] = useState<number>(0);
+  const [triggerAisSelectionUpdate, setTriggerAisSelectionUpdate] = useState<number>(0);
+  const [triggerAisDataUpdate, setTriggerAisDataUpdate] = useState<number>(0);
   const aisFeatureCollection = useRef<any>();
+  const refreshIntervalId = useRef<any>();
 
   useEffect(() => {
     fetchVesselData([-180.0, -85.0, 180.0, 85.0])
       .then((geojson) => {
         aisFeatureCollection.current = geojson;
+        setTriggerAisDataUpdate(prev => prev + 1);
       });
+
+    if (visualizationConfig && visualizationConfig.refreshIntervalSeconds) {
+      refreshIntervalId.current = setInterval(() => {
+        fetchVesselData([-180.0, -85.0, 180.0, 85.0])
+          .then((geojson) => {
+            aisFeatureCollection.current = geojson;
+            setTriggerAisDataUpdate(prev => prev + 1);
+          });
+      }, visualizationConfig.refreshIntervalSeconds * 1000);
+    }
+    return () => {
+      if (refreshIntervalId.current) {
+        clearInterval(refreshIntervalId.current);
+      }
+    }
   }, []);
 
   const onVesselTypeChange = (shipTypeIDs: number[][]) => {
     setSelectedVessselTypes(shipTypeIDs.flat());
-    setTriggerLayerUpdate(prev => prev + 1);
+    setTriggerAisSelectionUpdate(prev => prev + 1);
   };
 
   const onNavStatusChange = (navStatusIDs: number[][]) => {
     setSelectedNavStatus(navStatusIDs.flat());
-    setTriggerLayerUpdate(prev => prev + 1);
+    setTriggerAisSelectionUpdate(prev => prev + 1);
   };
 
   const onDraftChange = (draftRange: [number, number]) => {
     setDraftRange(draftRange);
-    setTriggerLayerUpdate(prev => prev + 1);
+    setTriggerAisSelectionUpdate(prev => prev + 1);
   };
 
   const onLengthChange = (lengthRange: [number, number]) => {
     setLengthRange(lengthRange);
-    setTriggerLayerUpdate(prev => prev + 1);
+    setTriggerAisSelectionUpdate(prev => prev + 1);
   };
 
-  const fetchAisTileData = async (x: number, y: number, z: number): Promise<any> => {
-
+  const fetchAisTileData = (x: number, y: number, z: number): any => {
     return getTileFromCache(aisFeatureCollection.current, x, y, z);
   }
 
@@ -56,7 +73,9 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, children }) => {
         onDraftChange,
         onLengthChange,
         fetchAisTileData,
-        triggerLayerUpdate,
+        triggerAisSelectionUpdate,
+        triggerAisDataUpdate,
+        visualizationConfig,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 
-export const getTileFromCache = (featureCollection: any, x: number, y: number, z: number) => {
+export const getTileFromCache = (featureCollection: any, x: number, y: number, z: number): any => {
   const lonMin = tile2Long(x, z);
   const lonMax = tile2Long(x + 1, z);
   const latMax = tile2Lat(y, z);
