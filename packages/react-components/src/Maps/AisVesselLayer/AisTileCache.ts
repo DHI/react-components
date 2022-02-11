@@ -15,7 +15,6 @@ export const getTileFromCache = (featureCollection: any, x: number, y: number, z
   return {
     type: 'FeatureCollection',
     features: featureCollection.features.filter((f: any) => {
-      debugger;
       const coords = f.geometry.coordinates;
       const lon = coords[0];
       const lat = coords[1];

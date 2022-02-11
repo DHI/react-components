@@ -14,7 +14,8 @@ import { AisFilterMenu } from './AisVesselLayer/AisFilterMenu/AisFilterMenu';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { renderAisLayer } from './AisVesselLayer/AisLayer/AisLayer';
+// import { renderAisLayer } from './AisVesselLayer/AisLayer/AisLayer';
+import { renderAisLayer } from './AisVesselLayer/AisLayer/AisLayerV2';
 import { AisProvider, useAis } from './AisVesselLayer/AisContext';
 import { fetchVessels } from '../api/Map/AisApi';
 
@@ -231,12 +232,11 @@ export const AisVesselLayerStory = () => {
 
 const AisVesselMapLayer = ({ authToken }) => {
   const [bbox, setBbox] = React.useState<[number, number, number, number] | null>();
-  const { selectedVesselTypes, selectedNavStatus, draftRange, lengthRange, fetchAisTileData } = useAis(); 
+  const { selectedVesselTypes, selectedNavStatus, draftRange, lengthRange, fetchAisTileData, triggerLayerUpdate } = useAis(); 
 
   const onViewStateChange = ({ viewState }) => {
     if (viewState) {
       const bbox = viewStateToBBox(viewState);
-      console.log('bbox', bbox);
       setBbox(bbox);
     }
   }
@@ -249,6 +249,7 @@ const AisVesselMapLayer = ({ authToken }) => {
       draftRange,
       lengthRange,
       fetchAisTileData,
+      triggerLayerUpdate,
     ) : null
   ].filter(layer => layer != null);
 

@@ -3,11 +3,12 @@ export interface AisContextProps {
   selectedNavStatus: number[];
   draftRange: [number, number] | null;
   lengthRange: [number, number] | null;
-  onVesselTypeChange: (shipTypeIDs: number[]) => void;
-  onNavStatusChange: (navStatusIDs: number[]) => void;
+  onVesselTypeChange: (shipTypeIDs: number[][]) => void;
+  onNavStatusChange: (navStatusIDs: number[][]) => void;
   onDraftChange: (range: [number, number]) => void;
   onLengthChange: (range: [number, number]) => void;
-  fetchAisTileData: (x: number, y: number, z: number, bbox: { west: number, south: number, east: number, north: number }) => void;
+  fetchAisTileData: (x: number, y: number, z: number) => Promise<any>;
+  triggerLayerUpdate: number,
 }
 
 export interface AisProviderProps {

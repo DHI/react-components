@@ -22,7 +22,7 @@ export const renderAisLayer = (
         return false;
       }
 
-      const data = await fetchAisTileData(x, y, z, bbox); 
+      const data = await fetchAisTileData(x, y, z); 
 
       return data;
     },
