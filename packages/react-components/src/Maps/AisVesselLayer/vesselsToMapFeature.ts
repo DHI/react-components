@@ -58,19 +58,6 @@ export const vesselsToGeoJson3D = (shipData: any) => {
     .flat();
 };
 
-export const vesselsToTextLayerData = (shipData: any) =>
-  shipData.features.filter(
-    (feature: any) =>
-      feature.properties.Name != null && feature.properties.Name != "" //&&
-    // isSelectedVessel(
-    //   feature.properties,
-    //   selectedShipTypes,
-    //   selectedNavStatus,
-    //   draftRange,
-    //   lengthRange
-    // )
-);
-
 const getVesselViewDefinition = (
   shipType: number,
   colorLight: string,
@@ -1142,8 +1129,6 @@ const getVesselPolygons = (
   toPort: number,
   toStar: number,
   shipType: any
-  // hover: any,
-  // selected: any
 ) => {
   // Port + start = width
   let vesselFeatures: any[] = [];
@@ -1204,8 +1189,6 @@ const getVesselPolygons = (
           width: 1,
         },
         elevation: elevation,
-        // hoverData: hover,
-        // selectedData: selected,
       },
     });
   });

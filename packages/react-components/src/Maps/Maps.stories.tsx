@@ -14,7 +14,7 @@ import { AisFilterMenu } from './AisVesselLayer/AisFilterMenu/AisFilterMenu';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { renderAisLayer } from './AisVesselLayer/AisLayer/AisLayer';
+import { AisLayer } from './AisVesselLayer/AisLayer';
 import { AisProvider, useAis } from './AisVesselLayer/AisContext';
 import { fetchVessels } from '../api/Map/AisApi';
 import { VisualizationConfig } from './AisVesselLayer/types';
@@ -171,7 +171,7 @@ export const AisVesselLayerStory = () => {
   const [authToken, setAuthToken] = React.useState<string>();
   const [visualizationConfig, setVisualizationConfig] = useState<VisualizationConfig>({
     refreshIntervalSeconds: 20,
-    vesselLabel: (properties: any) => {
+    getVesselLabelText: (properties: any) => {
       if (properties.Name) {
         return properties.Name;
       }
@@ -241,7 +241,8 @@ export const AisVesselLayerStory = () => {
 }
 
 const AisVesselMapLayer = ({ authToken }) => {
-  const [bbox, setBbox] = React.useState<[number, number, number, number] | null>();
+  const [hoverInfo, setHoverInfo] = useState(null);
+
   const {
     selectedVesselTypes,
     selectedNavStatus,
@@ -253,25 +254,30 @@ const AisVesselMapLayer = ({ authToken }) => {
     visualizationConfig,
   } = useAis(); 
 
-  const onViewStateChange = ({ viewState }) => {
-    if (viewState) {
-      const bbox = viewStateToBBox(viewState);
-      setBbox(bbox);
+  const onAisHover = (hoverInfo: any) => {
+    if (hoverInfo.object) {
+      setHoverInfo(hoverInfo.object)
+    } else {
+      setHoverInfo(null);
     }
-  }
+  };
+
+  const aisLayer =  authToken ? new AisLayer({
+    id: 'vessel-layer',
+    selectedVesselTypes,
+    selectedNavStatus,
+    draftRange,
+    lengthRange,
+    fetchAisTileData,
+    triggerAisDataUpdate,
+    triggerAisSelectionUpdate,
+    visualizationConfig,
+    onHover: onAisHover,
+  }) : null;
 
   const layers = [
     tileLayer,
-    authToken ? renderAisLayer(
-      selectedVesselTypes,
-      selectedNavStatus,
-      draftRange,
-      lengthRange,
-      fetchAisTileData,
-      triggerAisDataUpdate,
-      triggerAisSelectionUpdate,
-      visualizationConfig,
-    ) : null
+    aisLayer
   ].filter(layer => layer != null);
 
   return (
@@ -280,7 +286,6 @@ const AisVesselMapLayer = ({ authToken }) => {
         initialViewState={INITIAL_VIEW_STATE_AIS_STORY}
         controller={true}
         layers={layers}
-        onViewStateChange={onViewStateChange}
       />
       <Box
         position="absolute"
@@ -292,6 +297,21 @@ const AisVesselMapLayer = ({ authToken }) => {
       >
         <AisFilterMenu />
       </Box>
+      {hoverInfo && (
+        <Box
+          position="absolute"
+          right="1rem"
+          top="1rem"
+          padding="0.5rem 1rem 0rem 1rem"
+          width="40ch"
+          component={Paper}
+        >
+          <Typography>Hover Info</Typography>
+          <Typography>Name: {hoverInfo.properties.Name}</Typography>
+          <Typography>IMO: {hoverInfo.properties.IMO}</Typography>
+          <Typography>MMSI: {hoverInfo.properties.MMSI}</Typography>
+        </Box>
+      )}
     </>
   );
 }

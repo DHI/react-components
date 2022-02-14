@@ -2,7 +2,7 @@ import { CompositeLayer } from "@deck.gl/core";
 import { GeoJsonLayer, TextLayer } from "@deck.gl/layers";
 import { TileLayer } from "deck.gl";
 import { isSelectedVessel } from "./helpers";
-import { vesselsToGeoJson3D, vesselsToTextLayerData } from './vesselsToMapFeature';
+import { vesselsToGeoJson3D } from './vesselsToMapFeature';
 
 /**
  * This DeckGL layer combines 3 separate layers into one, and shows the appropriate layer depending on the
@@ -11,14 +11,14 @@ import { vesselsToGeoJson3D, vesselsToTextLayerData } from './vesselsToMapFeatur
  * 2. Text layer - to show the name of the vessel as the user zooms in.
  * 3. GeoJSON layer (3D) - to show the general vessel shape.
  */
-class AisCompositeLayer extends CompositeLayer<any, any> {
-  shouldUpdateState({ props, oldProps, changeFlags }: { props: any, oldProps: any, changeFlags: any }) {
+class AisLayer extends CompositeLayer<any, any> {
+  shouldUpdateState({ changeFlags }: { changeFlags: any }) {
     return changeFlags.somethingChanged;
   }
 
   renderLayers() {
     const {
-      selectedShipTypes,
+      selectedVesselTypes,
       selectedNavStatus,
       draftRange,
       lengthRange,
@@ -49,13 +49,13 @@ class AisCompositeLayer extends CompositeLayer<any, any> {
             filled: true,
             getElevation: 5,
             getFillColor: (f: any) => {
-              if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+              if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
                 return [186, 35, 63, 200];
               }
               return [255, 255, 255, 0];
             },
             getLineColor: (f: any) => {
-              if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+              if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
                 return [100, 15, 43, 200];
               }
               return [255, 255, 255, 0];
@@ -104,16 +104,16 @@ class AisCompositeLayer extends CompositeLayer<any, any> {
                   50,
                 ] as any;
               },
-              getText: (f: any) => visualizationConfig.vesselLabel(f.properties),
+              getText: (f: any) => visualizationConfig.getVesselLabelText(f.properties),
               background: true,
               getColor: (f: any): any => {
-                if (f.properties.Name && isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                if (f.properties.Name && isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
                   return [255, 255, 255, 255];
                 }
                 return [0, 0, 0, 0];
               },
               getBackgroundColor: (f: any) => {
-                if (f.properties.Name && isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                if (f.properties.Name && isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
                   return [0, 0, 0, 200];
                 }
                 return [0, 0, 0, 0];
@@ -153,13 +153,13 @@ class AisCompositeLayer extends CompositeLayer<any, any> {
               filled: true,
               getElevation: (f: any) => f.properties.elevation,
               getFillColor: (f: any) => {
-                if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
                   return f.properties.style.fillColor
                 }
                 return [0, 0, 0, 0];
               },
               getLineColor: (f: any) => {
-                if (isSelectedVessel(f.properties, selectedShipTypes, selectedNavStatus, draftRange, lengthRange)) {
+                if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
                   return [240, 160, 180, 200];
                 }
                 return [0, 0, 0, 0];
@@ -182,6 +182,6 @@ class AisCompositeLayer extends CompositeLayer<any, any> {
   }
 }
 
-AisCompositeLayer.layerName = "AisLayerV2";
+AisLayer.layerName = "AisLayer";
 
-export { AisCompositeLayer };
+export { AisLayer };

@@ -6,11 +6,11 @@ export interface GroupedMultiSelectedProps {
     label: string;
     values: number[];
   }[];
-  onChange: (selection: number[]) => void;
+  onChange: (selection: number[][]) => void;
 }
 
 export interface NavStatusFilterProps {
-  onChange: (navStatusIDs: number[]) => void;
+  onChange: (navStatusIDs: number[][]) => void;
 }
 
 export interface RangeFilterProps {
@@ -22,5 +22,5 @@ export interface RangeFilterProps {
 }
 
 export interface AisVesselTypeFilterProps {
-  onChange: (shipTypeIDs: number[]) => void;
+  onChange: (shipTypeIDs: number[][]) => void;
 }

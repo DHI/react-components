@@ -17,7 +17,7 @@ export const AisFilterMenu: FC<{}> = ({}) => {
 
   return (
     <>
-      <Typography variant="overline">Filter</Typography>
+      <Typography variant="h6">Filter</Typography>
       <Divider />
       <Box py={1}>
         <AisVesselTypeFilter onChange={onVesselTypeChange} />
@@ -25,9 +25,9 @@ export const AisFilterMenu: FC<{}> = ({}) => {
       <Box py={1}>
         <NavStatusFilter onChange={onNavStatusChange} />
       </Box>
-      <Box display="flex" flexDirection="row" my={1}>
+      <Box display="flex" flexDirection="row" my={1} mr={1}>
         <Box width="8ch" mt={0.5}>
-          <Typography variant="overline">Draft</Typography>
+          <Typography>Draft</Typography>
         </Box>
         <Box flexGrow={1}>
           <RangeFilter
@@ -39,9 +39,9 @@ export const AisFilterMenu: FC<{}> = ({}) => {
           />
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" my={1}>
+      <Box display="flex" flexDirection="row" my={1} mr={1}>
         <Box width="8ch" mt={0.5}>
-          <Typography variant="overline">Length</Typography>
+          <Typography>Length</Typography>
         </Box>
         <Box flexGrow={1}>
           <RangeFilter
