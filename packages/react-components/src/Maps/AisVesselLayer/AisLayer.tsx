@@ -40,7 +40,7 @@ class AisLayer extends CompositeLayer<any, any> {
           return await fetchAisTileData(x, y, z); 
         },
         renderSubLayers: (props: any) => {   
-          const { x, y, z, signal, bbox } = props.tile;
+          const { x, y, z } = props.tile;
 
           return new GeoJsonLayer(props, {
             id: `Vessel-Points-${x}-${y}-${z}`,

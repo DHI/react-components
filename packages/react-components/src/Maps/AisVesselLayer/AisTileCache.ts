@@ -1,3 +1,7 @@
+/**
+ * Set of functions used to pull out the specific features relevant to the "tile" being rendered.
+ * Used as an optimisation so that the 3D vessels only need to be rendered within the local region.
+ */
 
 export const getTileFromCache = (featureCollection: any, x: number, y: number, z: number): any => {
   const lonMin = tile2Long(x, z);
