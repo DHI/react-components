@@ -48,7 +48,6 @@ jobs:
       - name: Install dependencies without cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: |
-          echo $steps.cache.outputs.cache-hit
           yarn install --immutable
         env:
           CI: true
