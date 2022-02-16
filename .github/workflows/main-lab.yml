@@ -60,7 +60,7 @@ jobs:
           CI: true
       
       - name: Build app
-        run: cd packages/react-components-lab && yarn build-storybook
+        run: yarn run lab:sb:build
         env:
           CI: true
 
