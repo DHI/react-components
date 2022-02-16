@@ -46,18 +46,18 @@ jobs:
             yarnCache-
       
       - name: Install dependencies without cache
-        if: steps.cache-modules.outputs.cache-hit != 'true'
+        # if: steps.cache-modules.outputs.cache-hit != 'true'
         run: |
           yarn install --immutable
         env:
           CI: true
 
-      - name: Install dependencies with cache
-        if: steps.cache-modules.outputs.cache-hit == 'true'
-        run: |
-          yarn install --immutable-cache
-        env:
-          CI: true
+      # - name: Install dependencies with cache
+      #   if: steps.cache-modules.outputs.cache-hit == 'true'
+      #   run: |
+      #     yarn install --immutable-cache
+      #   env:
+      #     CI: true
       
       - name: Build app
         run: cd packages/react-components-lab && yarn build-storybook
