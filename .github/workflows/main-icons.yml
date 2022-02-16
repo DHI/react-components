@@ -72,7 +72,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
           
       - name: Semantic release
-        run: yarn run multi-semantic-release --ignore-packages=packages/icons/**
+        run: yarn run multi-semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
