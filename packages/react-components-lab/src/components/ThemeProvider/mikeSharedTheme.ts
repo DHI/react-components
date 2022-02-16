@@ -8,11 +8,11 @@ import mikeOverrides from './mikeOverrides';
 import mikeComponentsProps from './mikeComponentsProps';
 // #endregion
 
-export const mikeSharedTheme: IMikeTheme = createTheme(adaptV4Theme({
+export const mikeSharedTheme: IMikeTheme = createTheme({
   typography: mikeTypography,
   palette: mikePalette,
-  overrides: mikeOverrides,
+  components: mikeOverrides,
   props: mikeComponentsProps,
-} as IMikeThemeOptions));
+});
 
 export default mikeSharedTheme;

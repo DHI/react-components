@@ -1,5 +1,11 @@
 import { ReactNode } from 'react';
-import { Theme, DeprecatedThemeOptions, Palette, PaletteColor, Overrides } from '@mui/material/styles';
+import {
+  Theme,
+  DeprecatedThemeOptions,
+  Palette,
+  PaletteColor,
+  Overrides,
+} from '@mui/material/styles';
 
 export interface IProps {
   overrides?: Overrides;
