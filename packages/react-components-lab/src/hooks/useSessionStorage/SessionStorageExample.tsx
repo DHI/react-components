@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box } from '@mui/material';
 import useSessionStorage from './useSessionStorage';
 
 const SessionStorageExample: FC = () => {

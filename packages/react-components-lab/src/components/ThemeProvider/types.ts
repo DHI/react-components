@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
-import { Theme, ThemeOptions } from '@material-ui/core/styles';
-import { Palette, PaletteColor } from '@material-ui/core/styles/createPalette';
-import { Overrides } from '@material-ui/core/styles/overrides';
+import { Theme, DeprecatedThemeOptions, Palette, PaletteColor, Overrides } from '@mui/material/styles';
 
 export interface IProps {
   overrides?: Overrides;
@@ -20,7 +18,7 @@ export interface IMikeTheme extends Theme {
   overrides?: Overrides;
 }
 
-export interface IMikeThemeOptions extends ThemeOptions {
+export interface IMikeThemeOptions extends DeprecatedThemeOptions {
   palette: IMikePalette;
 }
 

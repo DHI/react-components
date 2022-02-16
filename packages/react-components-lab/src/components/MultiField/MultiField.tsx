@@ -6,7 +6,7 @@ import React, {
   Fragment,
   useEffect,
 } from 'react';
-import { Box, TextField, Typography } from '@material-ui/core';
+import { Box, TextField, Typography } from '@mui/material';
 import { MultiFieldProps } from './types';
 import useStyles from './styles';
 

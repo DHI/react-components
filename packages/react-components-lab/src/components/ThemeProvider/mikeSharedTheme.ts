@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
 
 // #region Local imports
 import { IMikeTheme, IMikeThemeOptions } from './types';
@@ -8,11 +8,11 @@ import mikeOverrides from './mikeOverrides';
 import mikeComponentsProps from './mikeComponentsProps';
 // #endregion
 
-export const mikeSharedTheme: IMikeTheme = createTheme({
+export const mikeSharedTheme: IMikeTheme = createTheme(adaptV4Theme({
   typography: mikeTypography,
   palette: mikePalette,
   overrides: mikeOverrides,
   props: mikeComponentsProps,
-} as IMikeThemeOptions);
+} as IMikeThemeOptions));
 
 export default mikeSharedTheme;

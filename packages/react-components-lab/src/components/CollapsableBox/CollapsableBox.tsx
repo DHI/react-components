@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { Box, Button, Collapse } from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
+import { Box, Button, Collapse } from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 import clsx from 'clsx';
 import useStyles from './styles';
 import { CollapsableBoxProps } from './types';

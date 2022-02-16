@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 // #region Local imports
 import mikePalette from '../mikePallete';
@@ -42,7 +42,7 @@ const Styles = makeStyles((theme) => ({
         },
       },
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },

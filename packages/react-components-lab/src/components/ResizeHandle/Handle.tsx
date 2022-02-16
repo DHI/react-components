@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import clsx from 'clsx';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import {
   DragHandle as DragHandleIcon,
   ExpandLess as ExpandLessIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 // eslint-disable-next-line import/no-cycle
 import { HandleProps } from './types';
 import useStyles from './styles';

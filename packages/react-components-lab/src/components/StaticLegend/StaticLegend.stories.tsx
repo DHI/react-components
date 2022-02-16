@@ -1,6 +1,6 @@
 import { Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import React from 'react';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box } from '@mui/material';
 import StaticLegend from './StaticLegend';
 import { StaticLegendProps } from './types';
 

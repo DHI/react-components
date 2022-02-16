@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
-import { Box, Switch } from '@material-ui/core';
+import { Box, Switch } from '@mui/material';
 import Card from './Card';
 import { CardProps } from './types';
 import productImage from './product.png';

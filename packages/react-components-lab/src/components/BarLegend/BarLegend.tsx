@@ -1,5 +1,5 @@
 import React, { useEffect, useState, FC } from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { BarLegendProps } from './types';
 import useStyles from './styles';
 

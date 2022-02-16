@@ -1,9 +1,9 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Box, Grid, IconButton, Typography } from '@material-ui/core';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 import {
   PauseCircleFilled as PauseIcon,
   PlayCircleFilled as PlayIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { TimestepPlayerProps } from './types';
 import timestepStyles from './styles';
 import ValueLabelComponent from './ValueLabel';
@@ -79,7 +79,7 @@ const TimestepPlayer: FC<TimestepPlayerProps> = ({
                 aria-label="play/pause"
                 onClick={handleClick}
                 color="secondary"
-              >
+                size="large">
                 {play ? (
                   <PauseIcon className={classes.icon} />
                 ) : (

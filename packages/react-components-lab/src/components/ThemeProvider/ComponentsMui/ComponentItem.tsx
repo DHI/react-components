@@ -7,8 +7,8 @@ import {
   Tooltip,
   IconButton,
   Collapse,
-} from '@material-ui/core';
-import CodeIcon from '@material-ui/icons/Code';
+} from '@mui/material';
+import CodeIcon from '@mui/icons-material/Code';
 
 // #region Local imports
 import { ComponentItemProps, SubList } from './types';
@@ -66,7 +66,7 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
                         [c.title]: !showCode[c.title],
                       }))
                     }
-                  >
+                    size="large">
                     <CodeIcon />
                   </IconButton>
                 </Tooltip>
@@ -76,7 +76,7 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
                   code={`import { ${item.title.replace(
                     ' ',
                     ''
-                  )} } from '@material-ui/core'\n\n${beautifyCode(c)}`}
+                  )} } from '@mui/material'\n\n${beautifyCode(c)}`}
                 />
               </Collapse>
             </>

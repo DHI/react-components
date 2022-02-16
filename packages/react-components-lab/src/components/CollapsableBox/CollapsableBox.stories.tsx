@@ -1,6 +1,6 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0'; // eslint-disable-line import/no-extraneous-dependencies
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box } from '@mui/material';
 import React from 'react';
 import CollapsableBox from './CollapsableBox';
 import { CollapsableBoxProps } from './types';

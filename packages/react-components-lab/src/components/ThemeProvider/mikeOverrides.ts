@@ -1,5 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
-import { Overrides } from '@material-ui/core/styles/overrides';
+import { createTheme, Components } from '@mui/material/styles';
 
 // #region Local imports
 import { MIKE_COLORS } from './mikeColors';
@@ -9,7 +8,7 @@ import mikePalette from './mikePallete';
 
 const defaultTheme = createTheme();
 
-const mikeOverrides: Overrides = {
+const mikeOverrides: Components = {
   MuiCssBaseline: {
     '@global': {
       '*::-webkit-scrollbar': {

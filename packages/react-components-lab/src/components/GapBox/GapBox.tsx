@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { Props } from './types';
 import useStyles from './styles';
 

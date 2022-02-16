@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, Breakpoint } from '@mui/material/styles';
 
 export default (breakpoint: Breakpoint): boolean => {
   const theme = useTheme();

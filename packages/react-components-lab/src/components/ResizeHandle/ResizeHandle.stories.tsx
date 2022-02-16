@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Box, Typography } from '@mui/material';
 import { ResizeHandleProps } from './types';
 import ResizeHandle from './ResizeHandle';
 import mikePalette from '../ThemeProvider/mikePallete';

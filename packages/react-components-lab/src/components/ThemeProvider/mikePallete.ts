@@ -1,4 +1,4 @@
-import { palette as muiPalette } from '@material-ui/system';
+import { palette as muiPalette } from '@mui/system';
 
 // #region Local imports
 import { MIKE_COLORS } from './mikeColors';

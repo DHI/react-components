@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Typography, Box, Divider } from '@material-ui/core';
+import { Typography, Box, Divider } from '@mui/material';
 
 // #region Local imports
 import { ChildRef, SideNavProps } from './types';

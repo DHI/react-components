@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 // #region Local imports
 import mikePalette from './mikePallete';
@@ -7,7 +7,7 @@ import mikePalette from './mikePallete';
 const Styles = makeStyles((theme) => ({
   root: {
     marginLeft: '2em',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
     },
   },
@@ -21,7 +21,7 @@ const Styles = makeStyles((theme) => ({
     width: 'calc(100% - 230px)',
     paddingTop: 20,
     paddingBottom: 15,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
   },
@@ -29,7 +29,7 @@ const Styles = makeStyles((theme) => ({
     flexBasis: 0,
     flexGrow: 300,
     minWidth: '40%',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       minWidth: '100%',
     },
   },

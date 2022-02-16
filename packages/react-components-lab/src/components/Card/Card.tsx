@@ -5,9 +5,9 @@ import {
   Checkbox,
   Card as MUICard,
   Collapse,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { RadioButtonUnchecked, CheckCircle } from '@material-ui/icons';
+import { RadioButtonUnchecked, CheckCircle } from '@mui/icons-material';
 import clsx from 'clsx';
 import cardStyles from './styles';
 

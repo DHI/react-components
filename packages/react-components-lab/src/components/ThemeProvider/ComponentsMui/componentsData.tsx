@@ -11,8 +11,8 @@ import {
   Radio,
   TextField,
   InputAdornment,
-} from '@material-ui/core';
-import { Add, PermIdentity } from '@material-ui/icons';
+} from '@mui/material';
+import { Add, PermIdentity } from '@mui/icons-material';
 
 // #region Local imports
 import { ComponentList } from './types';
@@ -23,7 +23,7 @@ const whiteColor = {
 };
 // #endregion
 
-// make sure that the title value is the same as the name of the exported component from @material-ui/core.
+// make sure that the title value is the same as the name of the exported component from @mui/material.
 const ComponentsData: ComponentList[] = [
   {
     title: 'Color',

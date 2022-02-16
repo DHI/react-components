@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
-import { Box, Typography, Collapse, ButtonBase } from '@material-ui/core';
+import { Box, Typography, Collapse, ButtonBase } from '@mui/material';
 import clsx from 'clsx';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { LegendBaseProps } from './types';
 import useStyles from './styles';
 

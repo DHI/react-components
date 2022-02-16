@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { CalendarBoxProps } from './types';
 
 const CalendarBox: FC<CalendarBoxProps> = ({ children, title }) => (

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { CircularProgress, LinearProgress, Grid } from '@material-ui/core';
+import { CircularProgress, LinearProgress, Grid } from '@mui/material';
 import useStyles from './styles';
 import { LoaderProps } from './types';
 
