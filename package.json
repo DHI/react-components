@@ -7,7 +7,7 @@
     "author": "DHI",
     "private": true,
     "scripts": {
-        "lint": "lerna exec yarn lint",
+        "lint": "yarn lint",
         "sb": "yarn --cwd packages/react-components sb",
         "lab:sb": "cd packages/react-components-lab && yarn run start-storybook"
     },

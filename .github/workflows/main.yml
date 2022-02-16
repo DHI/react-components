@@ -17,9 +17,10 @@ jobs:
           node-version: 14.x
 
       - name: Use cached node_modules
-        uses: actions/cache@v1
+        id: cache-modules
+        uses: actions/cache@v2
         with:
-          path: .yarm/cache/
+          path: .yarn/cache/
           key: yarnCache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             yarnCache-
