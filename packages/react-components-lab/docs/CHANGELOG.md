@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.12.4](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.3...@dhi/react-components-lab@1.12.4) (2022-02-16)
+
+
+### Bug Fixes
+
+* **lab:** Fix component export from lib. ([f4963e4](https://github.com/DHI/react-components/commit/f4963e4b3bc7cc1b502d5ed1a82d4d8cea60bf7c))
+
 ## @dhi/react-components-lab [1.12.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.2...@dhi/react-components-lab@1.12.3) (2022-01-19)
 
 
