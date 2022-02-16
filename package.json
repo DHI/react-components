@@ -9,8 +9,9 @@
     "scripts": {
         "lint": "yarn lint",
         "sb": "yarn --cwd packages/react-components sb",
-        "lab:sb": "yarn start-storybook --config-dir ./packages/react-components-lab/.storybook",
-        "lab:sb:build": "yarn build-storybook --config-dir ./packages/react-components-lab/.storybook --output-dir ./packages/react-components-lab/storybook-static"
+        "icons:build": "cd packages/icons && yarn run build",
+        "lab:start": "yarn start-storybook --config-dir ./packages/react-components-lab/.storybook",
+        "lab:build": "yarn run icons:build && yarn build-storybook --config-dir ./packages/react-components-lab/.storybook --output-dir ./packages/react-components-lab/storybook-static"
     },
     "workspaces": [
         "./packages/react-components-lab",

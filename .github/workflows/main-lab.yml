@@ -60,7 +60,7 @@ jobs:
           CI: true
       
       - name: Build app
-        run: yarn run lab:sb:build
+        run: yarn run lab:build
         env:
           CI: true
 
