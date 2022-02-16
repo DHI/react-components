@@ -12,8 +12,7 @@
         "lab:sb": "cd packages/react-components-lab && yarn run start-storybook"
     },
     "workspaces": [
-        "./packages/icons",
-        "./packages/react-components-lab",
+        "./packages/**",
         "!packages/react-components/**"
     ],
     "dependencies": {
