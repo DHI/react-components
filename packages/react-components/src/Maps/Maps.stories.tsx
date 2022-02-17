@@ -17,7 +17,6 @@ import Typography from '@material-ui/core/Typography';
 import { AisLayer } from './AisVesselLayer/AisLayer';
 import { AisProvider, useAis } from './AisVesselLayer/AisContext';
 import { fetchVessels } from '../api/Map/AisApi';
-import { VisualizationConfig } from './AisVesselLayer/types';
 import { useState } from 'react';
 
 export default {
@@ -169,15 +168,7 @@ const INITIAL_VIEW_STATE_AIS_STORY = {
 
 export const AisVesselLayerStory = () => {
   const [authToken, setAuthToken] = React.useState<string>();
-  const [visualizationConfig, setVisualizationConfig] = useState<VisualizationConfig>({
-    refreshIntervalSeconds: 20,
-    getVesselLabelText: (properties: any) => {
-      if (properties.Name) {
-        return properties.Name;
-      }
-      return "";
-    }
-  });
+  const [refreshIntervalSeconds] = useState<number>(20);
 
   const login = async (username: string, password: string) => {
     const response = await fetch("https://auth-dev.seaportopx.com/api/tokens", {
@@ -220,7 +211,7 @@ export const AisVesselLayerStory = () => {
   return (
     <div>
       {authToken && (
-        <AisProvider fetchVesselData={fetchVesselData} visualizationConfig={visualizationConfig}>
+        <AisProvider fetchVesselData={fetchVesselData} refreshIntervalSeconds={refreshIntervalSeconds}>
           <AisVesselMapLayer authToken={authToken} />
         </AisProvider>
       )}
@@ -250,9 +241,34 @@ const AisVesselMapLayer = ({ authToken }) => {
     lengthRange,
     fetchAisTileData,
     triggerAisDataUpdate,
-    triggerAisSelectionUpdate,
-    visualizationConfig,
   } = useAis(); 
+
+  const isVesselVisible = (featureProperties: any) => {
+    const isSelectedShipType =
+      selectedVesselTypes.length === 0 ||
+      selectedVesselTypes.includes(featureProperties.ShipType);
+
+    const isSelectedNavStatus =
+      selectedNavStatus.length === 0 ||
+      selectedNavStatus.includes(featureProperties.NavStatus);
+
+    const isSelectedDraftRange =
+      draftRange === null ||
+      (featureProperties.Draft >= draftRange[0] &&
+        featureProperties.Draft <= draftRange[1]);
+
+    const isSelectedLengthRange =
+      lengthRange === null ||
+      (featureProperties.Length >= lengthRange[0] &&
+        featureProperties.Length <= lengthRange[1]);
+
+    return (
+      isSelectedShipType &&
+      isSelectedNavStatus &&
+      isSelectedDraftRange &&
+      isSelectedLengthRange
+    );
+  }
 
   const onAisHover = (hoverInfo: any) => {
     if (hoverInfo.object) {
@@ -264,15 +280,44 @@ const AisVesselMapLayer = ({ authToken }) => {
 
   const aisLayer =  authToken ? new AisLayer({
     id: 'vessel-layer',
-    selectedVesselTypes,
-    selectedNavStatus,
-    draftRange,
-    lengthRange,
     fetchAisTileData,
-    triggerAisDataUpdate,
-    triggerAisSelectionUpdate,
-    visualizationConfig,
+    isVesselVisible,
+    getLabelText: (properties: any) => {
+      if (properties.Name) {
+        return properties.Name;
+      }
+      return "";
+    },
+
+    // Optional
+    // ------------------------------------
+    getPointFillColor: (properties: any) => {
+      return [0, 255, 0, 255];
+    },
+    getPointLineColor: (properties: any) => {
+      return [255, 0, 0, 255];
+    },
+    getLabelTextColor: (properties: any) => {
+      return [255, 255, 255, 255];
+    },
+    getLabelBackgroundColor: (properties: any) => {
+      return [0, 0, 255, 255];
+    },
+    getLabelPosition: (feature: any) => {
+      return [
+        feature.geometry.coordinates[0],
+        feature.geometry.coordinates[1],
+        100,
+      ] as any;
+    },
+    getLabelSize: (properties: any) => {
+      return 20;
+    },
+    get3DVesselElevation: (properties: any) => {
+      return properties.elevation;
+    },
     onHover: onAisHover,
+    triggerAisDataUpdate,
   }) : null;
 
   const layers = [

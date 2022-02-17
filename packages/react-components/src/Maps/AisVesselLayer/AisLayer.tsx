@@ -1,8 +1,17 @@
 import { CompositeLayer } from "@deck.gl/core";
 import { GeoJsonLayer, TextLayer } from "@deck.gl/layers";
 import { TileLayer } from "deck.gl";
-import { isSelectedVessel } from "./helpers";
+import { AisFeatureCollection, AisLayerProps, Feature } from "./types";
 import { vesselsToGeoJson3D } from './vesselsToMapFeature';
+
+
+// ==========================================
+// Contents
+// ==========================================
+// 1. Point Layer
+// 2. Text Layer
+// 3. 3D GeoJSON Layer
+
 
 /**
  * This DeckGL layer combines 3 separate layers into one, and shows the appropriate layer depending on the
@@ -11,135 +20,188 @@ import { vesselsToGeoJson3D } from './vesselsToMapFeature';
  * 2. Text layer - to show the name of the vessel as the user zooms in.
  * 3. GeoJSON layer (3D) - to show the general vessel shape.
  */
-class AisLayer extends CompositeLayer<any, any> {
+class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
   shouldUpdateState({ changeFlags }: { changeFlags: any }) {
     return changeFlags.somethingChanged;
   }
 
   renderLayers() {
     const {
-      selectedVesselTypes,
-      selectedNavStatus,
-      draftRange,
-      lengthRange,
       fetchAisTileData,
+      isVesselVisible,
+      minPointZoom,
+      maxPointZoom,
+      minLabelZoom,
+      maxLabelZoom,
+      min3DVesselZoom,
+      max3DVesselZoom,
+      getPointFillColor,
+      getPointLineColor,
+      getLabelText,
+      getLabelTextColor,
+      getLabelBackgroundColor,
+      getLabelPosition,
+      getLabelSize,
+      get3DVesselElevation,
       triggerAisDataUpdate,
-      triggerAisSelectionUpdate,
-      visualizationConfig,
     } = this.props;
     const { zoom } = this.context.viewport;
 
-    return [
-      new TileLayer({
-        id: 'tile-vessel-points',
-        getTileData: async (tile: any) => {
-          const { x, y, z, signal, bbox } = tile;
-          if (signal.aborted) {
-            return false;
-          }
-          return await fetchAisTileData(x, y, z); 
-        },
-        renderSubLayers: (props: any) => {   
-          const { x, y, z } = props.tile;
+    const pointMinZ = minPointZoom != null ? minPointZoom : 0;
+    const pointMaxZ = maxPointZoom != null ? maxPointZoom : 20;
+    const labelMinZ = minLabelZoom != null ? minLabelZoom : 12;
+    const labelMaxZ = maxLabelZoom != null ? maxLabelZoom : 20;
+    const vesselMinZ = min3DVesselZoom != null ? min3DVesselZoom : 12;
+    const vesselMaxZ = max3DVesselZoom != null ? max3DVesselZoom : 20;
 
-          return new GeoJsonLayer(props, {
-            id: `Vessel-Points-${x}-${y}-${z}`,
-            data: props.data,
-            extruded: true,
-            filled: true,
-            getElevation: 5,
-            getFillColor: (f: any) => {
-              if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
-                return [186, 35, 63, 200];
-              }
-              return [255, 255, 255, 0];
-            },
-            getLineColor: (f: any) => {
-              if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
-                return [100, 15, 43, 200];
-              }
-              return [255, 255, 255, 0];
-            },
-            pickable: true,
-            getLineWidth: 10,
-            pointRadiusMinPixels: 4,
-            lineWidthMinPixels: 2,
-            pointType: "circle",
-            pointRadiusUnits: "meters",
-            stroked: true,
-            visible: true,
-            updateTriggers: {
-              getFillColor: triggerAisSelectionUpdate,
-              getLineColor: triggerAisSelectionUpdate,
-            }
-          });
-        },
-        updateTriggers: {
-          renderSubLayers: triggerAisSelectionUpdate,
-          getTileData: triggerAisDataUpdate,
-        }
-      }),
-      zoom >= 12 ?
+    return [
+
+      // ==========================================
+      // 1. Point Layer
+      // ==========================================
+      zoom >= pointMinZ && zoom <= pointMaxZ ?
         new TileLayer({
-          id: 'tile-vessel-labels',
-          getTileData: async (tile: any) => {
-            const { x, y, z, signal, bbox } = tile;
+          id: 'tile-vessel-points',
+          getTileData: async (tile: { x: number, y: number, z: number, signal: AbortSignal }): Promise<any> => {
+            const { x, y, z, signal } = tile;
             if (signal.aborted) {
               return false;
             }
-            const data = await fetchAisTileData(x, y, z); 
+            return fetchAisTileData(x, y, z); 
+          },
+          renderSubLayers: (props: any) => {   
+            const { x, y, z } = props.tile;
+
+            return new GeoJsonLayer(props, {
+              id: `Vessel-Points-${x}-${y}-${z}`,
+              data: props.data,
+              extruded: true,
+              filled: true,
+              getElevation: 5,
+              getFillColor: (f: Feature) => {
+                if (isVesselVisible(f.properties)) {
+                  if (getPointFillColor) {
+                    return getPointFillColor(f.properties);
+                  }
+                  return [186, 35, 63, 200];
+                }
+                return [255, 255, 255, 0];
+              },
+              getLineColor: (f: Feature) => {
+                if (isVesselVisible(f.properties)) {
+                  if (getPointLineColor) {
+                    return getPointLineColor(f.properties);
+                  }
+                  return [100, 15, 43, 200];
+                }
+                return [255, 255, 255, 0];
+              },
+              pickable: true,
+              getLineWidth: 10,
+              pointRadiusMinPixels: 4,
+              lineWidthMinPixels: 2,
+              pointType: "circle",
+              pointRadiusUnits: "meters",
+              stroked: true,
+              visible: true,
+              updateTriggers: {
+                getFillColor: isVesselVisible,
+                getLineColor: isVesselVisible,
+              }
+            });
+          },
+          updateTriggers: {
+            renderSubLayers: isVesselVisible,
+            getTileData: triggerAisDataUpdate,
+          }
+        }) : null,
+
+      // ==========================================
+      // 2. Text Layer
+      // ==========================================
+
+      zoom >= labelMinZ && zoom <= labelMaxZ ?
+        new TileLayer({
+          id: 'tile-vessel-labels',
+          getTileData: async (tile: { x: number, y: number, z: number, signal: AbortSignal }): Promise<Feature[]> => {
+            const { x, y, z, signal } = tile;
+            if (signal.aborted) {
+              return;
+            }
+            const data = fetchAisTileData(x, y, z); 
             return data.features;
           },
-          renderSubLayers: (props: any) => {
-            const { x, y, z, signal, bbox } = props.tile;
+          renderSubLayers: ({ tile, data }: {tile: { x: number, y: number, z: number}, data: AisFeatureCollection}) => {
+            const { x, y, z } = tile;
 
             return new TextLayer({
               id: `Vessel-Text-Layer-${x}-${y}-${z}`,
-              data: props.data,
+              data,
               visible: zoom >= 10,
-              getPosition: (f: any) => {
+              background: true,
+              getPosition: (f: Feature): any => {
+                if (getLabelPosition) {
+                  return getLabelPosition(f);
+                }
+                
                 return [
                   f.geometry.coordinates[0],
                   f.geometry.coordinates[1],
                   50,
-                ] as any;
+                ];
               },
-              getText: (f: any) => visualizationConfig.getVesselLabelText(f.properties),
-              background: true,
-              getColor: (f: any): any => {
-                if (f.properties.Name && isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
+              getText: (f: Feature) => getLabelText(f.properties),
+              getColor: (f: Feature): [number, number, number, number] => {
+                if (f.properties.Name && isVesselVisible(f.properties)) {
+                  if (getLabelTextColor) {
+                    return getLabelTextColor(f.properties);
+                  }
                   return [255, 255, 255, 255];
                 }
                 return [0, 0, 0, 0];
               },
-              getBackgroundColor: (f: any) => {
-                if (f.properties.Name && isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
+              getBackgroundColor: (f: Feature): [number, number, number, number] => {
+                if (f.properties.Name && isVesselVisible(f.properties)) {
+                  if (getLabelBackgroundColor) {
+                    return getLabelBackgroundColor(f.properties);
+                  }
                   return [0, 0, 0, 200];
                 }
                 return [0, 0, 0, 0];
               },
               backgroundPadding: [5, 5],
-              getSize: 12,
+              getSize: (f: Feature): number => {
+                if (getLabelSize) {
+                  return getLabelSize(f.properties);
+                }
+                return 12;
+              },
               updateTriggers: {
-                getColor: triggerAisSelectionUpdate,
-                getBackgroundColor: triggerAisSelectionUpdate,
+                getColor: isVesselVisible,
+                getBackgroundColor: isVesselVisible,
               }
             })
           },
           updateTriggers: {
-            renderSubLayers: triggerAisSelectionUpdate,
+            renderSubLayers: isVesselVisible,
             getTileData: triggerAisDataUpdate,
           }
         }) : null,
-      zoom >= 12 ?
+
+
+      // ==========================================
+      // 3. 3D GeoJSON Layer
+      // ==========================================
+  
+      zoom >= vesselMinZ && zoom <= vesselMaxZ ?
         new TileLayer({
           id: 'tile-vessel-3D',
-          getTileData: async (tile: any) => {
-            const { x, y, z, signal, bbox } = tile;
+          getTileData: async (tile: { x: number, y: number, z: number, signal: AbortSignal }): Promise<Feature[]> => {
+            const { x, y, z, signal } = tile;
             if (signal.aborted) {
-              return false;
+              return;
             }
-            const data = await fetchAisTileData(x, y, z); 
+            const data = fetchAisTileData(x, y, z); 
             const data3D = vesselsToGeoJson3D(data);
             return data3D;
           },
@@ -151,15 +213,20 @@ class AisLayer extends CompositeLayer<any, any> {
               data: props.data,
               extruded: true,
               filled: true,
-              getElevation: (f: any) => f.properties.elevation,
-              getFillColor: (f: any) => {
-                if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
+              getElevation: (f: Feature) => {
+                if (get3DVesselElevation) {
+                  return get3DVesselElevation(f.properties);
+                }
+                return 10;
+              },
+              getFillColor: (f: Feature) => {
+                if (isVesselVisible(f.properties)) {
                   return f.properties.style.fillColor
                 }
                 return [0, 0, 0, 0];
               },
-              getLineColor: (f: any) => {
-                if (isSelectedVessel(f.properties, selectedVesselTypes, selectedNavStatus, draftRange, lengthRange)) {
+              getLineColor: (f: Feature) => {
+                if (isVesselVisible(f.properties)) {
                   return [240, 160, 180, 200];
                 }
                 return [0, 0, 0, 0];
@@ -168,13 +235,13 @@ class AisLayer extends CompositeLayer<any, any> {
               stroked: false,
               visible: zoom >= 12,
               updateTriggers: {
-                getFillColor: triggerAisSelectionUpdate,
-                getLineColor: triggerAisSelectionUpdate,
+                getFillColor: isVesselVisible,
+                getLineColor: isVesselVisible,
               }
             });
           },
           updateTriggers: {
-            renderSubLayers: triggerAisSelectionUpdate,
+            renderSubLayers: isVesselVisible,
             getTileData: triggerAisDataUpdate,
           }
         }) : null,

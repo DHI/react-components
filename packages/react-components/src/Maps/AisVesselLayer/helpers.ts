@@ -2,8 +2,7 @@
 // Contents
 // ==========================================
 // 1. Color Helpers.
-// 2. Vessel filter helpers.
-// 3. Coordinate conversion helpers.
+// 2. Coordinate conversion helpers.
 
 
 // ==========================================
@@ -18,47 +17,8 @@ export const hexColorToArray = (color: string, opacity: number) => {
   return [rHex, gHex, bHex, Math.round(opacity * 255)];
 };
 
-
 // ==========================================
-// 2. Vessel filter helpers.
-// ==========================================
-
-export const isSelectedVessel = (
-  featureProperties: any,
-  selectedShipTypes: number[],
-  selectedNavStatus: number[],
-  draftRange: [number, number] | null,
-  lengthRange: [number, number] | null
-): boolean => {
-  const isSelectedShipType =
-    selectedShipTypes.length === 0 ||
-    selectedShipTypes.includes(featureProperties.ShipType);
-
-  const isSelectedNavStatus =
-    selectedNavStatus.length === 0 ||
-    selectedNavStatus.includes(featureProperties.NavStatus);
-
-  const isSelectedDraftRange =
-    draftRange === null ||
-    (featureProperties.Draft >= draftRange[0] &&
-      featureProperties.Draft <= draftRange[1]);
-
-  const isSelectedLengthRange =
-    lengthRange === null ||
-    (featureProperties.Length >= lengthRange[0] &&
-      featureProperties.Length <= lengthRange[1]);
-
-  return (
-    isSelectedShipType &&
-    isSelectedNavStatus &&
-    isSelectedDraftRange &&
-    isSelectedLengthRange
-  );
-};
-
-
-// ==========================================
-// 23. Coordinate conversion helpers.
+// 2. Coordinate conversion helpers.
 // ==========================================
 
 // TODO: Credit source of functions.

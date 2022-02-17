@@ -1,9 +1,10 @@
+import { AisFeatureCollection } from "./types";
+
 /**
  * Set of functions used to pull out the specific features relevant to the "tile" being rendered.
  * Used as an optimisation so that the 3D vessels only need to be rendered within the local region.
  */
-
-export const getTileFromCache = (featureCollection: any, x: number, y: number, z: number): any => {
+export const getTileFromCache = (featureCollection: AisFeatureCollection, x: number, y: number, z: number): AisFeatureCollection => {
   const lonMin = tile2Long(x, z);
   const lonMax = tile2Long(x + 1, z);
   const latMax = tile2Lat(y, z);
