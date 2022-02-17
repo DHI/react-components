@@ -2,7 +2,7 @@ import makeStyles from '@mui/styles/makeStyles';
 
 // #region Local imports
 import { IMikeTheme } from '../types';
-import mikePalette from '../mikePallete';
+import mikePalette from '../dhiPallete';
 // #endregion
 
 const SnackbarStyles = makeStyles<IMikeTheme>((theme) => ({

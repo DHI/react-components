@@ -3,7 +3,7 @@ import { createTheme, Components } from '@mui/material/styles';
 // #region Local imports
 import { MIKE_COLORS } from './mikeColors';
 import { SPACING, FONT_SIZE, FONT_FAMILY } from './types';
-import mikePalette from './mikePallete';
+import mikePalette from './dhiPallete';
 // #endregion
 
 const defaultTheme = createTheme();

@@ -1,9 +1,9 @@
-import { TypographyVariantsOptions } from '@mui/material/styles';
+import { TypographyVariantsOptions, Palette } from '@mui/material/styles';
 import { HTML_FONT_SIZE, FONT_SIZE, FONT_FAMILY } from './types';
-import mikePalette from './mikePallete';
 
-const mikeTypography: TypographyVariantsOptions = {
-  color: mikePalette.primary.main,
+const dhiTypography:
+  | TypographyVariantsOptions
+  | ((palette: Palette) => TypographyVariantsOptions) = {
   htmlFontSize: HTML_FONT_SIZE,
   fontSize: FONT_SIZE,
   fontFamily: FONT_FAMILY,
@@ -58,4 +58,4 @@ const mikeTypography: TypographyVariantsOptions = {
   overline: {}, // default mui: 0.75rem / 2.66 / UPPERCASE
 };
 
-export default mikeTypography;
+export default dhiTypography;

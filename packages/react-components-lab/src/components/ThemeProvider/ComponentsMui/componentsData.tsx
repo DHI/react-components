@@ -16,7 +16,7 @@ import { Add, PermIdentity } from '@mui/icons-material';
 
 // #region Local imports
 import { ComponentList } from './types';
-import mikePalette from '../mikePallete';
+import dhiPalette from '../dhiPallete';
 
 const whiteColor = {
   color: '#FFF',
@@ -38,7 +38,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.primary.main}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.primary.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -50,7 +50,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.primary.dark}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.primary.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -62,7 +62,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.primary.light}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.primary.light}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
                   </Typography>
@@ -80,11 +80,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box
-                  margin={1}
-                  padding={1}
-                  bgcolor={mikePalette.secondary.main}
-                >
+                <Box margin={1} padding={1} bgcolor={dhiPalette.secondary.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -96,11 +92,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box
-                  margin={1}
-                  padding={1}
-                  bgcolor={mikePalette.secondary.dark}
-                >
+                <Box margin={1} padding={1} bgcolor={dhiPalette.secondary.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -115,7 +107,7 @@ const ComponentsData: ComponentList[] = [
                 <Box
                   margin={1}
                   padding={1}
-                  bgcolor={mikePalette.secondary.light}
+                  bgcolor={dhiPalette.secondary.light}
                 >
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
@@ -134,7 +126,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.error.main}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.error.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -146,7 +138,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.error.dark}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.error.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -158,7 +150,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.error.light}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.error.light}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
                   </Typography>
@@ -176,7 +168,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.warning.main}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.warning.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -188,7 +180,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.warning.dark}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.warning.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -200,7 +192,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.warning.light}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.warning.light}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
                   </Typography>
@@ -218,7 +210,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.info.main}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.info.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -230,7 +222,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.info.dark}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.info.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -242,7 +234,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.info.light}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.info.light}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
                   </Typography>
@@ -260,7 +252,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.success.main}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.success.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -272,7 +264,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.success.dark}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.success.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -284,7 +276,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.success.light}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.success.light}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
                   </Typography>
@@ -302,7 +294,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.darkGrey.main}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.darkGrey.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -314,7 +306,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.darkGrey.dark}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.darkGrey.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -326,11 +318,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box
-                  margin={1}
-                  padding={1}
-                  bgcolor={mikePalette.darkGrey.light}
-                >
+                <Box margin={1} padding={1} bgcolor={dhiPalette.darkGrey.light}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
                   </Typography>
@@ -351,7 +339,7 @@ const ComponentsData: ComponentList[] = [
                 <Box
                   margin={1}
                   padding={1}
-                  bgcolor={mikePalette.mediumGrey.main}
+                  bgcolor={dhiPalette.mediumGrey.main}
                 >
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
@@ -367,7 +355,7 @@ const ComponentsData: ComponentList[] = [
                 <Box
                   margin={1}
                   padding={1}
-                  bgcolor={mikePalette.mediumGrey.dark}
+                  bgcolor={dhiPalette.mediumGrey.dark}
                 >
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
@@ -383,7 +371,7 @@ const ComponentsData: ComponentList[] = [
                 <Box
                   margin={1}
                   padding={1}
-                  bgcolor={mikePalette.mediumGrey.light}
+                  bgcolor={dhiPalette.mediumGrey.light}
                 >
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
@@ -402,11 +390,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box
-                  margin={1}
-                  padding={1}
-                  bgcolor={mikePalette.lightGrey.main}
-                >
+                <Box margin={1} padding={1} bgcolor={dhiPalette.lightGrey.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -418,11 +402,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box
-                  margin={1}
-                  padding={1}
-                  bgcolor={mikePalette.lightGrey.dark}
-                >
+                <Box margin={1} padding={1} bgcolor={dhiPalette.lightGrey.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -437,7 +417,7 @@ const ComponentsData: ComponentList[] = [
                 <Box
                   margin={1}
                   padding={1}
-                  bgcolor={mikePalette.lightGrey.light}
+                  bgcolor={dhiPalette.lightGrey.light}
                 >
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
@@ -456,7 +436,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.ultimate.main}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.main}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Main
                   </Typography>
@@ -468,7 +448,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={mikePalette.ultimate.dark}>
+                <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.dark}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Dark
                   </Typography>
@@ -480,11 +460,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <div style={{ textAlign: 'center' }}>
-                <Box
-                  margin={1}
-                  padding={1}
-                  bgcolor={mikePalette.ultimate.light}
-                >
+                <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.light}>
                   <Typography variant="body1" style={{ color: '#fff' }}>
                     Light
                   </Typography>

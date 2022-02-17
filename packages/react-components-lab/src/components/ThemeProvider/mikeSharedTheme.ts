@@ -2,17 +2,19 @@ import { createTheme, adaptV4Theme } from '@mui/material/styles';
 
 // #region Local imports
 import { IMikeTheme, IMikeThemeOptions } from './types';
-import mikeTypography from './mikeTypography';
-import mikePalette from './mikePallete';
+import dhiTypography from './dhiTypography';
+import dhiPalette from './dhiPallete';
 import mikeOverrides from './mikeOverrides';
 import mikeComponentsProps from './mikeComponentsProps';
 // #endregion
 
-export const mikeSharedTheme: IMikeTheme = createTheme({
-  typography: mikeTypography,
-  palette: mikePalette,
+const defaultTheme = createTheme();
+export const dhiSharedTheme: IMikeTheme = createTheme({
+  ...defaultTheme,
+  typography: dhiTypography,
+  palette: dhiPalette,
   components: mikeOverrides,
-  props: mikeComponentsProps,
+  // props: mikeComponentsProps,
 });
 
-export default mikeSharedTheme;
+export default dhiSharedTheme;

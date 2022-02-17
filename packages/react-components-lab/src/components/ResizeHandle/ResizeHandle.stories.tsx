@@ -5,7 +5,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import { Box, Typography } from '@mui/material';
 import { ResizeHandleProps } from './types';
 import ResizeHandle from './ResizeHandle';
-import mikePalette from '../ThemeProvider/mikePallete';
+import mikePalette from '../ThemeProvider/dhiPallete';
 
 export default {
   title: 'Components/ResizeHandle',

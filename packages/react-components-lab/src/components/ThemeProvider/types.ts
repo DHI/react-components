@@ -4,11 +4,9 @@ import {
   DeprecatedThemeOptions,
   Palette,
   PaletteColor,
-  Overrides,
 } from '@mui/material/styles';
 
 export interface IProps {
-  overrides?: Overrides;
   children?: ReactNode;
 }
 
@@ -21,7 +19,6 @@ export interface IMikePalette extends Palette {
 
 export interface IMikeTheme extends Theme {
   palette: IMikePalette;
-  overrides?: Overrides;
 }
 
 export interface IMikeThemeOptions extends DeprecatedThemeOptions {

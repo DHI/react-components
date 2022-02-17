@@ -1,11 +1,12 @@
-import { palette as muiPalette } from '@mui/system';
-
-// #region Local imports
+import { createTheme } from '@mui/material/styles';
 import { MIKE_COLORS } from './mikeColors';
+import { IMikePalette } from './types';
 // #endregion
+const defaultTheme = createTheme();
+const MuiPalette = defaultTheme.palette;
 
-const mikePalette = {
-  ...muiPalette,
+const dhiPalette: IMikePalette = {
+  ...MuiPalette,
   primary: {
     main: MIKE_COLORS.BRANDBLUE_DEFAULT,
     dark: MIKE_COLORS.BRANDBLUE_DARK,
@@ -64,20 +65,12 @@ const mikePalette = {
     primary: MIKE_COLORS.BRANDBLUE_DEFAULT,
     secondary: MIKE_COLORS.DARKGREY_DEFAULT,
     disabled: MIKE_COLORS.MEDIUMGREY_DEFAULT,
-    hint: MIKE_COLORS.ACTIONBLUE_DEFAULT,
   },
   background: {
     default: MIKE_COLORS.XLIGHTGREY,
     paper: MIKE_COLORS.WHITE,
   },
   divider: MIKE_COLORS.MEDIUMGREY_DEFAULT,
-  // Custom 'intention' objects
-  ultimate: {
-    main: MIKE_COLORS.GREEN_DEFAULT,
-    dark: MIKE_COLORS.GREEN_DARK,
-    light: MIKE_COLORS.GREEN_LIGHT,
-    contrastText: MIKE_COLORS.WHITE,
-  },
 };
 
-export default mikePalette;
+export default dhiPalette;

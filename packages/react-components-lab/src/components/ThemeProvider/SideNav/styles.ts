@@ -1,7 +1,7 @@
 import makeStyles from '@mui/styles/makeStyles';
 
 // #region Local imports
-import mikePalette from '../mikePallete';
+import mikePalette from '../dhiPallete';
 // #endregion
 
 const Styles = makeStyles((theme) => ({
