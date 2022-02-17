@@ -1,10 +1,9 @@
 import React, { useEffect, useState, FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { BarLegendProps } from './types';
-import useStyles from './styles';
+import './styles.css';
 
 const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
-  const classes = useStyles();
   const [val, setVals] = useState<number[] | undefined>();
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
 
   return (
     <Box style={{ width: '100%' }}>
-      <img src={src} alt="legend-colorbar" className={classes.colorbar} />
+      <img src={src} alt="legend-colorbar" className="colorbar" />
       {range &&
         (typeof range[0] === 'number' && typeof range[1] === 'number' && val ? (
           <Box display="flex" justifyContent="space-between">

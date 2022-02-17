@@ -1,7 +1,7 @@
 // CalendarItem
 export { default as CalendarItem } from './components/CalendarItem/CalendarItem';
 export * from './components/CalendarItem/types';
-export { default as useCalendarItemStyles } from './components/CalendarItem/styles';
+// export { default as useCalendarItemStyles } from './components/CalendarItem/styles';
 
 // CalendarBox
 export { default as CalendarBox } from './components/CalendarBox/CalendarBox';
@@ -50,8 +50,8 @@ export { default as useCategoricalBarLegendStyles } from './components/Categoric
 
 // BarLegend
 export { default as BarLegend } from './components/BarLegend/BarLegend';
-export { default as useBarLegendStyles } from './components/BarLegend/styles';
-export { default as BarLegendStyles } from './components/BarLegend/styles';
+// export { default as useBarLegendStyles } from './components/BarLegend/styles';
+// export { default as BarLegendStyles } from './components/BarLegend/styles';
 export * from './components/BarLegend/types';
 
 // Loader

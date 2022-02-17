@@ -1,41 +1,39 @@
-import makeStyles from '@mui/styles/makeStyles';
-import { IMikeTheme } from '../ThemeProvider/types';
+const buttonCSS = {
+  borderRadius: 4,
+  cursor: 'pointer',
+  minWidth: 42,
+  margin: 2,
+  padding: '0px 7px',
+  textAlign: 'center',
+  flexGrow: 1,
+  flex: 'none',
+  backgroundColor: { xs: 'mediumGrey.light' },
+  color: { xs: 'primary.main' },
+  '&:hover': {
+    backgroundColor: { xs: 'mediumGrey.main' },
+  },
+};
 
-const useCalendarItemStyles = makeStyles<IMikeTheme>((theme) => ({
-  button: {
-    backgroundColor: theme.palette.mediumGrey.light,
-    borderRadius: 4,
-    color: theme.palette.primary.main,
-    cursor: 'pointer',
-    minWidth: 42,
-    margin: 2,
-    padding: '0px 7px',
-    textAlign: 'center',
-    flexGrow: 1,
-    flex: 'none',
-    '&:hover': {
-      backgroundColor: theme.palette.mediumGrey.main,
-    },
+const activeCSS = {
+  backgroundColor: { xs: 'secondary.main' },
+  color: { xs: 'background.paper' },
+  '&:hover': {
+    backgroundColor: { xs: 'secondary.main' },
   },
-  active: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.background.paper,
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
-    },
-  },
-  disabled: {
-    backgroundColor: theme.palette.lightGrey.main,
-    color: theme.palette.mediumGrey.dark,
-    cursor: 'default',
-    '&:hover': {
-      backgroundColor: theme.palette.lightGrey.main,
-      color: theme.palette.mediumGrey.dark,
-    },
-  },
-  semiActive: {
-    backgroundColor: theme.palette.mediumGrey.main,
-  },
-}));
+};
 
-export default useCalendarItemStyles;
+const disabledCSS = {
+  cursor: 'default',
+  backgroundColor: { xs: 'lightGrey.main' },
+  color: { xs: 'mediumGrey.dark' },
+  '&:hover': {
+    backgroundColor: { xs: 'lightGrey.main' },
+    color: { xs: 'mediumGrey.dark' },
+  },
+};
+
+const semiActiveCSS = {
+  backgroundColor: { xs: 'mediumGrey.main' },
+};
+
+export { buttonCSS, activeCSS, disabledCSS, semiActiveCSS };

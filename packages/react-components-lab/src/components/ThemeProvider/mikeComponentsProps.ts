@@ -1,9 +1,9 @@
 import { ComponentsProps } from '@mui/material/styles';
 
 const mikeComponentsProps: ComponentsProps = {
-  MuiDialogTitle: {
-    disableTypography: true,
-  },
+  // MuiDialogTitle: {
+  //   disableTypography: true,
+  // },
   MuiDialogActions: {
     disableSpacing: true,
   },

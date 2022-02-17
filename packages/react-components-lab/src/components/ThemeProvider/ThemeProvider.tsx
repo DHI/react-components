@@ -4,13 +4,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import assignIn from 'lodash.assignin';
 
 // #region Local imports
-import { mikeSharedTheme } from './mikeSharedTheme';
+import dhiSharedTheme from './mikeSharedTheme';
 import * as Types from './types';
 // #endregion
 
 const DHIThemeProvider: React.FC<Types.IProps> = ({ overrides, children }) => {
   const theme = useMemo(() => {
-    const themeWithOverrides = assignIn({ ...mikeSharedTheme }, overrides);
+    const themeWithOverrides = assignIn({ ...dhiSharedTheme }, overrides);
 
     return createTheme(themeWithOverrides as ThemeOptions);
   }, [overrides]);
