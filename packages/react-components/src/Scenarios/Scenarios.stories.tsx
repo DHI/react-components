@@ -9,6 +9,7 @@ import { MENU_ITEMS, STATUS, TRANSLATIONS } from './ScenarioList/scenarioListCon
 import { Scenarios } from './Scenarios/Scenarios';
 import { ScenariosOLD } from './ScenariosOLD/Scenarios';
 import { MenuItem, Scenario, ScenarioOLD } from './types';
+import { parseISO } from 'date-fns';
 
 export default {
   title: 'Scenarios Components',
@@ -17,6 +18,10 @@ export default {
 
 export const ScenariosStory = () => {
   const [newScenario, setNewScenario] = useState<ScenarioOLD>();
+  const [newDates, setNewDates] = useState({
+    from: addDays(new Date(), -1).toISOString(),
+    to: addDays(new Date(), 1).toISOString(),
+  });
 
   const onAddScenario = () => {
     setNewScenario({
@@ -24,9 +29,11 @@ export const ScenariosStory = () => {
     });
   };
 
-  const queryDates = {
-    from: addDays(new Date(), -1).toISOString(),
-    to: addDays(new Date(), 1).toISOString(),
+  const setNewDatesForTesting = () => {
+    setNewDates({
+      from: addDays(parseISO(newDates.from), -1).toISOString(),
+      to: addDays(parseISO(newDates.to), 1).toISOString(),
+    });
   };
 
   return (
@@ -56,11 +63,24 @@ export const ScenariosStory = () => {
                 <span>Add new scenario</span>
               </Button>
             </Typography>
+            <Typography align="left" component="div" style={{ marginBottom: '10px' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ backgroundColor: '#0D3958' }}
+                onClick={setNewDatesForTesting}
+              >
+                <span>Change Dates for Testing</span>
+              </Button>
+              <span style={{ marginLeft: '10px' }}>
+                {newDates.from} - {newDates.to}
+              </span>
+            </Typography>
             <ScenariosOLD
               frequency={10}
               token={token.accessToken.token}
               host={process.env.ENDPOINT_URL}
-              queryDates={queryDates}
+              queryDates={newDates}
               scenarioConnection={'postgres-scenarios'}
               jobConnection={'wf-jobs'}
               dataFilterbyProperty={[
