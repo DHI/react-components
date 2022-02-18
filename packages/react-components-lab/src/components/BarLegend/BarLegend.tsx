@@ -1,11 +1,11 @@
 import React, { useEffect, useState, FC } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { BarLegendProps } from './types';
-import './styles.css';
+import ImgLegendStyled from './ImgLegend.styled';
 
 const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
   const [val, setVals] = useState<number[] | undefined>();
-
+  const theme = useTheme();
   useEffect(() => {
     if (
       length !== undefined &&
@@ -29,8 +29,8 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
   }, [range, length]);
 
   return (
-    <Box style={{ width: '100%' }}>
-      <img src={src} alt="legend-colorbar" className="colorbar" />
+    <Box width={1}>
+      <ImgLegendStyled src={src} alt="legend-colorbar" theme={theme} />
       {range &&
         (typeof range[0] === 'number' && typeof range[1] === 'number' && val ? (
           <Box display="flex" justifyContent="space-between">
@@ -44,10 +44,10 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
           ['number', 'string'].includes(typeof range[0]) &&
           ['number', 'string'].includes(typeof range[1]) && (
             <Box display="flex" justifyContent="space-between">
-              <Typography style={{ fontSize: 10 }}>
+              <Typography sx={{ fontSize: 20 }}>
                 {`${range[0]} ${unit}`}
               </Typography>
-              <Typography style={{ fontSize: 10 }}>
+              <Typography sx={{ fontSize: 10 }}>
                 {`${range[1]} ${unit}`}
               </Typography>
             </Box>

@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, Children } from 'react';
+import React, { FC, ReactNode, Children, cloneElement } from 'react';
 import {
   Box,
   Typography,
@@ -70,7 +70,7 @@ const Card: FC<CardProps> = ({
             {isClickable && (
               <Box display="flex" alignItems="center">
                 {customCheckbox ? (
-                  React.cloneElement(customCheckbox, { checked: isOpen })
+                  cloneElement(customCheckbox, { checked: isOpen })
                 ) : (
                   <Checkbox
                     checked={isOpen}
