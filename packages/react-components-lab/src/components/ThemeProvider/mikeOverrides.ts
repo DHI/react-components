@@ -6,7 +6,7 @@ import { SPACING, FONT_SIZE, FONT_FAMILY } from './types';
 import mikePalette from './dhiPallete';
 // #endregion
 
-const defaultTheme = createTheme();
+// const defaultTheme = createTheme();
 
 const mikeOverrides: Components = {
   // MuiCssBaseline: {

@@ -1,16 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, FC } from 'react';
 import { createTheme, ThemeProvider, ThemeOptions } from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import assignIn from 'lodash.assignin';
 
 // #region Local imports
 import dhiSharedTheme from './dhiSharedTheme';
-import * as Types from './types';
+import { IProps } from './types';
 // #endregion
 
-const DHIThemeProvider: React.FC<Types.IProps> = ({ overrides, children }) => {
+const DHIThemeProvider: FC<IProps> = ({ overrides, children }) => {
   const theme = useMemo(() => {
-    const themeWithOverrides = assignIn({ ...dhiSharedTheme }, overrides);
+    const themeWithOverrides = deepmerge({ ...dhiSharedTheme }, overrides);
     return createTheme(themeWithOverrides as ThemeOptions);
   }, [overrides]);
 

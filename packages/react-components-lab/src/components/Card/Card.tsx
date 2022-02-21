@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, Children, cloneElement } from 'react';
-import { Box, Typography, Checkbox, Collapse, useTheme } from '@mui/material';
+import { Box, Typography, Checkbox, Collapse } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { RadioButtonUnchecked, CheckCircle } from '@mui/icons-material';
 import clsx from 'clsx';
 import CardRootStyled from './CardRoot.styled';

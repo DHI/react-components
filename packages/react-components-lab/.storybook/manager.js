@@ -1,4 +1,4 @@
-  
+
 import { addons } from '@storybook/addons';
 import { themes } from '@storybook/theming';
 
@@ -46,13 +46,13 @@ addons.setConfig({
   theme: {
     ...themes.dark,
     brandTitle: `
-        <img 
-            src="https://grasdatastorage.blob.core.windows.net/images/DHI_Logo_Light.png" 
-            style="width: 60px; height: auto;" 
-            alt="logo" 
-            style="display: inline" 
+        <img
+            src="https://grasdatastorage.blob.core.windows.net/images/DHI_Logo_Light.png"
+            style="width: 60px; height: auto;"
+            alt="logo"
+            style="display: inline"
         />
-            <p 
+            <p
                 style="width: 150px; margin: 0;"
             >
                 react-components-lab
