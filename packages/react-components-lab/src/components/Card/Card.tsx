@@ -42,7 +42,7 @@ const Card: FC<CardProps> = ({
                 variant="subtitle1"
                 sx={{
                   fontSize: 12,
-                  color: 'secondary.main',
+                  color: 'darkGrey.main',
                 }}
               >
                 {subTitle}
