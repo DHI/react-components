@@ -2,10 +2,9 @@ import React, { FC, ReactNode, Children, cloneElement } from 'react';
 import { Box, Typography, Checkbox, Collapse } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { RadioButtonUnchecked, CheckCircle } from '@mui/icons-material';
-import clsx from 'clsx';
 import CardRootStyled from './CardRoot.styled';
-import cardStyles from './styles';
-
+import BoxDisabledStyled from './BoxDisabled.styled';
+import ImgCardStyled from './ImgCard.styled';
 import { CardProps } from './types';
 
 const Card: FC<CardProps> = ({
@@ -20,13 +19,12 @@ const Card: FC<CardProps> = ({
   disabled = false,
   customCheckbox,
 }) => {
-  const classes = cardStyles();
   const collapseIn = isClickable && isOpen;
   const theme = useTheme();
   console.log(theme);
   return (
     <CardRootStyled variant="outlined">
-      {disabled && <Box className={classes.disabled} />}
+      {disabled && <BoxDisabledStyled />}
       <Box px={2} py={1.5}>
         <Box
           onClick={() => isClickable && setIsOpen(!isOpen)}
@@ -42,7 +40,10 @@ const Card: FC<CardProps> = ({
             {subTitle && (
               <Typography
                 variant="subtitle1"
-                sx={{ fontSize: 12, color: 'secondary.main' }}
+                sx={{
+                  fontSize: 12,
+                  color: 'secondary.main',
+                }}
               >
                 {subTitle}
               </Typography>
@@ -59,7 +60,7 @@ const Card: FC<CardProps> = ({
               alignItems="center"
               justifyContent="center"
             >
-              <img src={image} alt={image} className={classes.image} />
+              <ImgCardStyled src={image} alt={image} />
             </Box>
             {isClickable && (
               <Box display="flex" alignItems="center">
@@ -72,15 +73,20 @@ const Card: FC<CardProps> = ({
                     icon={
                       <RadioButtonUnchecked
                         color="primary"
-                        className={classes.checkIcon}
+                        sx={{
+                          width: 26,
+                          height: 26,
+                          color: 'primary.dark',
+                        }}
                       />
                     }
                     checkedIcon={
                       <CheckCircle
-                        className={clsx(
-                          classes.checkIcon,
-                          isOpen && classes.checkIconActive
-                        )}
+                        sx={{
+                          width: 26,
+                          height: 26,
+                          color: isOpen ? 'success.main' : 'primary.dark',
+                        }}
                       />
                     }
                   />

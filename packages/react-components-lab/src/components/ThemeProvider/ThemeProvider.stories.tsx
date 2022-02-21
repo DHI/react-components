@@ -72,49 +72,47 @@ const Template: Story<IProps> = (args) => {
   const childRefs = useMemo(() => childRefState, [childRefState]);
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider {...args}>
-        <Box className={classes.root}>
-          <Typography variant="h1">Theme Provider</Typography>
-          <Box className={classes.header}>
-            <Typography variant="h5">
-              <span className={classes.highlightText}>Theme Provider</span> is the
-              theming built on top of Material-Ui styles and overridden based on
-              DHI official CVI. Here is the concept.
-            </Typography>
-          </Box>
-          <main className={classes.mainContainer}>
-            <Box className={classes.content}>
-              <Box bgcolor="primary.main" margin={1} padding={2}>
-                <Typography variant="h2" color="textSecondary">
-                  Theme Provider
-                </Typography>
-                <Box bgcolor="primary.light" margin={1} padding={2}>
-                  <Typography variant="body1">Your Application</Typography>
-                  <Box bgcolor="primary.main" margin={1} padding={2}>
-                    <Typography variant="body1" color="textSecondary">
-                      Your components
-                    </Typography>
-                  </Box>
+    <>
+      <Box className={classes.root}>
+        <Typography variant="h1">Theme Provider</Typography>
+        <Box className={classes.header}>
+          <Typography variant="h5">
+            <span className={classes.highlightText}>Theme Provider</span> is the
+            theming built on top of Material-Ui styles and overridden based on
+            DHI official CVI. Here is the concept.
+          </Typography>
+        </Box>
+        <main className={classes.mainContainer}>
+          <Box className={classes.content}>
+            <Box bgcolor="primary.main" margin={1} padding={2}>
+              <Typography variant="h2" color="textSecondary">
+                Theme Provider
+              </Typography>
+              <Box bgcolor="primary.light" margin={1} padding={2}>
+                <Typography variant="body1">Your Application</Typography>
+                <Box bgcolor="primary.main" margin={1} padding={2}>
+                  <Typography variant="body1" color="textSecondary">
+                    Your components
+                  </Typography>
                 </Box>
               </Box>
-              <Syntax
-                code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider>\n\t{children}\n</ThemeProvider>`}
-              />
-              {childRefs &&
-                dataList?.map((item, i) => (
-                  <ComponentItem
-                    {...{ ref: childRefs[i].element }}
-                    key={item.title}
-                    item={item}
-                  />
-                ))}
             </Box>
-            <SideNav data={dataList} contentList={childRefs} />
-          </main>
-        </Box>
-      </ThemeProvider>
-    </StyledEngineProvider>
+            <Syntax
+              code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider>\n\t{children}\n</ThemeProvider>`}
+            />
+            {childRefs &&
+              dataList?.map((item, i) => (
+                <ComponentItem
+                  {...{ ref: childRefs[i].element }}
+                  key={item.title}
+                  item={item}
+                />
+              ))}
+          </Box>
+          <SideNav data={dataList} contentList={childRefs} />
+        </main>
+      </Box>
+    </>
   );
 };
 

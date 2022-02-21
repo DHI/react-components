@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { styled, experimental_sx as sx } from '@mui/system';
+import { styled } from '@mui/material/styles';
+import { experimental_sx as sx } from '@mui/system';
 import { CalendarItemProps } from './types';
 
 const options = {

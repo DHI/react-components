@@ -1,8 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Box, Button, Collapse } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
-import clsx from 'clsx';
-import useStyles from './styles';
 import { CollapsableBoxProps } from './types';
 
 const CollapsableBox: FC<CollapsableBoxProps> = ({
@@ -13,20 +11,29 @@ const CollapsableBox: FC<CollapsableBoxProps> = ({
   className = '',
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const classes = useStyles();
 
   return (
     <Box style={{ ...style }} className={className}>
       <Collapse
         in={!isCollapsed}
         collapsedSize={75}
-        className={classes.collapsable}
+        sx={{
+          overflow: 'hidden',
+          position: 'relative',
+        }}
       >
-        <span
-          className={clsx(
-            classes.overlay,
-            isCollapsed && classes.collapsedOverlay
-          )}
+        <Box
+          component="span"
+          sx={{
+            position: 'absolute',
+            opacity: isCollapsed ? 1 : 0,
+            pointerEvents: 'none',
+            width: '100%',
+            bottom: 0,
+            background:
+              'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
+            height: isCollapsed && 50,
+          }}
         />
         <Box p={1}>{children}</Box>
       </Collapse>
@@ -35,10 +42,17 @@ const CollapsableBox: FC<CollapsableBoxProps> = ({
           onClick={() => setIsCollapsed(!isCollapsed)}
           variant="text"
           color="primary"
-          className={classes.button}
+          sx={{
+            height: 'unset',
+            padding: 'unset',
+          }}
           fullWidth
         >
-          <ExpandMore className={clsx(!isCollapsed && classes.icon)} />
+          <ExpandMore
+            sx={{
+              transform: isCollapsed && 'rotateX(180deg)',
+            }}
+          />
           {isCollapsed ? expandLabel : collapseLabel}
         </Button>
       </Box>

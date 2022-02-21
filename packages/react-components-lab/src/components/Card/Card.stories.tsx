@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, Switch } from '@mui/material';
 import Card from './Card';
 import { CardProps } from './types';
-// import productImage from './product.png';
+import productImage from './product.png';
 
 const Template: Story<CardProps> = (args) => {
   const [isActive, setIsActive] = useState(false);
@@ -48,7 +48,7 @@ WithImage.args = {
   title: 'Title',
   subTitle: 'Subtitle at DHI',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-  // image: productImage as string,
+  image: productImage as string,
   children: (
     <Box>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -63,7 +63,7 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   title: 'Disabled',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-  // image: productImage as string,
+  image: productImage as string,
   disabled: true,
   isOpen: true,
   children: (

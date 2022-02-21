@@ -79,7 +79,8 @@ const TimestepPlayer: FC<TimestepPlayerProps> = ({
                 aria-label="play/pause"
                 onClick={handleClick}
                 color="secondary"
-                size="large">
+                size="large"
+              >
                 {play ? (
                   <PauseIcon className={classes.icon} />
                 ) : (

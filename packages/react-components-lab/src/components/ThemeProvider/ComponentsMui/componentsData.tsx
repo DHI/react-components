@@ -429,48 +429,48 @@ const ComponentsData: ComponentList[] = [
           },
         ],
       },
-      {
-        title: 'Ultimate Colors',
-        description: '',
-        components: [
-          {
-            component: (
-              <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
-                    Main
-                  </Typography>
-                </Box>
-                <Typography variant="body2">#61C051</Typography>
-              </div>
-            ),
-          },
-          {
-            component: (
-              <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
-                    Dark
-                  </Typography>
-                </Box>
-                <Typography variant="body2">#3EB22A</Typography>
-              </div>
-            ),
-          },
-          {
-            component: (
-              <div style={{ textAlign: 'center' }}>
-                <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.light}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
-                    Light
-                  </Typography>
-                </Box>
-                <Typography variant="body2">#BFE7B7</Typography>
-              </div>
-            ),
-          },
-        ],
-      },
+      // {
+      //   title: 'Ultimate Colors',
+      //   description: '',
+      //   components: [
+      //     {
+      //       component: (
+      //         <div style={{ textAlign: 'center' }}>
+      //           <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.main}>
+      //             <Typography variant="body1" style={{ color: '#fff' }}>
+      //               Main
+      //             </Typography>
+      //           </Box>
+      //           <Typography variant="body2">#61C051</Typography>
+      //         </div>
+      //       ),
+      //     },
+      //     {
+      //       component: (
+      //         <div style={{ textAlign: 'center' }}>
+      //           <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.dark}>
+      //             <Typography variant="body1" style={{ color: '#fff' }}>
+      //               Dark
+      //             </Typography>
+      //           </Box>
+      //           <Typography variant="body2">#3EB22A</Typography>
+      //         </div>
+      //       ),
+      //     },
+      //     {
+      //       component: (
+      //         <div style={{ textAlign: 'center' }}>
+      //           <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.light}>
+      //             <Typography variant="body1" style={{ color: '#fff' }}>
+      //               Light
+      //             </Typography>
+      //           </Box>
+      //           <Typography variant="body2">#BFE7B7</Typography>
+      //         </div>
+      //       ),
+      //     },
+      //   ],
+      // },
     ],
   },
   {
