@@ -11,7 +11,7 @@ export default {
   component: Card,
   argTypes: {
     title: { type: 'string' },
-    subTitle: { type: 'array' },
+    subTitle: { type: 'function' },
     description: { type: 'string' },
     isOpen: { type: 'boolean' },
     image: { type: 'string' },

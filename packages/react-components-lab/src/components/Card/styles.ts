@@ -2,12 +2,6 @@ import makeStyles from '@mui/styles/makeStyles';
 import { IMikeTheme } from '../ThemeProvider/types';
 
 export default makeStyles<IMikeTheme>((theme) => ({
-  root: {
-    borderRadius: 4,
-    marginTop: 12,
-    marginBottom: 15,
-    position: 'relative',
-  },
   isClickable: {
     cursor: 'pointer',
   },
@@ -22,14 +16,6 @@ export default makeStyles<IMikeTheme>((theme) => ({
     height: '100%',
     opacity: 0.7,
   },
-  title: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  subTitle: {
-    fontSize: 12,
-    color: 'grey',
-  },
   checkIcon: {
     width: 26,
     height: 26,
@@ -41,9 +27,5 @@ export default makeStyles<IMikeTheme>((theme) => ({
   image: {
     width: '90%',
     height: 'auto',
-  },
-  titlePaddingNonClickable: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
   },
 }));

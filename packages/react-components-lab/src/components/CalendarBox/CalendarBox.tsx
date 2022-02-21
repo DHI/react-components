@@ -9,12 +9,7 @@ const CalendarBox: FC<CalendarBoxProps> = ({ children, title }) => (
         {title}
       </Typography>
     )}
-    <Box
-      width={1}
-      display="flex"
-      flexWrap="wrap"
-      sx={{ flexDirection: 'space-between' }}
-    >
+    <Box width={1} display="flex" flexWrap="wrap">
       {children.map((comp) => comp)}
     </Box>
   </Box>

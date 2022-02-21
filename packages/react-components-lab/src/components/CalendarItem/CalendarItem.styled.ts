@@ -43,11 +43,10 @@ const CalendarItemBox = styled(
     cursor: disabled ? 'default' : 'pointer',
     borderRadius: 4,
     minWidth: 42,
-    margin: 2,
+    margin: '2px',
     padding: '0px 7px',
     textAlign: 'center',
     flexGrow: 1,
-    flex: 'none',
     ...getStyle(),
   } as const;
 

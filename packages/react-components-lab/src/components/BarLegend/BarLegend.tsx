@@ -35,7 +35,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
         (typeof range[0] === 'number' && typeof range[1] === 'number' && val ? (
           <Box display="flex" justifyContent="space-between">
             {val.map((v: number) => (
-              <Typography key={`value-${v}`} style={{ fontSize: 10 }}>
+              <Typography key={`value-${v}`} sx={{ fontSize: 10 }}>
                 {`${v} ${unit}`}
               </Typography>
             ))}
@@ -44,7 +44,7 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
           ['number', 'string'].includes(typeof range[0]) &&
           ['number', 'string'].includes(typeof range[1]) && (
             <Box display="flex" justifyContent="space-between">
-              <Typography sx={{ fontSize: 20 }}>
+              <Typography sx={{ fontSize: 10 }}>
                 {`${range[0]} ${unit}`}
               </Typography>
               <Typography sx={{ fontSize: 10 }}>

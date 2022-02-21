@@ -9,7 +9,7 @@ import mikeComponentsProps from './mikeComponentsProps';
 // #endregion
 
 const defaultTheme = createTheme();
-export const dhiSharedTheme: IMikeTheme = createTheme({
+const dhiSharedTheme: IMikeTheme = createTheme({
   ...defaultTheme,
   typography: dhiTypography,
   palette: dhiPalette,
