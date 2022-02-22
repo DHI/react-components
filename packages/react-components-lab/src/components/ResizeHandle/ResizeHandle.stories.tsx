@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import { Box, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { ResizeHandleProps } from './types';
 import ResizeHandle from './ResizeHandle';
 import mikePalette from '../ThemeProvider/dhiPallete';
@@ -24,14 +24,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Template: Story<ResizeHandleProps> = (args) => {
+const Template: Story<ResizeHandleProps> = (props) => {
   const defaultSize = 200;
 
   const [height, setHeight] = useState(defaultSize);
   const [width, setWidth] = useState(defaultSize);
   const classes = useStyles();
 
-  const { vertical, size } = args;
+  const { vertical, size } = props;
 
   const isHorizontal = !vertical;
   const isSizeSmall = size === 'small';
@@ -64,7 +64,7 @@ const Template: Story<ResizeHandleProps> = (args) => {
             top={-34}
           >
             <ResizeHandle
-              {...args}
+              {...props}
               onDrag={setHeight}
               wrapperSize={400}
               draggableSize={height}
@@ -81,7 +81,7 @@ const Template: Story<ResizeHandleProps> = (args) => {
             top={-25}
           >
             <ResizeHandle
-              {...args}
+              {...props}
               onDrag={setHeight}
               wrapperSize={400}
               draggableSize={height}
@@ -98,7 +98,7 @@ const Template: Story<ResizeHandleProps> = (args) => {
             top={-16}
           >
             <ResizeHandle
-              {...args}
+              {...props}
               onDrag={setHeight}
               wrapperSize={400}
               draggableSize={height}
@@ -115,7 +115,7 @@ const Template: Story<ResizeHandleProps> = (args) => {
             left={-16}
           >
             <ResizeHandle
-              {...args}
+              {...props}
               onDrag={setWidth}
               wrapperSize={400}
               draggableSize={width}
