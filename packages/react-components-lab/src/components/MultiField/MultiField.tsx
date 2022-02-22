@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import { Box, TextField, Typography } from '@mui/material';
 import { MultiFieldProps } from './types';
-import useStyles from './styles';
 
 // Currently supports a-z, A-Z, 0-9 characters. If others are needed, regex needs to be updated
 const MultiField: FC<MultiFieldProps> = ({
@@ -24,8 +23,6 @@ const MultiField: FC<MultiFieldProps> = ({
   // to determine which fields are empty, allowing any preceding field value to be empty
   placeholderChar = ' ', // NOTE: Changing dynamically not yet supported
 }) => {
-  const classes = useStyles({ fontSize });
-
   const lengthIndex = length - 1;
 
   // Dynamically changing length is not supported. To add support, refs need to be updated to change correctly on rerender &
@@ -125,7 +122,7 @@ const MultiField: FC<MultiFieldProps> = ({
       justifyContent="space-between"
       width="100%"
       alignItems="center"
-      className={classes.root}
+      gap={1}
     >
       {refs.map((item, i) => (
         <Fragment key={i.toString()}>
@@ -134,12 +131,27 @@ const MultiField: FC<MultiFieldProps> = ({
             onChange={(e) => handleChange(e, i)}
             onKeyDown={(e) => handleKeyPress(e, i)}
             variant="filled"
-            className={classes.field}
+            sx={{
+              display: 'flex',
+              '& .MuiInputBase-input': {
+                fontSize,
+                padding: 1,
+                textAlign: 'center',
+              },
+            }}
             inputRef={item}
             autoFocus={i === 0}
           />
           {(i + 1) % seperationInterval === 0 && i !== lengthIndex && (
-            <Typography className={classes.dash}>{seperatorChar}</Typography>
+            <Typography
+              sx={{
+                fontSize,
+                mx: 1,
+                my: 0,
+              }}
+            >
+              {seperatorChar}
+            </Typography>
           )}
         </Fragment>
       ))}
