@@ -3,6 +3,8 @@ import { Box, Typography } from '@mui/material';
 import { StaticLegendProps } from './types';
 import useStyles from './styles';
 import LegendBase from '../LegendBase/LegendBase';
+import TruncateTypographyStyled from '../LegendBase/TruncateTypography.styled';
+import ColorBoxStyled from '../LegendBase/ColorBox.styled';
 
 const StaticLegend: FC<StaticLegendProps> = ({
   items,
@@ -30,14 +32,11 @@ const StaticLegend: FC<StaticLegendProps> = ({
           justifyContent="space-between"
           width="100%"
         >
-          <Typography className={classes.truncate} variant="subtitle2">
+          <TruncateTypographyStyled variant="subtitle2">
             {item.label}
-          </Typography>
+          </TruncateTypographyStyled>
 
-          <Box
-            style={{ background: item.color }}
-            className={classes.colorBox}
-          />
+          <ColorBoxStyled sx={{ backgroundColor: item.color }} />
         </Box>
       ))}
     </LegendBase>
