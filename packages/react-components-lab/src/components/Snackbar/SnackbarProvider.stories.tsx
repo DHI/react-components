@@ -17,7 +17,9 @@ const App: React.FC = () => {
   const snackbar = useSnackbar();
 
   const handleShowSnackbar = () => {
-    snackbar.showMessage(messageContent);
+    snackbar.showMessage(messageContent, {
+      severity: 'success',
+    });
   };
 
   return (
@@ -37,6 +39,6 @@ export const Default = (args: SnackbarProviderProps): JSX.Element => (
 Default.args = {
   autoHideDuration: 3000,
   transitionComponent: 'slide',
-  severity: 'normal',
+  severity: 'info',
   onActionClick,
 };
