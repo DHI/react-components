@@ -1,7 +1,7 @@
 /**
  * @deprecated These are deprecated colors from DHI guidelines. Not to be used anymore
  */
-export const MIKE_COLORS_V1 = {
+export const DHI_COLORS_V1 = {
   BRANDBLUE_DEFAULT: '#0B4566',
   BRANDBLUE_HOVER: '#003D56',
   ACTIONBLUE_DEFAULT: '#00A4EC',
@@ -30,7 +30,7 @@ export const MIKE_COLORS_V1 = {
 /**
  * The colors from DHI Official Guidelines
  */
-export const MIKE_COLORS = {
+export const DHI_COLORS = {
   BRANDBLUE_DEFAULT: '#0B4566',
   BRANDBLUE_DARK: '#09334B',
   BRANDBLUE_LIGHT: '#93C4D4',
@@ -69,7 +69,7 @@ export const MIKE_COLORS = {
 /**
  * The map colors from DHI Official Guidelines
  */
-export const MIKE_MAP_COLORS = {
+export const DHI_MAP_COLORS = {
   SKYBLUE: '#0EE1FE',
   DUSTYROSE: '#CF6766',
   TURQUISE: '#00FFE1',
@@ -78,4 +78,4 @@ export const MIKE_MAP_COLORS = {
   CORAL: '#CF6766',
 };
 
-export default MIKE_COLORS;
+export default DHI_COLORS;

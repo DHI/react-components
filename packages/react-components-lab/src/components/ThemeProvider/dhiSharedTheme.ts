@@ -4,7 +4,7 @@ import { deepmerge } from '@mui/utils';
 import { IMikeTheme, IMikeThemeOptions } from './types';
 import dhiTypography from './dhiTypography';
 import dhiPalette from './dhiPallete';
-import mikeOverrides from './mikeOverrides';
+import dhiOverrides from './dhiOverrides';
 import mikeComponentsProps from './mikeComponentsProps';
 // #endregion
 
@@ -13,7 +13,7 @@ const dhiSharedTheme: IMikeTheme = createTheme(
   deepmerge(defaultTheme, {
     typography: dhiTypography,
     palette: dhiPalette,
-    // components: mikeOverrides,
+    components: dhiOverrides,
     // props: mikeComponentsProps,
   })
 );

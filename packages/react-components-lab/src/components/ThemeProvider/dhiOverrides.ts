@@ -1,14 +1,28 @@
 import { createTheme, Components } from '@mui/material/styles';
 
 // #region Local imports
-import { MIKE_COLORS } from './mikeColors';
-import { SPACING, FONT_SIZE, FONT_FAMILY } from './types';
-import mikePalette from './dhiPallete';
+import DHI_COLORS from './dhiColors';
+import dhiPalette from './dhiPallete';
 // #endregion
+
+const FONT_FAMILY = [
+  'Roboto',
+  '-apple-system',
+  'BlinkMacSystemFont',
+  'Arial',
+  'sans-serif',
+].join(',');
 
 // const defaultTheme = createTheme();
 
 const mikeOverrides: Components = {
+  MuiTypography: {
+    styleOverrides: {
+      root: {
+        // fontFamily: FONT_FAMILY,
+      }
+    }
+  },
   // MuiCssBaseline: {
   //   '@global': {
   //     '*::-webkit-scrollbar': {

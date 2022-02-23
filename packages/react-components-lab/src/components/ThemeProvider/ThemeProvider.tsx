@@ -13,7 +13,7 @@ const DHIThemeProvider: FC<IProps> = ({ overrides, children }) => {
     const themeWithOverrides = deepmerge({ ...dhiSharedTheme }, overrides);
     return createTheme(themeWithOverrides as ThemeOptions);
   }, [overrides]);
-
+  console.log(theme)
   return (
     <>
       <ThemeProvider theme={theme}>

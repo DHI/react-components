@@ -1,11 +1,18 @@
 import { TypographyVariantsOptions, Palette } from '@mui/material/styles';
-import { HTML_FONT_SIZE, FONT_SIZE, FONT_FAMILY } from './types';
+
+const FONT_FAMILY = [
+  'Roboto',
+  '-apple-system',
+  'BlinkMacSystemFont',
+  'Arial',
+  'sans-serif',
+].join(',');
 
 const dhiTypography:
   | TypographyVariantsOptions
   | ((palette: Palette) => TypographyVariantsOptions) = {
-  htmlFontSize: HTML_FONT_SIZE,
-  fontSize: FONT_SIZE,
+  htmlFontSize: 16,
+  fontSize: 14,
   fontFamily: FONT_FAMILY,
   h1: {
     fontSize: '2rem', // 32px
