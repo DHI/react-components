@@ -1,14 +1,14 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Grid, IconButton } from '@mui/material';
 import {
   PauseCircleFilled as PauseIcon,
   PlayCircleFilled as PlayIcon,
 } from '@mui/icons-material';
 import { TimestepPlayerProps } from './types';
-import timestepStyles from './styles';
 import ValueLabelComponent from './ValueLabel';
-import CustomSlider from './CustomSlider';
+import CustomSlider from './Slider.styled';
 import { formatDate } from './utils';
+import TypographyAnnotations from './TypographyAnnotations.styled';
 
 const TimestepPlayer: FC<TimestepPlayerProps> = ({
   timesteps,
@@ -22,8 +22,6 @@ const TimestepPlayer: FC<TimestepPlayerProps> = ({
   const [step, setStep] = useState(0); // index
 
   const isLastStep = step === timesteps?.length - 1;
-
-  const classes = timestepStyles();
 
   useEffect(() => {
     let timer: number | undefined;
@@ -82,9 +80,19 @@ const TimestepPlayer: FC<TimestepPlayerProps> = ({
                 size="large"
               >
                 {play ? (
-                  <PauseIcon className={classes.icon} />
+                  <PauseIcon
+                    sx={{
+                      height: 38,
+                      width: 38,
+                    }}
+                  />
                 ) : (
-                  <PlayIcon className={classes.icon} />
+                  <PlayIcon
+                    sx={{
+                      height: 38,
+                      width: 38,
+                    }}
+                  />
                 )}
               </IconButton>
             </Box>
@@ -105,17 +113,16 @@ const TimestepPlayer: FC<TimestepPlayerProps> = ({
                 valueLabelDisplay={
                   [0, timesteps.length].includes(step) ? 'off' : 'on'
                 }
-                ValueLabelComponent={ValueLabelComponent}
                 color="secondary"
               />
               <Box display="flex" justifyContent="space-between">
-                <Typography color="secondary" className={classes.annotations}>
+                <TypographyAnnotations color="secondary">
                   {timesteps[0] && formatDate(timesteps[0], type)}
-                </Typography>
-                <Typography color="secondary" className={classes.annotations}>
+                </TypographyAnnotations>
+                <TypographyAnnotations color="secondary">
                   {timesteps[timesteps.length - 1] &&
                     formatDate(new Date(timesteps[timesteps.length - 1]), type)}
-                </Typography>
+                </TypographyAnnotations>
               </Box>
             </Box>
           </Grid>

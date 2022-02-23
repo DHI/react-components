@@ -1,13 +1,7 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable react/no-array-index-key */
 import React, { forwardRef, memo, useState } from 'react';
-import {
-  Box,
-  Typography,
-  Tooltip,
-  IconButton,
-  Collapse,
-} from '@mui/material';
+import { Box, Typography, Tooltip, IconButton, Collapse } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 
 // #region Local imports
@@ -66,7 +60,8 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
                         [c.title]: !showCode[c.title],
                       }))
                     }
-                    size="large">
+                    size="large"
+                  >
                     <CodeIcon />
                   </IconButton>
                 </Tooltip>
