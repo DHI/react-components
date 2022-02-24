@@ -85,7 +85,6 @@
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.2",
-    "@mui/styles": "^5.4.2",
     "@mui/system": "^5.4.2",
     "clsx": "^1.1.1",
     "copy-to-clipboard": "^3.3.1",

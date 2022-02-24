@@ -3,20 +3,16 @@
 import React, { forwardRef, memo, useState } from 'react';
 import { Box, Typography, Tooltip, IconButton, Collapse } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
-
+import BoxWrapperStyled from './BoxWrapper.styled';
 // #region Local imports
 import { ComponentItemProps, SubList } from './types';
 import Syntax from '../../Syntax/Syntax';
 // #endregion
 
-import useStyles from './styles';
-
 const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
   HTMLElement,
   ComponentItemProps
 >(({ item }, ref) => {
-  const classes = useStyles();
-
   const [showCode, setShowCode] = useState<Record<string, boolean>>({});
 
   const beautifyCode = (sub: SubList) =>
@@ -26,29 +22,29 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
     <Box
       {...{ ref }}
       width={1}
+      mt={5}
       paddingTop={10}
-      className={classes.container}
       id={`box-component-${item.title}`}
     >
       <Typography variant="h1">{item.title}</Typography>
-      <Typography variant="h5" className={classes.desc}>
+      <Typography sx={{ margin: '20px 0 10px 0' }} variant="h5">
         {item.description}
       </Typography>
       {item.sub?.map((c, i) => (
         <div key={`${c.title}-${i}`}>
-          <Typography variant="h2" className={classes.subtitle}>
+          <Typography variant="h2" sx={{ margin: '30px 0 10px 0' }}>
             {c.title}
           </Typography>
-          <Typography variant="body2" className={classes.subDesc}>
+          <Typography variant="body2" sx={{ margin: '20px 0 10px 0' }}>
             {c.description}
           </Typography>
-          <div className={classes.exampleWrapper}>
+          <BoxWrapperStyled>
             {c.components?.map((c1, ii) => (
               <Box key={`component-${c.title}-${ii}`} m={1}>
                 {c1.component}
               </Box>
             ))}
-          </div>
+          </BoxWrapperStyled>
           {c.components.find((sl) => sl.codeExample) && (
             <>
               <Box display="flex" width={1} justifyContent="flex-end">

@@ -17,7 +17,6 @@ import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
 import ComponentsData from './ComponentsMui/componentsData';
 import SideNav from './SideNav/SideNav';
-import useStyles from './styles';
 import { ComponentList } from './ComponentsMui/types';
 // #endregion
 
@@ -40,9 +39,7 @@ interface ChildRefState {
   element: RefObject<HTMLElement>;
   isSelected: boolean;
 }
-const Template: Story<IProps> = (args) => {
-  const classes = useStyles();
-
+const Template: Story<IProps> = () => {
   const [dataList, setDataList] = useState<ComponentList[]>([]);
   const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
 
@@ -70,20 +67,50 @@ const Template: Story<IProps> = (args) => {
   }, []);
 
   const childRefs = useMemo(() => childRefState, [childRefState]);
-
   return (
     <>
-      <Box className={classes.root}>
+      <Box sx={{ ml: { xs: 0, sm: 4 } }}>
         <Typography variant="h1">Theme Provider</Typography>
-        <Box className={classes.header}>
-          <Typography variant="h5">
-            <span className={classes.highlightText}>Theme Provider</span> is the
-            theming built on top of Material-Ui styles and overridden based on
-            DHI official CVI. Here is the concept.
+        <Box
+          sx={{ width: { xs: '100%', md: 'calc(100% - 230px)' } }}
+          display="flex"
+          pt={2}
+          pb={1}
+        >
+          <Typography
+            sx={{
+              lineHeight: '1.5',
+            }}
+            variant="h5"
+          >
+            <Box
+              component="span"
+              sx={{
+                backgroundColor: 'primary.light',
+                borderRadius: 5,
+                py: 0.5,
+                px: 1,
+              }}
+            >
+              Theme Provider
+            </Box>
+            is the theming built on top of Material-Ui styles and overridden
+            based on DHI official CVI. Here is the concept.
           </Typography>
         </Box>
-        <main className={classes.mainContainer}>
-          <Box className={classes.content}>
+        <Box
+          component="main"
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+        >
+          <Box
+            flexBasis={0}
+            flexGrow={300}
+            sx={{
+              minWidth: { xs: '100%', md: '40%' },
+            }}
+          >
             <Box bgcolor="primary.main" margin={1} padding={2}>
               <Typography variant="h2" color="textSecondary">
                 Theme Provider
@@ -110,7 +137,7 @@ const Template: Story<IProps> = (args) => {
               ))}
           </Box>
           <SideNav data={dataList} contentList={childRefs} />
-        </main>
+        </Box>
       </Box>
     </>
   );

@@ -37,37 +37,43 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.primary.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#0B4566</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.primary.main}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.primary.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#09334B</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.primary.dark}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.primary.light}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#93C4D4</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.primary.light}
+                </Typography>
               </div>
             ),
           },
@@ -79,41 +85,47 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.secondary.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#00A4EC</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.secondary.main}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.secondary.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#008BEC</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.secondary.dark}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box
                   margin={1}
                   padding={1}
                   bgcolor={dhiPalette.secondary.light}
                 >
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#97DBF9</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.secondary.light}
+                </Typography>
               </div>
             ),
           },
@@ -125,37 +137,39 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.error.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#FD3F75</Typography>
+                <Typography variant="body2">{dhiPalette.error.main}</Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.error.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#D40D57</Typography>
+                <Typography variant="body2">{dhiPalette.error.dark}</Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.error.light}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#FFB1C8</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.error.light}
+                </Typography>
               </div>
             ),
           },
@@ -167,37 +181,43 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.warning.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#FFC20A</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.warning.main}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.warning.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#FFC20A</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.warning.dark}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.warning.light}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#FFE300</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.warning.light}
+                </Typography>
               </div>
             ),
           },
@@ -209,37 +229,37 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.info.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#00A4EC</Typography>
+                <Typography variant="body2">{dhiPalette.info.main}</Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.info.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#008BEC</Typography>
+                <Typography variant="body2">{dhiPalette.info.dark}</Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.info.light}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#97DBF9</Typography>
+                <Typography variant="body2">{dhiPalette.info.light}</Typography>
               </div>
             ),
           },
@@ -251,37 +271,43 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.success.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#61C051</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.success.main}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.success.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#3EB22A</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.success.dark}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.success.light}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#BFE7B7</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.success.light}
+                </Typography>
               </div>
             ),
           },
@@ -293,37 +319,43 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.darkGrey.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#86A2B3</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.darkGrey.main}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.darkGrey.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#557A8F</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.darkGrey.dark}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.darkGrey.light}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#CFDBE2</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.darkGrey.light}
+                </Typography>
               </div>
             ),
           },
@@ -335,49 +367,55 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box
                   margin={1}
                   padding={1}
                   bgcolor={dhiPalette.mediumGrey.main}
                 >
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#DBE4E9</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.mediumGrey.main}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box
                   margin={1}
                   padding={1}
                   bgcolor={dhiPalette.mediumGrey.dark}
                 >
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#CFDBE2</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.mediumGrey.dark}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box
                   margin={1}
                   padding={1}
                   bgcolor={dhiPalette.mediumGrey.light}
                 >
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#F2F5F7</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.mediumGrey.light}
+                </Typography>
               </div>
             ),
           },
@@ -389,88 +427,52 @@ const ComponentsData: ComponentList[] = [
         components: [
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.lightGrey.main}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Main
                   </Typography>
                 </Box>
-                <Typography variant="body2">#F8F8F8</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.lightGrey.main}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box margin={1} padding={1} bgcolor={dhiPalette.lightGrey.dark}>
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Dark
                   </Typography>
                 </Box>
-                <Typography variant="body2">#F8F8F8</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.lightGrey.dark}
+                </Typography>
               </div>
             ),
           },
           {
             component: (
-              <div style={{ textAlign: 'center' }}>
+              <div>
                 <Box
                   margin={1}
                   padding={1}
                   bgcolor={dhiPalette.lightGrey.light}
                 >
-                  <Typography variant="body1" style={{ color: '#fff' }}>
+                  <Typography variant="body1" color="background.paper">
                     Light
                   </Typography>
                 </Box>
-                <Typography variant="body2">#F8F8F8</Typography>
+                <Typography variant="body2">
+                  {dhiPalette.lightGrey.light}
+                </Typography>
               </div>
             ),
           },
         ],
       },
-      // {
-      //   title: 'Ultimate Colors',
-      //   description: '',
-      //   components: [
-      //     {
-      //       component: (
-      //         <div style={{ textAlign: 'center' }}>
-      //           <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.main}>
-      //             <Typography variant="body1" style={{ color: '#fff' }}>
-      //               Main
-      //             </Typography>
-      //           </Box>
-      //           <Typography variant="body2">#61C051</Typography>
-      //         </div>
-      //       ),
-      //     },
-      //     {
-      //       component: (
-      //         <div style={{ textAlign: 'center' }}>
-      //           <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.dark}>
-      //             <Typography variant="body1" style={{ color: '#fff' }}>
-      //               Dark
-      //             </Typography>
-      //           </Box>
-      //           <Typography variant="body2">#3EB22A</Typography>
-      //         </div>
-      //       ),
-      //     },
-      //     {
-      //       component: (
-      //         <div style={{ textAlign: 'center' }}>
-      //           <Box margin={1} padding={1} bgcolor={dhiPalette.ultimate.light}>
-      //             <Typography variant="body1" style={{ color: '#fff' }}>
-      //               Light
-      //             </Typography>
-      //           </Box>
-      //           <Typography variant="body2">#BFE7B7</Typography>
-      //         </div>
-      //       ),
-      //     },
-      //   ],
-      // },
     ],
   },
   {

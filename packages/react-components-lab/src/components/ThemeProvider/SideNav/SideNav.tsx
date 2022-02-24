@@ -1,9 +1,9 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, FC } from 'react';
 import { Typography, Box, Divider } from '@mui/material';
-
 // #region Local imports
 import { ChildRef, SideNavProps } from './types';
-import useStyles from './styles';
+import RootBoxStyled from './RootBox.styled';
+import WrapperBoxStyled from './WrapperBox.styled';
 // #endregion
 
 const itemNameHeading = 'nav-item-';
@@ -52,16 +52,13 @@ const scrollStopListener = (
   };
 };
 
-const SideNav: React.FC<SideNavProps> = ({ data, contentList }) => {
-  const classes = useStyles();
-
+const SideNav: FC<SideNavProps> = ({ data, contentList }) => {
   const [selectedItem, setSelectedItem] = useState<ChildRef>();
   const [navClicked, setNavClicked] = useState<boolean>(false);
-
   useEffect(() => {
     const destroyListener = scrollStopListener(window, () => {
       const scrollPosition = window.scrollY;
-
+      console.log(contentList);
       const selected = contentList.find(({ id, element }) => {
         const ele = element.current;
         if (ele) {
@@ -83,7 +80,7 @@ const SideNav: React.FC<SideNavProps> = ({ data, contentList }) => {
       setNavClicked(false);
     });
     return () => destroyListener();
-  }, [selectedItem, navClicked]);
+  }, [selectedItem, navClicked, contentList]);
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const { id } = e.target as HTMLElement;
@@ -99,20 +96,19 @@ const SideNav: React.FC<SideNavProps> = ({ data, contentList }) => {
   };
 
   return (
-    <Box className={classes.sidenav}>
-      <Box className={classes.component}>
-        <Box className={classes.sidenavHeader}>
+    <RootBoxStyled>
+      <WrapperBoxStyled>
+        <Box>
           <Typography variant="h5">Contents</Typography>
         </Box>
-        <Box className={classes.sidenavContent}>
+        <Box id="sidenavContent">
           <ul>
             {data?.map((item) => (
               <div key={`li-wrapper-${item.title}`}>
                 <li
                   className={
-                    selectedItem?.id === `${itemNameHeading}${item.title}`
-                      ? classes.selected
-                      : classes.item
+                    selectedItem?.id === `${itemNameHeading}${item.title}` &&
+                    'nav-selected'
                   }
                   id={`${itemNameHeading}${item.title}`}
                   aria-hidden="true"
@@ -120,13 +116,20 @@ const SideNav: React.FC<SideNavProps> = ({ data, contentList }) => {
                 >
                   {item.title}
                 </li>
-                {item.pinned ? <Divider className={classes.divider} /> : null}
+                {item.pinned ? (
+                  <Divider
+                    sx={{
+                      mx: 2,
+                      my: 1,
+                    }}
+                  />
+                ) : null}
               </div>
             ))}
           </ul>
         </Box>
-      </Box>
-    </Box>
+      </WrapperBoxStyled>
+    </RootBoxStyled>
   );
 };
 
