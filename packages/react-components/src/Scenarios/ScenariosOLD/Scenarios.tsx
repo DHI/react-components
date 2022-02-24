@@ -73,7 +73,7 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [queryDates]);
 
   useEffect(() => {
     if (addScenario !== scenario) {
