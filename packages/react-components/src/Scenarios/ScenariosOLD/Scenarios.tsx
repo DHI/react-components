@@ -122,6 +122,10 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
         const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
 
         setScenarios(newScenarios);
+
+        if (onScenariosReceived) {
+          onScenariosReceived(newScenarios);
+        }
       },
       (error) => {
         console.log(error);
