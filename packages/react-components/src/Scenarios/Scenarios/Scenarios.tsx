@@ -58,6 +58,7 @@ const Scenarios = (props: ScenariosProps) => {
     onScenariosReceived,
     onRenderScenarioItem,
     onRenderScenarioIcon,
+    onRowRefsUpdated,
     addScenario,
     translations,
     timeZone,
@@ -148,13 +149,15 @@ const Scenarios = (props: ScenariosProps) => {
             values,
           },
         ];
+
         const jobSources = {
+          token: token || jobToken,
           host: jobHost || host,
           connection: jobConnection,
         };
 
         try {
-          executeJobQuery(jobSources, jobToken || token, query).subscribe((jobs) => {
+          executeJobQuery(jobSources, query).subscribe((jobs) => {
             newScenarios.map((scenario) => {
               const latestJob = filterToLastJob(scenario, jobs);
               let sce = {};
@@ -551,7 +554,7 @@ const Scenarios = (props: ScenariosProps) => {
   useEffect(() => {
     connectToSignalR();
     fetchScenariosList();
-  }, []);
+  }, [queryDates]);
 
   return (
     <div className={classes && classes.root}>
@@ -567,6 +570,7 @@ const Scenarios = (props: ScenariosProps) => {
           onContextMenuClick={onContextMenuClickHandler}
           onRenderScenarioItem={onRenderScenarioItem}
           onRenderScenarioIcon={onRenderScenarioIcon}
+          onRowRefsUpdated={onRowRefsUpdated}
           showDate={showDate}
           showDateGroups={showDateGroups}
           showHour={showHour}

@@ -2,10 +2,10 @@ import { fetchAccount, fetchToken, resetPassword, updatePassword } from '../api'
 import { Form, OtpInfo, Token, User } from './types';
 
 export default class AuthService {
-  host: string | string[];
+  host: string[];
 
   constructor(host: string | string[]) {
-    this.host = host;
+    this.host = Array.isArray(host) ? host : [host];
   }
 
   login = (
@@ -14,54 +14,10 @@ export default class AuthService {
     onSuccess: (user: User, token: Token) => void,
     onError: (err: string) => void,
   ) => {
-    if (Array.isArray(this.host)) {
-      let firstResponse;
-      const accessTokenList = [];
+    const accessTokenList = [];
 
-      this.host.forEach((host, index) => {
-        fetchToken(host, {
-          id: form.id,
-          password: form.password,
-          otp: form.otp,
-          otpAuthenticator: form.otpAuthenticator,
-        }).subscribe(
-          (response) => {
-            if ((response as OtpInfo).otpRequired && !form.otp) {
-              onOtpRequired(response as OtpInfo);
-            } else {
-              fetchAccount(host, response.accessToken.token, 'me').subscribe(
-                (user) => {
-                  const loggedInUser: User = {
-                    ...user,
-                    roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
-                    metadata: user.metadata ? user.metadata : {},
-                  };
-
-                  if (index === 0) {
-                    this.setSession(response, loggedInUser, form.rememberMe);
-                    firstResponse = response;
-
-                    if (onSuccess != null) {
-                      onSuccess(loggedInUser, response);
-                    }
-                  } else {
-                    accessTokenList.push({ ...response, host });
-                    this.setSession(firstResponse, loggedInUser, form.rememberMe, accessTokenList);
-                  }
-                },
-                (err) => {
-                  if (onError != null) {
-                    onError(err);
-                  }
-                },
-              );
-            }
-          },
-          (error) => onError(error),
-        );
-      });
-    } else {
-      fetchToken(this.host, {
+    this.host.forEach((host) => {
+      fetchToken(host, {
         id: form.id,
         password: form.password,
         otp: form.otp,
@@ -71,18 +27,22 @@ export default class AuthService {
           if ((response as OtpInfo).otpRequired && !form.otp) {
             onOtpRequired(response as OtpInfo);
           } else {
-            fetchAccount(this.host as string, response.accessToken.token, 'me').subscribe(
+            fetchAccount(host, response.accessToken.token, 'me').subscribe(
               (user) => {
                 const loggedInUser: User = {
                   ...user,
-                  roles: user.roles ? user.roles.split(',').map((role: string) => role.trim()) : [],
+                  userGroups: user.userGroups,
                   metadata: user.metadata ? user.metadata : {},
                 };
 
-                this.setSession(response, loggedInUser, form.rememberMe);
+                accessTokenList.push({ ...response, host });
 
-                if (onSuccess != null) {
-                  onSuccess(loggedInUser, response);
+                if (accessTokenList.length === this.host.length) {
+                  this.setSession(accessTokenList[0], loggedInUser, form.rememberMe, accessTokenList);
+
+                  if (onSuccess != null) {
+                    onSuccess(loggedInUser, response);
+                  }
                 }
               },
               (err) => {
@@ -95,7 +55,7 @@ export default class AuthService {
         },
         (error) => onError(error),
       );
-    }
+    });
   };
 
   requestResetPassword = (
@@ -104,7 +64,7 @@ export default class AuthService {
     onSuccess: () => void,
     onError: (err: string) => void,
   ) => {
-    return resetPassword(this.host as string, mailBody, emailAddress).subscribe(
+    return resetPassword(this.host[0] as string, mailBody, emailAddress).subscribe(
       (response) => {
         if (onSuccess != null) {
           onSuccess();
@@ -120,7 +80,7 @@ export default class AuthService {
     onSuccess: () => void,
     onError: (err: string) => void,
   ) => {
-    return updatePassword(this.host as string, token, newPassword).subscribe(
+    return updatePassword(this.host[0] as string, token, newPassword).subscribe(
       (response) => {
         if (onSuccess != null) {
           onSuccess();

@@ -47,7 +47,7 @@ const DEFAULT_COLUMNS = [
 const NOTIFICATION_HUB = '/notificationhub';
 
 const JobList = (props: JobListProps) => {
-  const { dataSources, token, disabledColumns, parameters, startTimeUtc, dateTimeFormat, timeZone } = props;
+  const { dataSources, disabledColumns, parameters, startTimeUtc, dateTimeFormat, timeZone } = props;
   const initialDateState = {
     from: new Date(startTimeUtc).toISOString(),
     to: new Date().toISOString(),
@@ -64,6 +64,8 @@ const JobList = (props: JobListProps) => {
     started: '',
     finished: '',
     progress: 0,
+    tokenJobLog: '',
+    hostJobLog: '',
     connectionJobLog: '',
   };
 
@@ -110,30 +112,26 @@ const JobList = (props: JobListProps) => {
       },
     ];
 
-    executeJobQuery(dataSources, token, query).subscribe(
-      (res) => {
-        const rawJobs = res.map((s: { data }) => {
-          const { id, taskId, hostId, accountId, status } = s.data;
-
+    executeJobQuery(dataSources, query).subscribe(
+      (response) => {
+        const rawJobs = response.map((job: any) => {
           // Mapping to JobData.
           const dataMapping = {
-            id,
-            taskId,
-            hostId,
-            accountId,
-            status,
-            progress: s.data.progress || 0,
-            requested: s.data.requested ? zonedTimeFromUTC(s.data.requested, timeZone, dateTimeFormat) : '',
-            started: s.data.started ? zonedTimeFromUTC(s.data.started, timeZone, dateTimeFormat) : '',
-            finished: s.data.finished ? zonedTimeFromUTC(s.data.finished, timeZone, dateTimeFormat) : '',
-            duration: calcTimeDifference(s.data.started, s.data.finished),
-            delay: calcTimeDifference(s.data.requested, s.data.started),
-            connectionJobLog: s.data.connectionJobLog || '',
+            ...job.data,
+            progress: job.data.progress || 0,
+            requested: job.data.requested ? zonedTimeFromUTC(job.data.requested, timeZone, dateTimeFormat) : '',
+            started: job.data.started ? zonedTimeFromUTC(job.data.started, timeZone, dateTimeFormat) : '',
+            finished: job.data.finished ? zonedTimeFromUTC(job.data.finished, timeZone, dateTimeFormat) : '',
+            duration: calcTimeDifference(job.data.started, job.data.finished),
+            delay: calcTimeDifference(job.data.requested, job.data.started),
+            tokenJobLog: job.data.dataSource.tokenJobLog || '',
+            hostJobLog: job.data.dataSource.hostJobLog || '',
+            connectionJobLog: job.data.dataSource.connectionJobLog || '',
           };
 
-          if (s.data.parameters) {
-            for (const key of Object.keys(s.data.parameters)) {
-              dataMapping[key] = s.data.parameters[key];
+          if (job.data.parameters) {
+            for (const key of Object.keys(job.data.parameters)) {
+              dataMapping[key] = job.data.parameters[key];
             }
           }
 
@@ -178,6 +176,8 @@ const JobList = (props: JobListProps) => {
       started = '',
       finished = '',
       progress = 0,
+      tokenJobLog = '',
+      hostJobLog = '',
       connectionJobLog = '',
     } = row;
 
@@ -195,12 +195,15 @@ const JobList = (props: JobListProps) => {
         },
       ];
 
-      const sources = dataSources.map((item) => ({
-        host: item.host,
-        connection: item.connectionJobLog,
-      }));
+      const dataSources = [
+        {
+          host: hostJobLog,
+          connection: connectionJobLog,
+          token: tokenJobLog,
+        },
+      ];
 
-      fetchLogs(sources, token, query).subscribe(
+      fetchLogs(dataSources, tokenJobLog, query).subscribe(
         (res) => {
           const logs = res.map((item) => item.data);
 
@@ -216,6 +219,8 @@ const JobList = (props: JobListProps) => {
             started,
             finished,
             progress,
+            tokenJobLog,
+            hostJobLog,
             connectionJobLog,
             logs,
           });
@@ -307,6 +312,9 @@ const JobList = (props: JobListProps) => {
               (dataUpdated.Started &&
                 calcTimeDifference(dataUpdated.Requested.split('.')[0], dataUpdated.Started.split('.')[0])),
             progress: dataUpdated.Progress || 0,
+            tokenJobLog: dataSources[0].tokenJobLog || '', // So wrong ... it doesn't necessarily sit on the first one. Should be fixed later
+            hostJobLog: dataSources[0].hostJobLog || '',
+            connectionJobLog: dataSources[0].connectionJobLog || '',
           }
         : job,
     );
@@ -330,8 +338,10 @@ const JobList = (props: JobListProps) => {
       requestedUtc: dataAdded.Requested,
       requested: dataAdded.Requested ? zonedTimeFromUTC(dataAdded.Requested, timeZone, dateTimeFormat) : '',
       status: dataAdded.Status,
-      connectionJobLog: dataAdded.ConnectionJobLog || '',
       progress: dataAdded.Progress || 0,
+      tokenJobLog: dataSources[0].tokenJobLog || '', // So wrong ... it doesn't necessarily sit on the first one. Should be fixed later
+      hostJobLog: dataSources[0].hostJobLog || '',
+      connectionJobLog: dataSources[0].connectionJobLog || '',
     };
 
     jobs.push(addedJob);
@@ -348,7 +358,7 @@ const JobList = (props: JobListProps) => {
 
         const connection = new HubConnectionBuilder()
           .withUrl(source.host + NOTIFICATION_HUB, {
-            accessTokenFactory: () => token,
+            accessTokenFactory: () => source.token,
           })
           .configureLogging(LogLevel.Information)
           .withAutomaticReconnect()

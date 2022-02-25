@@ -1,5 +1,4 @@
 import { withKnobs } from '@storybook/addon-knobs';
-import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { fetchTimeseriesValues, fetchToken } from '../api';
 import { TimeseriesExplorer } from './TimeseriesExplorer/Timeseries';
@@ -89,12 +88,11 @@ export const TimeseriesExplorerEChart = () => {
   const host = process.env.ENDPOINT_URL;
   const [token, setToken] = useState('');
 
-  const dataSources = [
-    {
-      host: 'https://domainservices.dhigroup.com',
-      connection: 'mclite-timeseries',
-    },
-  ];
+  const dataSource = {
+    host: 'https://domainservices.dhigroup.com',
+    connection: 'mclite-timeseries',
+    token,
+  };
 
   useEffect(() => {
     fetchToken(host, {
@@ -113,8 +111,7 @@ export const TimeseriesExplorerEChart = () => {
   return (
     token && (
       <TimeseriesExplorer
-        dataSources={dataSources}
-        token={token}
+        dataSource={dataSource}
         title="TimeSeries"
         dateTimeFormat="yyyy-MM-dd HH:mm:ss"
         startTimeUtc="1980-10-13T05:24:35"
