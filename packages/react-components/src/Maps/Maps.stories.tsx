@@ -11,15 +11,13 @@ import { Layer } from 'deck.gl';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import { AisFilterMenu } from './AisVesselLayer/AisFilterMenu/AisFilterMenu';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { AisLayer } from './AisVesselLayer/AisLayer';
 import { AisProvider, useAis } from './AisVesselLayer/AisContext';
-import { fetchVessels } from '../api/Map/AisApi';
 import { useState } from 'react';
-import { VesselAttributeMapping, VesselColorPalette } from './AisVesselLayer/types';
+import { AisFeatureCollection, VesselAttributeMapping, VesselColorPalette } from './AisVesselLayer/types';
 import { LoginGate } from '../Auth/LoginGate';
+import { fetchFeatureCollection } from '../api/FeatureCollection/FeatureCollectionApi';
 
 export default {
   title: 'Map Components',
@@ -188,9 +186,35 @@ const colorPalette: VesselColorPalette = {
 export const AisVesselLayerStory = () => {
   const [refreshIntervalSeconds] = useState<number>(20);
 
-  const createFetchVesselDataFunc = (authToken: string) => async (boundingBox: [number, number, number, number]) => {
-    return await fetchVessels('MarineAid-Ais', 'Live', 7, null, null, 'amsa', boundingBox, authToken);
-  };
+  const createFetchVesselDataFunc =
+    (authToken: string) =>
+    async (boundingBox: [number, number, number, number]): Promise<AisFeatureCollection> => {
+      const parameters = {
+        Type: 'Live',
+        LastHours: 7,
+        TablePrefix: 'amsa',
+        BoundingBox: boundingBox,
+        StartTime: null,
+        EndTime: null,
+      };
+
+      const featureCollectionId = Object.entries(parameters).reduce((acc, [key, value]) => {
+        if (value) {
+          return `${acc}${acc != '' ? ';' : ''}${key}=${value}`;
+        } else {
+          return acc;
+        }
+      }, '');
+
+      const dataSource = {
+        host: 'https://ais-dev.seaportopx.com',
+        token: authToken,
+        connection: 'MarineAid-Ais',
+        id: featureCollectionId,
+      };
+
+      return (await fetchFeatureCollection(dataSource, authToken).toPromise()) as Promise<AisFeatureCollection>;
+    };
 
   return (
     <div>
