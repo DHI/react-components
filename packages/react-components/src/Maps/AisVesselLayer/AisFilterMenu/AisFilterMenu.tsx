@@ -3,11 +3,18 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { RangeFilter } from './RangeFilter';
-import { AisVesselTypeFilter } from './AisVesselTypeFilter';
-import { NavStatusFilter } from './NavStatusFilter';
 import { useAis } from '../AisContext';
+import { AisFilterMenuProps } from './types';
+import { GroupedMultiSelect } from './GroupedMultiSelect';
 
-export const AisFilterMenu: FC<{}> = ({}) => {
+export const AisFilterMenu: FC<AisFilterMenuProps> = ({
+  vesselTypeLabel,
+  navStatusLabel,
+  draftLabel,
+  lengthLabel,
+  vesselTypeOptions,
+  navStatusOptions,
+}) => {
   const {
     onVesselTypeChange,
     onNavStatusChange,
@@ -17,17 +24,25 @@ export const AisFilterMenu: FC<{}> = ({}) => {
 
   return (
     <>
-      <Typography variant="h6">Filter</Typography>
-      <Divider />
       <Box py={1}>
-        <AisVesselTypeFilter onChange={onVesselTypeChange} />
+        <GroupedMultiSelect
+          label={vesselTypeLabel}
+          placeholder={vesselTypeLabel}
+          options={vesselTypeOptions}
+          onChange={onVesselTypeChange}
+        />
       </Box>
       <Box py={1}>
-        <NavStatusFilter onChange={onNavStatusChange} />
+        <GroupedMultiSelect
+          label={navStatusLabel}
+          placeholder={navStatusLabel}
+          options={navStatusOptions}
+          onChange={onNavStatusChange}
+        />
       </Box>
       <Box display="flex" flexDirection="row" my={1} mr={1}>
         <Box width="8ch" mt={0.5}>
-          <Typography>Draft</Typography>
+          <Typography>{draftLabel}</Typography>
         </Box>
         <Box flexGrow={1}>
           <RangeFilter
@@ -41,7 +56,7 @@ export const AisFilterMenu: FC<{}> = ({}) => {
       </Box>
       <Box display="flex" flexDirection="row" my={1} mr={1}>
         <Box width="8ch" mt={0.5}>
-          <Typography>Length</Typography>
+          <Typography>{lengthLabel}</Typography>
         </Box>
         <Box flexGrow={1}>
           <RangeFilter

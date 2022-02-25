@@ -22,12 +22,13 @@ const navStatusOptions = [
 ];
 
 export const NavStatusFilter: React.FC<NavStatusFilterProps> = ({
+  label,
   onChange,
 }) => {
   return (
     <GroupedMultiSelect
-      label="Nav Status"
-      placeholder="Nav Status"
+      label={label}
+      placeholder={label}
       options={navStatusOptions}
       onChange={onChange}
     />

@@ -21,8 +21,6 @@ export const hexColorToArray = (color: string, opacity: number) => {
 // 2. Coordinate conversion helpers.
 // ==========================================
 
-// TODO: Credit source of functions.
-
 export const utmToLatLng = (
   zone: number,
   easting: number,
@@ -111,7 +109,7 @@ export const utmToLatLng = (
   return { latitude: latitude, longitude: longitude };
 }
 
-export const latLngToUtm = (lat: number, lon: number) => {
+export const latLngToUtm = (lat: number, lon: number): { zone: number, easting: number, northing: number, northernHemisphere: boolean } => {
   const UTMScaleFactor = 0.9996;
 
   const result: any = {};

@@ -1,3 +1,21 @@
+export interface AisFilterMenuProps {
+  vesselTypeLabel: string;
+  navStatusLabel: string;
+  draftLabel: string;
+  lengthLabel: string;
+  vesselTypeOptions: { label: string, values: number[] }[];
+  navStatusOptions: { label: string, values: number[] }[];
+}
+export interface NavStatusFilterProps {
+  label: string;
+  onChange: (navStatusIDs: number[][]) => void;
+}
+
+export interface AisVesselTypeFilterProps {
+  label: string;
+  vesselTypeOptions: { label: string, values: number[] }[];
+  onChange: (shipTypeIDs: number[][]) => void;
+}
 
 export interface GroupedMultiSelectedProps {
   label: string;
@@ -9,10 +27,6 @@ export interface GroupedMultiSelectedProps {
   onChange: (selection: number[][]) => void;
 }
 
-export interface NavStatusFilterProps {
-  onChange: (navStatusIDs: number[][]) => void;
-}
-
 export interface RangeFilterProps {
   min: number;
   max: number;
@@ -21,6 +35,3 @@ export interface RangeFilterProps {
   onChange: (newRange: [number, number]) => void;
 }
 
-export interface AisVesselTypeFilterProps {
-  onChange: (shipTypeIDs: number[][]) => void;
-}

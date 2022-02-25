@@ -16,6 +16,7 @@ export interface AisContextProps {
 export interface AisProviderProps {
   fetchVesselData: (boundingBox: [number, number, number, number]) => Promise<any>;
   refreshIntervalSeconds?: number;
+  onDataUpdated?: (updatedGeoJson: AisFeatureCollection) => void; 
 }
 
 export interface AisLayerProps extends CompositeLayerProps<AisFeatureCollection> {
@@ -48,15 +49,24 @@ export interface AisLayerProps extends CompositeLayerProps<AisFeatureCollection>
   triggerAisDataUpdate: number;
 }
 
-export interface VesselViewDefinition {
-  pick?: boolean;
-  from?: number;
-  to?: number;
-  polygons: Polygon[];
-  points?: {
-    fairleadCoefficients: PointCoefficient[];
-    winchCoefficients: PointCoefficient[];
-  };
+export interface VesselView {
+  geometry: VesselComponentView[];
+  defaultParams: VesselDefaultParams;
+}
+
+export interface VesselDefaultParams {
+  length: number;
+  width: number;
+  draft: number;
+  hullHeight: number;
+}
+
+export interface VesselComponentView {
+  isHull?: boolean;
+  color: string;
+  colorOutline: string;
+  elevation?: number;
+  coordinates: number[][];
 }
 
 export interface Polygon {
@@ -68,12 +78,10 @@ export interface Polygon {
 }
 
 type Coordinate = [number, number];
-type PointCoefficient = [number, number];
-
 
 export interface AisFeatureCollection {
   type: 'FeatureCollection';
-  features: Feature[];
+  features: Feature[] | MultiPolygon[][];
 }
 
 export interface Feature {
@@ -82,7 +90,35 @@ export interface Feature {
   properties: any;
 }
 
+export interface MultiPolygon {
+  type: 'MultiPolygon',
+  coordinates: number[][][][],
+  style: any
+}
+
 export interface PointGeometry {
   type: 'Point'
   coordinates: number[];
+}
+
+export type VesselType = 'CruiseLiner' | 'GeneralCargo' | 'Tanker' | 'Yacht' | 'ContainerVessel' | 'BulkCarrier' | 'Roro';
+
+export interface VesselAttributeMapping {
+  shipType: string;
+  heading: string;
+  length: string;
+  width:  string;
+  draft: string;
+  toBow: string | null;
+  toStern: string | null;
+  toPort: string | null;
+  toStarboard: string | null;
+  hullOverride?: string | null;
+  showInnerVesselLayout?: boolean;
+}
+
+export interface VesselColorPalette {
+  primary: string;
+  secondary: string,
+  tertiary: string;
 }

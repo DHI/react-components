@@ -1,9 +1,8 @@
 import { CompositeLayer } from "@deck.gl/core";
 import { GeoJsonLayer, TextLayer } from "@deck.gl/layers";
 import { TileLayer } from "deck.gl";
-import { AisFeatureCollection, AisLayerProps, Feature } from "./types";
-import { vesselsToGeoJson3D } from './vesselsToMapFeature';
-
+import { AisFeatureCollection, AisLayerProps, Feature, VesselAttributeMapping, VesselColorPalette } from "./types";
+import { createVesselFeatureCollection } from './vesselsToMapFeature';
 
 // ==========================================
 // Contents
@@ -53,6 +52,26 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
     const labelMaxZ = maxLabelZoom != null ? maxLabelZoom : 20;
     const vesselMinZ = min3DVesselZoom != null ? min3DVesselZoom : 12;
     const vesselMaxZ = max3DVesselZoom != null ? max3DVesselZoom : 20;
+
+    const vesselAttributeMapping: VesselAttributeMapping = {
+      shipType: 'ShipType',
+      heading: 'Heading',
+      length: 'Length',
+      width: 'Width',
+      draft: 'Draft',
+      toBow: 'ToBow',
+      toStern: 'ToStern',
+      toPort: 'ToPort',
+      toStarboard: 'ToStarboard',
+      hullOverride: null,
+      showInnerVesselLayout: true,
+    };
+
+    const colorPalette: VesselColorPalette = {
+      primary: "#42a5f5",
+      secondary: "#1976D2",
+      tertiary: "#0D47A1",
+    };
 
     return [
 
@@ -123,20 +142,19 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
       zoom >= labelMinZ && zoom <= labelMaxZ ?
         new TileLayer({
           id: 'tile-vessel-labels',
-          getTileData: async (tile: { x: number, y: number, z: number, signal: AbortSignal }): Promise<Feature[]> => {
+          getTileData: async (tile: { x: number, y: number, z: number, signal: AbortSignal }): Promise<any> => {
             const { x, y, z, signal } = tile;
             if (signal.aborted) {
               return;
             }
-            const data = fetchAisTileData(x, y, z); 
-            return data.features;
+            return fetchAisTileData(x, y, z); 
           },
           renderSubLayers: ({ tile, data }: {tile: { x: number, y: number, z: number}, data: AisFeatureCollection}) => {
             const { x, y, z } = tile;
 
             return new TextLayer({
               id: `Vessel-Text-Layer-${x}-${y}-${z}`,
-              data,
+              data: data.features,
               visible: zoom >= 10,
               background: true,
               getPosition: (f: Feature): any => {
@@ -152,7 +170,7 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
               },
               getText: (f: Feature) => getLabelText(f.properties),
               getColor: (f: Feature): [number, number, number, number] => {
-                if (f.properties.Name && isVesselVisible(f.properties)) {
+                if (isVesselVisible(f.properties)) {
                   if (getLabelTextColor) {
                     return getLabelTextColor(f.properties);
                   }
@@ -161,7 +179,7 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
                 return [0, 0, 0, 0];
               },
               getBackgroundColor: (f: Feature): [number, number, number, number] => {
-                if (f.properties.Name && isVesselVisible(f.properties)) {
+                if (isVesselVisible(f.properties)) {
                   if (getLabelBackgroundColor) {
                     return getLabelBackgroundColor(f.properties);
                   }
@@ -202,7 +220,7 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
               return;
             }
             const data = fetchAisTileData(x, y, z); 
-            const data3D = vesselsToGeoJson3D(data);
+            const data3D = createVesselFeatureCollection(data, vesselAttributeMapping, colorPalette) as any;
             return data3D;
           },
           renderSubLayers: (props: any) => {   

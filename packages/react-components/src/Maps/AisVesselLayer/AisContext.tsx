@@ -4,7 +4,7 @@ import { AisContextProps, AisFeatureCollection, AisProviderProps } from './types
 
 const AisContext = createContext<AisContextProps>(undefined);
 
-const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSeconds, children }) => {
+const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSeconds, onDataUpdated, children }) => {
   const [selectedVesselTypes, setSelectedVessselTypes] = useState<number[]>([]);
   const [selectedNavStatus, setSelectedNavStatus] = useState<number[]>([]);
   const [draftRange, setDraftRange] = useState<[number, number] | null>(null);
@@ -26,6 +26,9 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSec
           .then((geojson) => {
             aisFeatureCollection.current = geojson;
             setTriggerAisDataUpdate(prev => prev + 1);
+            if (onDataUpdated) {
+              onDataUpdated(aisFeatureCollection.current);
+            }
           });
       }, refreshIntervalSeconds * 1000);
     }
