@@ -18,6 +18,8 @@ import { AisLayer } from './AisVesselLayer/AisLayer';
 import { AisProvider, useAis } from './AisVesselLayer/AisContext';
 import { fetchVessels } from '../api/Map/AisApi';
 import { useState } from 'react';
+import { VesselAttributeMapping, VesselColorPalette } from './AisVesselLayer/types';
+import { LoginGate } from '../Auth/LoginGate';
 
 export default {
   title: 'Map Components',
@@ -166,36 +168,30 @@ const INITIAL_VIEW_STATE_AIS_STORY = {
   bearing: 0,
 };
 
+const vesselAttributeMapping: VesselAttributeMapping = {
+  shipType: 'ShipType',
+  heading: 'Heading',
+  length: 'Length',
+  width: 'Width',
+  draft: 'Draft',
+  toBow: 'ToBow',
+  toStern: 'ToStern',
+  toPort: 'ToPort',
+  toStarboard: 'ToStarboard',
+  hullOverride: null,
+  showInnerVesselLayout: true,
+};
+
+const colorPalette: VesselColorPalette = {
+  primary: "#42a5f5",
+  secondary: "#1976D2",
+  tertiary: "#0D47A1",
+};
+
 export const AisVesselLayerStory = () => {
-  const [authToken, setAuthToken] = React.useState<string>();
   const [refreshIntervalSeconds] = useState<number>(20);
-
-  const login = async (username: string, password: string) => {
-    const response = await fetch("https://auth-dev.seaportopx.com/api/tokens", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: username,
-        password: password,
-      }),
-    });
-
-    const authResponse = await response.json();
-    setAuthToken(authResponse.accessToken.token);
-  }
-
-  const handleLoginSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const target = event.target as any;
-    const username = target?.elements?.fusername?.value ?? '';
-    const password = target?.elements?.fpassword?.value ?? '';
-    login(username, password);
-  };
-
-  const fetchVesselData = async (boundingBox: [number, number, number, number]) => {
+  
+  const createFetchVesselDataFunc = (authToken: string) => async (boundingBox: [number, number, number, number]) => {
     return await fetchVessels(
       'MarineAid-Ais',
       'Live',
@@ -210,23 +206,14 @@ export const AisVesselLayerStory = () => {
 
   return (
     <div>
-      {authToken && (
-        <AisProvider fetchVesselData={fetchVesselData} refreshIntervalSeconds={refreshIntervalSeconds}>
-          <AisVesselMapLayer authToken={authToken} />
-        </AisProvider>
-      )}
-      {!authToken && (
-        <Box
-          position="absolute"
-          right="1rem"
-          top="1rem"
-          padding={2}
-          width="25ch"
-          component={Paper}
-        >
-          <LoginForm handleLoginSubmit={handleLoginSubmit} />
-        </Box>
-      )}
+      <p>If you would like a demo of this component, please contact SeaPort OPX</p>
+      <LoginGate host="https://auth-dev.seaportopx.com" textFieldVariant={'outlined'}>
+        {({ token }) => (
+          <AisProvider fetchVesselData={createFetchVesselDataFunc(token.accessToken.token)} refreshIntervalSeconds={refreshIntervalSeconds}>
+            <AisVesselMapLayer authToken={token.accessToken.token} />
+          </AisProvider>
+        )}
+      </LoginGate>
     </div>
   );
 }
@@ -318,8 +305,10 @@ const AisVesselMapLayer = ({ authToken }) => {
     }
   };
 
-  const aisLayer =  authToken ? new AisLayer({
+  const aisLayer = new AisLayer({
     id: 'vessel-layer',
+    vesselAttributeMapping,
+    colorPalette,
     fetchAisTileData,
     isVesselVisible,
     getLabelText: (properties: any) => {
@@ -337,44 +326,27 @@ const AisVesselMapLayer = ({ authToken }) => {
 
     // Optional
     // ------------------------------------
-    // getPointFillColor: (properties: any) => {
-    //   return [0, 255, 0, 255];
-    // },
-    // getPointLineColor: (properties: any) => {
-    //   return [255, 0, 0, 255];
-    // },
-    // getLabelTextColor: (properties: any) => {
-    //   return [255, 255, 255, 255];
-    // },
-    // getLabelBackgroundColor: (properties: any) => {
-    //   return [0, 0, 255, 255];
-    // },
     getLabelPosition: (feature: any): [number, number, number] => {
       const labelElevationBasedOnLength = feature.properties.Length ? feature.properties.Length : 50;
-
       // Clamp elevation.
-      const labelElevation = Math.max(Math.min(labelElevationBasedOnLength, 70), 25); 
-
+      const labelElevation = Math.max(Math.min(labelElevationBasedOnLength, 75), 30); 
       return [
         feature.geometry.coordinates[0],
         feature.geometry.coordinates[1],
         labelElevation
       ];
     },
-    // getLabelSize: (properties: any) => {
-    //   return 20;
-    // },
     get3DVesselElevation: (properties: any) => {
       return properties.elevation;
     },
     onHover: onAisHover,
     triggerAisDataUpdate,
-  }) : null;
+  });
 
   const layers = [
     tileLayer,
     aisLayer
-  ].filter(layer => layer != null);
+  ];
 
   return (
     <>
@@ -423,23 +395,4 @@ const AisVesselMapLayer = ({ authToken }) => {
       )}
     </>
   );
-}
-
-const LoginForm = ({ handleLoginSubmit }) => {
-  return (
-    <form onSubmit={handleLoginSubmit}>
-      <Typography variant='overline'>AIS Feed Login</Typography>
-      <Box mb={1} >
-        <TextField id="fusername" label="Username" variant="outlined" size="small" />
-      </Box>
-      <Box my={1}>
-        <TextField id="fpassword" label="Password" type="password" variant="outlined" size="small" />
-      </Box>
-      <Box mt={1}>
-        <Button type="submit" variant="contained" color="primary">
-          Submit
-        </Button>
-      </Box>
-    </form>
-  )
 }

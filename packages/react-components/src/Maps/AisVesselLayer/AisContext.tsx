@@ -10,8 +10,8 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSec
   const [draftRange, setDraftRange] = useState<[number, number] | null>(null);
   const [lengthRange, setLengthRange] = useState<[number, number] | null>(null);
   const [triggerAisDataUpdate, setTriggerAisDataUpdate] = useState<number>(0);
-  const aisFeatureCollection = useRef<any>();
-  const refreshIntervalId = useRef<any>();
+  const aisFeatureCollection = useRef<AisFeatureCollection>();
+  const refreshIntervalId = useRef<NodeJS.Timer>();
 
   useEffect(() => {
     fetchVesselData([-180.0, -85.0, 180.0, 85.0])

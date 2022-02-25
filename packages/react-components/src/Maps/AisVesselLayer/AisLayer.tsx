@@ -28,6 +28,8 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
     const {
       fetchAisTileData,
       isVesselVisible,
+      vesselAttributeMapping,
+      colorPalette,
       minPointZoom,
       maxPointZoom,
       minLabelZoom,
@@ -52,26 +54,6 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
     const labelMaxZ = maxLabelZoom != null ? maxLabelZoom : 20;
     const vesselMinZ = min3DVesselZoom != null ? min3DVesselZoom : 12;
     const vesselMaxZ = max3DVesselZoom != null ? max3DVesselZoom : 20;
-
-    const vesselAttributeMapping: VesselAttributeMapping = {
-      shipType: 'ShipType',
-      heading: 'Heading',
-      length: 'Length',
-      width: 'Width',
-      draft: 'Draft',
-      toBow: 'ToBow',
-      toStern: 'ToStern',
-      toPort: 'ToPort',
-      toStarboard: 'ToStarboard',
-      hullOverride: null,
-      showInnerVesselLayout: true,
-    };
-
-    const colorPalette: VesselColorPalette = {
-      primary: "#42a5f5",
-      secondary: "#1976D2",
-      tertiary: "#0D47A1",
-    };
 
     return [
 

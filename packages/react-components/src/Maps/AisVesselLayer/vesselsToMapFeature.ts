@@ -133,7 +133,7 @@ export const getVesselPolygons = (
     const outlineColor =  hexColorToArray(vesselGeometry.colorOutline, 1);
     
     const vesselScaleFactor = length / vesselView.defaultParams.length;
-    const vesselDraft = draft > 0 ? draft : vesselView.defaultParams.draft * vesselScaleFactor; 
+    const vesselDraft = draft > 0 ? draft : vesselView.defaultParams.draft * vesselScaleFactor;
 
     let elevation;
     if (vesselGeometry.isHull) {
@@ -1035,9 +1035,9 @@ const getVesselGeometry = (
   const vessels = {
     CruiseLiner: {
       defaultParams: {
-        length: 45, 
-        width: 14,
-        draft: 7.4,
+        length: 200, 
+        width: 40,
+        draft: 10,
         hullHeight: 15,
       },
       geometry: [
@@ -1094,8 +1094,8 @@ const getVesselGeometry = (
     GeneralCargo: {
       defaultParams: {
         length: 200, 
-        width: 28,
-        draft: 8.6,
+        width: 30,
+        draft: 10,
         hullHeight: 35,
       },
       geometry: [
