@@ -187,6 +187,7 @@ const colorPalette: VesselColorPalette = {
 export const AisVesselLayerStory = () => {
   const [authHost, setAuthHost] = useState<string>('');
   const [aisHost, setAisHost] = useState<string>('');
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [refreshIntervalSeconds] = useState<number>(20);
 
   const handleAuthHostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,32 +228,40 @@ export const AisVesselLayerStory = () => {
       return (await fetchFeatureCollection(dataSource, authToken).toPromise()) as Promise<AisFeatureCollection>;
     };
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <div>
-      <p>If you would like a demo of this component, please contact SeaPort OPX</p>
-      <div>
-        <TextField
-          label="Authentication Host"
-          placeholder="https://example-auth.com"
-          variant="outlined"
-          size="small"
-          fullWidth
-          value={authHost}
-          onChange={handleAuthHostChange}
-        />
-      </div>
-      <div style={{ marginTop: '0.5rem' }}>
-        <TextField
-          label="AIS Host"
-          placeholder="https://example-ais.com"
-          variant="outlined"
-          size="small"
-          fullWidth
-          value={aisHost}
-          onChange={handleAisHostChange}
-        />
-      </div>
-      <LoginGate host={authHost} textFieldVariant={'outlined'}>
+      {!isLoggedIn && (
+        <>
+          <p>If you would like a demo of this component, please contact SeaPort OPX</p>
+          <div>
+            <TextField
+              label="Authentication Host"
+              placeholder="https://example-auth.com"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={authHost}
+              onChange={handleAuthHostChange}
+            />
+          </div>
+          <div style={{ marginTop: '0.5rem' }}>
+            <TextField
+              label="AIS Host"
+              placeholder="https://example-ais.com"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={aisHost}
+              onChange={handleAisHostChange}
+            />
+          </div>
+        </>
+      )}
+      <LoginGate host={authHost} textFieldVariant={'outlined'} onSuccess={handleLogin}>
         {({ token }) => (
           <AisProvider
             fetchVesselData={createFetchVesselDataFunc(token.accessToken.token)}
