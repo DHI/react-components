@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { AisFeatureCollection, VesselAttributeMapping, VesselColorPalette } from './AisVesselLayer/types';
 import { LoginGate } from '../Auth/LoginGate';
 import { fetchFeatureCollection } from '../api/FeatureCollection/FeatureCollectionApi';
+import TextField from '@material-ui/core/TextField';
 
 export default {
   title: 'Map Components',
@@ -184,7 +185,17 @@ const colorPalette: VesselColorPalette = {
 };
 
 export const AisVesselLayerStory = () => {
+  const [authHost, setAuthHost] = useState<string>('');
+  const [aisHost, setAisHost] = useState<string>('');
   const [refreshIntervalSeconds] = useState<number>(20);
+
+  const handleAuthHostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAuthHost(event.target.value);
+  };
+
+  const handleAisHostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAisHost(event.target.value);
+  };
 
   const createFetchVesselDataFunc =
     (authToken: string) =>
@@ -207,7 +218,7 @@ export const AisVesselLayerStory = () => {
       }, '');
 
       const dataSource = {
-        host: 'https://ais-dev.seaportopx.com',
+        host: aisHost,
         token: authToken,
         connection: 'MarineAid-Ais',
         id: featureCollectionId,
@@ -219,13 +230,35 @@ export const AisVesselLayerStory = () => {
   return (
     <div>
       <p>If you would like a demo of this component, please contact SeaPort OPX</p>
-      <LoginGate host="https://auth-dev.seaportopx.com" textFieldVariant={'outlined'}>
+      <div>
+        <TextField
+          label="Authentication Host"
+          placeholder="https://example-auth.com"
+          variant="outlined"
+          size="small"
+          fullWidth
+          value={authHost}
+          onChange={handleAuthHostChange}
+        />
+      </div>
+      <div style={{ marginTop: '0.5rem' }}>
+        <TextField
+          label="AIS Host"
+          placeholder="https://example-ais.com"
+          variant="outlined"
+          size="small"
+          fullWidth
+          value={aisHost}
+          onChange={handleAisHostChange}
+        />
+      </div>
+      <LoginGate host={authHost} textFieldVariant={'outlined'}>
         {({ token }) => (
           <AisProvider
             fetchVesselData={createFetchVesselDataFunc(token.accessToken.token)}
             refreshIntervalSeconds={refreshIntervalSeconds}
           >
-            <AisVesselMapLayer authToken={token.accessToken.token} />
+            <AisVesselMapLayer />
           </AisProvider>
         )}
       </LoginGate>
@@ -233,7 +266,7 @@ export const AisVesselLayerStory = () => {
   );
 };
 
-const AisVesselMapLayer = ({ authToken }) => {
+const AisVesselMapLayer = () => {
   const [hoverInfo, setHoverInfo] = useState(null);
   const [vesselTypeOptions] = useState([
     {
