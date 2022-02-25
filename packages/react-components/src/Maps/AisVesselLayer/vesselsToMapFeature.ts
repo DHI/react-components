@@ -1,60 +1,76 @@
-import { hexColorToArray, latLngToUtm, utmToLatLng } from "./helpers";
-import { AisFeatureCollection, Feature, PointGeometry, VesselAttributeMapping, VesselColorPalette, VesselComponentView, VesselType, VesselView } from "./types";
+import { hexColorToArray, latLngToUtm, utmToLatLng } from './helpers';
+import {
+  AisFeatureCollection,
+  Feature,
+  PointGeometry,
+  VesselAttributeMapping,
+  VesselColorPalette,
+  VesselComponentView,
+  VesselType,
+  VesselView,
+} from './types';
 
-export const createVesselFeatureCollection = (featureCollection: AisFeatureCollection, vesselAttributeMapping: VesselAttributeMapping, colorPalette: VesselColorPalette): AisFeatureCollection => {
+export const createVesselFeatureCollection = (
+  featureCollection: AisFeatureCollection,
+  vesselAttributeMapping: VesselAttributeMapping,
+  colorPalette: VesselColorPalette,
+): AisFeatureCollection => {
   const featureCollectionFeatures = featureCollection.features as Feature[];
 
-  const features = featureCollectionFeatures.map((f: Feature) => {
-    const shipType = shipTypeIdToName(f.properties[vesselAttributeMapping.shipType] as number);
-    const heading = f.properties[vesselAttributeMapping.heading] as number;
-    const width = f.properties[vesselAttributeMapping.width] as number;
-    const length = f.properties[vesselAttributeMapping.length] as number;
-    const draft = f.properties[vesselAttributeMapping.draft] as number | null;
-    const toBow = f.properties[vesselAttributeMapping.toBow] as number | null;
-    const toStern = f.properties[vesselAttributeMapping.toStern] as number | null;
-    const toPort = f.properties[vesselAttributeMapping.toPort] as number | null;
-    const toStarboard = f.properties[vesselAttributeMapping.toStarboard] as number | null;
-    const hullOverride = vesselAttributeMapping.hullOverride ?  f.properties[vesselAttributeMapping.hullOverride] as number[][] : null;
-    const showInnerVesselLayout = vesselAttributeMapping.showInnerVesselLayout ?? null;
+  const features = featureCollectionFeatures
+    .map((f: Feature) => {
+      const shipType = shipTypeIdToName(f.properties[vesselAttributeMapping.shipType] as number);
+      const heading = f.properties[vesselAttributeMapping.heading] as number;
+      const width = f.properties[vesselAttributeMapping.width] as number;
+      const length = f.properties[vesselAttributeMapping.length] as number;
+      const draft = f.properties[vesselAttributeMapping.draft] as number | null;
+      const toBow = f.properties[vesselAttributeMapping.toBow] as number | null;
+      const toStern = f.properties[vesselAttributeMapping.toStern] as number | null;
+      const toPort = f.properties[vesselAttributeMapping.toPort] as number | null;
+      const toStarboard = f.properties[vesselAttributeMapping.toStarboard] as number | null;
+      const hullOverride = vesselAttributeMapping.hullOverride
+        ? (f.properties[vesselAttributeMapping.hullOverride] as number[][])
+        : null;
+      const showInnerVesselLayout = vesselAttributeMapping.showInnerVesselLayout ?? null;
 
-    const geometry = f.geometry as PointGeometry;
+      const geometry = f.geometry as PointGeometry;
 
-    const geometry3D = getVesselPolygons(
-      // '',
-      shipType,
-      colorPalette,
-      1,
-      geometry.coordinates[1],
-      geometry.coordinates[0],
-      heading,
-      length,
-      width,
-      draft,
-      toBow,
-      toStern,
-      toPort,
-      toStarboard,
-      hullOverride,
-      showInnerVesselLayout,
-    );
+      const geometry3D = getVesselPolygons(
+        // '',
+        shipType,
+        colorPalette,
+        1,
+        geometry.coordinates[1],
+        geometry.coordinates[0],
+        heading,
+        length,
+        width,
+        draft,
+        toBow,
+        toStern,
+        toPort,
+        toStarboard,
+        hullOverride,
+        showInnerVesselLayout,
+      );
 
-    // Add in original properties for tooltips.
-    const updatedFeature = geometry3D.map((feature) => ({
-      ...feature,
-      properties: {
-        ...feature.properties,
-        ...f.properties,
-      },
-    }));
+      // Add in original properties for tooltips.
+      const updatedFeature = geometry3D.map((feature) => ({
+        ...feature,
+        properties: {
+          ...feature.properties,
+          ...f.properties,
+        },
+      }));
 
-    return updatedFeature;
-  })
-  .flat();
-  
+      return updatedFeature;
+    })
+    .flat();
+
   return {
     type: 'FeatureCollection',
     features,
-  }
+  };
 };
 
 export const getVesselPolygons = (
@@ -75,7 +91,7 @@ export const getVesselPolygons = (
   hullOverride: number[][] | null,
   showInnerVesselLayout: boolean,
 ): Feature[] => {
- const layers: any[] = [];
+  const layers: any[] = [];
 
   const vesselView = getVesselGeometry(vesselTypeName, color, hullOverride, showInnerVesselLayout);
 
@@ -107,8 +123,6 @@ export const getVesselPolygons = (
   }
 
   const utm = latLngToUtm(latitude, longitude);
-  // const referencePoint = new UtmLatLon(latitude, longitude);
-  // const utm = referencePoint.toUtm();
   // const radians = (Math.PI / 180) * (-heading + utm.convergence! + 90);
   const radians = (Math.PI / 180) * (-heading + 90);
   const cos = Math.cos(radians);
@@ -125,13 +139,18 @@ export const getVesselPolygons = (
       newUtm.easting = newX;
       newUtm.northing = newY;
 
-      const { latitude, longitude } = utmToLatLng(newUtm.zone, newUtm.easting, newUtm.northing, newUtm.northernHemisphere);
+      const { latitude, longitude } = utmToLatLng(
+        newUtm.zone,
+        newUtm.easting,
+        newUtm.northing,
+        newUtm.northernHemisphere,
+      );
       return [longitude, latitude];
     });
 
     const fillColor = hexColorToArray(vesselGeometry.color, 1);
-    const outlineColor =  hexColorToArray(vesselGeometry.colorOutline, 1);
-    
+    const outlineColor = hexColorToArray(vesselGeometry.colorOutline, 1);
+
     const vesselScaleFactor = length / vesselView.defaultParams.length;
     const vesselDraft = draft > 0 ? draft : vesselView.defaultParams.draft * vesselScaleFactor;
 
@@ -143,15 +162,15 @@ export const getVesselPolygons = (
     } else if (vesselGeometry.color === color.tertiary) {
       elevation = vesselView.defaultParams.hullHeight * vesselScaleFactor * 1.4 - vesselDraft;
     } else if (vesselGeometry.color === color.primary) {
-      elevation = vesselView.defaultParams.hullHeight * vesselScaleFactor * 1.3 - vesselDraft;;
+      elevation = vesselView.defaultParams.hullHeight * vesselScaleFactor * 1.3 - vesselDraft;
     } else {
-      elevation = vesselView.defaultParams.hullHeight * vesselScaleFactor - vesselDraft;;
+      elevation = vesselView.defaultParams.hullHeight * vesselScaleFactor - vesselDraft;
     }
 
     layers.push({
-      type: "Feature",
+      type: 'Feature',
       geometry: {
-        type: "MultiPolygon",
+        type: 'MultiPolygon',
         coordinates: [[coordinates]],
       },
       properties: {
@@ -168,9 +187,8 @@ export const getVesselPolygons = (
     });
   });
 
-  return layers as any; 
+  return layers as any;
 };
-
 
 const getVesselGeometry = (
   vesselType: VesselType,
@@ -1035,10 +1053,10 @@ const getVesselGeometry = (
   const vessels = {
     CruiseLiner: {
       defaultParams: {
-        length: 200, 
+        length: 200,
         width: 40,
         draft: 10,
-        hullHeight: 15,
+        hullHeight: 35,
       },
       geometry: [
         {
@@ -1089,11 +1107,11 @@ const getVesselGeometry = (
           ],
         },
         ...cruiserLiner,
-      ]
+      ],
     },
     GeneralCargo: {
       defaultParams: {
-        length: 200, 
+        length: 200,
         width: 30,
         draft: 10,
         hullHeight: 35,
@@ -1342,11 +1360,11 @@ const getVesselGeometry = (
             [0.508, 0.182],
           ],
         },
-      ]
+      ],
     },
     ContainerVessel: {
       defaultParams: {
-        length: 200, 
+        length: 200,
         width: 28,
         draft: 8.6,
         hullHeight: 20,
@@ -1650,7 +1668,7 @@ const getVesselGeometry = (
     },
     BulkCarrier: {
       defaultParams: {
-        length: 200, 
+        length: 200,
         width: 28,
         draft: 8.6,
         hullHeight: 20,
@@ -1727,9 +1745,9 @@ const getVesselGeometry = (
         ...bulkCarrierInnerLayout,
       ],
     },
-    Roro:  {
+    Roro: {
       defaultParams: {
-        length: 200, 
+        length: 200,
         width: 28,
         draft: 8.6,
         hullHeight: 20,
@@ -1771,7 +1789,7 @@ const getVesselGeometry = (
         },
         ...roroInnerLayout,
       ],
-    }
+    },
   };
 
   return vessels[vesselType];
@@ -1789,4 +1807,4 @@ const shipTypeIdToName = (shipTypeId: number) => {
   } else {
     return 'GeneralCargo';
   }
-}
+};

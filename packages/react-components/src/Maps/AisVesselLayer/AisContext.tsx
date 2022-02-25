@@ -2,9 +2,20 @@ import { createContext, useContext, useState, useEffect, FC, useRef } from 'reac
 import { getTileFromCache } from './AisTileCache';
 import { AisContextProps, AisFeatureCollection, AisProviderProps } from './types';
 
+/**
+ * This context manages the AIS live data feed for use with the AisLayer map component.
+ * It manages refreshing of the AIS data feed on a set interval, as well as storing the
+ * vessel parameters that have been selected by the user.
+ */
 const AisContext = createContext<AisContextProps>(undefined);
 
-const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSeconds, onDataUpdated, children }) => {
+const AisProvider: FC<AisProviderProps> = ({
+  fetchVesselData,
+  refreshIntervalSeconds,
+  bbox,
+  onDataUpdated,
+  children,
+}) => {
   const [selectedVesselTypes, setSelectedVessselTypes] = useState<number[]>([]);
   const [selectedNavStatus, setSelectedNavStatus] = useState<number[]>([]);
   const [draftRange, setDraftRange] = useState<[number, number] | null>(null);
@@ -14,29 +25,28 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSec
   const refreshIntervalId = useRef<NodeJS.Timer>();
 
   useEffect(() => {
-    fetchVesselData([-180.0, -85.0, 180.0, 85.0])
-      .then((geojson) => {
-        aisFeatureCollection.current = geojson;
-        setTriggerAisDataUpdate(prev => prev + 1);
-      });
+    const boundingBox = bbox ?? [-180.0, -85.0, 180.0, 85.0];
+    fetchVesselData(boundingBox).then((geojson) => {
+      aisFeatureCollection.current = geojson;
+      setTriggerAisDataUpdate((prev) => prev + 1);
+    });
 
     if (refreshIntervalSeconds) {
       refreshIntervalId.current = setInterval(() => {
-        fetchVesselData([-180.0, -85.0, 180.0, 85.0])
-          .then((geojson) => {
-            aisFeatureCollection.current = geojson;
-            setTriggerAisDataUpdate(prev => prev + 1);
-            if (onDataUpdated) {
-              onDataUpdated(aisFeatureCollection.current);
-            }
-          });
+        fetchVesselData(boundingBox).then((geojson) => {
+          aisFeatureCollection.current = geojson;
+          setTriggerAisDataUpdate((prev) => prev + 1);
+          if (onDataUpdated) {
+            onDataUpdated(aisFeatureCollection.current);
+          }
+        });
       }, refreshIntervalSeconds * 1000);
     }
     return () => {
       if (refreshIntervalId.current) {
         clearInterval(refreshIntervalId.current);
       }
-    }
+    };
   }, []);
 
   const onVesselTypeChange = (shipTypeIDs: number[][]) => {
@@ -57,7 +67,7 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSec
 
   const fetchAisTileData = (x: number, y: number, z: number): AisFeatureCollection => {
     return getTileFromCache(aisFeatureCollection.current, x, y, z);
-  }
+  };
 
   return (
     <AisContext.Provider
@@ -77,7 +87,7 @@ const AisProvider: FC<AisProviderProps> = ({ fetchVesselData, refreshIntervalSec
       {children}
     </AisContext.Provider>
   );
-}
+};
 
 const useAis = () => {
   return (
@@ -86,6 +96,6 @@ const useAis = () => {
       throw new Error('AisContext is missing.');
     })()
   );
-}
+};
 
 export { AisContext, AisProvider, useAis };

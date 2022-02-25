@@ -32,11 +32,9 @@ export default {
  * 2. Ais Layer Story
  */
 
-
 // =====================================
 // 1. Animation Layer Story
 // =====================================
-
 
 const INITIAL_VIEW_STATE_ANIMATION_STORY = {
   longitude: 12.623328,
@@ -155,7 +153,6 @@ export const AnimationLayerStory = () => {
   );
 };
 
-
 // =====================================
 // 2. Ais Layer Story
 // =====================================
@@ -183,40 +180,34 @@ const vesselAttributeMapping: VesselAttributeMapping = {
 };
 
 const colorPalette: VesselColorPalette = {
-  primary: "#42a5f5",
-  secondary: "#1976D2",
-  tertiary: "#0D47A1",
+  primary: '#42a5f5',
+  secondary: '#1976D2',
+  tertiary: '#0D47A1',
 };
 
 export const AisVesselLayerStory = () => {
   const [refreshIntervalSeconds] = useState<number>(20);
-  
+
   const createFetchVesselDataFunc = (authToken: string) => async (boundingBox: [number, number, number, number]) => {
-    return await fetchVessels(
-      'MarineAid-Ais',
-      'Live',
-      7,
-      null,
-      null,
-      'amsa',
-      boundingBox,
-      authToken
-    );
-  }
+    return await fetchVessels('MarineAid-Ais', 'Live', 7, null, null, 'amsa', boundingBox, authToken);
+  };
 
   return (
     <div>
       <p>If you would like a demo of this component, please contact SeaPort OPX</p>
       <LoginGate host="https://auth-dev.seaportopx.com" textFieldVariant={'outlined'}>
         {({ token }) => (
-          <AisProvider fetchVesselData={createFetchVesselDataFunc(token.accessToken.token)} refreshIntervalSeconds={refreshIntervalSeconds}>
+          <AisProvider
+            fetchVesselData={createFetchVesselDataFunc(token.accessToken.token)}
+            refreshIntervalSeconds={refreshIntervalSeconds}
+          >
             <AisVesselMapLayer authToken={token.accessToken.token} />
           </AisProvider>
         )}
       </LoginGate>
     </div>
   );
-}
+};
 
 const AisVesselMapLayer = ({ authToken }) => {
   const [hoverInfo, setHoverInfo] = useState(null);
@@ -230,76 +221,61 @@ const AisVesselMapLayer = ({ authToken }) => {
       values: [70, 71, 72, 73, 74, 75, 76, 77, 78, 79],
     },
     {
-      label: "Passenger",
+      label: 'Passenger',
       values: [60, 61, 62, 63, 64, 65, 66, 67, 68, 69],
     },
     {
-      label: "Other",
+      label: 'Other',
       values: [
-        0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
-        38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55,
-        56, 57, 58, 59, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
+        0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+        47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
       ],
     },
   ]);
   const [navStatusOptions] = useState([
     {
-      label: "Underway",
+      label: 'Underway',
       values: [0],
     },
     {
-      label: "Anchored",
+      label: 'Anchored',
       values: [1, 5],
     },
     {
-      label: "Not Under Command",
+      label: 'Not Under Command',
       values: [2],
     },
     {
-      label: "Other",
+      label: 'Other',
       values: [3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
     },
   ]);
 
-  const {
-    selectedVesselTypes,
-    selectedNavStatus,
-    draftRange,
-    lengthRange,
-    fetchAisTileData,
-    triggerAisDataUpdate,
-  } = useAis(); 
+  const { selectedVesselTypes, selectedNavStatus, draftRange, lengthRange, fetchAisTileData, triggerAisDataUpdate } =
+    useAis();
 
+  // Example of function for toggling the visibility of vessels based on the user selected parameters.
   const isVesselVisible = (featureProperties: any) => {
     const isSelectedShipType =
-      selectedVesselTypes.length === 0 ||
-      selectedVesselTypes.includes(featureProperties.ShipType);
+      selectedVesselTypes.length === 0 || selectedVesselTypes.includes(featureProperties.ShipType);
 
     const isSelectedNavStatus =
-      selectedNavStatus.length === 0 ||
-      selectedNavStatus.includes(featureProperties.NavStatus);
+      selectedNavStatus.length === 0 || selectedNavStatus.includes(featureProperties.NavStatus);
 
     const isSelectedDraftRange =
-      draftRange === null ||
-      (featureProperties.Draft >= draftRange[0] &&
-        featureProperties.Draft <= draftRange[1]);
+      draftRange === null || (featureProperties.Draft >= draftRange[0] && featureProperties.Draft <= draftRange[1]);
 
     const isSelectedLengthRange =
       lengthRange === null ||
-      (featureProperties.Length >= lengthRange[0] &&
-        featureProperties.Length <= lengthRange[1]);
+      (featureProperties.Length >= lengthRange[0] && featureProperties.Length <= lengthRange[1]);
 
-    return (
-      isSelectedShipType &&
-      isSelectedNavStatus &&
-      isSelectedDraftRange &&
-      isSelectedLengthRange
-    );
-  }
+    return isSelectedShipType && isSelectedNavStatus && isSelectedDraftRange && isSelectedLengthRange;
+  };
 
+  // Example of showing tooltips on vessel hover.
   const onAisHover = (hoverInfo: any) => {
     if (hoverInfo.object) {
-      setHoverInfo(hoverInfo.object)
+      setHoverInfo(hoverInfo.object);
     } else {
       setHoverInfo(null);
     }
@@ -324,17 +300,12 @@ const AisVesselMapLayer = ({ authToken }) => {
       return '';
     },
 
-    // Optional
-    // ------------------------------------
+    // Example of setting the position of the vessel label.
     getLabelPosition: (feature: any): [number, number, number] => {
       const labelElevationBasedOnLength = feature.properties.Length ? feature.properties.Length : 50;
       // Clamp elevation.
-      const labelElevation = Math.max(Math.min(labelElevationBasedOnLength, 75), 30); 
-      return [
-        feature.geometry.coordinates[0],
-        feature.geometry.coordinates[1],
-        labelElevation
-      ];
+      const labelElevation = Math.max(Math.min(labelElevationBasedOnLength, 100), 30);
+      return [feature.geometry.coordinates[0], feature.geometry.coordinates[1], labelElevation];
     },
     get3DVesselElevation: (properties: any) => {
       return properties.elevation;
@@ -343,28 +314,15 @@ const AisVesselMapLayer = ({ authToken }) => {
     triggerAisDataUpdate,
   });
 
-  const layers = [
-    tileLayer,
-    aisLayer
-  ];
+  const layers = [tileLayer, aisLayer];
 
   return (
     <>
-      <DeckGL
-        id="ais-layer-deckgl"
-        initialViewState={INITIAL_VIEW_STATE_AIS_STORY}
-        controller={true}
-        layers={layers}
-      />
-      <Box
-        position="absolute"
-        left="1rem"
-        top="1rem"
-        padding="0.5rem 1rem 0rem 1rem"
-        width="40ch"
-        component={Paper}
-      >
-        <Typography variant="h6" gutterBottom>Filter</Typography>
+      <DeckGL id="ais-layer-deckgl" initialViewState={INITIAL_VIEW_STATE_AIS_STORY} controller={true} layers={layers} />
+      <Box position="absolute" left="1rem" top="1rem" padding="0.5rem 1rem 0rem 1rem" width="40ch" component={Paper}>
+        <Typography variant="h6" gutterBottom>
+          Filter
+        </Typography>
         <AisFilterMenu
           vesselTypeLabel="Vessel Types"
           navStatusLabel="Navigation Status"
@@ -375,14 +333,7 @@ const AisVesselMapLayer = ({ authToken }) => {
         />
       </Box>
       {hoverInfo && (
-        <Box
-          position="absolute"
-          right="1rem"
-          top="1rem"
-          padding="0.5rem 1rem 0rem 1rem"
-          width="40ch"
-          component={Paper}
-        >
+        <Box position="absolute" right="1rem" top="1rem" padding="0.5rem 1rem 0rem 1rem" width="40ch" component={Paper}>
           <Typography variant="h6">Hover Info</Typography>
           <Typography>Name: {hoverInfo.properties.Name}</Typography>
           <Typography>IMO: {hoverInfo.properties.IMO}</Typography>
@@ -395,4 +346,4 @@ const AisVesselMapLayer = ({ authToken }) => {
       )}
     </>
   );
-}
+};

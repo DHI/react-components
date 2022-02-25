@@ -1,19 +1,13 @@
-import * as React from "react";
-import Slider from "@material-ui/core/Slider";
+import * as React from 'react';
+import Slider from '@material-ui/core/Slider';
 import { RangeFilterProps } from './types';
-import { createSliderMarks } from "./helpers";
+import { createSliderMarks } from './helpers';
 
 /**
  * Creates a simple slider for selecting between a range of values.
  * E.g. Limiting the vessels visible to be between a certain length.
  */
-export const RangeFilter: React.FC<RangeFilterProps> = ({
-  min,
-  max,
-  minorTick,
-  majorTick,
-  onChange,
-}) => {
+export const RangeFilter: React.FC<RangeFilterProps> = ({ min, max, minorTick, majorTick, onChange }) => {
   const [value, setValue] = React.useState<[number, number]>([min, max]);
   const [marks, setMarks] = React.useState<any[] | null>(null);
 

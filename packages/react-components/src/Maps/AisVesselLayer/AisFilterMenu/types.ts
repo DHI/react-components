@@ -3,17 +3,13 @@ export interface AisFilterMenuProps {
   navStatusLabel: string;
   draftLabel: string;
   lengthLabel: string;
-  vesselTypeOptions: { label: string, values: number[] }[];
-  navStatusOptions: { label: string, values: number[] }[];
-}
-export interface NavStatusFilterProps {
-  label: string;
-  onChange: (navStatusIDs: number[][]) => void;
+  vesselTypeOptions: { label: string; values: number[] }[];
+  navStatusOptions: { label: string; values: number[] }[];
 }
 
 export interface AisVesselTypeFilterProps {
   label: string;
-  vesselTypeOptions: { label: string, values: number[] }[];
+  vesselTypeOptions: { label: string; values: number[] }[];
   onChange: (shipTypeIDs: number[][]) => void;
 }
 
@@ -34,4 +30,3 @@ export interface RangeFilterProps {
   majorTick: number;
   onChange: (newRange: [number, number]) => void;
 }
-

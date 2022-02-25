@@ -1,4 +1,4 @@
-import { CompositeLayerProps } from "@deck.gl/core/lib/composite-layer";
+import { CompositeLayerProps } from '@deck.gl/core/lib/composite-layer';
 
 export interface AisContextProps {
   // Used in conjunction with the AIS Filter Menu.
@@ -32,7 +32,7 @@ export interface AisContextProps {
   fetchAisTileData: (x: number, y: number, z: number) => AisFeatureCollection;
 
   // Trigger to notify DeckGL to update the AIS data for the layer.
-  triggerAisDataUpdate: number,
+  triggerAisDataUpdate: number;
 }
 
 export interface AisProviderProps {
@@ -43,16 +43,19 @@ export interface AisProviderProps {
   // this property can be ignored.
   refreshIntervalSeconds?: number;
 
+  // Bounding box for fetching of Vessel AIS data to limit the area/amount of data that is fetched
+  // with each refresh. Format: [west, south, east, north]
+  bbox?: [number, number, number, number];
+
   // Callback to retrieve the AIS feature collection after the data has been refreshed.
-  onDataUpdated?: (updatedGeoJson: AisFeatureCollection) => void; 
+  onDataUpdated?: (updatedGeoJson: AisFeatureCollection) => void;
 }
 
 export interface AisLayerProps extends CompositeLayerProps<AisFeatureCollection> {
-
   // Function that is used to retrieve the AIS data (in the form of a GeoJSON feature collection).
   // This can directly call an API or go through an intermediate layer to prevent too many requests
   // from occurring (as this is a Tile Layer based component).
-  fetchAisTileData: (x: number, y: number, z: number) => AisFeatureCollection
+  fetchAisTileData: (x: number, y: number, z: number) => AisFeatureCollection;
 
   // Function that is used to toggle the visibility of a vessel.
   // Properties comes directly from the GeoJSON feature properties.
@@ -94,7 +97,7 @@ export interface AisLayerProps extends CompositeLayerProps<AisFeatureCollection>
 
   // Used for mapping the AIS feature collection's property keys to each of the required values of the
   // components. Used to prevent requiring to transform the data between pascal and camel case from
-  // the API. 
+  // the API.
   vesselAttributeMapping: VesselAttributeMapping;
 
   // Color palette supplied for coloring the vessels.
@@ -140,33 +143,39 @@ export interface AisFeatureCollection {
 }
 
 export interface Feature {
-  type: 'Feature',
+  type: 'Feature';
   geometry: PointGeometry;
   properties: any;
 }
 
 export interface MultiPolygon {
-  type: 'MultiPolygon',
-  coordinates: number[][][][],
-  style: any
+  type: 'MultiPolygon';
+  coordinates: number[][][][];
+  style: any;
 }
 
 export interface PointGeometry {
-  type: 'Point'
+  type: 'Point';
   coordinates: number[];
 }
 
-export type VesselType = 'CruiseLiner' | 'GeneralCargo' | 'Tanker' | 'Yacht' | 'ContainerVessel' | 'BulkCarrier' | 'Roro';
-
+export type VesselType =
+  | 'CruiseLiner'
+  | 'GeneralCargo'
+  | 'Tanker'
+  | 'Yacht'
+  | 'ContainerVessel'
+  | 'BulkCarrier'
+  | 'Roro';
 
 // Used for mapping the AIS feature collection's property keys to each of the required values of the
 // components. Used to prevent requiring to transform the data between pascal and camel case from
-// the API. 
+// the API.
 export interface VesselAttributeMapping {
   shipType: string;
   heading: string;
   length: string;
-  width:  string;
+  width: string;
   draft: string;
   toBow: string | null;
   toStern: string | null;
@@ -178,6 +187,6 @@ export interface VesselAttributeMapping {
 
 export interface VesselColorPalette {
   primary: string;
-  secondary: string,
+  secondary: string;
   tertiary: string;
 }
