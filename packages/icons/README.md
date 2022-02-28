@@ -16,7 +16,7 @@ We are aiming for making it as easy as possible for more icons to be added. Howe
 * [x] The icons are generic and close enough to the DHI CVI and is likely to find use in multiple projects.
 * [x] The icons need to be reviewed by at least one of the maintainers.
 
-Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation.
+Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation. 
 
 ## Installing the package 
 
