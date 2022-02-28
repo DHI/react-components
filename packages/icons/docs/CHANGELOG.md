@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/DHI/react-components/compare/@dhi/icons@1.2.0...@dhi/icons@1.3.0) (2022-02-28)
+
+
+### Bug Fixes
+
+* **AdminSettings:** add AdminSettings icon ([c21207e](https://github.com/DHI/react-components/commit/c21207ee491448fb14b0a0e7ac3464172cab5975))
+
+
+### Features
+
+* **AdminSettings:** Add AdminSettings icon ([ef03d1f](https://github.com/DHI/react-components/commit/ef03d1fdc4a362ecafb20e4dc75c1b528a616064))
+
 # @dhi/icons [1.2.0](https://github.com/DHI/react-components/compare/@dhi/icons@1.1.0...@dhi/icons@1.2.0) (2022-01-10)
 
 

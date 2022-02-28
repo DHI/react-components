@@ -11,14 +11,14 @@ This package uses [TypeScript](https://www.typescriptlang.org/) and [Yarn](https
 
 # Adding icons
 
-We are aiming for making it as easy as possible for more icons to be added. However, the icons need to fulfill some minimum requirements:
+We are aiming for making it as easy as possible for more icons to be added. However, the icons need to fulfill some minimum requirements: 
 
 * [x] The icons are generic and close enough to the DHI CVI and is likely to find use in multiple projects.
 * [x] The icons need to be reviewed by at least one of the maintainers.
 
-Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation.
+Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation. 
 
-## Installing the package
+## Installing the package 
 
 Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 

@@ -17,15 +17,16 @@ jobs:
           node-version: 14.x
 
       - name: Use cached node_modules
-        uses: actions/cache@v1
+        id: cache-modules
+        uses: actions/cache@v2
         with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          path: .yarn/cache/
+          key: yarnCache-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            nodeModules-
+            yarnCache-
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
         env:
           CI: true
 

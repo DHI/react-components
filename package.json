@@ -7,21 +7,65 @@
     "author": "DHI",
     "private": true,
     "scripts": {
-        "install": "lerna bootstrap",
-        "build": "lerna run build",
-        "lint": "lerna exec yarn lint",
+        "lint": "yarn lint",
         "sb": "yarn --cwd packages/react-components sb",
-        "lab:sb": "cd packages/react-components-lab && yarn run start-storybook"
+        "icons:build": "cd packages/icons && yarn run build",
+        "lab:start": "yarn start-storybook --config-dir ./packages/react-components-lab/.storybook",
+        "lab:build-storybook": "yarn run icons:build && yarn build-storybook --config-dir ./packages/react-components-lab/.storybook --output-dir ./packages/react-components-lab/storybook-static"
     },
     "workspaces": [
-        "./packages/*",
-        "!packages/react-components/**"
+        "./packages/react-components-lab",
+        "./packages/icons",
+        "./packages/react-components"
     ],
     "dependencies": {
-        "lerna": "^4.0.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
         "typescript": "3.9.9"
     },
     "devDependencies": {
-        "@qiwi/multi-semantic-release": "^3.17.1"
+        "@babel/core": "^7.9.6",
+        "@qiwi/multi-semantic-release": "^3.17.1",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/commit-analyzer": "^8.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/npm": "^7.0.10",
+        "@semantic-release/release-notes-generator": "^9.0.2",
+        "@storybook/addon-actions": "^6.4.13",
+        "@storybook/addon-docs": "^6.4.13",
+        "@storybook/addon-essentials": "^6.4.13",
+        "@storybook/addon-links": "^6.4.13",
+        "@storybook/addons": "^6.4.13",
+        "@storybook/react": "^6.4.13",
+        "@typescript-eslint/eslint-plugin": "^4.4.1",
+        "@typescript-eslint/parser": "^4.22.0",
+        "babel-loader": "^8.2.2",
+        "eslint": "^7.21.0",
+        "eslint-config-airbnb-typescript": "^12.3.1",
+        "eslint-config-prettier": "^8.2.0",
+        "eslint-config-standard": "14",
+        "eslint-config-standard-typescript-prettier": "^4.2.0",
+        "eslint-plugin-eslint-comments": "^3.2.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-jsx-a11y": "^6.3.1",
+        "eslint-plugin-node": "11.1.0",
+        "eslint-plugin-only-warn": "^1.0.2",
+        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-promise": "4.2",
+        "eslint-plugin-react": "^7.20.3",
+        "eslint-plugin-react-hooks": "^4.0.8",
+        "eslint-plugin-standard": "4",
+        "eslint-plugin-storybook": "^0.5.5",
+        "fork-ts-checker-webpack-plugin": "^5.0.14",
+        "prettier": "^2.5.1",
+        "react-docgen-typescript-loader": "^3.7.2",
+        "react-is": "^17.0.2",
+        "ts-loader": "^8.0.2",
+        "tsdx": "^0.14.1",
+        "tslib": "^1.11.1",
+        "tslint-plugin-prettier": "^2.3.0"
+    },
+    "resolutions": {
+        "node-gyp": "^7.0.1"
     }
 }
