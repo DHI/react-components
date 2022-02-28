@@ -2,7 +2,6 @@
 import { Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { ResizeHandleProps } from './types';
 import ResizeHandle from './ResizeHandle';
 import mikePalette from '../ThemeProvider/dhiPallete';
@@ -15,21 +14,11 @@ export default {
 const DARKGREY_LIGHT = mikePalette.darkGrey.light;
 const ACTIONBLUE_PALE = mikePalette.secondary.light;
 
-const useStyles = makeStyles(() => ({
-  background1: {
-    backgroundColor: DARKGREY_LIGHT,
-  },
-  background2: {
-    backgroundColor: ACTIONBLUE_PALE,
-  },
-}));
-
 const Template: Story<ResizeHandleProps> = (props) => {
   const defaultSize = 200;
 
   const [height, setHeight] = useState(defaultSize);
   const [width, setWidth] = useState(defaultSize);
-  const classes = useStyles();
 
   const { vertical, size } = props;
 
@@ -50,7 +39,9 @@ const Template: Story<ResizeHandleProps> = (props) => {
         alignItems="center"
         justifyContent="center"
         flexGrow={1}
-        className={classes.background2}
+        sx={{
+          backgroundColor: 'secondary.light'
+        }}
       >
         <Typography variant="h3">Map</Typography>
       </Box>
@@ -129,7 +120,9 @@ const Template: Story<ResizeHandleProps> = (props) => {
             justifyContent="center"
             height={isHorizontal ? `${height}px` : 1}
             width={!isHorizontal ? `${width}px` : 1}
-            className={classes.background1}
+            sx={{
+              backgroundColor: 'darkGrey.light'
+            }}
           >
             <Typography variant="h3">Container</Typography>
           </Box>
@@ -141,7 +134,9 @@ const Template: Story<ResizeHandleProps> = (props) => {
             justifyContent="center"
             height={isHorizontal ? `${height}px` : 1}
             width={!isHorizontal ? `${width}px` : 1}
-            className={classes.background1}
+            sx={{
+              backgroundColor: 'darkGrey.light'
+            }}
           >
             <Typography variant="h3">Container</Typography>
           </Box>

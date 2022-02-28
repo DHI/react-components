@@ -1,10 +1,8 @@
-import { createTheme, Components } from '@mui/material/styles';
+import { Components } from '@mui/material/styles';
 
 // #region Local imports
-import DHI_COLORS from './dhiColors';
 import dhiPalette from './dhiPallete';
 // #endregion
-
 const FONT_FAMILY = [
   'Roboto',
   '-apple-system',
@@ -16,92 +14,121 @@ const FONT_FAMILY = [
 // const defaultTheme = createTheme();
 
 const mikeOverrides: Components = {
+  MuiCssBaseline: {
+    styleOverrides: {
+      '*::-webkit-scrollbar': {
+        width: '8px',
+        height: '8px',
+        backgroundColor: dhiPalette.mediumGrey.main,
+        borderRadius: '100px',
+      },
+      '*::-webkit-scrollbar:hover': {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      },
+      '*::-webkit-scrollbar-thumb': {
+        backgroundColor: dhiPalette.darkGrey.main,
+        '-webkit-border-radius': '100px',
+      },
+      '*::-webkit-scrollbar-thumb:active': {
+        backgroundColor: dhiPalette.darkGrey.main,
+        '-webkit-border-radius': '100px',
+      },
+    },
+  },
   MuiTypography: {
     styleOverrides: {
       root: {
-        // fontFamily: FONT_FAMILY,
-      }
-    }
+        fontFamily: FONT_FAMILY,
+      },
+    },
   },
-  // MuiCssBaseline: {
-  //   '@global': {
-  //     '*::-webkit-scrollbar': {
-  //       width: '8px',
-  //       height: '8px',
-  //       backgroundColor: MIKE_COLORS.MEDIUMGREY_DEFAULT,
-  //       borderRadius: '100px',
-  //     },
-  //     '*::-webkit-scrollbar:hover': {
-  //       backgroundColor: 'rgba(0, 0, 0, 0.2)',
-  //     },
-  //     '*::-webkit-scrollbar-thumb': {
-  //       background: MIKE_COLORS.DARKGREY_DEFAULT,
-  //       '-webkit-border-radius': '100px',
-  //     },
-  //     '*::-webkit-scrollbar-thumb:active': {
-  //       background: MIKE_COLORS.DARKGREY_DEFAULT,
-  //       '-webkit-border-radius': '100px',
-  //     },
-  //   },
-  // },
-  // MuiAppBar: {
-  //   colorPrimary: {
-  //     backgroundColor: MIKE_COLORS.MEDIUMGREY_LIGHT,
-  //     height: '60px',
-  //     borderBottom: '4px solid #DBE4E9', // MEDIUMGREY
-  //   },
-  // },
-  // MuiToolbar: {
-  //   root: {
-  //     height: '60px',
-  //     minHeight: '0 !important',
-  //   },
-  // },
-  // MuiDialog: {},
-  // MuiDialogTitle: {
-  //   root: {
-  //     padding: '0 !important',
-  //   },
-  // },
-  // MuiDialogContent: {
-  //   root: {
-  //     position: 'relative',
-  //     padding: '0 !important',
-  //     backgroundColor: MIKE_COLORS.XLIGHTGREY,
-  //     '&::before': {
-  //       content: '""',
-  //       display: 'block',
-  //       position: 'absolute',
-  //       top: 0,
-  //       left: 0,
-  //       right: 0,
-  //       width: '100%',
-  //       height: 1,
-  //       boxShadow: '0 0 10px #000000',
-  //     },
-  //     '&::after': {
-  //       content: '""',
-  //       display: 'block',
-  //       position: 'absolute',
-  //       bottom: 0,
-  //       left: 0,
-  //       right: 0,
-  //       width: '100%',
-  //       height: 1,
-  //       boxShadow: '0 0 10px #000000',
-  //     },
-  //   },
-  // },
-  // MuiDialogActions: {
-  //   root: {
-  //     padding: '0 !important',
-  //   },
-  // },
-  // MuiDialogContentText: {
-  //   root: {
-  //     color: mikePalette.text.primary,
-  //   },
-  // },
+  MuiButton: {
+    styleOverrides: {
+      root: {
+        textTransform: 'unset',
+      },
+    },
+  },
+  MuiAppBar: {
+    styleOverrides: {
+      colorPrimary: {
+        backgroundColor: dhiPalette.mediumGrey.light,
+        height: '60px',
+        borderBottom: '4px solid', // MEDIUMGREY
+        borderColor: dhiPalette.mediumGrey.main,
+      },
+    },
+  },
+  MuiToolbar: {
+    styleOverrides: {
+      // root: {
+      //   height: '60px',
+      //   minHeight: '0 !important',
+      // }
+    },
+  },
+  MuiDialog: {
+    styleOverrides: {
+      paper: {
+        padding: 24,
+        backgroundColor: dhiPalette.lightGrey.light,
+      },
+    },
+  },
+  MuiDialogContent: {
+    styleOverrides: {
+      root: {
+        position: 'relative',
+        padding: 'unset',
+        // backgroundColor: dhiPalette.lightGrey.light,
+        // '&::before': {
+        //   content: '""',
+        //   display: 'block',
+        //   position: 'absolute',
+        //   top: 0,
+        //   left: 0,
+        //   right: 0,
+        //   width: '100%',
+        //   height: 1,
+        //   boxShadow: '0 0 10px #000000',
+        // },
+        // '&::after': {
+        //   content: '""',
+        //   display: 'block',
+        //   position: 'absolute',
+        //   bottom: 0,
+        //   left: 0,
+        //   right: 0,
+        //   width: '100%',
+        //   height: 1,
+        //   boxShadow: '0 0 10px #000000',
+        // },
+      },
+    },
+  },
+  MuiDialogTitle: {
+    styleOverrides: {
+      root: {
+        padding: 0,
+        marginBottom: 8,
+      },
+    },
+  },
+  MuiDialogContentText: {
+    styleOverrides: {
+      root: {
+        color: dhiPalette.text.primary,
+      },
+    },
+  },
+  MuiDialogActions: {
+    styleOverrides: {
+      root: {
+        padding: 0,
+      },
+    },
+  },
+
   // MuiButton: {
   //   root: {
   //     fontWeight: 500,
