@@ -18,7 +18,7 @@ We are aiming for making it as easy as possible for more icons to be added. Howe
 
 Look up the [repository guidelines](./docs/CONTRIBUTING.md) for a more technical explanation.
 
-## Installing the package
+## Installing the package 
 
 Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
