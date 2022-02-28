@@ -20,4 +20,13 @@ const fetchFeatureCollectionValues = (dataSources: DataSource | DataSource[], to
   return forkJoin(requests).pipe(map((fc) => fc.flat()));
 };
 
-export { fetchFeatureCollectionValues };
+const fetchFeatureCollection = (dataSource: DataSource, token: string) => {
+  return fetchUrl(`${dataSource.host}/api/featurecollections/${dataSource.connection}/${dataSource.id}`, {
+    method: 'GET',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export { fetchFeatureCollectionValues, fetchFeatureCollection };

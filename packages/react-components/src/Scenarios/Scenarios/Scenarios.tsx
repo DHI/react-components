@@ -554,7 +554,7 @@ const Scenarios = (props: ScenariosProps) => {
   useEffect(() => {
     connectToSignalR();
     fetchScenariosList();
-  }, []);
+  }, [queryDates]);
 
   return (
     <div className={classes && classes.root}>

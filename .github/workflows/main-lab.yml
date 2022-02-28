@@ -69,6 +69,11 @@ jobs:
         env:
           CI: true
 
+      - name: Build lab package
+        run: cd packages/react-components-lab && yarn build
+        env:
+          CI: true
+
       - name: Build And Deploy
         if: (github.ref != 'master' && ${{ failure() }}) || ${{ success() }}
         id: builddeploy

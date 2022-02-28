@@ -73,7 +73,7 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [queryDates]);
 
   useEffect(() => {
     if (addScenario !== scenario) {
@@ -122,6 +122,10 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
         const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
 
         setScenarios(newScenarios);
+
+        if (onScenariosReceived) {
+          onScenariosReceived(newScenarios);
+        }
       },
       (error) => {
         console.log(error);
