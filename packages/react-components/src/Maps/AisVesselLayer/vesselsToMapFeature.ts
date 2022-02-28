@@ -190,7 +190,7 @@ export const getVesselPolygons = (
   return layers as any;
 };
 
-const getVesselGeometry = (
+export const getVesselGeometry = (
   vesselType: VesselType,
   color: VesselColorPalette,
   hullOverride: number[][] | null,
@@ -1795,7 +1795,7 @@ const getVesselGeometry = (
   return vessels[vesselType];
 };
 
-const shipTypeIdToName = (shipTypeId: number) => {
+export const shipTypeIdToName = (shipTypeId: number) => {
   if (shipTypeId >= 70 && shipTypeId <= 79) {
     return 'GeneralCargo';
   } else if (shipTypeId >= 80 && shipTypeId <= 89) {

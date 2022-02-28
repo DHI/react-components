@@ -9,7 +9,7 @@ import {
   updatePassword,
 } from './Accounts/AccountsApi';
 import { fetchToken, validateToken } from './Authentication/AuthenticationApi';
-import { fetchFeatureCollectionValues } from './FeatureCollection/FeatureCollectionApi';
+import { fetchFeatureCollectionValues, fetchFeatureCollection } from './FeatureCollection/FeatureCollectionApi';
 import {
   cancelJob,
   cancelJobs,
@@ -115,5 +115,6 @@ export {
   fetchTimeseriesByGroup,
   fetchTimeseriesFullNames,
   fetchMapAnimationFiles,
+  fetchFeatureCollection,
   fetchFeatureCollectionValues,
 };

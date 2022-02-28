@@ -135,7 +135,7 @@ export interface Polygon {
   coordinates: Coordinate[];
 }
 
-type Coordinate = [number, number];
+export type Coordinate = [number, number];
 
 export interface AisFeatureCollection {
   type: 'FeatureCollection';

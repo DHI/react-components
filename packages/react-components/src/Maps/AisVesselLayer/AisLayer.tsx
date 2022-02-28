@@ -200,7 +200,7 @@ class AisLayer extends CompositeLayer<AisFeatureCollection, AisLayerProps> {
             getTileData: async (tile: { x: number; y: number; z: number; signal: AbortSignal }): Promise<Feature[]> => {
               const { x, y, z, signal } = tile;
               if (signal.aborted) {
-                return;
+                return [];
               }
               const data = fetchAisTileData(x, y, z);
               const data3D = createVesselFeatureCollection(data, vesselAttributeMapping, colorPalette) as any;

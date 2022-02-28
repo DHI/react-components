@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, FC, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, FC, useRef } from 'react';
 import { getTileFromCache } from './AisTileCache';
 import { AisContextProps, AisFeatureCollection, AisProviderProps } from './types';
 
