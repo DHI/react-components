@@ -60,7 +60,7 @@ jobs:
           CI: true
       
       - name: Build app
-        run: yarn run lab:build
+        run: yarn run lab:build-storybook
         env:
           CI: true
 
@@ -92,7 +92,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
           
       - name: Semantic release
-        run: yarn run multi-semantic-release
+        run: yarn run multi-semantic-release --ignore-packages=packages/react-components/**
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
