@@ -19,9 +19,9 @@
   },
   "scripts": {
     "dev": "yarn sb",
-    "start": "start-storybook -p 6006",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
+    "start": "../../node_modules/.bin/start-storybook -p 6006",
+    "build": "../../node_modules/.bin/tsdx build",
+    "test": "../../node_modules/.bin/tsdx test --passWithNoTests",
     "lint": "../../node_modules/eslint/bin/eslint.js .",
     "lint:fix": "../../node_modules/eslint/bin/eslint.js . --fix",
     "semantic-release": "npx semantic-release",
@@ -35,10 +35,7 @@
     "@types/prismjs": "^1.16.5",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "@types/react-window": "^1.8.2",
-    "react-is": "^17.0.2",
-    "tsdx": "^0.13.2",
-    "tslib": "^1.11.1"
+    "@types/react-window": "^1.8.2"
   },
   "peerDependencies": {
     "react": "^17.0.2",
