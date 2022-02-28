@@ -3,15 +3,15 @@
 [![CI - lab](https://github.com/DHI/react-components/actions/workflows/main-lab.yml/badge.svg)](https://github.com/DHI/react-components/actions/workflows/main-lab.yml)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 </div>
-<h1 align="left">@dhi/react-components-lab</h1>
+<h1 align="left">@dhi/react-components-lab</h1> 
 
-This package primarily serves as the incubator for components that are not yet ready to move to the core package/library.
+This package primarily serves as the incubator for components that are not yet ready to move to the core package/library
 
 As developers use and test the components and report issues, the maintainers learn more about shortcomings of the components: missing features, accessibility issues, bugs, API design, etc. The older and more used a component is, the less likely it is that new issues will be found and subsequently need to introduce breaking changes.
 
 This package is created using [TypeScript](https://www.typescriptlang.org/) and [MaterialUI](https://material-ui.com/), built using [Yarn](https://classic.yarnpkg.com/en/) and bundled using [TSDX](https://tsdx.io/).
 
-# The flow of adding a component 
+# The flow of adding a component  
 
 We are aiming for making it as easy as possible for a component to be added to the lab. However, the component needs to fulfill some minimum requirements:
 

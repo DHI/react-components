@@ -128,6 +128,7 @@ const MultiField: FC<MultiFieldProps> = ({
       className={classes.root}
     >
       {refs.map((item, i) => (
+        // eslint-disable-next-line react/no-array-index-key
         <Fragment key={i.toString()}>
           <TextField
             value={getFieldValue(i)}
