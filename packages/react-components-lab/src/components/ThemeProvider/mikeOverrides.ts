@@ -240,7 +240,6 @@ const mikeOverrides: Overrides = {
       boxSizing: 'content-box',
     },
     colorPrimary: {
-      // ==...muiRadioStyles,
       color: mikePalette.primary.main,
       '&$checked': {
         '& svg:nth-of-type(2)': {
@@ -261,12 +260,17 @@ const mikeOverrides: Overrides = {
     },
   },
   MuiFormControlLabel: {
-    root: {
-      '& .MuiTypography-root, .MuiTypography-root.Mui-disabled': {
-        fontSize: '90%',
-        color: mikePalette.darkGrey.main,
+    label: {
+      '&$disabled': {
+        color: mikePalette.mediumGrey.main,
       },
     },
+    // root: {
+    //   '& .MuiTypography-root, .MuiTypography-root.Mui-disabled': {
+    //     fontSize: '90%',
+    //     color: mikePalette.darkGrey.main,
+    //   },
+    // },
   },
   MuiFab: {
     primary: {
