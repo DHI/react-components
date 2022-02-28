@@ -1,3 +1,13 @@
+## @dhi/react-components-lab [1.12.5](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.4...@dhi/react-components-lab@1.12.5) (2022-02-28)
+
+
+
+
+
+### Dependencies
+
+* **@dhi/icons:** upgraded to 1.3.0
+
 ## @dhi/react-components-lab [1.12.4](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.3...@dhi/react-components-lab@1.12.4) (2022-02-16)
 
 
