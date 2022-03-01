@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles'
-import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 export default styled(Box)(({ theme }) => ({
   borderRadius: 4,
@@ -9,4 +9,4 @@ export default styled(Box)(({ theme }) => ({
   '&:hover': {
     backgroundColor: '#FFF',
   },
-}))
+}));

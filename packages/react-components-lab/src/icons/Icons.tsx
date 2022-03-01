@@ -2,7 +2,7 @@ import React, { FC, createElement, useState } from 'react';
 import { Box, Typography, Tooltip } from '@mui/material';
 import * as DhiIcons from '@dhi/icons/dist'; // eslint-disable-line import/no-unresolved
 import copy from 'copy-to-clipboard';
-import IconWrapperStyled from "./IconWrapper.styled"
+import IconWrapperStyled from './IconWrapper.styled';
 
 const Icons: FC = () => {
   const [tooltipText, showTooltipText] = useState<string | undefined>(

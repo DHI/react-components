@@ -40,7 +40,7 @@ const Template: Story<ResizeHandleProps> = (props) => {
         justifyContent="center"
         flexGrow={1}
         sx={{
-          backgroundColor: 'secondary.light'
+          backgroundColor: 'secondary.light',
         }}
       >
         <Typography variant="h3">Map</Typography>
@@ -121,7 +121,7 @@ const Template: Story<ResizeHandleProps> = (props) => {
             height={isHorizontal ? `${height}px` : 1}
             width={!isHorizontal ? `${width}px` : 1}
             sx={{
-              backgroundColor: 'darkGrey.light'
+              backgroundColor: 'darkGrey.light',
             }}
           >
             <Typography variant="h3">Container</Typography>
@@ -135,7 +135,7 @@ const Template: Story<ResizeHandleProps> = (props) => {
             height={isHorizontal ? `${height}px` : 1}
             width={!isHorizontal ? `${width}px` : 1}
             sx={{
-              backgroundColor: 'darkGrey.light'
+              backgroundColor: 'darkGrey.light',
             }}
           >
             <Typography variant="h3">Container</Typography>
