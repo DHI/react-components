@@ -12,13 +12,13 @@
   },
   "scripts": {
     "dev": "yarn sb",
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
+    "start": "../../node_modules/.bin/tsdx watch",
+    "build": "../../node_modules/.bin/tsdx build",
+    "test": "../../node_modules/.bin/tsdx test --passWithNoTests",
     "lint": "../../node_modules/eslint/bin/eslint.js .",
-    "prepare": "tsdx build",
-    "sb": "start-storybook -p 6006",
-    "bsb": "build-storybook"
+    "prepare": "../../node_modules/.bin/tsdx build",
+    "sb": "../../node_modules/.bin/start-storybook -p 6006",
+    "bsb": "../../node_modules/.bin/build-storybook"
   },
   "peerDependencies": {
     "react": ">=16"
@@ -30,16 +30,7 @@
   "author": "DHI",
   "module": "dist/react-components.esm.js",
   "devDependencies": {
-    "@babel/core": "^7.9.6",
     "@danmarshall/deckgl-typings": "^4.9.7",
-    "@storybook/addon-actions": "^6.3.12",
-    "@storybook/addon-docs": "^6.3.12",
-    "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-knobs": "^6.3.1",
-    "@storybook/addon-links": "^6.3.12",
-    "@storybook/addon-storysource": "^6.3.12",
-    "@storybook/addons": "^6.3.12",
-    "@storybook/react": "^6.3.12",
     "@types/classnames": "^2.2.10",
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.150",
@@ -50,10 +41,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-is": "^16.13.1",
-    "ts-loader": "^8.0.2",
-    "tsdx": "^0.13.2",
-    "tslib": "^1.11.1",
-    "tslint-plugin-prettier": "^2.3.0",
     "typescript": "^4.2.3"
   },
   "dependencies": {
@@ -79,7 +66,6 @@
     "lodash": "^4.17.21",
     "lodash.assignin": "^4.2.0",
     "match-sorter": "^4.2.0",
-    "prettier": "^2.5.1",
     "rxjs": "^6.5.5"
   }
 }
