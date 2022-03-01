@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.12.6](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.5...@dhi/react-components-lab@1.12.6) (2022-02-28)
+
+
+### Bug Fixes
+
+* **MuiFormControlLabe:** Fix the issue with disabled colors. ([4726457](https://github.com/DHI/react-components/commit/4726457836d672d173138ebc8210a39606df4086))
+
 ## @dhi/react-components-lab [1.12.5](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.4...@dhi/react-components-lab@1.12.5) (2022-02-28)
 
 
