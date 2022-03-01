@@ -13,7 +13,6 @@ export interface IProps {
 }
 
 export interface IMikePalette extends Palette {
-  ultimate?: PaletteColor;
   darkGrey?: PaletteColor;
   mediumGrey?: PaletteColor;
   lightGrey?: PaletteColor;
@@ -21,11 +20,8 @@ export interface IMikePalette extends Palette {
 
 export interface IMikeTheme extends Theme {
   palette: IMikePalette;
-  overrides?: ComponentsOverrides;
 }
 
 export interface IMikeThemeOptions extends DeprecatedThemeOptions {
   palette: IMikePalette;
 }
-
-

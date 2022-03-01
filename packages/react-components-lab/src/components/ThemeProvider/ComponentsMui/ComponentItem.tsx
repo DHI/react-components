@@ -40,7 +40,7 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
           </Typography>
           <BoxWrapperStyled>
             {c.components?.map((c1, ii) => (
-              <Box key={`component-${c.title}-${ii}`} m={1}>
+              <Box width={1} key={`component-${c.title}-${ii}`} m={1}>
                 {c1.component}
               </Box>
             ))}

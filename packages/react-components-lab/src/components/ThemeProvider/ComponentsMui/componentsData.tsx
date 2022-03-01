@@ -11,13 +11,8 @@ import {
   Radio,
   TextField,
   InputAdornment,
-  DialogTitle,
-  DialogContent,
-  Dialog,
-  DialogActions,
 } from '@mui/material';
 import { Add, PermIdentity } from '@mui/icons-material';
-
 // #region Local imports
 import { ComponentList } from './types';
 import dhiPalette from '../dhiPallete';
@@ -35,39 +30,6 @@ const ComponentsData: ComponentList[] = [
       'Colors collection that we used based on DHI official color palette',
     pinned: true,
     sub: [
-      // {
-      //   title: 'Toolbar',
-      //   description: '',
-      //   components: [
-      //     {
-      //       component: (
-      //         <Dialog open>
-      //           <DialogTitle>Text or stuff</DialogTitle>
-      //           <DialogContent>
-      //             <Typography variant="body2">
-      //               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-      //               do eiusmod tempor incididunt ut labore et dolore magna
-      //               aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-      //               ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      //               Duis aute irure dolor in reprehenderit in voluptate velit
-      //               esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-      //               occaecat cupidatat non proident, sunt in culpa qui officia
-      //               deserunt mollit anim id est laborum.
-      //             </Typography>
-      //           </DialogContent>
-      //           <DialogActions>
-      //             <Button variant="outlined" color="secondary">
-      //               Cancel
-      //             </Button>
-      //             <Button variant="contained" color="primary">
-      //               Continue
-      //             </Button>
-      //           </DialogActions>
-      //         </Dialog>
-      //       ),
-      //     },
-      //   ],
-      // },
       {
         title: 'Primary Colors',
         description: '',
@@ -692,7 +654,7 @@ const ComponentsData: ComponentList[] = [
           {
             component: (
               <FormControlLabel
-                control={<Switch size="small" />}
+                control={<Switch size="small" color="secondary" />}
                 label="Small secondary"
               />
             ),

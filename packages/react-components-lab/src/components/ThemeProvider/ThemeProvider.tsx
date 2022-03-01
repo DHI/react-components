@@ -5,13 +5,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 // #region Local imports
 import dhiSharedTheme from './dhiSharedTheme';
-import { IProps } from './types';
+import { IProps, IMikeTheme } from './types';
 // #endregion
 
 const DHIThemeProvider: FC<IProps> = ({ overrides, children }) => {
-  const theme = useMemo(() => {
+  const theme: IMikeTheme = useMemo(() => {
     const themeWithOverrides = deepmerge({ ...dhiSharedTheme }, overrides);
-    return createTheme(themeWithOverrides as ThemeOptions);
+    return createTheme(themeWithOverrides);
   }, [overrides]);
   return (
     <>

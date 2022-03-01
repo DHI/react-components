@@ -10,7 +10,7 @@ const FONT_FAMILY = [
   'Arial',
   'sans-serif',
 ].join(',');
-
+const SPACING = 8;
 // const defaultTheme = createTheme();
 
 const mikeOverrides: Components = {
@@ -42,7 +42,6 @@ const mikeOverrides: Components = {
       },
     },
   },
-
   MuiAppBar: {
     styleOverrides: {
       colorPrimary: {
@@ -55,6 +54,7 @@ const mikeOverrides: Components = {
   },
   MuiToolbar: {
     styleOverrides: {
+      // not sure if this is really desireable
       // root: {
       //   height: '60px',
       //   minHeight: '0 !important',
@@ -342,221 +342,232 @@ const mikeOverrides: Components = {
       },
     },
   },
-  MuiTabs: {
+  MuiStepIcon: {
     styleOverrides: {
-      scrollButtons: {
-        //   [defaultTheme.breakpoints.up('xs')]: {
-        //     minWidth: 0,
-        //     width: 'auto',
-        //     '&&& > *:first-child': {
-        //       width: 40,
-        //     },
-        //   },
+      root: {
+        fill: dhiPalette.background.paper,
+        color: dhiPalette.text.secondary,
+        border: 'solid',
+        borderColor: dhiPalette.text.secondary,
+        borderRadius: 25,
+        borderWidth: 1,
+        '&.Mui-active': {
+          border: 'none',
+          fill: dhiPalette.secondary.main,
+          '& .MuiStepIcon-text': {
+            fill: `${dhiPalette.background.paper}`,
+          },
+        },
+        '&.Mui-completed': {
+          border: 'none',
+          fill: dhiPalette.secondary.main,
+        },
+      },
+      text: {
+        fill: dhiPalette.text.secondary,
+        fontSize: 15, // for vertical alignment
       },
     },
   },
-  // MuiTab: {
-  //   root: {
-  //     textTransform: 'none',
-  //     [defaultTheme.breakpoints.up('xs')]: {
-  //       fontSize: '0.75rem', // 12px
-  //       fontWeight: 'normal',
-  //       paddingLeft: '0.75rem', // 12px
-  //       paddingRight: '0.75rem',
-  //       minWidth: '0',
-  //     },
-  //     '&:hover, &:focus': {
-  //       color: mikePalette.primary.main,
-  //     },
-  //     '&$selected': {
-  //       fontWeight: 'bold', // todo hevo: should we use theme.typography.fontWeight instead?
-  //     },
-  //   },
-  //   selected: {},
-  // },
-  // MuiTooltip: {
-  //   arrow: {
-  //     color: mikePalette.primary.main,
-  //   },
-  //   popperArrow: {
-  //     '&[x-placement*="bottom"] span[class*="MuiTooltip-arrow"]': {
-  //       '&::before': {
-  //         borderWidth: '0 12px 12px 12px',
-  //         marginTop: '-7px',
-  //         marginLeft: '-6px',
-  //         color: mikePalette.darkGrey.main,
-  //       },
-  //       '&::after': {
-  //         borderWidth: '0 11px 11px 11px',
-  //         borderBottomColor: mikePalette.mediumGrey.main,
-  //         borderLeftColor: 'transparent',
-  //         borderRightColor: 'transparent',
-  //         borderTopColor: 'transparent',
-  //         borderStyle: 'solid',
-  //         marginTop: '-29px',
-  //         marginLeft: '-5px',
-  //         color: 'transparent',
-  //         backgroundColor: 'transparent',
-  //         width: 0,
-  //         content: 'open-quote',
-  //         position: 'absolute',
-  //         display: 'block',
-  //       },
-  //     },
-  //   },
-  //   tooltip: {
-  //     backgroundColor: mikePalette.mediumGrey.main,
-  //     border: `1px solid ${mikePalette.darkGrey.main}`,
-  //     maxWidth: SPACING * 46, // 368px
-  //     minHeight: SPACING * 4, // 32px
-  //     fontSize: FONT_SIZE,
-  //     fontWeight: 'normal',
-  //     fontFamily: FONT_FAMILY,
-  //     padding: SPACING,
-  //     color: mikePalette.primary.main,
-  //     boxSizing: 'border-box',
-  //   },
-  // },
-
-  // MuiStepIcon: {
-  //   root: {
-  //     fill: mikePalette.background.paper,
-  //     color: mikePalette.text.secondary,
-  //     border: 'solid',
-  //     borderColor: mikePalette.text.secondary,
-  //     borderRadius: 25,
-  //     borderWidth: 1,
-  //     '&$active': {
-  //       border: 'none',
-  //       fill: mikePalette.secondary.main,
-  //       '& $text': {
-  //         fill: mikePalette.secondary.contrastText,
-  //       },
-  //     },
-  //     '&$completed': {
-  //       border: 'none',
-  //       fill: mikePalette.secondary.main,
-  //     },
-  //   },
-  //   text: {
-  //     fill: mikePalette.text.secondary,
-  //     fontSize: '1rem', // 16px
-  //   },
-  // },
-
-  // MuiSwitch: {
-  //   root: {
-  //     width: 46,
-  //     height: 22,
-  //     padding: 0,
-  //     display: 'flex',
-  //     flexDirection: 'row',
-  //     alignItems: 'center',
-  //     overflow: 'inherit',
-  //     float: 'right',
-  //   },
-  //   sizeSmall: {
-  //     '& $colorPrimary': {
-  //       color: `${mikePalette.primary.main}`,
-  //       '&$disabled': {
-  //         color: `${mikePalette.mediumGrey.main}`,
-  //         '& + $track': {
-  //           borderColor: `${mikePalette.darkGrey.dark}`,
-  //           backgroundColor: `${mikePalette.darkGrey.light}`,
-  //         },
-  //         '&$checked': {
-  //           '& + $track': {
-  //             borderColor: `${mikePalette.darkGrey.light}`,
-  //             backgroundColor: `${mikePalette.darkGrey.light}`,
-  //           },
-  //         },
-  //       },
-  //     },
-  //     '& $switchBase': {
-  //       transform: 'translateX(-2px)',
-  //       '&$checked': {
-  //         transform: 'translateX(18px)',
-  //       },
-  //     },
-  //   },
-  //   switchBase: {
-  //     padding: 0,
-  //     height: '100%',
-  //     color: `${mikePalette.darkGrey.main}`,
-  //     transform: 'translateX(5.6px)',
-  //     '&:hover': {
-  //       backgroundColor: 'transparent',
-  //     },
-  //     '&$checked': {
-  //       transform: 'translateX(29px)',
-  //       color: `${mikePalette.success.dark}`,
-  //       height: '100%',
-  //       '& + $track': {
-  //         opacity: 1,
-  //         backgroundColor: `${mikePalette.success.light}`,
-  //         borderColor: `${mikePalette.success.light}`,
-  //       },
-  //       '&:hover': {
-  //         backgroundColor: 'transparent',
-  //       },
-  //     },
-  //   },
-  //   colorPrimary: {
-  //     color: `${mikePalette.primary.main}`,
-  //     '& + $track': {
-  //       backgroundColor: `${mikePalette.lightGrey.dark}`,
-  //       borderColor: `${mikePalette.primary.main}`,
-  //     },
-  //     '&$checked': {
-  //       color: `${mikePalette.lightGrey.dark}`,
-  //       '& + $track': {
-  //         backgroundColor: `${mikePalette.primary.main}`,
-  //         borderColor: `${mikePalette.primary.main}`,
-  //       },
-  //     },
-  //     '&$disabled': {
-  //       color: `${mikePalette.mediumGrey.main}`,
-  //       '& + $track': {
-  //         borderColor: `${mikePalette.darkGrey.dark}`,
-  //         backgroundColor: `${mikePalette.darkGrey.light}`,
-  //       },
-  //     },
-  //   },
-  //   colorSecondary: {
-  //     color: `${mikePalette.darkGrey.main}`,
-  //     '&$checked': {
-  //       color: `${mikePalette.success.dark}`,
-  //       '& + $track': {
-  //         backgroundColor: `${mikePalette.success.light}`,
-  //         borderColor: `${mikePalette.success.light}`,
-  //       },
-  //     },
-  //     '&$disabled': {
-  //       color: `${mikePalette.mediumGrey.main}`,
-  //       '& + $track': {
-  //         borderColor: `${mikePalette.darkGrey.dark}`,
-  //         backgroundColor: `${mikePalette.darkGrey.light}`,
-  //       },
-  //     },
-  //   },
-  //   input: {
-  //     left: '-50%',
-  //     '&:checked': {
-  //       left: '-150%',
-  //     },
-  //   },
-  //   thumb: {
-  //     width: 12.5,
-  //     height: 12.5,
-  //     boxShadow: 'none',
-  //   },
-  //   track: {
-  //     border: `3px solid ${mikePalette.darkGrey.main}`,
-  //     borderRadius: 16,
-  //     opacity: 1,
-  //     backgroundColor: mikePalette.lightGrey.main,
-  //   },
-  // },
+  MuiTooltip: {
+    styleOverrides: {
+      arrow: {
+        color: dhiPalette.primary.main,
+      },
+      popperArrow: {
+        '& .MuiTooltip-tooltipPlacementBottom .MuiTooltip-arrow': {
+          // // this seems to break the component, not sure why it was here.
+          // '&::before': {
+          //   borderWidth: '0 12px 12px 12px',
+          //   marginTop: '-7px',
+          //   marginLeft: '-6px',
+          //   color: dhiPalette.darkGrey.main,
+          // },
+          // '&::after': {
+          //   borderWidth: '0 11px 11px 11px',
+          //   borderBottomColor: dhiPalette.mediumGrey.main,
+          //   borderLeftColor: 'transparent',
+          //   borderRightColor: 'transparent',
+          //   borderTopColor: 'transparent',
+          //   borderStyle: 'solid',
+          //   marginTop: '-29px',
+          //   marginLeft: '-5px',
+          //   color: 'transparent',
+          //   backgroundColor: 'transparent',
+          //   width: 0,
+          //   content: 'open-quote',
+          //   position: 'absolute',
+          //   display: 'block',
+          // },
+        },
+      },
+      tooltip: {
+        backgroundColor: dhiPalette.mediumGrey.main,
+        border: `1px solid ${dhiPalette.darkGrey.main}`,
+        maxWidth: SPACING * 46, // 368px
+        minHeight: SPACING * 4, // 32px
+        fontSize: 14,
+        fontWeight: 'normal',
+        fontFamily: FONT_FAMILY,
+        padding: SPACING,
+        color: dhiPalette.primary.main,
+        boxSizing: 'border-box',
+      },
+    },
+  },
+  MuiSwitch: {
+    styleOverrides: {
+      root: {
+        width: 46,
+        height: 22,
+        padding: 0,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        overflow: 'inherit',
+        float: 'right',
+        '&.MuiSwitch-sizeSmall': {
+          width: 40,
+          height: 24,
+          padding: 7,
+          '& .MuiSwitch-colorPrimary': {
+            '&.Mui-disabled': {
+              color: dhiPalette.mediumGrey.main,
+              '& + .MuiSwitch-track': {
+                borderColor: dhiPalette.darkGrey.dark,
+                backgroundColor: dhiPalette.darkGrey.light,
+              },
+              '&.Mui-checked': {
+                '& + .MuiSwitch-track': {
+                  borderColor: dhiPalette.darkGrey.light,
+                  backgroundColor: dhiPalette.darkGrey.light,
+                },
+              },
+            },
+          },
+          '& .MuiSwitch-colorSecondary': {
+            '&.Mui-checked': {
+              '& .MuiSwitch-thumb': {
+                backgroundColor: dhiPalette.secondary.main,
+              },
+            },
+          },
+          '& .MuiSwitch-switchBase': {
+            transform: 'translateX(-2px)',
+            '&.Mui-checked': {
+              transform: 'translateX(18px)',
+            },
+          },
+        },
+      },
+      switchBase: {
+        padding: 0,
+        height: '100%',
+        color: dhiPalette.darkGrey.main,
+        transform: 'translateX(5.6px)',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+        '&.Mui-checked': {
+          transform: 'translateX(29px)',
+          color: dhiPalette.success.dark,
+          height: '100%',
+          '& + .MuiSwitch-track': {
+            opacity: 1,
+            backgroundColor: dhiPalette.success.light,
+            borderColor: dhiPalette.success.light,
+          },
+          '&:hover': {
+            backgroundColor: 'transparent',
+          },
+        },
+      },
+      colorSecondary: {
+        color: dhiPalette.primary.main,
+        '& + .MuiSwitch-track': {
+          backgroundColor: dhiPalette.lightGrey.dark,
+          borderColor: dhiPalette.primary.main,
+        },
+        '&.Mui-checked': {
+          color: dhiPalette.lightGrey.dark,
+          '& + .MuiSwitch-track': {
+            backgroundColor: dhiPalette.primary.main,
+            borderColor: dhiPalette.primary.main,
+          },
+        },
+        '&.Mui-disabled': {
+          color: dhiPalette.mediumGrey.main,
+          '& + .MuiSwitch-track': {
+            borderColor: dhiPalette.darkGrey.dark,
+            backgroundColor: dhiPalette.darkGrey.light,
+          },
+        },
+      },
+      colorPrimary: {
+        color: dhiPalette.darkGrey.main,
+        '&.Mui-checked': {
+          color: dhiPalette.success.dark,
+          '& + .MuiSwitch-track': {
+            backgroundColor: dhiPalette.success.light,
+            borderColor: dhiPalette.success.light,
+          },
+        },
+        '&.Mui-disabled': {
+          color: dhiPalette.mediumGrey.main,
+          '& + .MuiSwitch-track': {
+            borderColor: dhiPalette.darkGrey.dark,
+            backgroundColor: dhiPalette.darkGrey.light,
+          },
+        },
+      },
+      input: {
+        left: '-50%',
+        '&:checked': {
+          left: '-150%',
+        },
+      },
+      thumb: {
+        width: 12.5,
+        height: 12.5,
+        boxShadow: 'none',
+      },
+      track: {
+        border: `3px solid ${dhiPalette.darkGrey.main}`,
+        borderRadius: 16,
+        opacity: 1,
+        backgroundColor: dhiPalette.lightGrey.main,
+      },
+    },
+  },
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        textTransform: 'none',
+        fontSize: '0.75rem', // 12px
+        fontWeight: 'normal',
+        paddingLeft: '0.75rem', // 12px
+        paddingRight: '0.75rem',
+        minWidth: '0',
+        '&:hover, &:focus': {
+          color: dhiPalette.primary.main,
+        },
+        '&.Mui-selected': {
+          fontWeight: 'bold', // todo hevo: should we use theme.typography.fontWeight instead?
+        },
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      scrollButtons: {
+        minWidth: 0,
+        width: 'auto',
+        '& svg': {
+          width: 40,
+        },
+      },
+    },
+  },
 };
 
 export default mikeOverrides;
