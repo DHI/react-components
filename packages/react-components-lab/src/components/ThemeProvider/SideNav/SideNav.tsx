@@ -58,7 +58,6 @@ const SideNav: FC<SideNavProps> = ({ data, contentList }) => {
   useEffect(() => {
     const destroyListener = scrollStopListener(window, () => {
       const scrollPosition = window.scrollY;
-      console.log(contentList);
       const selected = contentList.find(({ id, element }) => {
         const ele = element.current;
         if (ele) {

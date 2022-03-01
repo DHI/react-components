@@ -27,11 +27,11 @@ const mikeOverrides: Components = {
       },
       '*::-webkit-scrollbar-thumb': {
         backgroundColor: dhiPalette.darkGrey.main,
-        '-webkit-border-radius': '100px',
+        WebkitBorderRadius: '100px',
       },
       '*::-webkit-scrollbar-thumb:active': {
         backgroundColor: dhiPalette.darkGrey.main,
-        '-webkit-border-radius': '100px',
+        WebkitBorderRadius: '100px',
       },
     },
   },

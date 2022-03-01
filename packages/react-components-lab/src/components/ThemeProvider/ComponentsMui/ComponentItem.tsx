@@ -38,9 +38,9 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
           <Typography variant="body2" sx={{ margin: '20px 0 10px 0' }}>
             {c.description}
           </Typography>
-          <BoxWrapperStyled>
+          <BoxWrapperStyled width={1}>
             {c.components?.map((c1, ii) => (
-              <Box width={1} key={`component-${c.title}-${ii}`} m={1}>
+              <Box key={`component-${c.title}-${ii}`} m={1}>
                 {c1.component}
               </Box>
             ))}
