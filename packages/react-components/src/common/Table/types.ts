@@ -1,4 +1,4 @@
-import { UserGroupsData, userGroupsDefaultSelectedProps } from '../../UserGroups/types';
+import { UserGroupsData } from '../../UserGroups/types';
 import { MetadataProps } from '../Metadata/types';
 
 export interface DeleteDialogProps {
@@ -78,7 +78,7 @@ export interface PopupEditingProps {
   /**
    * Set User Groups default list when creating a new Account
    */
-  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
+  userGroupsDefaultSelected?: string[];
 }
 
 export interface PopupProps {
@@ -141,7 +141,7 @@ export interface PopupProps {
   /**
    * Set User Groups default list when creating a new Account
    */
-  userGroupsDefaultSelected?: userGroupsDefaultSelectedProps[];
+  userGroupsDefaultSelected?: string[];
 }
 
 export interface MetadataEditorProps {
