@@ -1,41 +1,21 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable react/no-array-index-key */
 import React, { forwardRef, memo, useState } from 'react';
-import {
-  Box,
-  Typography,
-  Tooltip,
-  IconButton,
-  Collapse,
-} from '@material-ui/core';
+import { Box, Typography, Tooltip, IconButton, Collapse } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
-
 // #region Local imports
 import { ComponentItemProps, SubList } from './types';
 import Syntax from '../../Syntax/Syntax';
 // #endregion
-
 import useStyles from './styles';
 
-const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
-  HTMLElement,
-  ComponentItemProps
->(({ item }, ref) => {
+const ComponentItem: React.FC<ComponentItemProps> = forwardRef<HTMLElement, ComponentItemProps>(({ item }, ref) => {
   const classes = useStyles();
-
   const [showCode, setShowCode] = useState<Record<string, boolean>>({});
-
-  const beautifyCode = (sub: SubList) =>
-    sub.components.map((comp) => `${comp.codeExample}\n`).join('');
+  const beautifyCode = (sub: SubList) => sub.components.map((comp) => `${comp.codeExample}\n`).join('');
 
   return (
-    <Box
-      {...{ ref }}
-      width={1}
-      paddingTop={10}
-      className={classes.container}
-      id={`box-component-${item.title}`}
-    >
+    <Box {...{ ref }} width={1} paddingTop={10} className={classes.container} id={`box-component-${item.title}`}>
       <Typography variant="h1">{item.title}</Typography>
       <Typography variant="h5" className={classes.desc}>
         {item.description}
@@ -73,10 +53,7 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
               </Box>
               <Collapse in={showCode[c.title]}>
                 <Syntax
-                  code={`import { ${item.title.replace(
-                    ' ',
-                    ''
-                  )} } from '@material-ui/core'\n\n${beautifyCode(c)}`}
+                  code={`import { ${item.title.replace(' ', '')} } from '@material-ui/core'\n\n${beautifyCode(c)}`}
                 />
               </Collapse>
             </>

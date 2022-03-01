@@ -8,9 +8,9 @@
     "private": true,
     "scripts": {
         "lint": "yarn lint",
-        "sb": "yarn --cwd packages/react-components sb",
+        "sb": "yarn start-storybook --config-dir ./packages/react-components/.storybook",
         "icons:build": "cd packages/icons && yarn run build",
-        "lab:start": "yarn start-storybook --config-dir ./packages/react-components-lab/.storybook",
+        "lab:start": "yarn run icons:build && yarn start-storybook --config-dir ./packages/react-components-lab/.storybook",
         "lab:build-storybook": "yarn run icons:build && yarn build-storybook --config-dir ./packages/react-components-lab/.storybook --output-dir ./packages/react-components-lab/storybook-static"
     },
     "workspaces": [
