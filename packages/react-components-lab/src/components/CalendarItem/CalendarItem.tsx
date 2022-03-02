@@ -16,7 +16,7 @@ const CalendarItem: FC<CalendarItemProps> = ({
     variant={variant}
     active={active}
   >
-    <Typography variant="body2" style={{ color: 'inherit' }}>
+    <Typography variant="body2" sx={{ color: 'inherit' }}>
       {children}
     </Typography>
   </CalendarItemBox>
