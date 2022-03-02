@@ -1,7 +1,5 @@
 import React from "react"
-// import { addDecorator } from "@storybook/react"
 import ThemeProvider from "../src/components/ThemeProvider/ThemeProvider"
-// import { StyledEngineProvider } from '@mui/material/styles';
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
