@@ -8,7 +8,6 @@ import {
   getVesselGeometry,
   shipTypeIdToName,
 } from './AisVesselLayer/vesselsToMapFeature';
-export * from './AisVesselLayer/types';
 export * from './AisVesselLayer/AisFilterMenu/types';
 export * from './AisVesselLayer/types';
 export {
