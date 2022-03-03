@@ -38,6 +38,39 @@ const fetchTimeseriesValues = (dataSources: DataSource[], token: string, onlyLas
   return forkJoin(requests).pipe(map((timeseries) => timeseries.flat()));
 };
 
+
+
+/**
+ * /api/timeseries/{connectionId}/{id}/values
+ * Gets a list of all values for the given time series within the given time interval.
+ * @param dataSources
+ * @param token
+
+ */
+ const fetchTimeseriesIdValues = (dataSources: DataSource[], token: string, id:string) => {
+  const dataSourcesArray = !Array.isArray(dataSources) ? [dataSources] : dataSources;
+
+  const requests = dataSourcesArray.map((source) => {
+    let url = `${source.host}/api/timeseries/${source.connection}/${id}/values`;
+
+    if (source.from && source.to) {
+      url = `${url}?from=${source.from}&to=${source.to}`;
+    }
+
+    return fetchUrl(url, {
+      method: 'POST',
+      additionalHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(source.ids),
+    }).pipe(map((timeseries) => dataObjectToArray(timeseries)));
+  });
+
+  return forkJoin(requests).pipe(map((timeseries) => timeseries.flat()));
+};
+
+
+
 /**
  * /api/timeseries/{connectionId}/fullnames
  * Gets a list of time series full-name identifiers.
@@ -93,4 +126,4 @@ const fetchTimeseriesFullNames = (dataSources: DataSource[], group: any) => {
   return forkJoin(requests).pipe(map((ts) => ts.flat()));
 };
 
-export { fetchTimeseriesValues, fetchTimeseriesByGroup, fetchTimeseriesFullNames };
+export { fetchTimeseriesValues, fetchTimeseriesIdValues, fetchTimeseriesByGroup, fetchTimeseriesFullNames };
