@@ -1,6 +1,6 @@
 import { CompositeLayer } from '@deck.gl/core';
 import { GeoJsonLayer, TextLayer } from '@deck.gl/layers';
-import { TileLayer } from 'deck.gl';
+import { TileLayer } from '@deck.gl/geo-layers';
 import { AisFeatureCollection, AisLayerProps, Feature } from './types';
 import { createVesselFeatureCollection } from './vesselsToMapFeature';
 

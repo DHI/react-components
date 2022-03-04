@@ -2,12 +2,12 @@ import { Meta } from '@storybook/react/types-6-0.d';
 import * as React from 'react';
 
 import DeckGL from '@deck.gl/react';
+import { Layer } from '@deck.gl/core';
 import { BitmapLayer } from '@deck.gl/layers';
 import { TileLayer } from '@deck.gl/geo-layers';
 import AnimationLayer from './AnimationLayer/AnimationLayer';
 import AnimationControl from './AnimationControl/AnimationControl';
 import { viewStateToBBox } from './AnimationLayer/helpers';
-import { Layer } from 'deck.gl';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import { AisFilterMenu } from './AisVesselLayer/AisFilterMenu/AisFilterMenu';

@@ -1,4 +1,4 @@
-import { BitmapLayer } from 'deck.gl';
+import { BitmapLayer } from '@deck.gl/layers';
 import { DataSource } from '../../api/types';
 
 export interface AnimationLayerProps {

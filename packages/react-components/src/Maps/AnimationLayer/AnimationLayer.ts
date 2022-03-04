@@ -1,4 +1,5 @@
-import { CompositeLayer, BitmapLayer, Position } from 'deck.gl';
+import { BitmapLayer } from '@deck.gl/layers';
+import { CompositeLayer } from '@deck.gl/core';
 import { fetchMapAnimationFiles } from '../../api/Map/MapApi';
 import { convertWGS84ToEPSG3857 } from './helpers';
 import { AnimationLayerState, AnimationLayerProps, AnimationImageRequest, BitmapLayerData } from './types';
