@@ -139,7 +139,7 @@ const Scenarios = (props: ScenariosProps) => {
       token,
     ).subscribe(
       (res) => {
-        if (!mounted) {
+        if (!mounted.current) {
           return
         }
 
@@ -179,7 +179,7 @@ const Scenarios = (props: ScenariosProps) => {
 
         try {
           executeJobQuery(jobSources, query).subscribe((jobs) => {
-            if (!mounted) {
+            if (!mounted.current) {
               return
             }
 
@@ -238,7 +238,7 @@ const Scenarios = (props: ScenariosProps) => {
         token,
         newScenario,
       ).subscribe((res) => {
-        if (!mounted) {
+        if (!mounted.current) {
           return
         }
         
@@ -275,7 +275,7 @@ const Scenarios = (props: ScenariosProps) => {
       parameters,
       menuItem.hostGroup || hostGroup,
     ).subscribe((job) => {
-      if (!mounted) {
+      if (!mounted.current) {
         return
       }
 
@@ -330,7 +330,7 @@ const Scenarios = (props: ScenariosProps) => {
       token,
       clonedScenario,
     ).subscribe((res) => {
-      if (!mounted) {
+      if (!mounted.current) {
         return
       }
 
@@ -363,7 +363,7 @@ const Scenarios = (props: ScenariosProps) => {
       id,
     ).subscribe(
       (res) => {
-        if (!mounted) {
+        if (!mounted.current) {
           return
         }
 
@@ -483,7 +483,7 @@ const Scenarios = (props: ScenariosProps) => {
       token,
       scenario.fullName,
     ).subscribe((res) => {
-      if (!mounted) {
+      if (!mounted.current) {
         return
       }
       
