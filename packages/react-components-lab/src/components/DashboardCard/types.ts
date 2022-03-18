@@ -8,5 +8,8 @@ export interface Props {
   headerChildren?: ReactChild | ReactChild[];
   style?: CSSProperties;
   isLoading?: boolean;
-  actions: ReactNode;
+  /**
+   * Pass a react component that will be added at the end of the header
+   */
+  actions?: ReactNode;
 }
