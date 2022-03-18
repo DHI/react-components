@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.13.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.0...@dhi/react-components-lab@1.13.1) (2022-03-18)
+
+
+### Bug Fixes
+
+* **DashboardCard:** Export component from the library ([f58dbc0](https://github.com/DHI/react-components/commit/f58dbc03e1edb08ff34fed48d3163502af6951b7))
+
 # @dhi/react-components-lab [1.13.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.6...@dhi/react-components-lab@1.13.0) (2022-03-18)
 
 
