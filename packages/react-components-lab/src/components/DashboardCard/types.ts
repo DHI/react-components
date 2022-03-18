@@ -1,6 +1,6 @@
 import { ReactChild, CSSProperties, ReactNode } from 'react';
 
-export interface Props {
+export interface DashboardCardProps {
   title: string;
   description?: string;
   disabled?: boolean;
