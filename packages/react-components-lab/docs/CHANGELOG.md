@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.13.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.6...@dhi/react-components-lab@1.13.0) (2022-03-18)
+
+
+### Features
+
+* **DashboardCard:** Add dashboardCard component ([1a6e48c](https://github.com/DHI/react-components/commit/1a6e48ccfe015f8abcf06443b3a62cb6b9f152ba))
+
 ## @dhi/react-components-lab [1.12.6](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.5...@dhi/react-components-lab@1.12.6) (2022-02-28)
 
 
