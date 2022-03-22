@@ -53,7 +53,7 @@ import {
   updateScenario,
 } from './Scenarios/ScenariosApi';
 import { fetchSpreadsheetUsedRange, updateSpreadsheet } from './Spreadsheets/SpreadsheetsApi';
-import { fetchTimeseriesByGroup, fetchTimeseriesFullNames, fetchTimeseriesValues } from './Timeseries/TimeseriesApi';
+import { fetchTimeseriesByGroup, fetchTimeseriesFullNames, fetchTimeseriesValues, fetchTimeseriesIdValues } from './Timeseries/TimeseriesApi';
 import {
   createUserGroup,
   deleteUserGroup,
@@ -112,6 +112,7 @@ export {
   fetchMapStyleCount,
   deleteMapStyle,
   fetchTimeseriesValues,
+  fetchTimeseriesIdValues,
   fetchTimeseriesByGroup,
   fetchTimeseriesFullNames,
   fetchMapAnimationFiles,

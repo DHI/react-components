@@ -73,9 +73,9 @@ interface ScenariosProps {
    */
   scenarioConnection: string;
   /**
-   * Connection to fetch data from backend
+   * Connection to fetch job data from backend
    */
-  jobConnection: string;
+  jobConnection?: string;
   /**
    * Set of job parameters
    */

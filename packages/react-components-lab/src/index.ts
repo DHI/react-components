@@ -12,6 +12,11 @@ export { default as MultiField } from './components/MultiField/MultiField';
 export * from './components/MultiField/types';
 export { default as useMultiFieldStyles } from './components/MultiField/styles';
 
+// DashboardCard
+export { default as DashboardCard } from './components/DashboardCard/DashboardCard';
+export { default as useDashboardCardStyles } from './components/DashboardCard/styles';
+export * from './components/DashboardCard/types';
+
 // Card
 export { default as Card } from './components/Card/Card';
 export * from './components/Card/types';
