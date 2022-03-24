@@ -268,6 +268,7 @@ export const ScenariosStory = () => {
 
 const randomWithSeed = function (s) {
   s = Math.sin(s) * 10000;
+
   return s - Math.floor(s);
 };
 
@@ -398,10 +399,10 @@ export const ScenariosJSONStory = () => {
                   scenario,
                 })
               }
-              onScenarioSelected={(scenario: Scenario) => {
+              onScenarioSelected={(scenario: Scenario | Scenario[]) => {
                 console.log('Scenario selected', scenario);
               }}
-              onScenarioReceived={(scenario: Scenario) => {
+              onScenarioReceived={(scenario: Scenario | Scenario[]) => {
                 console.log('Full Scenario received', scenario);
               }}
               onScenariosReceived={(scenarios: Scenario[]) => {
@@ -418,7 +419,7 @@ export const ScenariosJSONStory = () => {
               onRowRefsUpdated={(refs) => {
                 console.log('Accessible list of row refs if required by developer', refs);
               }}
-              //actionButton={actionButton}
+              // actionButton={actionButton}
               showDate={true}
               showDateGroups={true}
               showHour

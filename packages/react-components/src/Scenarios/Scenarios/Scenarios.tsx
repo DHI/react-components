@@ -356,7 +356,7 @@ const Scenarios = (props: ScenariosProps) => {
     setScenarios(updatedScenario);
   };
 
-  const getScenario = (id: string, resultCallback: (data: any) => void) => {
+  const getScenarios = (id: string, resultCallback: (data: any) => void) => {
     fetchJsonDocument(
       {
         host,
@@ -502,7 +502,7 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const onContextMenuClickHandler = (menuItem: MenuItem, scenario: Scenario) => {
-    getScenario(scenario.fullName!, (res) => {
+    getScenarios(scenario.fullName!, (res) => {
       switch (menuItem.id) {
         case 'execute':
           return executeDialog(res, menuItem);
@@ -530,12 +530,20 @@ const Scenarios = (props: ScenariosProps) => {
     if (scenario[0] === undefined) return null;
 
     if (scenario.length > 1) {
-      scenario.map((sce) => onScenarioSelected(sce));
-      scenario.map((sce) => getScenario(sce.fullName!, (res) => onScenarioReceived(res)));
+      const currentSelectedScenarios = [];
+
+      const promise = new Promise((resolve, reject) => {
+        scenario.map((sce) => getScenarios(sce.fullName!, (res) => currentSelectedScenarios.push(res)));
+        resolve(currentSelectedScenarios);
+      });
+
+      promise.then((res) => onScenarioReceived(res as Scenario[]));
+
+      onScenarioSelected(scenario);
     } else {
       onScenarioSelected(scenario[0]);
 
-      getScenario(scenario[0].fullName!, (res) => onScenarioReceived(res));
+      getScenarios(scenario[0].fullName!, (res) => onScenarioReceived(res));
     }
   };
 
