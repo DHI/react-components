@@ -150,6 +150,10 @@ interface ScenariosProps {
    */
   menuItems: MenuItem[];
   /**
+   * Allow user to select multiple scenarios
+   */
+  multipleSelection?: boolean;
+  /**
    * An action button which sits on the right hand side, below the menu
    */
   actionButton?: ActionButton;
