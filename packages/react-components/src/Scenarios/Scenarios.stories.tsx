@@ -393,6 +393,7 @@ export const ScenariosJSONStory = () => {
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
               menuItems={MENU_ITEMS}
+              multipleSelection
               onContextMenuClick={(menuItem: MenuItem, scenario: Scenario) =>
                 console.log('Scenario menu item clicked', {
                   menuItem,

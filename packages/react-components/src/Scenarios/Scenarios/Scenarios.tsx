@@ -40,6 +40,7 @@ const Scenarios = (props: ScenariosProps) => {
     descriptionFields,
     extraFields,
     menuItems,
+    multipleSelection,
     actionButton,
     showReportButton,
     showEditButton,
@@ -526,14 +527,14 @@ const Scenarios = (props: ScenariosProps) => {
     });
   };
 
-  const onScenarioSelectedHandler = (scenario: Scenario[]) => {
-    if (scenario[0] === undefined) return null;
+  const onScenarioSelectedHandler = (scenario: Scenario | Scenario[]) => {
+    if (scenario === undefined) return null;
 
-    if (scenario.length > 1) {
+    if (multipleSelection) {
       const currentSelectedScenarios = [];
 
       const promise = new Promise((resolve, reject) => {
-        scenario.map((sce) => getScenario(sce.fullName!, (res) => currentSelectedScenarios.push(res)));
+        (scenario as Scenario[]).map((sce) => getScenario(sce.fullName!, (res) => currentSelectedScenarios.push(res)));
         resolve(currentSelectedScenarios);
       });
 
@@ -541,9 +542,9 @@ const Scenarios = (props: ScenariosProps) => {
 
       onScenarioSelected(scenario);
     } else {
-      onScenarioSelected(scenario[0]);
+      onScenarioSelected(scenario);
 
-      getScenario(scenario[0].fullName!, (res) => onScenarioReceived(res));
+      getScenario((scenario as Scenario).fullName!, (res) => onScenarioReceived(res));
     }
   };
 
@@ -651,6 +652,7 @@ const Scenarios = (props: ScenariosProps) => {
           status={status}
           highlightNameOnStatus={highlightNameOnStatus}
           timeZone={timeZone}
+          multipleSelection={multipleSelection}
           actionButton={actionButton}
           showReportButton={showReportButton}
           showEditButton={showEditButton}

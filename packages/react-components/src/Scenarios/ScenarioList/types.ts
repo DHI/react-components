@@ -68,7 +68,7 @@ interface ScenarioListProps {
   /**
    * Emit event to client when scenario(s) selected by user
    */
-  onScenarioSelected: (scenario: Scenario[]) => void;
+  onScenarioSelected: (scenario: Scenario | Scenario[]) => void;
   /**
    * A ReactElement which is overridable to change the row's display.
    * @param scenario
@@ -92,6 +92,10 @@ interface ScenarioListProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * Allow user to select multiple scenarios
+   */
+  multipleSelection?: boolean;
 }
 
 export default ScenarioListProps;
