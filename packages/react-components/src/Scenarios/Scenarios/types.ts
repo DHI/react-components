@@ -166,13 +166,13 @@ interface ScenariosProps {
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   /**
-   * Emit event to client when scenario selected by user (basic scenario data)
+   * Emit event to client when scenario(s) selected by user (basic scenario data)
    */
-  onScenarioSelected: (scenario: Scenario) => void;
+  onScenarioSelected: (scenario: Scenario | Scenario[]) => void;
   /**
    * Emit event to client when scenario received from the server after a selection (full scenario data)
    */
-  onScenarioReceived: (scenario: Scenario) => void;
+  onScenarioReceived: (scenario: Scenario | Scenario[]) => void;
   /**
    * Emit even to client when list of scenarios received from the server
    */
