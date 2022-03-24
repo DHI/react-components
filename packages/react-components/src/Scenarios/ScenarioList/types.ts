@@ -66,9 +66,9 @@ interface ScenarioListProps {
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   /**
-   * Emit event to client when scenario selected by user
+   * Emit event to client when scenario(s) selected by user
    */
-  onScenarioSelected: (scenario: Scenario) => void;
+  onScenarioSelected: (scenario: Scenario[]) => void;
   /**
    * A ReactElement which is overridable to change the row's display.
    * @param scenario

@@ -84,8 +84,11 @@ const Scenarios = (props: ScenariosProps) => {
 
   useEffect(() => {
     mounted.current = true;
-    return () => { mounted.current = false; }
-  }, [])
+
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (addScenario !== scenario) {
@@ -140,7 +143,7 @@ const Scenarios = (props: ScenariosProps) => {
     ).subscribe(
       (res) => {
         if (!mounted.current) {
-          return
+          return;
         }
 
         const rawScenarios = res.map((s: { data: string }) => {
@@ -150,14 +153,14 @@ const Scenarios = (props: ScenariosProps) => {
         });
         const updatedScenarios = [];
         const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
-        
-        if(!jobConnection) {
+
+        if (!jobConnection) {
           setScenarios(newScenarios);
-  
+
           if (onScenariosReceived) {
             onScenariosReceived(newScenarios);
           }
-          
+
           return;
         }
 
@@ -180,7 +183,7 @@ const Scenarios = (props: ScenariosProps) => {
         try {
           executeJobQuery(jobSources, query).subscribe((jobs) => {
             if (!mounted.current) {
-              return
+              return;
             }
 
             newScenarios.map((scenario) => {
@@ -208,7 +211,7 @@ const Scenarios = (props: ScenariosProps) => {
           });
         } catch (err) {
           console.log('Error retrieving Jobs: ', err);
-        }          
+        }
       },
       (error) => {
         console.log(error);
@@ -239,11 +242,11 @@ const Scenarios = (props: ScenariosProps) => {
         newScenario,
       ).subscribe((res) => {
         if (!mounted.current) {
-          return
+          return;
         }
-        
+
         res && fetchScenariosList();
-      })
+      });
     }
   };
 
@@ -276,7 +279,7 @@ const Scenarios = (props: ScenariosProps) => {
       menuItem.hostGroup || hostGroup,
     ).subscribe((job) => {
       if (!mounted.current) {
-        return
+        return;
       }
 
       if (debug) {
@@ -331,7 +334,7 @@ const Scenarios = (props: ScenariosProps) => {
       clonedScenario,
     ).subscribe((res) => {
       if (!mounted.current) {
-        return
+        return;
       }
 
       res && fetchScenariosList();
@@ -364,7 +367,7 @@ const Scenarios = (props: ScenariosProps) => {
     ).subscribe(
       (res) => {
         if (!mounted.current) {
-          return
+          return;
         }
 
         res.data = res.data ? JSON.parse(res.data) : res.data;
@@ -484,9 +487,9 @@ const Scenarios = (props: ScenariosProps) => {
       scenario.fullName,
     ).subscribe((res) => {
       if (!mounted.current) {
-        return
+        return;
       }
-      
+
       res.ok && fetchScenariosList();
     });
   };
@@ -523,10 +526,17 @@ const Scenarios = (props: ScenariosProps) => {
     });
   };
 
-  const onScenarioSelectedHandler = (scenario: Scenario) => {
-    onScenarioSelected(scenario);
+  const onScenarioSelectedHandler = (scenario: Scenario[]) => {
+    if (scenario[0] === undefined) return null;
 
-    getScenario(scenario.fullName!, (res) => onScenarioReceived(res));
+    if (scenario.length > 1) {
+      scenario.map((sce) => onScenarioSelected(sce));
+      scenario.map((sce) => getScenario(sce.fullName!, (res) => onScenarioReceived(res)));
+    } else {
+      onScenarioSelected(scenario[0]);
+
+      getScenario(scenario[0].fullName!, (res) => onScenarioReceived(res));
+    }
   };
 
   const JsonDocumentAddedScenario = (added) => {
@@ -593,7 +603,7 @@ const Scenarios = (props: ScenariosProps) => {
           connection.on('JsonDocumentAdded', JsonDocumentAddedScenario);
           connection.on('JobUpdated', jobUpdated);
 
-          if(jobConnection) {
+          if (jobConnection) {
             connection.invoke('AddJobFilter', jobConnection, []);
           }
 
@@ -615,8 +625,8 @@ const Scenarios = (props: ScenariosProps) => {
       {scenarios && (
         <ScenarioList
           nameField={nameField}
-          descriptionFields={descriptionFields}
           extraFields={extraFields}
+          descriptionFields={descriptionFields}
           menuItems={menuItems}
           scenarios={scenarios as any}
           selectedScenarioId={selectedScenarioId}

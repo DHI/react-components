@@ -34,9 +34,8 @@ const ScenarioList = (props: ScenarioListProps) => {
     timeZone,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
-  const [selectedId, setSelectedId] = useState(selectedScenarioId);
   const classes = useStyles();
-
+  const [multipleSelection, setMultipleSelection] = useState<string[]>([]);
   const elRowRefs = React.useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
@@ -49,6 +48,14 @@ const ScenarioList = (props: ScenarioListProps) => {
       onRowRefsUpdated(elRowRefs.current);
     }
   }, [elRowRefs.current]);
+
+  useEffect(() => {
+    if (onScenarioSelected) {
+      const selectedScenarios = scenarios.filter((item) => multipleSelection.indexOf(item.fullName) > -1);
+
+      onScenarioSelected(selectedScenarios);
+    }
+  }, [multipleSelection]);
 
   const groupScenarios = (scenarios: Scenario[]) => {
     setGroupedScenarios(
@@ -76,11 +83,11 @@ const ScenarioList = (props: ScenarioListProps) => {
           <div
             key={`${scenario.fullName}_${index}`}
             ref={(el) => elRowRefs.current.push(el)}
-            onClick={() => onScenarioClick(scenario)}
-            onKeyPress={() => onScenarioClick(scenario)}
+            onClick={(e) => handleMultiSelection(e, scenario)}
+            onKeyPress={(e) => handleMultiSelection(e, scenario)}
             role="presentation"
             className={classNames(classes.listItem, {
-              [classes.selectedItem]: selectedId === getObjectProperty(scenario, 'fullName'),
+              [classes.selectedItem]: multipleSelection.includes(getObjectProperty(scenario, 'fullName')),
             })}
           >
             <ScenarioItem
@@ -89,7 +96,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.fullName}
-              isSelected={selectedId === getObjectProperty(scenario, 'fullName')}
+              isSelected={multipleSelection.includes(getObjectProperty(scenario, 'fullName'))}
               onContextMenuClick={onContextMenuClick}
               menu={buildMenu(scenario)}
               showHour={showHour}
@@ -129,13 +136,22 @@ const ScenarioList = (props: ScenarioListProps) => {
     );
   };
 
+  const handleMultiSelection = (e, scenario) => {
+    if (e.ctrlKey) {
+      setMultipleSelection((prevState) => {
+        if (prevState.includes(scenario.fullName)) {
+          return prevState.filter((item) => item !== scenario.fullName);
+        } else {
+          return [...prevState, scenario.fullName];
+        }
+      });
+    } else {
+      setMultipleSelection([scenario.fullName]);
+    }
+  };
+
   const onScenarioClick = (scenario: Scenario) => {
-    if (scenario && selectedId !== getObjectProperty(scenario, 'fullName')) {
-      setSelectedId(getObjectProperty(scenario, 'fullName'));
-    }
-    if (onScenarioSelected) {
-      onScenarioSelected(scenario);
-    }
+    console.log('ScenarioItem clicked: ', scenario);
   };
 
   let printedScenarios = null;
