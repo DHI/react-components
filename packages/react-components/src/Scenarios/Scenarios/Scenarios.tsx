@@ -356,7 +356,7 @@ const Scenarios = (props: ScenariosProps) => {
     setScenarios(updatedScenario);
   };
 
-  const getScenarios = (id: string, resultCallback: (data: any) => void) => {
+  const getScenario = (id: string, resultCallback: (data: any) => void) => {
     fetchJsonDocument(
       {
         host,
@@ -502,7 +502,7 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const onContextMenuClickHandler = (menuItem: MenuItem, scenario: Scenario) => {
-    getScenarios(scenario.fullName!, (res) => {
+    getScenario(scenario.fullName!, (res) => {
       switch (menuItem.id) {
         case 'execute':
           return executeDialog(res, menuItem);
@@ -533,7 +533,7 @@ const Scenarios = (props: ScenariosProps) => {
       const currentSelectedScenarios = [];
 
       const promise = new Promise((resolve, reject) => {
-        scenario.map((sce) => getScenarios(sce.fullName!, (res) => currentSelectedScenarios.push(res)));
+        scenario.map((sce) => getScenario(sce.fullName!, (res) => currentSelectedScenarios.push(res)));
         resolve(currentSelectedScenarios);
       });
 
@@ -543,7 +543,7 @@ const Scenarios = (props: ScenariosProps) => {
     } else {
       onScenarioSelected(scenario[0]);
 
-      getScenarios(scenario[0].fullName!, (res) => onScenarioReceived(res));
+      getScenario(scenario[0].fullName!, (res) => onScenarioReceived(res));
     }
   };
 
