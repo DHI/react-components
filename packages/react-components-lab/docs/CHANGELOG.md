@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.13.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.1...@dhi/react-components-lab@1.13.2) (2022-03-30)
+
+
+### Bug Fixes
+
+* **LegendBase&StaticLegend:** Update max width allowed for legend contents ([fc66975](https://github.com/DHI/react-components/commit/fc6697535598c3b26cffc03008e6dedceeb320dd))
+
 ## @dhi/react-components-lab [1.13.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.0...@dhi/react-components-lab@1.13.1) (2022-03-18)
 
 
