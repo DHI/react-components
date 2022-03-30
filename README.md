@@ -55,7 +55,6 @@ Please also check out the guidelines for the package you are contributing to.
     	<a href="https://github.com/rosudhi"><img src="https://avatars.githubusercontent.com/rosudhi" width="70px" style="border-radius: 50%" /><br /><sub><b>Ronald Sutantio (rosu)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
     </td>
     <td align="center" style="border: none">
-    	<a href="https://github.com/j08lue"><img src="https://avatars.githubusercontent.com/j08lue" width="70px" style="border-radius: 50%" /><br /><sub><b>Jonas Sølvsteen (josl)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
     </td>
   </tr>
 </table>
