@@ -5,7 +5,6 @@ export default makeStyles((theme) => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    maxWidth: 75,
   },
   colorBox: {
     width: 22,
