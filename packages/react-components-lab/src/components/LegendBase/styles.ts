@@ -6,7 +6,7 @@ export default makeStyles<IMikeTheme>((theme) => ({
     boxShadow: theme.shadows[5],
     position: 'absolute',
     margin: theme.spacing(5),
-    maxWidth: 120, // max according to specs
+    maxWidth: 240, // max according to specs
     transition: theme.transitions.create(['box-shadow']),
   },
   rootCollapsed: {
