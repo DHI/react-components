@@ -35,27 +35,16 @@ Please also check out the guidelines for the package you are contributing to.
       <a href="https://github.com/elbys"><img src="https://avatars.githubusercontent.com/elbys" width="70px" style="border-radius: 50%" /><br /><sub><b>Elbys Jose Meneses (ejme)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
     </td>
     <td align="center" style="border: none">
-    	<a href="https://github.com/rihr"><img src="https://avatars.githubusercontent.com/rihr" width="70px" style="border-radius: 50%" /><br /><sub><b>Rihards Rancans (rira)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
-    </td>
-    <td align="center" style="border: none">
     	<a href="https://github.com/bertearazvan"><img src="https://avatars.githubusercontent.com/bertearazvan" width="70px" style="border-radius: 50%" /><br /><sub><b>Razvan Bertea (rabe)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
     </td>
     <td align="center" style="border: none">
     	<a href="https://github.com/nfour"><img src="https://avatars.githubusercontent.com/nfour" width="70px" style="border-radius: 50%" /><br /><sub><b>Sam Johnson (sajo)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
     </td>
     <td align="center" style="border: none">
-    	<a href="https://github.com/jharper93"><img src="https://avatars.githubusercontent.com/jharper93" width="70px" style="border-radius: 50%" /><br /><sub><b>James Harper (jamh)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
-    </td>
-  </tr>
-  <tr style="border: none;">
-    <td align="center" style="border: none">
-      <a href="https://github.com/FranzThomsen1089"><img src="https://avatars.githubusercontent.com/FranzThomsen1089" width="70px" style="border-radius: 50%" /><br /><sub><b>Franz Thomsen (frt)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+       <a href="https://github.com/FranzThomsen1089"><img src="https://avatars.githubusercontent.com/FranzThomsen1089" width="70px" style="border-radius: 50%" /><br /><sub><b>Franz Thomsen (frt)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
     </td>
     <td align="center" style="border: none">
-    	<a href="https://github.com/rosudhi"><img src="https://avatars.githubusercontent.com/rosudhi" width="70px" style="border-radius: 50%" /><br /><sub><b>Ronald Sutantio (rosu)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
-    </td>
-    <td align="center" style="border: none">
-    	<a href="https://github.com/j08lue"><img src="https://avatars.githubusercontent.com/j08lue" width="70px" style="border-radius: 50%" /><br /><sub><b>Jonas Sølvsteen (josl)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
+<a href="https://github.com/rosudhi"><img src="https://avatars.githubusercontent.com/rosudhi" width="70px" style="border-radius: 50%" /><br /><sub><b>Ronald Sutantio (rosu)</b></sub></a><br /><span title="Coder">💻</span><span title="Documenter">📖</span><span title="Tester">🧪</span><span title="Designer">🎨</span><span title="Bug Reporter">🐛</span>
     </td>
   </tr>
 </table>
