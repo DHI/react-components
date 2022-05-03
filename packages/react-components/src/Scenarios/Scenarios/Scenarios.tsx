@@ -553,7 +553,7 @@ const Scenarios = (props: ScenariosProps) => {
       console.log({ added });
     }
 
-    setScenarios([...scenarios, added]);
+    setScenarios([...latestScenarios.current, added]);
   };
 
   const jobUpdated = (jobAdded) => {
