@@ -422,6 +422,7 @@ export const ScenariosJSONStory = () => {
               }}
               // actionButton={actionButton}
               showDate={true}
+              showYear={false}
               showDateGroups={true}
               showHour
               showMenu

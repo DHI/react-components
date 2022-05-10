@@ -42,6 +42,10 @@ interface ScenarioListProps {
    */
   showDate: boolean;
   /**
+   * Indicates if the year of the scenario should be shown
+   */
+   showYear: boolean;
+  /**
    * Indicates if the date groups of the scenario list should be shown
    */
   showDateGroups?: boolean;
