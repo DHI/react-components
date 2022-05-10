@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // #region Local imports
 import { IMikeTheme } from '../types';
-import mikePalette from '../mikePallete';
 // #endregion
 
 const SnackbarStyles = makeStyles<IMikeTheme>((theme) => ({
@@ -19,7 +18,7 @@ const SnackbarStyles = makeStyles<IMikeTheme>((theme) => ({
     margin: '20px 0 10px 0',
   },
   highlightText: {
-    backgroundColor: mikePalette.primary.light,
+    backgroundColor: theme.palette.primary.light,
     borderRadius: 5,
     padding: '2px 4px 2px 4px',
   },

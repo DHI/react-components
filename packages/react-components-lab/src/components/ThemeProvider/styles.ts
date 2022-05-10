@@ -1,7 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-// #region Local imports
-import mikePalette from './mikePallete';
 // #endregion
 
 const Styles = makeStyles((theme) => ({
@@ -34,7 +32,7 @@ const Styles = makeStyles((theme) => ({
     },
   },
   highlightText: {
-    backgroundColor: mikePalette.primary.light,
+    backgroundColor: theme.palette.primary.light,
     borderRadius: 5,
     padding: '2px 4px 2px 4px',
   },

@@ -1,18 +1,20 @@
 import { createTheme } from '@material-ui/core/styles';
 
 // #region Local imports
-import { IMikeTheme, IMikeThemeOptions } from './types';
+import { PaletteType } from '@material-ui/core';
 import mikeTypography from './mikeTypography';
-import mikePalette from './mikePallete';
-import mikeOverrides from './mikeOverrides';
+import getPalette from './getPallete';
+import getOverrides from './getOverrides';
 import mikeComponentsProps from './mikeComponentsProps';
+import { IMikeTheme } from './types';
 // #endregion
 
-export const mikeSharedTheme: IMikeTheme = createTheme({
-  typography: mikeTypography,
-  palette: mikePalette,
-  overrides: mikeOverrides,
-  props: mikeComponentsProps,
-} as IMikeThemeOptions);
+export const getTheme = (type: PaletteType): IMikeTheme =>
+  createTheme({
+    typography: mikeTypography,
+    palette: getPalette(type),
+    overrides: getOverrides(type),
+    props: mikeComponentsProps,
+  });
 
-export default mikeSharedTheme;
+export default getTheme;

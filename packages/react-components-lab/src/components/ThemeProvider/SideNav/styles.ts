@@ -1,7 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-// #region Local imports
-import mikePalette from '../mikePallete';
 // #endregion
 
 const Styles = makeStyles((theme) => ({
@@ -32,13 +30,13 @@ const Styles = makeStyles((theme) => ({
           paddingLeft: 10,
           lineHeight: '2.2em',
           '&:hover': {
-            borderLeft: `3px solid ${mikePalette.primary.light}`,
+            borderLeft: `3px solid ${theme.palette.primary.light}`,
             cursor: 'pointer',
           },
         },
         '& $selected': {
-          color: mikePalette.primary.light,
-          borderLeft: `3px solid ${mikePalette.primary.light}`,
+          color: theme.palette.primary.light,
+          borderLeft: `3px solid ${theme.palette.primary.light}`,
         },
       },
     },
