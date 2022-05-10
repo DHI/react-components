@@ -79,7 +79,7 @@ const ScenarioList = (props: ScenarioListProps) => {
       .reverse()
       .map((scenario, index) => {
         const itemStatus = checkStatus(scenario.lastJob, status);
-
+        
         return (
           <div
             key={`${scenario.fullName}_${index}`}
@@ -88,7 +88,7 @@ const ScenarioList = (props: ScenarioListProps) => {
             onKeyPress={(e) => handleMultiSelection(e, scenario)}
             role="presentation"
             className={classNames(classes.listItem, {
-              [classes.selectedItem]: selectedScenarios.includes(getObjectProperty(scenario, 'fullName')),
+              [classes.selectedItem]: selectedScenarioId ? scenario.fullName.includes(selectedScenarioId) : selectedScenarios.includes(getObjectProperty(scenario, 'fullName')),
             })}
           >
             <ScenarioItem
@@ -97,7 +97,7 @@ const ScenarioList = (props: ScenarioListProps) => {
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.fullName}
-              isSelected={selectedScenarios.includes(getObjectProperty(scenario, 'fullName'))}
+              isSelected={selectedScenarioId ? scenario.fullName.includes(selectedScenarioId) : selectedScenarios.includes(getObjectProperty(scenario, 'fullName'))}
               onContextMenuClick={onContextMenuClick}
               menu={buildMenu(scenario)}
               showHour={showHour}
