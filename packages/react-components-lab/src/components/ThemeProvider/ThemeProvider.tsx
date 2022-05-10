@@ -11,9 +11,9 @@ import { getTheme } from './mikeSharedTheme';
 import * as Types from './types';
 // #endregion
 
-const isDarkMode =
-  window.matchMedia &&
-  window.matchMedia('(prefers-color-scheme: dark)').matches;
+const isDarkMode = false;
+// (window.matchMedia &&
+//   window.matchMedia('(prefers-color-scheme: dark)').matches);
 
 const ThemeProvider: FC<Types.IProps> = ({
   overrides,
