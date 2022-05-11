@@ -549,6 +549,10 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const JsonDocumentAddedScenario = (added) => {
+    if (!mounted.current) {
+      return;
+    }
+
     if (debug) {
       console.log({ added });
     }
@@ -557,6 +561,10 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const jobUpdated = (jobAdded) => {
+    if (!mounted.current) {
+      return;
+    }
+    
     const job = JSON.parse(jobAdded.data);
 
     if (debug) {
