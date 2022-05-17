@@ -16,7 +16,9 @@ import { Add, PermIdentity } from '@material-ui/icons';
 
 // #region Local imports
 import { ComponentList } from './types';
-import mikePalette from '../mikePallete';
+import getPalette from '../getPallete';
+
+const mikePalette = getPalette('light');
 
 const whiteColor = {
   color: '#FFF',
