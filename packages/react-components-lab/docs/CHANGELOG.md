@@ -1,3 +1,10 @@
+# @dhi/react-components-lab [1.14.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.2...@dhi/react-components-lab@1.14.0) (2022-05-17)
+
+
+### Features
+
+* **DarkMode:** Add dark mode to the ThemeProvider ([aa77fde](https://github.com/DHI/react-components/commit/aa77fdefe0484a5730f8f3cf3815c058541662b2))
+
 ## @dhi/react-components-lab [1.13.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.1...@dhi/react-components-lab@1.13.2) (2022-03-30)
 
 
