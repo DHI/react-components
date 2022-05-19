@@ -227,6 +227,9 @@ const getOverrides = (type: PaletteType): Overrides => {
     },
     MuiBreadcrumbs: {},
     MuiCheckbox: {
+      root: {
+        color: mikePalette.grey[500],
+      },
       indeterminate: {
         color: mikePalette.success.main,
       },
@@ -271,12 +274,12 @@ const getOverrides = (type: PaletteType): Overrides => {
           color: mikePalette.grey[100],
         },
       },
-      root: {
-        '& .MuiTypography-root, .MuiTypography-root.Mui-disabled': {
-          fontSize: '90%',
-          color: mikePalette.grey[500],
-        },
-      },
+      // root: {
+      //   '& .MuiTypography-root, .MuiTypography-root.Mui-disabled': {
+      //     fontSize: '90%',
+      //     color: mikePalette.grey[500],
+      //   },
+      // },
     },
     MuiFab: {
       primary: {
