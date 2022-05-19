@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.14.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.0...@dhi/react-components-lab@1.14.1) (2022-05-19)
+
+
+### Bug Fixes
+
+* **themeFixes:** FormLabel disabled colors and size. Add color for checkbox. ([e11eb89](https://github.com/DHI/react-components/commit/e11eb892ec1fe47894077f4648b7b2b273ba57b7))
+
 # @dhi/react-components-lab [1.14.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.2...@dhi/react-components-lab@1.14.0) (2022-05-17)
 
 
