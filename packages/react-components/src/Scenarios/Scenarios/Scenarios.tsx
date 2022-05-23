@@ -573,7 +573,7 @@ const Scenarios = (props: ScenariosProps) => {
     }
 
     const updateScenario = latestScenarios.current.map((scenario) =>
-      scenario.fullName === job.Parameters[jobQueryItemKey] && scenario.lastJob.status !== 'Completed'
+      scenario.fullName === job.parameters[jobQueryItemKey] && scenario.lastJob.status !== 'Completed'
         ? {
             ...scenario,
             lastJob: {
