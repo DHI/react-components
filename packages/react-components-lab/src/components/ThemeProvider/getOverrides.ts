@@ -105,7 +105,13 @@ const getOverrides = (type: PaletteType): Overrides => {
         minHeight: '0 !important',
       },
     },
-    MuiDialog: {},
+    MuiDialog: {
+      container: {
+        '& .MuiPickersModal-dialogRoot': {
+          border: `1px solid ${mikePalette.divider}`,
+        },
+      },
+    },
     MuiDialogTitle: {
       root: {
         padding: '0 !important',
