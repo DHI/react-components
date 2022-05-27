@@ -46,6 +46,7 @@ const Scenarios = (props: ScenariosProps) => {
     showEditButton,
     selectedScenarioId,
     showDate = true,
+    showYear = false,
     showDateGroups = true,
     showHour,
     showMenu,
@@ -653,6 +654,7 @@ const Scenarios = (props: ScenariosProps) => {
           onRenderScenarioIcon={onRenderScenarioIcon}
           onRowRefsUpdated={onRowRefsUpdated}
           showDate={showDate}
+          showYear={showYear}
           showDateGroups={showDateGroups}
           showHour={showHour}
           showMenu={showMenu}
