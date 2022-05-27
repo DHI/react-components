@@ -36,7 +36,7 @@ Generating a Personal Access token with GitHub - [More info](https://help.github
 7. "Generate token"
 8. Click clipboard icon to copy token
 
-### `.npmrc`
+#### Using `.npmrc`
 
 9. Open `C:\users\<username>\.npmrc` or create this file here if doesn't exist.
 10. Paste within it, replacing `<AUTH_TOKEN>` with the token you copied moments ago.
@@ -48,7 +48,7 @@ Generating a Personal Access token with GitHub - [More info](https://help.github
 
 <sup>(this file can also be created in project-scope via `.npmrc` in root, but it is not advised as it links to your personal access token.)</sup>
 
-### `.yarnrc.yml`
+#### using `.yarnrc.yml`
 
 9. Open `C:\users\<username>\.yarnrc.yml` or create this file here if doesn't exist.
 10. Paste within it, replacing `<AUTH_TOKEN>` with the token you copied moments ago.
