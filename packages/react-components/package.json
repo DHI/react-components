@@ -45,6 +45,7 @@
     "@types/lodash-es": "^4.17.4",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
+    "@types/react-virtualized": "^9",
     "@types/react-window": "^1.8.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -68,7 +69,6 @@
     "@microsoft/signalr": "^5.0.7",
     "@react-hook/window-size": "^3.0.7",
     "@types/match-sorter": "^4.0.0",
-    "@types/react-virtualized-auto-sizer": "^1.0.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.13.0",
     "date-fns-tz": "^1.0.10",
@@ -80,6 +80,7 @@
     "lodash.assignin": "^4.2.0",
     "match-sorter": "^4.2.0",
     "prettier": "^2.5.1",
+    "react-virtualized": "^9.22.3",
     "rxjs": "^6.5.5"
   }
 }
