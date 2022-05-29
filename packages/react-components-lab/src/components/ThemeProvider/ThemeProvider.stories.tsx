@@ -42,7 +42,10 @@ interface ChildRefState {
 }
 const Template: Story<IProps> = (args) => {
   const classes = useStyles();
-
+  const isDarkMode =
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [isDarkTheme, setDarkTheme] = useState(isDarkMode);
   const [dataList, setDataList] = useState<ComponentList[]>([]);
   const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
 
@@ -72,9 +75,13 @@ const Template: Story<IProps> = (args) => {
   const childRefs = useMemo(() => childRefState, [childRefState]);
 
   return (
-    <ThemeProvider {...args}>
+    <ThemeProvider {...args} type={isDarkTheme ? 'dark' : 'light'}>
       <Box className={classes.root}>
-        <Typography variant="h1">Theme Provider</Typography>
+        <Typography variant="h1">ThemeProvider</Typography>
+        <Typography variant="h4">
+          This page is not fully maintained, even if the ThemeProvider component
+          itself is.
+        </Typography>
         <Box className={classes.header}>
           <Typography variant="h5">
             <span className={classes.highlightText}>Theme Provider</span> is the

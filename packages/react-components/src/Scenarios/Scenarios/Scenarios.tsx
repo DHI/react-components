@@ -46,6 +46,7 @@ const Scenarios = (props: ScenariosProps) => {
     showEditButton,
     selectedScenarioId,
     showDate = true,
+    showYear = false,
     showDateGroups = true,
     showHour,
     showMenu,
@@ -549,6 +550,10 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const JsonDocumentAddedScenario = (added) => {
+    if (!mounted.current) {
+      return;
+    }
+
     if (debug) {
       console.log({ added });
     }
@@ -557,6 +562,10 @@ const Scenarios = (props: ScenariosProps) => {
   };
 
   const jobUpdated = (jobAdded) => {
+    if (!mounted.current) {
+      return;
+    }
+    
     const job = JSON.parse(jobAdded.data);
 
     if (debug) {
@@ -565,7 +574,7 @@ const Scenarios = (props: ScenariosProps) => {
     }
 
     const updateScenario = latestScenarios.current.map((scenario) =>
-      scenario.fullName === job.Parameters[jobQueryItemKey] && scenario.lastJob.status !== 'Completed'
+      scenario.fullName === job.parameters && job.parameters[jobQueryItemKey] && scenario.lastJob.status !== 'Completed'
         ? {
             ...scenario,
             lastJob: {
@@ -645,6 +654,7 @@ const Scenarios = (props: ScenariosProps) => {
           onRenderScenarioIcon={onRenderScenarioIcon}
           onRowRefsUpdated={onRowRefsUpdated}
           showDate={showDate}
+          showYear={showYear}
           showDateGroups={showDateGroups}
           showHour={showHour}
           showMenu={showMenu}
