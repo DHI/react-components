@@ -421,7 +421,6 @@ export const ScenariosJSONStory = () => {
                 console.log('Accessible list of row refs if required by developer', refs);
               }}
               // actionButton={actionButton}
-              // selectedScenarioId="scenario-20220518042237-ee47-f745-a7d9-0aae-882253c78b4b"
               showDate={true}
               showYear
               showDateGroups={true}
