@@ -152,19 +152,17 @@ const getOverrides = (type: PaletteType): Overrides => {
     },
     MuiButton: {
       root: {
-        fontWeight: 500,
+        fontWeight: 700,
         letterSpacing: 0.1,
         textTransform: 'none',
-        height: '3rem', // 48px
-        '&:disabled': {
-          height: '3rem', // 48px
-        },
+        borderRadius: '4px',
+        height: '2.5rem', // 40px
       },
       sizeLarge: {
-        minWidth: 328,
+        minHeight: 48,
       },
       sizeSmall: {
-        height: '2.5rem', // 40px
+        height: '2rem', // 40px
         '&:disabled': {
           height: '2.5rem', // 48px
         },
@@ -172,51 +170,16 @@ const getOverrides = (type: PaletteType): Overrides => {
         padding: '0 1rem', // 16px
       },
       outlined: {
-        minWidth: 156,
         border: '2px solid !important',
-      },
-      contained: {
-        minWidth: 156,
-      },
-      containedPrimary: {
-        // #xxxxxx61 = 38% opacity
-        // '&:disabled': {
-        // 	backgroundColor: `${mikePalette.primary.light}61`,
-        // 	color: `${mikePalette.primary.contrastText}61`,
-        // },
-      },
-      containedSecondary: {
-        // '&:disabled': {
-        // 	backgroundColor: `${mikePalette.secondary.light}61`,
-        // 	color: `${mikePalette.secondary.contrastText}61`,
-        // },
       },
       outlinedPrimary: {
         '&:hover': {
           borderColor: `${mikePalette.primary.dark}`,
         },
-        '&:disabled': {
-          // color: `${mikePalette.primary.light}61`,
-          // borderColor: `${mikePalette.primary.contrastText}61`,
-        },
       },
       outlinedSecondary: {
         '&:hover': {
           borderColor: `${mikePalette.secondary.dark}`,
-        },
-        '&:disabled': {
-          // color: `${mikePalette.secondary.light}61`,
-          // borderColor: `${mikePalette.secondary.light}61`,
-        },
-      },
-      textPrimary: {
-        '&:disabled': {
-          // color: `${mikePalette.primary.light}61`,
-        },
-      },
-      textSecondary: {
-        '&:disabled': {
-          // color: `${mikePalette.secondary.light}61`,
         },
       },
     },
@@ -274,12 +237,6 @@ const getOverrides = (type: PaletteType): Overrides => {
           color: mikePalette.grey[100],
         },
       },
-      // root: {
-      //   '& .MuiTypography-root, .MuiTypography-root.Mui-disabled': {
-      //     fontSize: '90%',
-      //     color: mikePalette.grey[500],
-      //   },
-      // },
     },
     MuiFab: {
       primary: {
@@ -302,11 +259,11 @@ const getOverrides = (type: PaletteType): Overrides => {
       },
     },
     MuiIconButton: {
-      root: {
-        '&:hover': {
-          backgroundColor: mikePalette.grey[100],
-        },
-      },
+      // root: {
+      //   '&:hover': {
+      //     backgroundColor: mikePalette.grey[100],
+      //   },
+      // },
     },
     MuiSvgIcon: {
       colorPrimary: {
@@ -467,119 +424,6 @@ const getOverrides = (type: PaletteType): Overrides => {
     MuiStepper: {
       root: {
         padding: '0.5rem', // 8px
-      },
-    },
-    MuiSwitch: {
-      root: {
-        width: 46,
-        height: 22,
-        padding: 0,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        overflow: 'inherit',
-        float: 'right',
-      },
-      sizeSmall: {
-        '& $colorPrimary': {
-          color: `${mikePalette.primary.main}`,
-          '&$disabled': {
-            color: `${mikePalette.grey[100]}`,
-            '& + $track': {
-              borderColor: `${mikePalette.grey[600]}`,
-              backgroundColor: `${mikePalette.grey[200]}`,
-            },
-            '&$checked': {
-              '& + $track': {
-                borderColor: `${mikePalette.grey[200]}`,
-                backgroundColor: `${mikePalette.grey[200]}`,
-              },
-            },
-          },
-        },
-        '& $switchBase': {
-          transform: 'translateX(-2px)',
-          '&$checked': {
-            transform: 'translateX(18px)',
-          },
-        },
-      },
-      switchBase: {
-        padding: 0,
-        height: '100%',
-        color: `${mikePalette.grey[500]}`,
-        transform: 'translateX(5.6px)',
-        '&:hover': {
-          backgroundColor: 'transparent',
-        },
-        '&$checked': {
-          transform: 'translateX(29px)',
-          color: `${mikePalette.success.dark}`,
-          height: '100%',
-          '& + $track': {
-            opacity: 1,
-            backgroundColor: `${mikePalette.success.light}`,
-            borderColor: `${mikePalette.success.light}`,
-          },
-          '&:hover': {
-            backgroundColor: 'transparent',
-          },
-        },
-      },
-      colorPrimary: {
-        color: `${mikePalette.primary.main}`,
-        '& + $track': {
-          backgroundColor: `${mikePalette.grey[50]}`,
-          borderColor: `${mikePalette.primary.main}`,
-        },
-        '&$checked': {
-          color: `${mikePalette.grey[50]}`,
-          '& + $track': {
-            backgroundColor: `${mikePalette.primary.main}`,
-            borderColor: `${mikePalette.primary.main}`,
-          },
-        },
-        '&$disabled': {
-          color: `${mikePalette.grey[100]}`,
-          '& + $track': {
-            borderColor: `${mikePalette.grey[600]}`,
-            backgroundColor: `${mikePalette.grey[200]}`,
-          },
-        },
-      },
-      colorSecondary: {
-        color: `${mikePalette.grey[500]}`,
-        '&$checked': {
-          color: `${mikePalette.success.dark}`,
-          '& + $track': {
-            backgroundColor: `${mikePalette.success.light}`,
-            borderColor: `${mikePalette.success.light}`,
-          },
-        },
-        '&$disabled': {
-          color: `${mikePalette.grey[100]}`,
-          '& + $track': {
-            borderColor: `${mikePalette.grey[600]}`,
-            backgroundColor: `${mikePalette.grey[200]}`,
-          },
-        },
-      },
-      input: {
-        left: '-50%',
-        '&:checked': {
-          left: '-150%',
-        },
-      },
-      thumb: {
-        width: 12.5,
-        height: 12.5,
-        boxShadow: 'none',
-      },
-      track: {
-        border: `3px solid ${mikePalette.grey[500]}`,
-        borderRadius: 16,
-        opacity: 1,
-        backgroundColor: mikePalette.grey[50],
       },
     },
   };

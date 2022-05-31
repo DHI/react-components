@@ -514,6 +514,24 @@ const ComponentsData: ComponentList[] = [
           },
           {
             component: (
+              <Button variant="contained" size="small">
+                Default small
+              </Button>
+            ),
+            codeExample:
+              "<Button variant='contained' size='small'>\n\tDefault\n</Button>",
+          },
+          {
+            component: (
+              <Button variant="contained" size="large">
+                Default large
+              </Button>
+            ),
+            codeExample:
+              "<Button variant='contained' size='large'>\n\tDefault\n</Button>",
+          },
+          {
+            component: (
               <Button variant="contained" color="primary">
                 Primary
               </Button>
@@ -548,6 +566,14 @@ const ComponentsData: ComponentList[] = [
           {
             component: <Button>Default</Button>,
             codeExample: '<Button>\n\tDefault\n</Button>',
+          },
+          {
+            component: <Button size="large">Default large</Button>,
+            codeExample: '<Button size="large">\n\tDefault\n</Button>',
+          },
+          {
+            component: <Button size="small">Default small</Button>,
+            codeExample: '<Button size="small">\n\tDefault\n</Button>',
           },
           {
             component: <Button color="primary">Primary</Button>,
@@ -598,6 +624,24 @@ const ComponentsData: ComponentList[] = [
             ),
             codeExample:
               "<Button variant='outlined' disabled>\n\tDisabled\n</Button>",
+          },
+          {
+            component: (
+              <Button variant="outlined" color="primary" size="small">
+                Primary small
+              </Button>
+            ),
+            codeExample:
+              "<Button variant='outlined' color='primary' size='medium'>\n\tPrimary\n</Button>",
+          },
+          {
+            component: (
+              <Button variant="outlined" color="primary" size="large">
+                Primary large
+              </Button>
+            ),
+            codeExample:
+              "<Button variant='outlined' color='primary' size='large'>\n\tPrimary\n</Button>",
           },
         ],
       },
