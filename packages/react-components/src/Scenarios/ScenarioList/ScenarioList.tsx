@@ -140,7 +140,7 @@ const ScenarioList = (props: ScenarioListProps) => {
           <strong>
             {showYear
               ? `${dateObject.day} ${dateObject.monthName} ${dateObject.year}`
-              : `${dateObject.day} ${dateObject.monthName}`}{' '}
+              : `${dateObject.day} ${dateObject.monthName}`}
             <span>{` - ${dateObject.dayName}`} </span>
           </strong>
         </div>
