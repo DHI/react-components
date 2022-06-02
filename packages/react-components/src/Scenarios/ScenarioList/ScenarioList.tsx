@@ -89,7 +89,9 @@ const ScenarioList = (props: ScenarioListProps) => {
             onKeyPress={(e) => handleMultiSelection(e, scenario)}
             role="presentation"
             className={classNames(classes.listItem, {
-              [classes.selectedItem]: selectedScenarios.includes(getObjectProperty(scenario, 'fullName')),
+              [classes.selectedItem]: selectedScenarioId
+                ? scenario.fullName.includes(selectedScenarioId)
+                : selectedScenarios.includes(getObjectProperty(scenario, 'fullName')),
             })}
           >
             <ScenarioItem
@@ -98,7 +100,11 @@ const ScenarioList = (props: ScenarioListProps) => {
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.fullName}
-              isSelected={selectedScenarios.includes(getObjectProperty(scenario, 'fullName'))}
+              isSelected={
+                selectedScenarioId
+                  ? scenario.fullName.includes(selectedScenarioId)
+                  : selectedScenarios.includes(getObjectProperty(scenario, 'fullName'))
+              }
               onContextMenuClick={onContextMenuClick}
               menu={buildMenu(scenario)}
               showHour={showHour}
@@ -132,7 +138,10 @@ const ScenarioList = (props: ScenarioListProps) => {
       <div className={classes.dateBlock}>
         <div className={classes.dateArea}>
           <strong>
-            {showYear ? `${dateObject.day} ${dateObject.monthName} ${dateObject.year}` : `${dateObject.day} ${dateObject.monthName}`}  <span>{` - ${dateObject.dayName}`} </span>
+            {showYear
+              ? `${dateObject.day} ${dateObject.monthName} ${dateObject.year}`
+              : `${dateObject.day} ${dateObject.monthName}`}
+            <span>{` - ${dateObject.dayName}`} </span>
           </strong>
         </div>
       </div>
