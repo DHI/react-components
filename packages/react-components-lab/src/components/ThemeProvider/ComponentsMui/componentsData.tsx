@@ -671,6 +671,22 @@ const ComponentsData: ComponentList[] = [
             component: <Switch color="secondary" />,
             codeExample: '<Switch color="secondary" />',
           },
+          {
+            component: <Switch color="primary" disabled />,
+            codeExample: '<Switch color="secondary" disabled/>',
+          },
+          {
+            component: <Switch color="secondary" disabled />,
+            codeExample: '<Switch color="secondary" disabled/>',
+          },
+          {
+            component: <Switch color="primary" disabled checked />,
+            codeExample: '<Switch color="secondary" disabled checked/>',
+          },
+          {
+            component: <Switch color="secondary" disabled checked />,
+            codeExample: '<Switch color="secondary" disabled checked />',
+          },
         ],
       },
       {

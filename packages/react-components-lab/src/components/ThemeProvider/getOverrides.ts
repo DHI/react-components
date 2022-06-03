@@ -189,43 +189,43 @@ const getOverrides = (type: PaletteType): Overrides => {
       },
     },
     MuiBreadcrumbs: {},
-    MuiCheckbox: {
-      root: {
-        color: mikePalette.grey[500],
-      },
-      indeterminate: {
-        color: mikePalette.success.main,
-      },
-      colorSecondary: {
-        '&$checked': {
-          color: mikePalette.success.main,
-        },
-      },
-    },
-    MuiRadio: {
-      root: {
-        boxSizing: 'content-box',
-      },
-      colorPrimary: {
-        color: mikePalette.primary.main,
-        '&$checked': {
-          '& svg:nth-of-type(2)': {
-            transform: 'scale(0.8)',
-            fill: mikePalette.primary.main,
-          },
-        },
-      },
-      colorSecondary: {
-        // ==...muiRadioStyles,
-        color: mikePalette.success.main,
-        '&$checked': {
-          '& svg:nth-of-type(2)': {
-            transform: 'scale(0.8)',
-            fill: mikePalette.success.main,
-          },
-        },
-      },
-    },
+    // MuiCheckbox: {
+    //   root: {
+    //     color: mikePalette.grey[500],
+    //   },
+    //   indeterminate: {
+    //     color: mikePalette.success.main,
+    //   },
+    //   colorSecondary: {
+    //     '&$checked': {
+    //       color: mikePalette.success.main,
+    //     },
+    //   },
+    // },
+    // MuiRadio: {
+    //   root: {
+    //     boxSizing: 'content-box',
+    //   },
+    //   colorPrimary: {
+    //     color: mikePalette.primary.main,
+    //     '&$checked': {
+    //       '& svg:nth-of-type(2)': {
+    //         transform: 'scale(0.8)',
+    //         fill: mikePalette.primary.main,
+    //       },
+    //     },
+    //   },
+    //   colorSecondary: {
+    //     // ==...muiRadioStyles,
+    //     color: mikePalette.success.main,
+    //     '&$checked': {
+    //       '& svg:nth-of-type(2)': {
+    //         transform: 'scale(0.8)',
+    //         fill: mikePalette.success.main,
+    //       },
+    //     },
+    //   },
+    // },
     MuiCard: {
       root: {
         display: 'flex',
