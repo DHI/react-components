@@ -35,7 +35,8 @@
     "@types/prismjs": "^1.16.5",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "@types/react-window": "^1.8.2"
+    "@types/react-window": "^1.8.2",
+    "storybook-dark-mode": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^17.0.2",

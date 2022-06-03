@@ -11,6 +11,7 @@ import React, {
 import { Typography, Box } from '@material-ui/core';
 
 // #region Local imports
+import { useDarkMode } from 'storybook-dark-mode';
 import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
 import ComponentItem from './ComponentsMui/ComponentItem';
@@ -42,10 +43,6 @@ interface ChildRefState {
 }
 const Template: Story<IProps> = (args) => {
   const classes = useStyles();
-  const isDarkMode =
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const [isDarkTheme, setDarkTheme] = useState(isDarkMode);
   const [dataList, setDataList] = useState<ComponentList[]>([]);
   const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
 
@@ -73,9 +70,9 @@ const Template: Story<IProps> = (args) => {
   }, []);
 
   const childRefs = useMemo(() => childRefState, [childRefState]);
-
+  const isDarkMode = useDarkMode();
   return (
-    <ThemeProvider {...args} type={isDarkTheme ? 'dark' : 'light'}>
+    <ThemeProvider {...args} type={isDarkMode ? 'dark' : 'light'}>
       <Box className={classes.root}>
         <Typography variant="h1">ThemeProvider</Typography>
         <Typography variant="h4">
