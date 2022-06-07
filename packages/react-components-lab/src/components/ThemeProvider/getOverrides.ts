@@ -426,6 +426,30 @@ const getOverrides = (type: PaletteType): Overrides => {
         padding: '0.5rem', // 8px
       },
     },
+    MuiSwitch: {
+      colorPrimary: {
+        '&$disabled': {
+          '&$checked': {
+            color: mikePalette.primary.light,
+            '& + $track': {
+              backgroundColor: mikePalette.primary.light,
+              opacity: 0.5,
+            },
+          },
+        },
+      },
+      colorSecondary: {
+        '&$disabled': {
+          '&$checked': {
+            color: mikePalette.secondary.light,
+            '& + $track': {
+              backgroundColor: mikePalette.secondary.light,
+              opacity: 0.5,
+            },
+          },
+        },
+      },
+    },
   };
 };
 
