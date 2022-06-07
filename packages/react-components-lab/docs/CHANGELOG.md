@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.14.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.1...@dhi/react-components-lab@1.14.2) (2022-05-25)
+
+
+### Bug Fixes
+
+* **ThemeMuiPickers:** Handle mui pickers border on dark mode ([27e7552](https://github.com/DHI/react-components/commit/27e75525904a4471f044946a39a60290622c087c))
+
 ## @dhi/react-components-lab [1.14.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.0...@dhi/react-components-lab@1.14.1) (2022-05-19)
 
 

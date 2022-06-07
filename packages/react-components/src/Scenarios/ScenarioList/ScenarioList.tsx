@@ -33,6 +33,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     showMenu,
     timeZone,
     multipleSelection,
+    showYear,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
   const classes = useStyles();
@@ -88,7 +89,9 @@ const ScenarioList = (props: ScenarioListProps) => {
             onKeyPress={(e) => handleMultiSelection(e, scenario)}
             role="presentation"
             className={classNames(classes.listItem, {
-              [classes.selectedItem]: selectedScenarios.includes(getObjectProperty(scenario, 'fullName')),
+              [classes.selectedItem]: selectedScenarioId
+                ? scenario.fullName.includes(selectedScenarioId)
+                : selectedScenarios.includes(getObjectProperty(scenario, 'fullName')),
             })}
           >
             <ScenarioItem
@@ -97,7 +100,11 @@ const ScenarioList = (props: ScenarioListProps) => {
               description={getDescriptions(scenario, descriptionFields, timeZone)}
               date={showDate ? (scenario.dateTime ? scenario.dateTime.toString() : '') : null}
               key={scenario.fullName}
-              isSelected={selectedScenarios.includes(getObjectProperty(scenario, 'fullName'))}
+              isSelected={
+                selectedScenarioId
+                  ? scenario.fullName.includes(selectedScenarioId)
+                  : selectedScenarios.includes(getObjectProperty(scenario, 'fullName'))
+              }
               onContextMenuClick={onContextMenuClick}
               menu={buildMenu(scenario)}
               showHour={showHour}
@@ -118,19 +125,23 @@ const ScenarioList = (props: ScenarioListProps) => {
       });
   };
 
-  const buildDateArea = (date: string) => {
+  const buildDateArea = (date: string, showYear: boolean) => {
     const isoDate = timeZone ? utcToTz(date, timeZone) : parseISO(date);
     const dateObject = {
       day: format(isoDate, 'dd'),
       dayName: format(isoDate, 'EEEE'),
       monthName: format(isoDate, 'MMM'),
+      year: format(isoDate, 'yyyy'),
     };
 
     return (
       <div className={classes.dateBlock}>
         <div className={classes.dateArea}>
           <strong>
-            {`${dateObject.day} ${dateObject.monthName}`} <span>{` - ${dateObject.dayName}`} </span>
+            {showYear
+              ? `${dateObject.day} ${dateObject.monthName} ${dateObject.year}`
+              : `${dateObject.day} ${dateObject.monthName}`}
+            <span>{` - ${dateObject.dayName}`} </span>
           </strong>
         </div>
       </div>
@@ -168,7 +179,7 @@ const ScenarioList = (props: ScenarioListProps) => {
       .map((key, index) => {
         return (
           <div key={key} className={classes.listBlock}>
-            {showDateGroups && key && buildDateArea(key)}
+            {showDateGroups && key && buildDateArea(key, showYear)}
             <div>{key && buildScenariosList(groupedScenarios[key])}</div>
           </div>
         );
