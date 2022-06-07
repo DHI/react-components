@@ -20,7 +20,7 @@ import useStyles from './styles';
 const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
   HTMLElement,
   ComponentItemProps
->(({ item }) => {
+>(({ item }, ref) => {
   const classes = useStyles();
 
   const [showCode, setShowCode] = useState<Record<string, boolean>>({});
@@ -30,6 +30,7 @@ const ComponentItem: React.FC<ComponentItemProps> = forwardRef<
 
   return (
     <Box
+      {...{ ref }}
       width={1}
       paddingTop={10}
       className={classes.container}

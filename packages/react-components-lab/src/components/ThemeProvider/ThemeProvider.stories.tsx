@@ -44,12 +44,13 @@ interface ChildRefState {
 const Template: Story<IProps> = (args) => {
   const classes = useStyles();
   const isDarkMode = useDarkMode();
-  const [dataList, setDataList] = useState<ComponentList[]>([]);
-  const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
   const ComponentsData = useMemo(
     () => getComponentsData(isDarkMode ? 'dark' : 'light'),
     [isDarkMode]
   );
+  const [dataList, setDataList] = useState<ComponentList[]>([]);
+  const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
+
   useEffect(() => {
     // Separate pinned and unpinned item(s) and call some sort method
     // this is useful to separate between non component and component elements.
@@ -59,7 +60,7 @@ const Template: Story<IProps> = (args) => {
     const nonPinnedData = ComponentsData.filter((item) => !item.pinned).sort(
       (a, b) => (a.title > b.title ? 1 : -1)
     );
-    const newDataList = [...pinnedData, ...nonPinnedData];
+    const newDataList = pinnedData.concat(nonPinnedData);
     const newChildRefState: ChildRefState[] = newDataList.map(
       (item, i): ChildRefState => ({
         id: `nav-item-${item.title}`,
@@ -68,11 +69,13 @@ const Template: Story<IProps> = (args) => {
         isSelected: false,
       })
     );
+
     setDataList(newDataList);
     setChildRefState(newChildRefState);
-  }, [ComponentsData]);
+  }, []);
 
   const childRefs = useMemo(() => childRefState, [childRefState]);
+  console.log(childRefs);
   return (
     <Box className={classes.root}>
       <Typography variant="h1">ThemeProvider</Typography>
