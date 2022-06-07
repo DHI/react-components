@@ -23,6 +23,9 @@ brandUrl: 'https://github.com/DHI/react-components/packages/732647',
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
+  // docs: {
+  //   source: { type: 'code' }, // Default here is 'dynamic'
+  // },
   options: {
     storySort: (a, b) =>
       a[1].kind === b[1].kind ? 0 : a[1].id.localeCompare(b[1].id, undefined, { numeric: true }),

@@ -125,6 +125,12 @@ export const mikePaletteDark = {
     dark: MIKE_COLORS.YELLOW_DEFAULT,
     contrastText: MIKE_COLORS.BRANDBLUE_DARK,
   },
+  info: {
+    light: MIKE_COLORS.ACTIONBLUE_X_LIGHT,
+    main: MIKE_COLORS.ACTIONBLUE_LIGHT,
+    dark: MIKE_COLORS.ACTIONBLUE_DEFAULT,
+    contrastText: MIKE_COLORS.WHITE,
+  },
   success: {
     light: MIKE_COLORS.GREEN_X_LIGHT,
     main: MIKE_COLORS.GREEN_LIGHT,
