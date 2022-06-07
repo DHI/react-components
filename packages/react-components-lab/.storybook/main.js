@@ -5,10 +5,6 @@ module.exports = {
   "addons": [
     "@storybook/addon-links",
     "@storybook/addon-docs",
-    // {
-    //   name: "@storybook/addon-docs",
-    //   sourceLoaderOptions: null
-    // },
     "@storybook/addon-essentials",
     'storybook-dark-mode'
   ],
