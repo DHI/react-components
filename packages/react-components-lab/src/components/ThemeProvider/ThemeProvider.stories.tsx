@@ -11,11 +11,12 @@ import React, {
 import { Typography, Box } from '@material-ui/core';
 
 // #region Local imports
+import { useDarkMode } from 'storybook-dark-mode';
 import ThemeProvider from './ThemeProvider';
 import { IProps } from './types';
 import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
-import ComponentsData from './ComponentsMui/componentsData';
+import getComponentsData from './ComponentsMui/componentsData';
 import SideNav from './SideNav/SideNav';
 import useStyles from './styles';
 import { ComponentList } from './ComponentsMui/types';
@@ -26,11 +27,10 @@ export default {
   component: ThemeProvider,
   argTypes: {},
   parameters: {
-    docs: {
-      description: {
-        component: 'This is theme provider based on DHI official guidelines.',
-      },
+    previewTabs: {
+      'storybook/docs/panel': { hidden: true },
     },
+    viewMode: 'canvas',
   },
 } as Meta;
 
@@ -42,10 +42,12 @@ interface ChildRefState {
 }
 const Template: Story<IProps> = (args) => {
   const classes = useStyles();
-  const isDarkMode =
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const [isDarkTheme, setDarkTheme] = useState(isDarkMode);
+  const isDarkMode = useDarkMode();
+
+  const ComponentsData = useMemo(
+    () => getComponentsData(isDarkMode ? 'dark' : 'light'),
+    [isDarkMode]
+  );
   const [dataList, setDataList] = useState<ComponentList[]>([]);
   const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
 
@@ -70,56 +72,56 @@ const Template: Story<IProps> = (args) => {
 
     setDataList(newDataList);
     setChildRefState(newChildRefState);
-  }, []);
+  }, [ComponentsData]);
 
   const childRefs = useMemo(() => childRefState, [childRefState]);
 
   return (
-    <ThemeProvider {...args} type={isDarkTheme ? 'dark' : 'light'}>
-      <Box className={classes.root}>
-        <Typography variant="h1">ThemeProvider</Typography>
-        <Typography variant="h4">
-          This page is not fully maintained, even if the ThemeProvider component
-          itself is.
+    <Box className={classes.root}>
+      <Typography variant="h1">ThemeProvider</Typography>
+      {/* <Typography variant="h4">
+        This page is not fully maintained, even if the ThemeProvider component
+        itself is.
+      </Typography> */}
+      <Box className={classes.header}>
+        <Typography variant="body1">
+          <span className={classes.highlightText}>Theme Provider</span> is the
+          theming built on top of Material-Ui styles and overridden based on DHI
+          official CVI. Here is the concept.
         </Typography>
-        <Box className={classes.header}>
-          <Typography variant="h5">
-            <span className={classes.highlightText}>Theme Provider</span> is the
-            theming built on top of Material-Ui styles and overridden based on
-            DHI official CVI. Here is the concept.
-          </Typography>
-        </Box>
-        <main className={classes.mainContainer}>
-          <Box className={classes.content}>
-            <Box bgcolor="primary.main" margin={1} padding={2}>
-              <Typography variant="h2" color="textSecondary">
-                Theme Provider
-              </Typography>
-              <Box bgcolor="primary.light" margin={1} padding={2}>
-                <Typography variant="body1">Your Application</Typography>
-                <Box bgcolor="primary.main" margin={1} padding={2}>
-                  <Typography variant="body1" color="textSecondary">
-                    Your components
-                  </Typography>
-                </Box>
+      </Box>
+      <main className={classes.mainContainer}>
+        <Box className={classes.content}>
+          <Box bgcolor="primary.main" margin={1} padding={2}>
+            <Typography variant="h2" color="textSecondary">
+              Theme Provider
+            </Typography>
+            <Box bgcolor="primary.light" margin={1} padding={2}>
+              <Typography variant="body1">Your Application</Typography>
+              <Box bgcolor="primary.main" margin={1} padding={2}>
+                <Typography variant="body1" color="textSecondary">
+                  Your components
+                </Typography>
               </Box>
             </Box>
-            <Syntax
-              code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider>\n\t{children}\n</ThemeProvider>`}
-            />
-            {childRefs &&
-              dataList?.map((item, i) => (
-                <ComponentItem
-                  {...{ ref: childRefs[i].element }}
-                  key={item.title}
-                  item={item}
-                />
-              ))}
           </Box>
-          <SideNav data={dataList} contentList={childRefs} />
-        </main>
-      </Box>
-    </ThemeProvider>
+          <Syntax
+            code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider type={${
+              isDarkMode ? '"dark"' : '"light"'
+            }} overrides={{}}>\n\t{children}\n</ThemeProvider>`}
+          />
+          {childRefs &&
+            dataList?.map((item, i) => (
+              <ComponentItem
+                {...{ ref: childRefs[i].element }}
+                key={item.title}
+                item={item}
+              />
+            ))}
+        </Box>
+        <SideNav data={dataList} contentList={childRefs} />
+      </main>
+    </Box>
   );
 };
 
