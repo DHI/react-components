@@ -12,7 +12,7 @@ export default makeStyles<IMikeTheme>((theme) => ({
     transition: theme.transitions[1],
     flexGrow: 1,
     '&:hover': {
-      backgroundColor: '#FFF',
+      backgroundColor: theme.palette.background.paper,
     },
   },
   icon: {

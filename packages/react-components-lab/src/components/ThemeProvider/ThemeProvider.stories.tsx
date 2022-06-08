@@ -27,11 +27,10 @@ export default {
   component: ThemeProvider,
   argTypes: {},
   parameters: {
-    docs: {
-      description: {
-        component: 'This is theme provider based on DHI official guidelines.',
-      },
+    previewTabs: {
+      'storybook/docs/panel': { hidden: true },
     },
+    viewMode: 'canvas',
   },
 } as Meta;
 
@@ -44,6 +43,7 @@ interface ChildRefState {
 const Template: Story<IProps> = (args) => {
   const classes = useStyles();
   const isDarkMode = useDarkMode();
+
   const ComponentsData = useMemo(
     () => getComponentsData(isDarkMode ? 'dark' : 'light'),
     [isDarkMode]
@@ -72,19 +72,19 @@ const Template: Story<IProps> = (args) => {
 
     setDataList(newDataList);
     setChildRefState(newChildRefState);
-  }, []);
+  }, [ComponentsData]);
 
   const childRefs = useMemo(() => childRefState, [childRefState]);
-  console.log(childRefs);
+
   return (
     <Box className={classes.root}>
       <Typography variant="h1">ThemeProvider</Typography>
-      <Typography variant="h4">
+      {/* <Typography variant="h4">
         This page is not fully maintained, even if the ThemeProvider component
         itself is.
-      </Typography>
+      </Typography> */}
       <Box className={classes.header}>
-        <Typography variant="h5">
+        <Typography variant="body1">
           <span className={classes.highlightText}>Theme Provider</span> is the
           theming built on top of Material-Ui styles and overridden based on DHI
           official CVI. Here is the concept.
@@ -106,7 +106,9 @@ const Template: Story<IProps> = (args) => {
             </Box>
           </Box>
           <Syntax
-            code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider>\n\t{children}\n</ThemeProvider>`}
+            code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider type={${
+              isDarkMode ? '"dark"' : '"light"'
+            }} overrides={{}}>\n\t{children}\n</ThemeProvider>`}
           />
           {childRefs &&
             dataList?.map((item, i) => (
