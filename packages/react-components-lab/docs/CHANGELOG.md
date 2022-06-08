@@ -1,3 +1,10 @@
+## @dhi/react-components-lab [1.14.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.2...@dhi/react-components-lab@1.14.3) (2022-06-08)
+
+
+### Bug Fixes
+
+* **theme-styling:**  ([#308](https://github.com/DHI/react-components/issues/308)) ([9a7c690](https://github.com/DHI/react-components/commit/9a7c69034772979faa57388fe46aaef86efc9283))
+
 ## @dhi/react-components-lab [1.14.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.1...@dhi/react-components-lab@1.14.2) (2022-05-25)
 
 
