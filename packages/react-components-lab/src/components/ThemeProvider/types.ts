@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { Theme, ThemeOptions } from '@material-ui/core/styles';
 import { Palette, PaletteColor } from '@material-ui/core/styles/createPalette';
-import { Overrides } from '@material-ui/core/styles/overrides';
 import { PaletteType } from '@material-ui/core';
 
 export interface IProps {
@@ -19,11 +18,10 @@ export interface IMikePalette extends Palette {
 
 export interface IMikeTheme extends Theme {
   palette: IMikePalette;
-  overrides?: Overrides;
 }
 
 export interface IMikeThemeOptions extends ThemeOptions {
-  palette: IMikePalette;
+  palette?: IMikePalette;
 }
 
 export const SPACING = 8;
