@@ -1,10 +1,7 @@
 import React, { useMemo, FC } from 'react';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import createTheme, {
-  ThemeOptions,
-} from '@material-ui/core/styles/createTheme';
-import assignIn from 'lodash.assignin';
+import createTheme from '@material-ui/core/styles/createTheme';
 
 // #region Local imports
 import { getTheme } from './mikeSharedTheme';
@@ -20,11 +17,10 @@ const ThemeProvider: FC<Types.IProps> = ({
   children,
   type = isDarkMode ? 'dark' : 'light',
 }) => {
-  const theme = useMemo(() => {
-    const themeWithOverrides = assignIn({ ...getTheme(type) }, overrides);
-
-    return createTheme(themeWithOverrides as ThemeOptions);
-  }, [overrides, type]);
+  const theme = useMemo(
+    () => createTheme({ ...getTheme(type) }, overrides),
+    [overrides, type]
+  );
 
   return (
     <>
