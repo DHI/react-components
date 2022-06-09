@@ -106,8 +106,9 @@ const SideNav: FC<SideNavProps> = ({ data, contentList }) => {
               <div key={`li-wrapper-${item.title}`}>
                 <li
                   className={
-                    selectedItem?.id === `${itemNameHeading}${item.title}` &&
-                    'nav-selected'
+                    selectedItem?.id
+                      ? `${itemNameHeading}${item.title}` && 'nav-selected'
+                      : ''
                   }
                   id={`${itemNameHeading}${item.title}`}
                   aria-hidden="true"

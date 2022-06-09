@@ -11,11 +11,12 @@ import React, {
 import { Typography, Box } from '@mui/material';
 
 // #region Local imports
+import { useDarkMode } from 'storybook-dark-mode';
 import ThemeProvider from './ThemeProvider';
-import { IProps } from './types';
+import { ThemeProviderProps } from './types';
 import ComponentItem from './ComponentsMui/ComponentItem';
 import Syntax from '../Syntax/Syntax';
-import ComponentsData from './ComponentsMui/componentsData';
+import getComponentsData from './ComponentsMui/componentsData';
 import SideNav from './SideNav/SideNav';
 import { ComponentList } from './ComponentsMui/types';
 // #endregion
@@ -25,11 +26,10 @@ export default {
   component: ThemeProvider,
   argTypes: {},
   parameters: {
-    docs: {
-      description: {
-        component: 'This is theme provider based on DHI official guidelines.',
-      },
+    previewTabs: {
+      'storybook/docs/panel': { hidden: true },
     },
+    viewMode: 'canvas',
   },
 } as Meta;
 
@@ -39,10 +39,14 @@ interface ChildRefState {
   element: RefObject<HTMLElement>;
   isSelected: boolean;
 }
-const Template: Story<IProps> = () => {
+const Template: Story<ThemeProviderProps> = () => {
+  const isDarkMode = useDarkMode();
   const [dataList, setDataList] = useState<ComponentList[]>([]);
   const [childRefState, setChildRefState] = useState<ChildRefState[]>([]);
-
+  const ComponentsData = useMemo(
+    () => getComponentsData(isDarkMode ? 'dark' : 'light'),
+    [isDarkMode]
+  );
   useEffect(() => {
     // Separate pinned and unpinned item(s) and call some sort method
     // this is useful to separate between non component and component elements.
@@ -64,7 +68,7 @@ const Template: Story<IProps> = () => {
 
     setDataList(newDataList);
     setChildRefState(newChildRefState);
-  }, []);
+  }, [ComponentsData]);
 
   const childRefs = useMemo(() => childRefState, [childRefState]);
   return (
@@ -125,7 +129,9 @@ const Template: Story<IProps> = () => {
               </Box>
             </Box>
             <Syntax
-              code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider>\n\t{children}\n</ThemeProvider>`}
+              code={`import { ThemeProvider } from '@dhi/react-components-lab'\n\n<ThemeProvider type={${
+                isDarkMode ? '"dark"' : '"light"'
+              }} overrides={{}}>\n\t{children}\n</ThemeProvider>`}
             />
             {childRefs &&
               dataList?.map((item, i) => (

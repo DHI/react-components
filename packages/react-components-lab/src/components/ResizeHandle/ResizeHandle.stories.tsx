@@ -2,17 +2,14 @@
 import { Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import { useDarkMode } from 'storybook-dark-mode';
 import { ResizeHandleProps } from './types';
 import ResizeHandle from './ResizeHandle';
-import mikePalette from '../ThemeProvider/dhiPallete';
 
 export default {
   title: 'Components/ResizeHandle',
   component: ResizeHandle,
 };
-
-const DARKGREY_LIGHT = mikePalette.darkGrey.light;
-const ACTIONBLUE_PALE = mikePalette.secondary.light;
 
 const Template: Story<ResizeHandleProps> = (props) => {
   const defaultSize = 200;
