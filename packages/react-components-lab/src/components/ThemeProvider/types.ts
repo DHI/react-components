@@ -5,7 +5,7 @@ import { Overrides } from '@material-ui/core/styles/overrides';
 import { PaletteType } from '@material-ui/core';
 
 export interface IProps {
-  overrides?: Overrides;
+  overrides?: ThemeOptions;
   children?: ReactNode;
   type?: PaletteType;
 }
