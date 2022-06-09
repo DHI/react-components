@@ -1,9 +1,8 @@
 import React, { useMemo, FC } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 // #region Local imports
-import { assignIn } from 'lodash';
 import getDhiSharedTheme from './getDhiSharedTheme';
 import { ThemeProviderProps, IMikeTheme } from './types';
 // #endregion
@@ -14,7 +13,7 @@ const DHIThemeProvider: FC<ThemeProviderProps> = ({
 }) => {
   const theme: IMikeTheme = useMemo(() => {
     const themeWithOverrides = getDhiSharedTheme(mode, {
-      components: overrides,
+      ...overrides,
     });
     return themeWithOverrides;
   }, [overrides]);

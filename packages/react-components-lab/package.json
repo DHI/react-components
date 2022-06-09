@@ -1,5 +1,5 @@
 {
-  "version": "1.13.2-MUIv5.beta.0",
+  "version": "1.13.2-MUIv5.1",
   "license": "MIT",
   "main": "dist/index.js",
   "name": "@dhi/react-components-lab",
@@ -52,7 +52,6 @@
     "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.27.0",
     "lodash": "^4.17.21",
-    "lodash.assignin": "^4.2.0",
     "prismjs": "^1.24.1"
   }
 }

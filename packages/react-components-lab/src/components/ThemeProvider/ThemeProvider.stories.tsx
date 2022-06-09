@@ -29,7 +29,7 @@ export default {
     previewTabs: {
       'storybook/docs/panel': { hidden: true },
     },
-    viewMode: 'canvas',
+    viewMode: 'docs/canvas',
   },
 } as Meta;
 
