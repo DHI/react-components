@@ -50,7 +50,7 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
         colorPrimary: {
           backgroundColor: dhiPalette.grey[50],
           height: '60px',
-          borderBottom: `4px solid ${dhiPalette.grey[200]}`,
+          borderBottom: `4px solid ${dhiPalette.grey[100]}`,
         },
       },
     },
