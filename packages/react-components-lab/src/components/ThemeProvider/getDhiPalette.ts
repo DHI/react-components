@@ -11,15 +11,15 @@ const dhiPaletteLight: IMikePalette = {
   ...MuiPaletteLight,
   mode: 'light',
   primary: {
-    light: DHI_COLORS.BRANDBLUE_LIGHT,
-    main: DHI_COLORS.BRANDBLUE_DEFAULT,
-    dark: DHI_COLORS.BRANDBLUE_DARK,
-    contrastText: DHI_COLORS.WHITE,
-  },
-  secondary: {
     light: DHI_COLORS.ACTIONBLUE_LIGHT,
     main: DHI_COLORS.ACTIONBLUE_DEFAULT,
     dark: DHI_COLORS.ACTIONBLUE_DARK,
+    contrastText: DHI_COLORS.WHITE,
+  },
+  secondary: {
+    light: DHI_COLORS.BRANDBLUE_LIGHT,
+    main: DHI_COLORS.BRANDBLUE_DEFAULT,
+    dark: DHI_COLORS.BRANDBLUE_DARK,
     contrastText: DHI_COLORS.WHITE,
   },
   error: {
@@ -103,15 +103,15 @@ export const dhiPaletteDark = {
   ...MuiPaletteDark,
   mode: 'dark',
   primary: {
-    light: DHI_COLORS.BRANDBLUE_X_LIGHT,
-    main: DHI_COLORS.BRANDBLUE_LIGHT,
-    dark: DHI_COLORS.BRANDBLUE_DEFAULT,
-    contrastText: DHI_COLORS.BRANDBLUE_DARK,
-  },
-  secondary: {
     light: DHI_COLORS.ACTIONBLUE_X_LIGHT,
     main: DHI_COLORS.ACTIONBLUE_LIGHT,
     dark: DHI_COLORS.ACTIONBLUE_DEFAULT,
+    contrastText: DHI_COLORS.BRANDBLUE_DARK,
+  },
+  secondary: {
+    light: DHI_COLORS.BRANDBLUE_X_LIGHT,
+    main: DHI_COLORS.BRANDBLUE_LIGHT,
+    dark: DHI_COLORS.BRANDBLUE_DEFAULT,
     contrastText: DHI_COLORS.BRANDBLUE_DARK,
   },
   error: {
