@@ -24,7 +24,7 @@ We are aiming for making it as easy as possible for a component to be added to t
 Our library is showcased on the [Lab Storybook](https://react-components-lab.dhigroup.com/)
  
 ## Installing the package 
-
+ 
 Generating a Personal Access token with GitHub - [More info](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
 1. Visit Github.com &rarr; Your Profile (top right) &rarr; Settings.
