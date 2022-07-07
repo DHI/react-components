@@ -20,7 +20,7 @@ We are aiming for making it as easy as possible for a component to be added to t
 * [x] The component needs to be reviewed by at least one of the maintainers 
 
 # Showcase   
-
+ 
 Our library is showcased on the [Lab Storybook](https://react-components-lab.dhigroup.com/)
  
 ## Installing the package 
