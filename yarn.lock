@@ -5443,7 +5443,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^7.2.6":
+"@types/eslint@npm:^7.28.0":
   version: 7.29.0
   resolution: "@types/eslint@npm:7.29.0"
   dependencies:
@@ -10682,37 +10682,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-standard-typescript-prettier@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "eslint-config-standard-typescript-prettier@npm:4.2.0"
+"eslint-config-standard-typescript-prettier@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "eslint-config-standard-typescript-prettier@npm:6.0.0"
   dependencies:
-    "@types/eslint": ^7.2.6
+    "@types/eslint": ^7.28.0
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^4.15.2
-    "@typescript-eslint/parser": ^4.15.2
-    eslint: ^7.21.0
-    eslint-config-prettier: ^8.1.0
-    eslint-config-standard: ^16.0.2
-    eslint-plugin-import: ^2.22.1
+    "@typescript-eslint/eslint-plugin": ^5.30.5
+    "@typescript-eslint/parser": ^5.30.5
+    eslint: ^8.19.0
+    eslint-config-prettier: ^8.5.0
+    eslint-config-standard: ^17.0.0
+    eslint-plugin-import: ^2.26.0
+    eslint-plugin-n: ^15.2.4
     eslint-plugin-node: ^11.1.0
-    eslint-plugin-prettier: ^3.3.1
-    eslint-plugin-promise: ^4.3.1
-    eslint-plugin-standard: ^5.0.0
-    prettier: ^2.2.1
-  checksum: a46a89a3d73a338e003a6fcf21142c03c8ea0fa6996ed07463ae6093f81d12250a494047917985ac217e137246eed11eec4870d9ae154d6f359296cffd0244ac
+    eslint-plugin-prettier: ^4.2.1
+    eslint-plugin-promise: ^6.0.0
+    prettier: ^2.7.1
+  checksum: 49be29f05e5e4ff5547315661a3fbbf70b56014497d8b942bd08ee35af96887c1e6c350aebd92f05e8c6b406479c5e992a324d868106af0cfa82b94c63801eb0
   languageName: node
   linkType: hard
 
-"eslint-config-standard@npm:14":
-  version: 14.1.1
-  resolution: "eslint-config-standard@npm:14.1.1"
+"eslint-config-standard@npm:^17.0.0":
+  version: 17.0.0
+  resolution: "eslint-config-standard@npm:17.0.0"
   peerDependencies:
-    eslint: ">=6.2.2"
-    eslint-plugin-import: ">=2.18.0"
-    eslint-plugin-node: ">=9.1.0"
-    eslint-plugin-promise: ">=4.2.1"
-    eslint-plugin-standard: ">=4.0.0"
-  checksum: 0eee1117e848d9d0d80f1e5d789ad426efa629d71b599711e382c05ebb9fa3ae11ef6d4e34947a0a7ce59bfc3c7f522a047b7fa34ab2eedf7702576ac5cf3d74
+    eslint: ^8.0.1
+    eslint-plugin-import: ^2.25.2
+    eslint-plugin-n: ^15.0.0
+    eslint-plugin-promise: ^6.0.0
+  checksum: dc0ed51e186fd963ff2c0819d33ef580afce11b11036cbcf5e74427e26e514c2b1be96b8ffe74fd2fd00263554a0d49cc873fcf76f17c3dfdba614b45d7fd7da
   languageName: node
   linkType: hard
 
@@ -18732,8 +18731,8 @@ __metadata:
     eslint: ^7.21.0
     eslint-config-airbnb-typescript: ^12.3.1
     eslint-config-prettier: ^8.2.0
-    eslint-config-standard: 14
-    eslint-config-standard-typescript-prettier: ^4.2.0
+    eslint-config-standard: ^17.0.0
+    eslint-config-standard-typescript-prettier: ^6.0.0
     eslint-plugin-eslint-comments: ^3.2.0
     eslint-plugin-import: ^2.22.0
     eslint-plugin-jsx-a11y: ^6.3.1
