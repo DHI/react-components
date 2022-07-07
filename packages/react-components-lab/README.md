@@ -19,7 +19,7 @@ We are aiming for making it as easy as possible for a component to be added to t
 * [x] The component implements an element of the [DHI Design Guidelines](https://www.figma.com/file/pSfX5GNsa6xhKGbi3DWQtn/DHI-Official-Guidelines) or is otherwise generic enough in functionality and close enough to the DHI CVI that it is likely to find reuse in other projects.
 * [x] The component needs to be reviewed by at least one of the maintainers
 
-# Showcase
+# Showcase 
 
 Our library is showcased on the [Lab Storybook](https://react-components-lab.dhigroup.com/)
 
