@@ -69,6 +69,7 @@
     },
     "resolutions": {
         "node-gyp": "^9.0.0",
+        "react-textarea-autosize": "^8.2.2",
         "react-element-to-jsx-string": "14.3.2",
         "@types/react": "^17.0.3",
         "@types/react-dom": "^17.0.3"
