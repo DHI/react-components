@@ -1,6 +1,6 @@
 {
     "branches": [
-        "master"
+        "fix/pipeline-dependencies"
     ],
     "repositoryUrl": "https://github.com/DHI/react-components",
     "plugins": [
