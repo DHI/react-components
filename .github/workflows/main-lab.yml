@@ -92,7 +92,9 @@ jobs:
           ###### End of Repository/Build Configurations ######
           
       - name: Semantic release
-        run: yarn run multi-semantic-release --ignore-packages=packages/react-components/**,packages/icons/** --sequential-prepare=false
+        run: |
+          npm config set legacy-peer-deps true
+          yarn run multi-semantic-release --ignore-packages=packages/react-components/**,packages/icons/** --sequential-prepare=false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
