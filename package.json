@@ -43,7 +43,6 @@
         "eslint": "^7.21.0",
         "eslint-config-airbnb-typescript": "^12.3.1",
         "eslint-config-prettier": "^8.2.0",
-        "eslint-config-standard": "14",
         "eslint-config-standard-typescript-prettier": "^4.2.0",
         "eslint-plugin-eslint-comments": "^3.2.0",
         "eslint-plugin-import": "^2.22.0",
