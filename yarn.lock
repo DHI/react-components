@@ -10811,19 +10811,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-standard@npm:14":
-  version: 14.1.1
-  resolution: "eslint-config-standard@npm:14.1.1"
-  peerDependencies:
-    eslint: ">=6.2.2"
-    eslint-plugin-import: ">=2.18.0"
-    eslint-plugin-node: ">=9.1.0"
-    eslint-plugin-promise: ">=4.2.1"
-    eslint-plugin-standard: ">=4.0.0"
-  checksum: 0eee1117e848d9d0d80f1e5d789ad426efa629d71b599711e382c05ebb9fa3ae11ef6d4e34947a0a7ce59bfc3c7f522a047b7fa34ab2eedf7702576ac5cf3d74
-  languageName: node
-  linkType: hard
-
 "eslint-import-resolver-node@npm:*, eslint-import-resolver-node@npm:^0.3.6":
   version: 0.3.6
   resolution: "eslint-import-resolver-node@npm:0.3.6"
@@ -18962,7 +18949,6 @@ __metadata:
     eslint: ^7.21.0
     eslint-config-airbnb-typescript: ^12.3.1
     eslint-config-prettier: ^8.2.0
-    eslint-config-standard: 14
     eslint-config-standard-typescript-prettier: ^4.2.0
     eslint-plugin-eslint-comments: ^3.2.0
     eslint-plugin-import: ^2.22.0
