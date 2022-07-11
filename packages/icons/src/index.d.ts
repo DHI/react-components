@@ -75,7 +75,6 @@ export const Select: SvgIconComponent
 export const SelectMultiple: SvgIconComponent
 export const Send: SvgIconComponent
 export const SetFlags: SvgIconComponent
-export const Setting: SvgIconComponent
 export const Snapping: SvgIconComponent
 export const SortAlphabetically: SvgIconComponent
 export const SortByAscending: SvgIconComponent
