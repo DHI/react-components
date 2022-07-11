@@ -6,7 +6,6 @@ export const Adjust: SvgIconComponent
 export const Animation: SvgIconComponent
 export const AreaInfo: SvgIconComponent
 export const Build: SvgIconComponent
-export const Calendar: SvgIconComponent
 export const CalendarSetting: SvgIconComponent
 export const Center: SvgIconComponent
 export const Chart: SvgIconComponent
