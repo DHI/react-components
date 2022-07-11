@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core';
 
 export default function createSvgIcon(path, displayName) {
     const Component = (props, ref) => (
-      <SvgIcon data-testid={`${displayName}Icon`} ref={ref} {...props}>
+      <SvgIcon data-testid={`${displayName}Icon`} ref={ref} {...props} viewBox='0 0 40 40'>
         {path}
       </SvgIcon>
     );

@@ -3,6 +3,6 @@ import createSvgIcon from "../utils/createSvgIcon";
 
 
 export default createSvgIcon(
-    <path d="M3.73 3.73L7.97 13.86L9.29 10.44L9.61 9.61L10.43 9.29L13.86 7.96L3.73 3.73ZM0 0L18 7.53V8.51L11.16 11.16L8.52 18H7.54L0 0Z" fill="#09334B"/>,
+    <path d="M13.73 14.73L17.97 24.86L19.29 21.44L19.61 20.61L20.43 20.29L23.86 18.96L13.73 14.73ZM10 11L28 18.53V19.51L21.16 22.16L18.52 29H17.54L10 11Z" fill="#09334B"/>,
     'Select'
 )

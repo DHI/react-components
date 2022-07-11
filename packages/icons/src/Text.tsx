@@ -3,6 +3,12 @@ import createSvgIcon from "../utils/createSvgIcon";
 
 
 export default createSvgIcon(
-    <path fill="#09334B" d="M2 0H0V3H2V0Z M12 0H10V3H12V0Z M4 12V14H8V12H4Z M2 0L1 2H11L10 0H2Z M5 0H7V12H5V0Z"></path>,
+    <>
+        <path d="M16 13H14V16H16V13Z" fill="#09334B"/>
+        <path d="M26 13H24V16H26V13Z" fill="#09334B"/>
+        <path d="M18 25V27H22V25H18Z" fill="#09334B"/>
+        <path d="M16 13L15 15H25L24 13H16Z" fill="#09334B"/>
+        <path d="M19 13H21V25H19V13Z" fill="#09334B"/>
+    </>,
     'Text'
 )
