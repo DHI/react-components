@@ -1,5 +1,5 @@
 {
-  "version": "1.13.2-MUIv5.2.1",
+  "version": "1.13.2-MUIv5.3.2",
   "license": "MIT",
   "main": "dist/index.js",
   "name": "@dhi/react-components-lab",

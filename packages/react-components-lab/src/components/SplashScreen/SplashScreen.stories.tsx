@@ -4,8 +4,7 @@ import React from 'react';
 import { Box, Button } from '@mui/material';
 import SplashScreen from './SplashScreen';
 import { SplashScreenProps } from './types';
-import dhiLogo from './dhiLogo.svg';
-
+const dhiLogo = "https://grasdatastorage.blob.core.windows.net/images/DHI_Logo_rgb_Blue.svg"
 export default { component: SplashScreen };
 const Template: Story<SplashScreenProps> = (args) => <SplashScreen {...args} />;
 
