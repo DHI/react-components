@@ -1917,22 +1917,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dhi/icons@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@dhi/icons@npm:1.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40dhi%2Ficons%2F1.3.0%2F58a17a84cd4774fc39010a70b0b0f053c90c774ed52b0890524ecf3462c27db5"
-  peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
-  checksum: c8d679acb2448a2e23f8344c5b67d8d1e66dded3660c9a3a82b7e3d319e4f4dd93887dcd717dbd56acd0b96f362977d62d139fc3ae4588595a5bb9423b52235e
-  languageName: node
-  linkType: hard
-
 "@dhi/react-components-lab@workspace:packages/react-components-lab":
   version: 0.0.0-use.local
   resolution: "@dhi/react-components-lab@workspace:packages/react-components-lab"
   dependencies:
     "@ctrl/tinycolor": ^3.4.0
-    "@dhi/icons": ^1.3.0
     "@material-ui/core": ^4.12.3
     "@material-ui/icons": ^4.11.2
     "@material-ui/system": ^4.12.1

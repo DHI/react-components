@@ -31,6 +31,7 @@ jobs:
       
       - name: Add GITHUB_TOKEN to .npmrc
         run: |
+          cd packages/react-components-lab
           echo "@dhi:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
 
@@ -50,7 +51,6 @@ jobs:
           yarn install --immutable
         env:
           CI: true
-          NPM_CONFIG_USERCONFIG: ./.npmrc
 
       - name: Install dependencies with cache
         if: steps.cache-modules.outputs.cache-hit == 'true'
