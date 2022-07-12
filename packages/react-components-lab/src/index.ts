@@ -66,6 +66,10 @@ export { default as useSnackbar } from './components/Snackbar/useSnackbar';
 export { default as BoxMessageStyled } from './components/Snackbar/BoxMessage.styled';
 export * from './components/Snackbar/types';
 
+// SplashScreen
+export { default as SplashScreen } from './components/SplashScreen/SplashScreen';
+export * from './components/SplashScreen/types';
+
 // StaticLegend
 export { default as StaticLegend } from './components/StaticLegend/StaticLegend';
 export * from './components/StaticLegend/types';
