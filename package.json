@@ -16,7 +16,7 @@
     "workspaces": [
         "./packages/react-components-lab",
         "./packages/react-components",
-        "./packages/react-components"
+        "./packages/icons"
     ],
     "devDependencies": {
         "@babel/core": "^7.9.6",
