@@ -18,6 +18,7 @@ const SplashScreen: FC<SplashScreenProps> = ({
     mr={3}
   >
     {image && <Box>{image}</Box>}
+
     <Typography align="center" color="secondary.dark" mt={4} variant="h2">
       {header}
     </Typography>
