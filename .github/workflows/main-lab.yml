@@ -5,12 +5,14 @@ on:
       - master
     paths:
       - "packages/react-components-lab/**"
+      - "packages/icons/**"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
     paths:
       - "packages/react-components-lab/**"
+      - "packages/icons/**"
       
 jobs:
   build_and_deploy_job:
