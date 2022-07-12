@@ -13,8 +13,7 @@
   "scripts": {
     "build": "../../node_modules/.bin/tsdx build",
     "lint": "../../node_modules/eslint/bin/eslint .",
-    "lint:fix": "../../node_modules/eslint/bin/eslint . --fix",
-    "semantic-release": "npx semantic-release"
+    "lint:fix": "../../node_modules/eslint/bin/eslint . --fix"
   },
   "typings": "dist/index.d.ts",
   "main": "./dist/index.js",

@@ -33,6 +33,7 @@ const scrollStopListener = (
 
   const onScroll = () => {
     if (handle) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       clearTimeout(handle);
     }
     handle = setTimeout(callback, timeout || 150); // in ms
@@ -46,6 +47,7 @@ const scrollStopListener = (
     }
     removed = true;
     if (handle) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       clearTimeout(handle);
     }
     element.removeEventListener('scroll', onScroll);

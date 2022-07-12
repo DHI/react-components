@@ -70,6 +70,7 @@ const Card: FC<CardProps> = ({
             {isClickable && (
               <Box display="flex" alignItems="center">
                 {customCheckbox ? (
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   React.cloneElement(customCheckbox, { checked: isOpen })
                 ) : (
                   <Checkbox
