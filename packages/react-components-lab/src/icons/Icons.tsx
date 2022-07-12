@@ -1,6 +1,6 @@
 import React, { FC, createElement, useState } from 'react';
 import { Box, Typography, Tooltip } from '@material-ui/core';
-import * as DhiIcons from '@dhi/icons/dist'; // eslint-disable-line import/no-unresolved
+import * as DhiIcons from '@dhi/icons'; // eslint-disable-line import/no-unresolved
 import copy from 'copy-to-clipboard';
 import useStyles from './styles';
 
