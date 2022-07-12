@@ -24,7 +24,6 @@
     "test": "../../node_modules/.bin/tsdx test --passWithNoTests",
     "lint": "../../node_modules/eslint/bin/eslint.js .",
     "lint:fix": "../../node_modules/eslint/bin/eslint.js . --fix",
-    "semantic-release": "npx semantic-release",
     "build-storybook": "cd ../react-components-lab && ../../node_modules/.bin/build-storybook"
   },
   "devDependencies": {
