@@ -13,8 +13,7 @@
   "scripts": {
     "build": "node build-icons.js",
     "lint": "../../node_modules/eslint/bin/eslint .",
-    "lint:fix": "../../node_modules/eslint/bin/eslint . --fix",
-    "semantic-release": "npx semantic-release"
+    "lint:fix": "../../node_modules/eslint/bin/eslint . --fix"
   },
   "main": "./dist/index.js",
   "files": [
