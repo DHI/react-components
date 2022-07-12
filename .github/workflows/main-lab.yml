@@ -31,7 +31,6 @@ jobs:
       
       - name: Add GITHUB_TOKEN to .npmrc
         run: |
-          cd packages/react-components-lab
           echo "@dhi:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
 
