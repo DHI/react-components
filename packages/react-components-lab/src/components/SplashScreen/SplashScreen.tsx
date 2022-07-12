@@ -14,9 +14,11 @@ const SplashScreen: FC<SplashScreenProps> = ({
     flexDirection="column"
     height="75%"
     justifyContent="center"
-    width="100%"
+    ml={3}
+    mr={3}
   >
-    <Box>{image}</Box>
+    {image && <Box>{image}</Box>}
+
     <Typography align="center" color="secondary.dark" mt={4} variant="h2">
       {header}
     </Typography>
@@ -24,7 +26,7 @@ const SplashScreen: FC<SplashScreenProps> = ({
       {description}
     </Typography>
 
-    <Box mt={3}>{button}</Box>
+    {button && <Box mt={3}>{button}</Box>}
   </Box>
 );
 
