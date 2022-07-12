@@ -50,6 +50,7 @@ jobs:
           yarn install --immutable
         env:
           CI: true
+          NPM_CONFIG_USERCONFIG: ./.npmrc
 
       - name: Install dependencies with cache
         if: steps.cache-modules.outputs.cache-hit == 'true'
