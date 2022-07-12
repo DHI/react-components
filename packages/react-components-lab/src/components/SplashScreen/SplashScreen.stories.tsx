@@ -4,7 +4,7 @@ import React from 'react';
 import { Box, Button } from '@mui/material';
 import SplashScreen from './SplashScreen';
 import { SplashScreenProps } from './types';
-import dhiLogo from './dhiLogo.png';
+import dhiLogo from './dhiLogo.svg';
 
 export default { component: SplashScreen };
 const Template: Story<SplashScreenProps> = (args) => <SplashScreen {...args} />;
