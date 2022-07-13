@@ -7,13 +7,13 @@ export default makeStyles<IMikeTheme>((theme) => ({
   },
   iconWrapper: {
     backgroundColor: theme.palette.lightGrey.light,
-    borderRadius: 4,
     cursor: 'pointer',
     transition: theme.transitions[1],
     flexGrow: 1,
     '&:hover': {
       backgroundColor: theme.palette.background.paper,
     },
+    padding: 10,
   },
   icon: {
     width: 20,

@@ -15,7 +15,7 @@ export function getIcon<K extends keyof ModuleType>(
 
 const DynamicIcon: FC<{ name: string }> = ({ name }) => {
   const IconComponent = getIcon(name);
-  return <IconComponent />;
+  return <IconComponent fontSize="large" />;
 };
 
 const Icons: FC = () => {
@@ -46,9 +46,13 @@ const Icons: FC = () => {
               <Box
                 onClick={() => handleIcon(item)}
                 className={classes.iconWrapper}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
               >
                 <DynamicIcon name={item} />
-                <Typography variant="body2" className={classes.iconText}>
+                <Typography variant="body1" className={classes.iconText}>
                   {item}
                 </Typography>
               </Box>
