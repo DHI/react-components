@@ -10,12 +10,13 @@
         "lint": "yarn lint",
         "sb": "yarn start-storybook --config-dir ./packages/react-components/.storybook",
         "icons:build": "cd packages/icons && yarn run build",
-        "lab:start": "yarn start-storybook --config-dir ./packages/react-components-lab/.storybook",
-        "lab:build-storybook": "yarn build-storybook --config-dir ./packages/react-components-lab/.storybook --output-dir ./packages/react-components-lab/storybook-static"
+        "lab:start": "yarn run icons:build && yarn start-storybook --config-dir ./packages/react-components-lab/.storybook",
+        "lab:build-storybook": "yarn run icons:build && yarn build-storybook --config-dir ./packages/react-components-lab/.storybook --output-dir ./packages/react-components-lab/storybook-static"
     },
     "workspaces": [
         "./packages/react-components-lab",
-        "./packages/react-components"
+        "./packages/react-components",
+        "./packages/icons"
     ],
     "devDependencies": {
         "@babel/core": "^7.9.6",
