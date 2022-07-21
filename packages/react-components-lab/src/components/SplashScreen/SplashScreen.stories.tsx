@@ -1,12 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Meta, Story } from '@storybook/react/types-6-0';
+import { Story } from '@storybook/react/types-6-0';
 import React from 'react';
 import { Box, Button } from '@mui/material';
 import SplashScreen from './SplashScreen';
 import { SplashScreenProps } from './types';
 
-const dhiLogo =
-  'https://grasdatastorage.blob.core.windows.net/images/DHI_Logo_rgb_Blue.svg';
 export default { component: SplashScreen };
 const Template: Story<SplashScreenProps> = (args) => <SplashScreen {...args} />;
 
