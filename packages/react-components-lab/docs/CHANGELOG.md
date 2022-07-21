@@ -1,3 +1,52 @@
+## @dhi/react-components-lab [1.14.3](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.2...@dhi/react-components-lab@1.14.3) (2022-06-08)
+
+
+### Bug Fixes
+
+* **theme-styling:**  ([#308](https://github.com/DHI/react-components/issues/308)) ([9a7c690](https://github.com/DHI/react-components/commit/9a7c69034772979faa57388fe46aaef86efc9283))
+
+## @dhi/react-components-lab [1.14.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.1...@dhi/react-components-lab@1.14.2) (2022-05-25)
+
+
+### Bug Fixes
+
+* **ThemeMuiPickers:** Handle mui pickers border on dark mode ([27e7552](https://github.com/DHI/react-components/commit/27e75525904a4471f044946a39a60290622c087c))
+
+## @dhi/react-components-lab [1.14.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.14.0...@dhi/react-components-lab@1.14.1) (2022-05-19)
+
+
+### Bug Fixes
+
+* **themeFixes:** FormLabel disabled colors and size. Add color for checkbox. ([e11eb89](https://github.com/DHI/react-components/commit/e11eb892ec1fe47894077f4648b7b2b273ba57b7))
+
+# @dhi/react-components-lab [1.14.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.2...@dhi/react-components-lab@1.14.0) (2022-05-17)
+
+
+### Features
+
+* **DarkMode:** Add dark mode to the ThemeProvider ([aa77fde](https://github.com/DHI/react-components/commit/aa77fdefe0484a5730f8f3cf3815c058541662b2))
+
+## @dhi/react-components-lab [1.13.2](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.1...@dhi/react-components-lab@1.13.2) (2022-03-30)
+
+
+### Bug Fixes
+
+* **LegendBase&StaticLegend:** Update max width allowed for legend contents ([fc66975](https://github.com/DHI/react-components/commit/fc6697535598c3b26cffc03008e6dedceeb320dd))
+
+## @dhi/react-components-lab [1.13.1](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.13.0...@dhi/react-components-lab@1.13.1) (2022-03-18)
+
+
+### Bug Fixes
+
+* **DashboardCard:** Export component from the library ([f58dbc0](https://github.com/DHI/react-components/commit/f58dbc03e1edb08ff34fed48d3163502af6951b7))
+
+# @dhi/react-components-lab [1.13.0](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.6...@dhi/react-components-lab@1.13.0) (2022-03-18)
+
+
+### Features
+
+* **DashboardCard:** Add dashboardCard component ([1a6e48c](https://github.com/DHI/react-components/commit/1a6e48ccfe015f8abcf06443b3a62cb6b9f152ba))
+
 ## @dhi/react-components-lab [1.12.6](https://github.com/DHI/react-components/compare/@dhi/react-components-lab@1.12.5...@dhi/react-components-lab@1.12.6) (2022-02-28)
 
 

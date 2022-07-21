@@ -42,6 +42,10 @@ interface ScenarioListProps {
    */
   showDate: boolean;
   /**
+   * Indicates if the year of the scenario should be shown
+   */
+  showYear?: boolean;
+  /**
    * Indicates if the date groups of the scenario list should be shown
    */
   showDateGroups?: boolean;
@@ -66,9 +70,9 @@ interface ScenarioListProps {
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   /**
-   * Emit event to client when scenario selected by user
+   * Emit event to client when scenario(s) selected by user
    */
-  onScenarioSelected: (scenario: Scenario) => void;
+  onScenarioSelected: (scenario: Scenario | Scenario[]) => void;
   /**
    * A ReactElement which is overridable to change the row's display.
    * @param scenario
@@ -92,6 +96,10 @@ interface ScenarioListProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * Allow user to select multiple scenarios
+   */
+  multipleSelection?: boolean;
 }
 
 export default ScenarioListProps;

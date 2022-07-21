@@ -1,9 +1,0 @@
-<svg
-  width="40"
-  height="40"
-  viewbox="0 0 40 40"
-  fill="colorPrimary"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path fill-rule="colorPrimary" clip-rule="colorPrimary" d="M11 11h5v2h-3v3h-2v-5zm16 2h-3v-2h5v5h-2v-3zM11 29v-5h2v3h3v2h-5zm18-5v5h-5v-2h3v-3h2zM20 25a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-</svg>

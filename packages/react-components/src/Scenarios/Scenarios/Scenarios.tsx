@@ -40,11 +40,13 @@ const Scenarios = (props: ScenariosProps) => {
     descriptionFields,
     extraFields,
     menuItems,
+    multipleSelection,
     actionButton,
     showReportButton,
     showEditButton,
     selectedScenarioId,
     showDate = true,
+    showYear = false,
     showDateGroups = true,
     showHour,
     showMenu,
@@ -78,8 +80,17 @@ const Scenarios = (props: ScenariosProps) => {
   const [scenario, setScenario] = useState<Scenario>();
   const classes = useStyles();
   const latestScenarios = useRef(null);
+  const mounted = useRef(false);
 
   latestScenarios.current = scenarios;
+
+  useEffect(() => {
+    mounted.current = true;
+
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (addScenario !== scenario) {
@@ -133,6 +144,10 @@ const Scenarios = (props: ScenariosProps) => {
       token,
     ).subscribe(
       (res) => {
+        if (!mounted.current) {
+          return;
+        }
+
         const rawScenarios = res.map((s: { data: string }) => {
           s.data = s.data ? JSON.parse(s.data) : s.data;
 
@@ -140,6 +155,17 @@ const Scenarios = (props: ScenariosProps) => {
         });
         const updatedScenarios = [];
         const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
+
+        if (!jobConnection) {
+          setScenarios(newScenarios);
+
+          if (onScenariosReceived) {
+            onScenariosReceived(newScenarios);
+          }
+
+          return;
+        }
+
         const values = newScenarios.map((item) => item.fullName);
 
         const query = [
@@ -158,6 +184,10 @@ const Scenarios = (props: ScenariosProps) => {
 
         try {
           executeJobQuery(jobSources, query).subscribe((jobs) => {
+            if (!mounted.current) {
+              return;
+            }
+
             newScenarios.map((scenario) => {
               const latestJob = filterToLastJob(scenario, jobs);
               let sce = {};
@@ -212,7 +242,13 @@ const Scenarios = (props: ScenariosProps) => {
         },
         token,
         newScenario,
-      ).subscribe((res) => res && fetchScenariosList());
+      ).subscribe((res) => {
+        if (!mounted.current) {
+          return;
+        }
+
+        res && fetchScenariosList();
+      });
     }
   };
 
@@ -244,6 +280,10 @@ const Scenarios = (props: ScenariosProps) => {
       parameters,
       menuItem.hostGroup || hostGroup,
     ).subscribe((job) => {
+      if (!mounted.current) {
+        return;
+      }
+
       if (debug) {
         console.log('Execute: ', job);
       }
@@ -294,7 +334,13 @@ const Scenarios = (props: ScenariosProps) => {
       },
       token,
       clonedScenario,
-    ).subscribe((res) => res && fetchScenariosList());
+    ).subscribe((res) => {
+      if (!mounted.current) {
+        return;
+      }
+
+      res && fetchScenariosList();
+    });
   };
 
   const onEditScenario = (scenario: Scenario) => {
@@ -322,6 +368,10 @@ const Scenarios = (props: ScenariosProps) => {
       id,
     ).subscribe(
       (res) => {
+        if (!mounted.current) {
+          return;
+        }
+
         res.data = res.data ? JSON.parse(res.data) : res.data;
         resultCallback(res);
       },
@@ -334,8 +384,8 @@ const Scenarios = (props: ScenariosProps) => {
   const modalMessage = (action, translations, job) => {
     switch (action) {
       case 'delete':
-        return translations && translations.executeConfirmation
-          ? translations.executeConfirmation.replace('%job%', job)
+        return translations && translations.deleteConfirmation
+          ? translations.deleteConfirmation.replace('%job%', job)
           : `This will delete the selected scenario from the list. After it is deleted you cannot retrieve the data. Are you sure you want to delete ${job}?`;
 
       case 'execute':
@@ -349,8 +399,8 @@ const Scenarios = (props: ScenariosProps) => {
           : `This will start a new job in the background. You can delete this cloned scenario later. Are you sure you want to clone ${job}?`;
 
       case 'edit':
-        return translations && translations.cloneConfirmation
-          ? translations.cloneConfirmation.replace('%job%', job)
+        return translations && translations.editConfirmation
+          ? translations.editConfirmation.replace('%job%', job)
           : `This will Edit ${job}?`;
 
       case 'terminate':
@@ -437,7 +487,13 @@ const Scenarios = (props: ScenariosProps) => {
       },
       token,
       scenario.fullName,
-    ).subscribe((res) => res.ok && fetchScenariosList());
+    ).subscribe((res) => {
+      if (!mounted.current) {
+        return;
+      }
+
+      res.ok && fetchScenariosList();
+    });
   };
 
   const closeDialog = () => {
@@ -472,21 +528,44 @@ const Scenarios = (props: ScenariosProps) => {
     });
   };
 
-  const onScenarioSelectedHandler = (scenario: Scenario) => {
-    onScenarioSelected(scenario);
+  const onScenarioSelectedHandler = (scenario: Scenario | Scenario[]) => {
+    if (scenario === undefined) return null;
 
-    getScenario(scenario.fullName!, (res) => onScenarioReceived(res));
+    if (multipleSelection) {
+      const currentSelectedScenarios = [];
+
+      const promise = new Promise((resolve, reject) => {
+        (scenario as Scenario[]).map((sce) => getScenario(sce.fullName!, (res) => currentSelectedScenarios.push(res)));
+        resolve(currentSelectedScenarios);
+      });
+
+      promise.then((res) => onScenarioReceived(res as Scenario[]));
+
+      onScenarioSelected(scenario);
+    } else {
+      onScenarioSelected(scenario);
+
+      getScenario((scenario as Scenario).fullName!, (res) => onScenarioReceived(res));
+    }
   };
 
   const JsonDocumentAddedScenario = (added) => {
+    if (!mounted.current) {
+      return;
+    }
+
     if (debug) {
       console.log({ added });
     }
 
-    setScenarios([...scenarios, added]);
+    setScenarios([...latestScenarios.current, added]);
   };
 
   const jobUpdated = (jobAdded) => {
+    if (!mounted.current) {
+      return;
+    }
+    
     const job = JSON.parse(jobAdded.data);
 
     if (debug) {
@@ -495,7 +574,7 @@ const Scenarios = (props: ScenariosProps) => {
     }
 
     const updateScenario = latestScenarios.current.map((scenario) =>
-      scenario.fullName === job.Parameters[jobQueryItemKey] && scenario.lastJob.status !== 'Completed'
+      scenario.fullName === job.parameters && job.parameters[jobQueryItemKey] && scenario.lastJob.status !== 'Completed'
         ? {
             ...scenario,
             lastJob: {
@@ -542,7 +621,10 @@ const Scenarios = (props: ScenariosProps) => {
           connection.on('JsonDocumentAdded', JsonDocumentAddedScenario);
           connection.on('JobUpdated', jobUpdated);
 
-          connection.invoke('AddJobFilter', jobConnection, []);
+          if (jobConnection) {
+            connection.invoke('AddJobFilter', jobConnection, []);
+          }
+
           connection.invoke('AddJsonDocumentFilter', scenarioConnection, []);
         })
         .catch((e) => console.log('Connection failed: ', e));
@@ -561,8 +643,8 @@ const Scenarios = (props: ScenariosProps) => {
       {scenarios && (
         <ScenarioList
           nameField={nameField}
-          descriptionFields={descriptionFields}
           extraFields={extraFields}
+          descriptionFields={descriptionFields}
           menuItems={menuItems}
           scenarios={scenarios as any}
           selectedScenarioId={selectedScenarioId}
@@ -572,6 +654,7 @@ const Scenarios = (props: ScenariosProps) => {
           onRenderScenarioIcon={onRenderScenarioIcon}
           onRowRefsUpdated={onRowRefsUpdated}
           showDate={showDate}
+          showYear={showYear}
           showDateGroups={showDateGroups}
           showHour={showHour}
           showMenu={showMenu}
@@ -579,6 +662,7 @@ const Scenarios = (props: ScenariosProps) => {
           status={status}
           highlightNameOnStatus={highlightNameOnStatus}
           timeZone={timeZone}
+          multipleSelection={multipleSelection}
           actionButton={actionButton}
           showReportButton={showReportButton}
           showEditButton={showEditButton}

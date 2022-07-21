@@ -5,6 +5,7 @@ module.exports = {
   env: {
     es2021: true,
   },
+  parser: 'babel-eslint',
   extends: [
     'plugin:eslint-comments/recommended',
     'plugin:import/errors',
@@ -18,5 +19,8 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'no-multiple-empty-lines': ['warn', { max: 2 }],
     'prettier/prettier': 'error',
+  },
+  parserOptions: {
+    sourceType: 'module',
   },
 };

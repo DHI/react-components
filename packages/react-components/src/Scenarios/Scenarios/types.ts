@@ -11,6 +11,10 @@ interface ScenariosProps {
    */
   showDate: boolean;
   /**
+   * Indicates if the year of the scenario should be shown
+   */
+  showYear?: boolean;
+  /**
    * Indicates if the date groups of the scenario list should be shown
    */
   showDateGroups?: boolean;
@@ -73,9 +77,9 @@ interface ScenariosProps {
    */
   scenarioConnection: string;
   /**
-   * Connection to fetch data from backend
+   * Connection to fetch job data from backend
    */
-  jobConnection: string;
+  jobConnection?: string;
   /**
    * Set of job parameters
    */
@@ -150,6 +154,10 @@ interface ScenariosProps {
    */
   menuItems: MenuItem[];
   /**
+   * Allow user to select multiple scenarios
+   */
+  multipleSelection?: boolean;
+  /**
    * An action button which sits on the right hand side, below the menu
    */
   actionButton?: ActionButton;
@@ -166,13 +174,13 @@ interface ScenariosProps {
    */
   onContextMenuClick: (menuItem: MenuItem, scenario: Scenario) => void;
   /**
-   * Emit event to client when scenario selected by user (basic scenario data)
+   * Emit event to client when scenario(s) selected by user (basic scenario data)
    */
-  onScenarioSelected: (scenario: Scenario) => void;
+  onScenarioSelected: (scenario: Scenario | Scenario[]) => void;
   /**
    * Emit event to client when scenario received from the server after a selection (full scenario data)
    */
-  onScenarioReceived: (scenario: Scenario) => void;
+  onScenarioReceived: (scenario: Scenario | Scenario[]) => void;
   /**
    * Emit even to client when list of scenarios received from the server
    */

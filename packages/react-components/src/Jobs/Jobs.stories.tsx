@@ -16,7 +16,7 @@ export const JobListStory = () => {
       token,
       host: 'https://domainservices.dhigroup.com',
       connection: 'wf-jobs',
-      tokenJobLog: `ssss${token}`,
+      tokenJobLog: `${token}`,
       hostJobLog: 'https://domainservices.dhigroup.com',
       connectionJobLog: 'postgres-workflowLogging',
     } as DataSource,

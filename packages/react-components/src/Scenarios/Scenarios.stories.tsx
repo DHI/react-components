@@ -268,6 +268,7 @@ export const ScenariosStory = () => {
 
 const randomWithSeed = function (s) {
   s = Math.sin(s) * 10000;
+
   return s - Math.floor(s);
 };
 
@@ -392,16 +393,17 @@ export const ScenariosJSONStory = () => {
               taskId={'workflowJsonDocument'}
               timeZone="Australia/Brisbane"
               menuItems={MENU_ITEMS}
+              multipleSelection
               onContextMenuClick={(menuItem: MenuItem, scenario: Scenario) =>
                 console.log('Scenario menu item clicked', {
                   menuItem,
                   scenario,
                 })
               }
-              onScenarioSelected={(scenario: Scenario) => {
+              onScenarioSelected={(scenario: Scenario | Scenario[]) => {
                 console.log('Scenario selected', scenario);
               }}
-              onScenarioReceived={(scenario: Scenario) => {
+              onScenarioReceived={(scenario: Scenario | Scenario[]) => {
                 console.log('Full Scenario received', scenario);
               }}
               onScenariosReceived={(scenarios: Scenario[]) => {
@@ -418,8 +420,10 @@ export const ScenariosJSONStory = () => {
               onRowRefsUpdated={(refs) => {
                 console.log('Accessible list of row refs if required by developer', refs);
               }}
-              //actionButton={actionButton}
+              // actionButton={actionButton}
+              // selectedScenarioId="scenario-20220518042237-ee47-f745-a7d9-0aae-882253c78b4b"
               showDate={true}
+              showYear
               showDateGroups={true}
               showHour
               showMenu

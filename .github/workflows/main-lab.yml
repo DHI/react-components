@@ -5,12 +5,14 @@ on:
       - master
     paths:
       - "packages/react-components-lab/**"
+      - "packages/icons/**"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
     paths:
       - "packages/react-components-lab/**"
+      - "packages/icons/**"
       
 jobs:
   build_and_deploy_job:
@@ -90,13 +92,6 @@ jobs:
           app_build_command: "yarn build-storybook"
           skip_app_build: true
           ###### End of Repository/Build Configurations ######
-          
-      - name: Semantic release
-        run: yarn run multi-semantic-release --ignore-packages=packages/react-components/**,packages/icons/**
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

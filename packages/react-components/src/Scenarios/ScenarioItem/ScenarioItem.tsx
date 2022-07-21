@@ -36,13 +36,12 @@ const ScenarioItem = ({
       return onRenderScenarioIcon(scenario);
     } else if (status.Icon) {
       const { Icon } = status;
+
       return (
         <Typography className={classes.icon}>
           <>
-            <>
-              <Icon style={{ color: status.color }} />
-              <span style={{ color: status.color }}>{status.name}</span>
-            </>
+            <Icon style={{ color: status.color }} />
+            <span style={{ color: status.color }}>{status.name}</span>
           </>
         </Typography>
       );

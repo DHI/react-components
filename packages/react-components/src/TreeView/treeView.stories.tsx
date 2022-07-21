@@ -25,7 +25,7 @@ export const TreeViewStory = () => {
     setLoading(true);
 
     if (group.slice(-1) === '/') {
-      fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+      fetchTimeseriesFullNames(dataSources, group.replace(/\/$/, '')).subscribe(
         (res) => {
           const children = addChildren(res, group);
           list.map((item) => recursive(item, group, children));
@@ -37,7 +37,7 @@ export const TreeViewStory = () => {
       );
     }
 
-    fetchTimeseriesFullNames(dataSources, token, group.replace(/\/$/, '')).subscribe(
+    fetchTimeseriesFullNames(dataSources, group.replace(/\/$/, '')).subscribe(
       (res) => {
         const children = addChildren(res, group);
         list.map((item) => recursive(item, group, children));
@@ -76,7 +76,7 @@ export const TreeViewStory = () => {
       (res) => {
         setToken(res.accessToken.token);
 
-        fetchTimeseriesFullNames(dataSources, res.accessToken.token, '').subscribe(
+        fetchTimeseriesFullNames(dataSources, res.accessToken.token).subscribe(
           (res) => {
             const data = res.map((d) => ({
               value: d,

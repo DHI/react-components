@@ -53,7 +53,12 @@ import {
   updateScenario,
 } from './Scenarios/ScenariosApi';
 import { fetchSpreadsheetUsedRange, updateSpreadsheet } from './Spreadsheets/SpreadsheetsApi';
-import { fetchTimeseriesByGroup, fetchTimeseriesFullNames, fetchTimeseriesValues } from './Timeseries/TimeseriesApi';
+import {
+  fetchTimeseriesByGroup,
+  fetchTimeseriesFullNames,
+  fetchTimeseriesValues,
+  fetchTimeseriesIdValues,
+} from './Timeseries/TimeseriesApi';
 import {
   createUserGroup,
   deleteUserGroup,
@@ -61,6 +66,7 @@ import {
   updateUserGroups,
   updateUserGroupsForUser,
 } from './UserGroups/UserGroupsApi';
+import { fetchScalars } from './Scalars/ScalarsApi';
 
 export {
   fetchJsonDocuments,
@@ -112,9 +118,11 @@ export {
   fetchMapStyleCount,
   deleteMapStyle,
   fetchTimeseriesValues,
+  fetchTimeseriesIdValues,
   fetchTimeseriesByGroup,
   fetchTimeseriesFullNames,
   fetchMapAnimationFiles,
   fetchFeatureCollection,
   fetchFeatureCollectionValues,
+  fetchScalars,
 };

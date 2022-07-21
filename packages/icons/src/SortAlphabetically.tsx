@@ -1,0 +1,11 @@
+import React from 'react';
+import createSvgIcon from "../utils/createSvgIcon";
+
+export default createSvgIcon(
+    <>
+        <path d="M26 25.01V11H24V25.01H21L25 29L29 25.01H26Z"/>
+        <path d="M16.2842 16.5352H13.7158L13.2275 18H11.6699L14.3164 10.8906H15.6738L18.335 18H16.7773L16.2842 16.5352ZM14.1113 15.3486H15.8887L14.9951 12.6875L14.1113 15.3486Z"/>
+        <path d="M14.1553 27.8232H17.7393V29H12.3242V28.1406L15.8398 23.0771H12.3291V21.8906H17.6611V22.7305L14.1553 27.8232Z"/>
+    </>,
+    'SortAlphabetically'
+)
