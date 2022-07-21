@@ -14,5 +14,11 @@ MobileSplash.args = {
   description:
     'Sorry, the interface of this application isn’t quite ready for mobile devices like yours',
   header: 'Head to your nearest desktop computer!',
-  image: <Box alt="image" component="img" src={dhiLogo} />,
+  image: (
+    <Box
+      alt="image"
+      component="img"
+      src="https://grasdatastorage.blob.core.windows.net/images/DHI_Logo_rgb_Blue.svg"
+    />
+  ),
 };
