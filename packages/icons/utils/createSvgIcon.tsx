@@ -1,5 +1,5 @@
 import * as React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import { SvgIcon } from '@mui/material';
 
 export default function createSvgIcon(path, displayName): typeof SvgIcon {
     const Component = (props, ref) => (
@@ -14,9 +14,7 @@ export default function createSvgIcon(path, displayName): typeof SvgIcon {
       Component.displayName = `${displayName}Icon`;
     }
   
-    Component.muiName = (SvgIcon as any).muiName;
+    Component.muiName = SvgIcon.muiName;
   
-    return React.memo(React.forwardRef(Component));
+    return React.memo(React.forwardRef(Component)) as any;
 }
-
-

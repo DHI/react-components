@@ -1,8 +1,7 @@
 import React, { FC, useState } from 'react';
-import { Box, Typography, Tooltip, SvgIcon, Grid } from '@material-ui/core';
+import { Box, Typography, Tooltip, SvgIcon, Grid } from '@mui/material';
 import * as DhiIcons from '@dhi/icons/dist';
 import copy from 'copy-to-clipboard';
-import IconWrapperStyled from './IconWrapper.styled';
 
 type ModuleType = typeof DhiIcons;
 
@@ -32,36 +31,6 @@ const Icons: FC = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <Box
-      flexWrap="wrap"
-      width={1}
-      sx={{
-        backgroundColor: 'mediumGrey.main',
-      }}
-      display="flex"
-      justifyContent="flex-start"
-      p={1}
-    >
-      {Object.keys(DhiIconsTyped)
-        .sort()
-        .map((item) => (
-          <Tooltip
-            open={Boolean(tooltipText && tooltipText === item)}
-            title={`Copied ${item} to clipboard.`}
-          >
-            <IconWrapperStyled
-              onClick={() => handleIcon(item)}
-              sx={{
-                backgroundColor: 'lightGrey.light',
-              }}
-              m={0.5}
-              p={1}
-              width={130}
-              height={70}
-              display="flex"
-              flexDirection="column"
-=======
     <Grid container>
       {Object.keys(DhiIconsTyped)
         .sort()
@@ -71,37 +40,33 @@ const Icons: FC = () => {
               key={item}
               open={Boolean(tooltipText && tooltipText === item)}
               title={`Copied ${item} to clipboard.`}
->>>>>>> 37f3bba167b9f924484d9208e23a396d3d7d1ada
             >
               <Box
                 onClick={() => handleIcon(item)}
-                className={classes.iconWrapper}
+                sx={{
+                  backgroundColor: 'lightGrey.light',
+                  cursor: 'pointer',
+                  flexGrow: 1,
+                  '&:hover': {
+                    backgroundColor: 'background.paper',
+                  },
+                  padding: 3,
+                }}
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
               >
                 <DynamicIcon name={item} />
-                <Typography variant="body1" className={classes.iconText}>
+                <Typography
+                  variant="body1"
+                  sx={{ fontSize: 10, textAlign: 'center' }}
+                >
                   {item}
                 </Typography>
               </Box>
-<<<<<<< HEAD
-              <Typography
-                variant="body2"
-                align="center"
-                sx={{
-                  fontSize: 10,
-                }}
-              >
-                {item}
-              </Typography>
-            </IconWrapperStyled>
-          </Tooltip>
-=======
             </Tooltip>
           </Grid>
->>>>>>> 37f3bba167b9f924484d9208e23a396d3d7d1ada
         ))}
     </Grid>
   );
