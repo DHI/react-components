@@ -1918,9 +1918,9 @@ __metadata:
     "@types/react": ^17.0.13
     "@types/react-dom": ^17.0.3
   peerDependencies:
-    "@mui/material": ^5.8.3
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    "@mui/material": ~5
+    react: ~17 || ~18
+    react-dom: ~17 || ~18
   languageName: unknown
   linkType: soft
 
@@ -1947,8 +1947,9 @@ __metadata:
     prismjs: ^1.24.1
     storybook-dark-mode: ^1.1.0
   peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    "@mui/material": ~5
+    react: ~17 || ~18
+    react-dom: ~17 || ~18
   languageName: unknown
   linkType: soft
 

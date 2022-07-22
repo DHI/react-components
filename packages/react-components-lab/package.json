@@ -37,9 +37,9 @@
     "storybook-dark-mode": "^1.1.0"
   },
   "peerDependencies": {
+    "@mui/material": "~5",
     "react": "~17 || ~18",
-    "react-dom": "~17 || ~18",
-    "@mui/material": "~5"
+    "react-dom": "~17 || ~18"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.0",
