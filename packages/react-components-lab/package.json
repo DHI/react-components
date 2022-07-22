@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "yarn sb",
-    "start": "../../node_modules/.bin/start-storybook -p 6006",
+    "start": "cd ../icons && yarn build && cd ../react-components-lab && ../../node_modules/.bin/start-storybook -p 6006",
     "build": "../../node_modules/.bin/tsdx build",
     "test": "../../node_modules/.bin/tsdx test --passWithNoTests",
     "lint": "../../node_modules/eslint/bin/eslint.js .",
