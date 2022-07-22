@@ -1,5 +1,5 @@
 {
-  "version": "1.13.2-MUIv5.3.3",
+  "version": "2.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "name": "@dhi/react-components-lab",
@@ -27,6 +27,7 @@
     "build-storybook": "cd ../icons && yarn build && cd ../react-components-lab && ../../node_modules/.bin/build-storybook"
   },
   "devDependencies": {
+    "@dhi/icons": "workspace:^",
     "@types/classnames": "^2.2.10",
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.150",
@@ -41,7 +42,6 @@
   },
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.0",
-    "@dhi/icons": "workspace:^",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.8.3",
