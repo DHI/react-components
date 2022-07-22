@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { FunctionComponentElement, ReactNode } from 'react';
 
 export interface CardProps {
   title: string | ReactNode;
@@ -10,5 +10,5 @@ export interface CardProps {
   children?: ReactNode;
   isClickable?: boolean;
   disabled?: boolean;
-  customCheckbox?: any;
+  customCheckbox?: FunctionComponentElement<{ checked: boolean }>;
 }

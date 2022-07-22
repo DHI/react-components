@@ -1,5 +1,5 @@
 {
-  "version": "1.14.3",
+  "version": "2.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "name": "@dhi/react-components-lab",
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "yarn sb",
-    "start": "../../node_modules/.bin/start-storybook -p 6006",
+    "start": "cd ../icons && yarn build && cd ../react-components-lab && ../../node_modules/.bin/start-storybook -p 6006",
     "build": "../../node_modules/.bin/tsdx build",
     "test": "../../node_modules/.bin/tsdx test --passWithNoTests",
     "lint": "../../node_modules/eslint/bin/eslint.js .",
@@ -27,6 +27,7 @@
     "build-storybook": "cd ../icons && yarn build && cd ../react-components-lab && ../../node_modules/.bin/build-storybook"
   },
   "devDependencies": {
+    "@dhi/icons": "workspace:^",
     "@types/classnames": "^2.2.10",
     "@types/jsonpath": "^0.2.0",
     "@types/lodash": "^4.14.150",
@@ -36,20 +37,20 @@
     "storybook-dark-mode": "^1.1.0"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "@mui/material": "~5",
+    "react": "~17 || ~18",
+    "react-dom": "~17 || ~18"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.0",
-    "@dhi/icons": "workspace:^",
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/system": "^4.12.1",
-    "clsx": "^1.1.1",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.3",
+    "@mui/material": "^5.8.3",
+    "@mui/system": "^5.8.3",
     "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.27.0",
     "lodash": "^4.17.21",
-    "lodash.assignin": "^4.2.0",
     "prismjs": "^1.24.1"
   }
 }

@@ -5,7 +5,7 @@ import { highlightAll } from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/themes/prism-okaidia.css';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { SyntaxProps } from './types';
 // #endregion
 

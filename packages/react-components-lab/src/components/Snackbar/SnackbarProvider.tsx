@@ -1,13 +1,17 @@
-import React, { ReactNode, useState } from 'react';
-import { Button, Snackbar as MuiSnackbar } from '@material-ui/core';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import Fade from '@material-ui/core/Fade';
-import Grow from '@material-ui/core/Grow';
-import Slide from '@material-ui/core/Slide';
-
+import React, { ReactNode, useState, SyntheticEvent, FC } from 'react';
+import {
+  Button,
+  Snackbar as MuiSnackbar,
+  Fade,
+  Grow,
+  Slide,
+  SnackbarCloseReason,
+} from '@mui/material';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import BoxMessageStyled from './BoxMessage.styled';
 // #region Local imports
 import SnackbarContext from './SnackbarContext';
 import {
@@ -20,7 +24,6 @@ import {
   DEFAULT_TRANSITION,
   DEFAULT_DURATION,
 } from './types';
-import useStyles from './styles';
 // #endregion
 
 interface SnackbarState {
@@ -29,7 +32,7 @@ interface SnackbarState {
   options?: SnackbarProps;
 }
 
-const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
+const SnackbarProvider: FC<SnackbarProviderProps> = ({
   children,
   autoHideDuration = DEFAULT_DURATION,
   transitionComponent = DEFAULT_TRANSITION,
@@ -37,8 +40,6 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
   action = null,
   onActionClick = null,
 }: SnackbarProviderProps) => {
-  const classes = useStyles();
-
   const [state, setState] = useState<SnackbarState>({
     open: false,
     message: undefined,
@@ -73,10 +74,7 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
 
   const [stateContextValue] = useState<SnackbarContextValue>({ showMessage });
 
-  const handleClose = (
-    e: React.SyntheticEvent | MouseEvent,
-    reason?: string
-  ) => {
+  const handleClose = (reason: SnackbarCloseReason) => {
     if (reason && reason === 'clickaway') {
       return;
     }
@@ -89,38 +87,38 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
         return msg;
       case 'info':
         return (
-          <div className={classes.messageWrapper}>
-            <InfoOutlinedIcon className={classes.messageIcon} />
+          <BoxMessageStyled>
+            <InfoOutlinedIcon className="messageIcon" />
             {msg}
-          </div>
+          </BoxMessageStyled>
         );
       case 'success':
         return (
-          <div className={classes.messageWrapper}>
-            <CheckCircleOutlinedIcon className={classes.messageIcon} />
+          <BoxMessageStyled>
+            <CheckCircleOutlinedIcon className="messageIcon" />
             {msg}
-          </div>
+          </BoxMessageStyled>
         );
       case 'warning':
         return (
-          <div className={classes.messageWrapper}>
-            <ReportProblemOutlinedIcon className={classes.messageIcon} />
+          <BoxMessageStyled>
+            <ReportProblemOutlinedIcon className="messageIcon" />
             {msg}
-          </div>
+          </BoxMessageStyled>
         );
       case 'error':
         return (
-          <div className={classes.messageWrapper}>
-            <ErrorOutlineOutlinedIcon className={classes.messageIcon} />
+          <BoxMessageStyled>
+            <ErrorOutlineOutlinedIcon className="messageIcon" />
             {msg}
-          </div>
+          </BoxMessageStyled>
         );
       default:
         return msg;
     }
   };
 
-  const handleActionClick = (e: React.SyntheticEvent | MouseEvent) => {
+  const handleActionClick = (e: SyntheticEvent | MouseEvent) => {
     if (newOnActionClick) {
       newOnActionClick(e);
     }
@@ -144,6 +142,24 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     return transition;
   };
 
+  const severityColorMapping = {
+    normal: {
+      backgroundColor: 'primary.main',
+    },
+    info: {
+      backgroundColor: 'secondary.main',
+    },
+    success: {
+      backgroundColor: 'success.main',
+    },
+    warning: {
+      backgroundColor: 'warning.main',
+    },
+    error: {
+      backgroundColor: 'error.main',
+    },
+  };
+
   return (
     <SnackbarContext.Provider value={stateContextValue}>
       {children}
@@ -154,21 +170,25 @@ const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
         autoHideDuration={newAutoHideDuration}
         TransitionComponent={handleTransitionComponent(newTransitionComponent)}
         ContentProps={{
-          className: classes[newSeverity],
+          sx: severityColorMapping[newSeverity],
         }}
         action={
           newAction && (
             <Button
               variant="outlined"
               size="small"
-              className={classes.actionButton}
+              sx={{
+                color: 'background.paper',
+                borderColor: 'background.paper',
+                textTransform: 'none',
+              }}
               onClick={handleActionClick}
             >
               {newAction}
             </Button>
           )
         }
-        onClose={handleClose}
+        onClose={(e, r) => handleClose(r)}
       />
     </SnackbarContext.Provider>
   );

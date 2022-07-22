@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from '@material-ui/core';
+import React, { FC } from 'react';
+import { Button } from '@mui/material';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { action } from '@storybook/addon-actions';
 
@@ -13,11 +13,13 @@ import { SnackbarProviderProps } from './types';
 const onActionClick = action('onActionClick');
 const messageContent = 'Hi, I am a snackbar!';
 
-const App: React.FC = () => {
+const App: FC = () => {
   const snackbar = useSnackbar();
 
   const handleShowSnackbar = () => {
-    snackbar.showMessage(messageContent);
+    snackbar.showMessage(messageContent, {
+      severity: 'success',
+    });
   };
 
   return (
@@ -37,6 +39,6 @@ export const Default = (args: SnackbarProviderProps): JSX.Element => (
 Default.args = {
   autoHideDuration: 3000,
   transitionComponent: 'slide',
-  severity: 'normal',
+  severity: 'info',
   onActionClick,
 };

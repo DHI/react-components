@@ -13,4 +13,7 @@ module.exports = {
     reactDocgen: 'react-docgen-typescript',
     tsconfigPath: "./../tsconfig.json"
   },
+  features: {
+    emotionAlias: false
+  }
 }

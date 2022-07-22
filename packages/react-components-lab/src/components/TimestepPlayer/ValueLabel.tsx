@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Tooltip, ValueLabelProps } from '@material-ui/core';
+import { Tooltip, ValueLabelProps } from '@mui/material';
 
 const ValueLabelComponent: FC<ValueLabelProps> = ({
   children,

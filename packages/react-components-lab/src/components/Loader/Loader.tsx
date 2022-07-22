@@ -1,32 +1,31 @@
 import React, { FC } from 'react';
-import { CircularProgress, LinearProgress, Grid } from '@material-ui/core';
-import useStyles from './styles';
+import { CircularProgress, LinearProgress } from '@mui/material';
 import { LoaderProps } from './types';
+import TopBarStyled from './TopBarBox.styled';
+import BlockingGridStyled from './BlockingGrid.styled';
 
 const Loader: FC<LoaderProps> = ({
   isLoading = false,
   variant = 'blocking',
   style = {},
 }) => {
-  const classes = useStyles();
   if (isLoading) {
     if (variant === 'blocking')
       return (
-        <Grid
+        <BlockingGridStyled
           container
           alignItems="center"
           justifyContent="center"
-          className={classes.blocking}
           style={{ ...style }}
         >
           <CircularProgress color="inherit" size={50} thickness={5} />
-        </Grid>
+        </BlockingGridStyled>
       );
 
     return (
-      <div className={classes.topbar} style={{ ...style }}>
+      <TopBarStyled style={{ ...style }}>
         <LinearProgress color="primary" />
-      </div>
+      </TopBarStyled>
     );
   }
 

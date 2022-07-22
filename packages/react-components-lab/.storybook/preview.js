@@ -39,5 +39,7 @@ export const parameters = {
 }
 
 export const decorators = [(Story, context) => {
-  return <ThemeProvider type={useDarkMode() ? 'dark' : 'light'}><Story /></ThemeProvider>
+  const isDarkMode = useDarkMode()
+
+  return <ThemeProvider mode={isDarkMode ? 'dark' : 'light'}><Story /></ThemeProvider>
 }]

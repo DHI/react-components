@@ -1,16 +1,10 @@
-import React, { FC, ReactNode, Children } from 'react';
-import {
-  Box,
-  Typography,
-  Checkbox,
-  Card as MUICard,
-  Collapse,
-} from '@material-ui/core';
-
-import { RadioButtonUnchecked, CheckCircle } from '@material-ui/icons';
-import clsx from 'clsx';
-import cardStyles from './styles';
-
+import React, { FC, ReactNode, Children, cloneElement } from 'react';
+import { Box, Typography, Checkbox, Collapse } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { RadioButtonUnchecked, CheckCircle } from '@mui/icons-material';
+import CardRootStyled from './CardRoot.styled';
+import BoxDisabledStyled from './BoxDisabled.styled';
+import ImgCardStyled from './ImgCard.styled';
 import { CardProps } from './types';
 
 const Card: FC<CardProps> = ({
@@ -25,31 +19,32 @@ const Card: FC<CardProps> = ({
   disabled = false,
   customCheckbox,
 }) => {
-  const classes = cardStyles();
   const collapseIn = isClickable && isOpen;
+  const theme = useTheme();
+  console.log(theme);
   return (
-    <MUICard className={clsx(classes.root)} variant="outlined">
-      {disabled && <Box className={classes.disabled} />}
+    <CardRootStyled variant="outlined">
+      {disabled && <BoxDisabledStyled />}
       <Box px={2} py={1.5}>
         <Box
           onClick={() => isClickable && setIsOpen(!isOpen)}
-          className={clsx(isClickable && classes.isClickable)}
+          sx={{ cursor: isClickable ? 'pointer' : 'default' }}
           display="flex"
           justifyContent="space-between"
         >
           <Box display="flex" flexDirection="column" justifyContent="center">
-            <Typography
-              variant="h5"
-              className={clsx(
-                !isClickable && classes.titlePaddingNonClickable,
-                classes.title
-              )}
-            >
+            <Typography variant="h5" sx={{ pt: 1, pb: 1 }}>
               {title}
             </Typography>
 
             {subTitle && (
-              <Typography variant="subtitle1" className={classes.subTitle}>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontSize: 12,
+                  color: 'darkGrey.main',
+                }}
+              >
                 {subTitle}
               </Typography>
             )}
@@ -65,13 +60,12 @@ const Card: FC<CardProps> = ({
               alignItems="center"
               justifyContent="center"
             >
-              <img src={image} alt={image} className={classes.image} />
+              <ImgCardStyled src={image} alt={image} />
             </Box>
             {isClickable && (
               <Box display="flex" alignItems="center">
                 {customCheckbox ? (
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                  React.cloneElement(customCheckbox, { checked: isOpen })
+                  cloneElement(customCheckbox, { checked: isOpen })
                 ) : (
                   <Checkbox
                     checked={isOpen}
@@ -79,15 +73,20 @@ const Card: FC<CardProps> = ({
                     icon={
                       <RadioButtonUnchecked
                         color="primary"
-                        className={classes.checkIcon}
+                        sx={{
+                          width: 26,
+                          height: 26,
+                          color: 'primary.dark',
+                        }}
                       />
                     }
                     checkedIcon={
                       <CheckCircle
-                        className={clsx(
-                          classes.checkIcon,
-                          isOpen && classes.checkIconActive
-                        )}
+                        sx={{
+                          width: 26,
+                          height: 26,
+                          color: isOpen ? 'success.main' : 'primary.dark',
+                        }}
                       />
                     }
                   />
@@ -106,7 +105,7 @@ const Card: FC<CardProps> = ({
                       align="justify"
                       variant="body2"
                       gutterBottom
-                      style={{ fontSize: 12 }}
+                      sx={{ fontSize: 12 }}
                     >
                       {elem}
                     </Typography>
@@ -117,7 +116,7 @@ const Card: FC<CardProps> = ({
           </Box>
         </Collapse>
       </Box>
-    </MUICard>
+    </CardRootStyled>
   );
 };
 

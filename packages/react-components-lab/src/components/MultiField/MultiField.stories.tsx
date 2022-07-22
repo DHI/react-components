@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Story } from '@storybook/react';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box } from '@mui/material';
 import MultiField from './MultiField';
 import { MultiFieldProps } from './types';
 

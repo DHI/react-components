@@ -1,4 +1,4 @@
-name: CI - lab
+name: CI - lab&icons
 on:
   push:
     branches:

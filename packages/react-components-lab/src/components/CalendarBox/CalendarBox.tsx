@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { CalendarBoxProps } from './types';
 
 const CalendarBox: FC<CalendarBoxProps> = ({ children, title }) => (
@@ -9,7 +9,7 @@ const CalendarBox: FC<CalendarBoxProps> = ({ children, title }) => (
         {title}
       </Typography>
     )}
-    <Box width={1} display="flex" flexWrap="wrap" flexDirection="space-between">
+    <Box width={1} display="flex" flexWrap="wrap">
       {children.map((comp) => comp)}
     </Box>
   </Box>

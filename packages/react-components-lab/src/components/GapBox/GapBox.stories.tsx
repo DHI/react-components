@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/react/types-6-0';
 import React from 'react';
-import { Chip } from '@material-ui/core';
+import { Chip } from '@mui/material';
 import GapBox from './GapBox';
 import { Props } from './types';
 

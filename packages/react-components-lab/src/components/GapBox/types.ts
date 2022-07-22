@@ -1,7 +1,7 @@
-import { BoxProps } from '@material-ui/core';
+import { BoxProps } from '@mui/material';
 
-export interface StyleProps {
+export interface StyleProps extends BoxProps {
   gap?: number;
 }
 
-export interface Props extends BoxProps, StyleProps {}
+export type Props = StyleProps;

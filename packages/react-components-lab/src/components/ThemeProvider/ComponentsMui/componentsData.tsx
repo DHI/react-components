@@ -11,12 +11,12 @@ import {
   Radio,
   TextField,
   InputAdornment,
-  PaletteType,
-} from '@material-ui/core';
-import { Add, PermIdentity } from '@material-ui/icons';
+  PaletteMode,
+} from '@mui/material';
+import { Add, PermIdentity } from '@mui/icons-material';
 // #region Local imports
 import { ComponentList } from './types';
-import getPalette from '../getPallete';
+import getDhiPalette from '../getDhiPalette';
 
 const whiteColor = {
   color: '#FFF',
@@ -24,8 +24,8 @@ const whiteColor = {
 
 // make sure that the title value is the same as the name of the exported component from @material-ui/core.
 
-const getComponentsData = (type: PaletteType): ComponentList[] => {
-  const mikePalette = getPalette(type);
+const getComponentsData = (type: PaletteMode): ComponentList[] => {
+  const mikePalette = getDhiPalette(type);
   return [
     {
       title: 'Color',
@@ -1213,6 +1213,10 @@ const getComponentsData = (type: PaletteType): ComponentList[] => {
             {
               component: <Radio />,
               codeExample: '<Radio />',
+            },
+            {
+              component: <Radio disabled />,
+              codeExample: '<Radio disabled/>',
             },
             {
               component: <Radio defaultChecked color="default" />,

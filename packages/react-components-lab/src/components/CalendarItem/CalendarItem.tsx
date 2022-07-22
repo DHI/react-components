@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
-import { Box, Typography } from '@material-ui/core';
-import clsx from 'clsx';
-import useStyles from './styles';
+import { Typography } from '@mui/material';
+import CalendarItemBox from './CalendarItem.styled';
 import { CalendarItemProps } from './types';
 
 const CalendarItem: FC<CalendarItemProps> = ({
@@ -10,34 +9,17 @@ const CalendarItem: FC<CalendarItemProps> = ({
   children,
   active = false,
   disabled = false,
-}) => {
-  const classes = useStyles();
-
-  return (
-    <Box
-      className={clsx(
-        disabled && {
-          [classes.button]: true,
-          [classes.disabled]: true,
-        },
-        variant === 'button' &&
-          !disabled && {
-            [classes.button]: true,
-            [classes.active]: active,
-          },
-        variant === 'semi-button' &&
-          !disabled && {
-            [classes.button]: true,
-            [classes.semiActive]: active,
-          }
-      )}
-      onClick={() => !disabled && onClick()}
-    >
-      <Typography variant="body2" style={{ color: 'inherit' }}>
-        {children}
-      </Typography>
-    </Box>
-  );
-};
+}) => (
+  <CalendarItemBox
+    onClick={() => !disabled && onClick()}
+    disabled={disabled}
+    variant={variant}
+    active={active}
+  >
+    <Typography variant="body2" sx={{ color: 'inherit' }}>
+      {children}
+    </Typography>
+  </CalendarItemBox>
+);
 
 export default CalendarItem;

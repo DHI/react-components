@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
-import clsx from 'clsx';
-import { Box } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 import {
   DragHandle as DragHandleIcon,
   ExpandLess as ExpandLessIcon,
-} from '@material-ui/icons';
-// eslint-disable-next-line import/no-cycle
+} from '@mui/icons-material';
 import { HandleProps } from './types';
-import useStyles from './styles';
+import BoxRootStyled from './BoxRoot.styled';
+import IconBoxStyled from './IconBox.styled';
 
 const Handle: FC<HandleProps> = ({
   onMouseDown,
@@ -17,52 +16,64 @@ const Handle: FC<HandleProps> = ({
   vertical,
   size,
 }) => {
-  const classes = useStyles();
-
+  const localTheme = useTheme();
   const isHorizontal = !vertical;
-  const isSizeSmall = size === 'small';
-  const isSizeLarge = size === 'large';
+
+  const sizeMap = {
+    small: {
+      height: 16,
+      padding: (theme: typeof localTheme) => theme.spacing(1, 1, 0.1, 1),
+    },
+    large: {
+      height: 34,
+      padding: (theme: typeof localTheme) => theme.spacing(3, 3, 0.3, 3),
+    },
+  };
+
+  const iconSizeTranslateMap = {
+    small: 'translate(0, -3px)',
+    large: 'translate(0, -8px)',
+  };
+
   return (
-    <Box
+    <BoxRootStyled
       draggable={false}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      className={clsx(classes.root, isCollapsed && classes.collapsedRoot)}
       onClick={() => isCollapsed && onClickExpand()}
-      style={{ cursor: isHorizontal ? 's-resize' : 'w-resize' }}
+      isCollapsed={isCollapsed}
+      vertical={vertical}
     >
-      <Box
+      <IconBoxStyled
         draggable={false}
-        className={clsx(
-          classes.iconBox,
-          isSizeSmall && classes.sizeSmall,
-          isSizeLarge && classes.sizeLarge
-        )}
-        style={{
+        sx={{
           transform: !isHorizontal
             ? 'translate(-40%, 0) rotate(-90deg)'
             : 'unset',
+          ...sizeMap[size],
         }}
       >
         {!isCollapsed ? (
           <DragHandleIcon
-            className={clsx(
-              classes.icon,
-              isSizeSmall && classes.iconSmall,
-              isSizeLarge && classes.iconLarge
-            )}
+            sx={{
+              color: 'primary.main',
+              transform: 'translate(0, -5px)',
+              width: 18,
+              translate: iconSizeTranslateMap[size],
+            }}
           />
         ) : (
           <ExpandLessIcon
-            className={clsx(
-              classes.icon,
-              isSizeSmall && classes.iconSmall,
-              isSizeLarge && classes.iconLarge
-            )}
+            sx={{
+              color: 'primary.main',
+              transform: 'translate(0, -5px)',
+              width: 18,
+              translate: iconSizeTranslateMap[size],
+            }}
           />
         )}
-      </Box>
-    </Box>
+      </IconBoxStyled>
+    </BoxRootStyled>
   );
 };
 

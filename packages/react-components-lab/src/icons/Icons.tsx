@@ -1,8 +1,7 @@
 import React, { FC, useState } from 'react';
-import { Box, Typography, Tooltip, SvgIcon, Grid } from '@material-ui/core';
+import { Box, Typography, Tooltip, SvgIcon, Grid } from '@mui/material';
 import * as DhiIcons from '@dhi/icons/dist';
 import copy from 'copy-to-clipboard';
-import useStyles from './styles';
 
 type ModuleType = typeof DhiIcons;
 
@@ -22,7 +21,6 @@ const Icons: FC = () => {
   const [tooltipText, showTooltipText] = useState<string | undefined>(
     undefined
   );
-  const classes = useStyles();
   const { __esModule, ...DhiIconsTyped } = DhiIcons as Record<string, FC>;
   const handleIcon = (item: string) => {
     copy(`import { ${item} } from "@dhi/icons";`);
@@ -45,14 +43,25 @@ const Icons: FC = () => {
             >
               <Box
                 onClick={() => handleIcon(item)}
-                className={classes.iconWrapper}
+                sx={{
+                  backgroundColor: 'lightGrey.light',
+                  cursor: 'pointer',
+                  flexGrow: 1,
+                  '&:hover': {
+                    backgroundColor: 'background.paper',
+                  },
+                  padding: 3,
+                }}
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
               >
                 <DynamicIcon name={item} />
-                <Typography variant="body1" className={classes.iconText}>
+                <Typography
+                  variant="body1"
+                  sx={{ fontSize: 10, textAlign: 'center' }}
+                >
                   {item}
                 </Typography>
               </Box>

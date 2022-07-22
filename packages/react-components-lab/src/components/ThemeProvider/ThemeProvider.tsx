@@ -1,39 +1,30 @@
 import React, { useMemo, FC } from 'react';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import createTheme, {
-  ThemeOptions,
-} from '@material-ui/core/styles/createTheme';
-import assignIn from 'lodash.assignin';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // #region Local imports
-import { getTheme } from './mikeSharedTheme';
-import * as Types from './types';
+import getDhiSharedTheme from './getDhiSharedTheme';
+import { ThemeProviderProps, IMikeTheme } from './types';
 // #endregion
-
-const isDarkMode = false;
-// (window.matchMedia &&
-//   window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-const ThemeProvider: FC<Types.IProps> = ({
-  overrides,
+const DHIThemeProvider: FC<ThemeProviderProps> = ({
+  overrides = {},
   children,
-  type = isDarkMode ? 'dark' : 'light',
+  mode = 'light',
 }) => {
-  const theme = useMemo(() => {
-    const themeWithOverrides = assignIn({ ...getTheme(type) }, overrides);
-
-    return createTheme(themeWithOverrides as ThemeOptions);
-  }, [overrides, type]);
-
+  const theme: IMikeTheme = useMemo(() => {
+    const themeWithOverrides = getDhiSharedTheme(mode, {
+      ...overrides,
+    });
+    return themeWithOverrides;
+  }, [overrides]);
   return (
     <>
-      <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
-      </MuiThemeProvider>
+      </ThemeProvider>
     </>
   );
 };
 
-export default ThemeProvider;
+export default DHIThemeProvider;

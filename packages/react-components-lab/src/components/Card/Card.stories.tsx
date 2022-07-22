@@ -1,24 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Meta, Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
-import { Box, Switch } from '@material-ui/core';
+import { Box, Switch } from '@mui/material';
 import Card from './Card';
 import { CardProps } from './types';
 import productImage from './product.png';
-
-export default {
-  title: 'Components/Card',
-  component: Card,
-  argTypes: {
-    title: { type: 'string' },
-    subTitle: { type: 'string' },
-    description: { type: 'string' },
-    isOpen: { type: 'boolean' },
-    image: { type: 'string' },
-    isClickable: { type: 'boolean' },
-    disabled: { type: 'boolean' },
-  },
-} as Meta;
 
 const Template: Story<CardProps> = (args) => {
   const [isActive, setIsActive] = useState(false);
@@ -105,3 +91,17 @@ CustomCheckbox.args = {
     </Box>
   ),
 };
+
+export default {
+  title: 'Components/Card',
+  component: Card,
+  argTypes: {
+    title: { type: 'string' },
+    subTitle: { type: 'function' },
+    description: { type: 'string' },
+    isOpen: { type: 'boolean' },
+    image: { type: 'string' },
+    isClickable: { type: 'boolean' },
+    disabled: { type: 'boolean' },
+  },
+} as Meta;

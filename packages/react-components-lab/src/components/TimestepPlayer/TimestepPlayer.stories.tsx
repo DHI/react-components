@@ -2,7 +2,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Story } from '@storybook/react/types-6-0';
 import React, { useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import TimestepPlayer from './TimestepPlayer';
 import { TimestepPlayerProps } from './types';
 
