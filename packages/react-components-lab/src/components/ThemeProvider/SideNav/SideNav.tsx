@@ -29,13 +29,13 @@ const scrollStopListener = (
   timeout?: number
 ) => {
   let removed = false;
-  let handle = null;
+  let handle: number | null = null;
 
   const onScroll = () => {
     if (handle) {
       clearTimeout(handle);
     }
-    handle = setTimeout(callback, timeout || 150); // in ms
+    handle = window.setTimeout(callback, timeout || 150); // in ms
   };
 
   element.addEventListener('scroll', onScroll);
