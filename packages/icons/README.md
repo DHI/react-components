@@ -1,6 +1,6 @@
 <div align="left">
 
-[![CI - icons](https://github.com/DHI/react-components/actions/workflows/main-icons.yml/badge.svg)](https://github.com/DHI/react-components/actions/workflows/main-icons.yml)
+[![CI - lab&icons](https://github.com/DHI/react-components/actions/workflows/main-lab-icons.yml/badge.svg)](https://github.com/DHI/react-components/actions/workflows/main-lab-icons.yml)
 </div>
 <h1 align="left">@dhi/icons</h1>
 
