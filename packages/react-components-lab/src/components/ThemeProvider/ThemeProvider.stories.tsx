@@ -24,13 +24,6 @@ import { ComponentList } from './ComponentsMui/types';
 export default {
   title: 'Components/ThemeProvider',
   component: ThemeProvider,
-  argTypes: {},
-  parameters: {
-    previewTabs: {
-      'storybook/docs/panel': { hidden: true },
-    },
-    viewMode: 'docs/canvas',
-  },
 } as Meta;
 
 interface ChildRefState {
