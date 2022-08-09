@@ -32,6 +32,10 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
   useEffect(() => {
     groupScenarios(scenarios);
   }, [scenarios]);
+  
+  useEffect(() => {
+    setSelectedId(selectedScenarioId);
+  }, [selectedScenarioId]);
 
   const groupScenarios = (scenarios: ScenarioOLD[]) => {
     setGroupedScenarios(
