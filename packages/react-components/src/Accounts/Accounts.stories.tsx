@@ -9,7 +9,7 @@ export default {
   component: Accounts,
 } as Meta;
 
-const host = process.env.ENDPOINT_URL;
+const host = process.env.ENDPOINT_URL!;
 
 export const AccountsStory = () => {
   const metadata = [

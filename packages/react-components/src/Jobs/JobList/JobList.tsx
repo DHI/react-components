@@ -373,7 +373,7 @@ const JobList = (props: JobListProps) => {
             connection.invoke(
               'AddJobFilter',
               source.connection,
-              [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: -1 }], // ability to change condition?
+              [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: '-1' }], // ability to change condition?
             );
           })
           .catch((e) => console.log('Connection failed: ', e));
