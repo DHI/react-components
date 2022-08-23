@@ -18,7 +18,7 @@ export const ScalarListStory = () => {
   ];
 
   return (
-    <LoginGate host={process.env.ENDPOINT_URL} showRememberMe={true} textFieldVariant={'outlined'}>
+    <LoginGate host={process.env.ENDPOINT_URL!} showRememberMe={true} textFieldVariant={'outlined'}>
       {({ token: { accessToken } }) => (
         <ScalarList
           timeZone="Australia/Brisbane"
