@@ -216,6 +216,10 @@ interface ScenariosProps {
    * SignalR connection hub URL.
    */
   signalRConnectionHubUrl: string;
+  /**
+   * Check if Jobs need to be considered
+   */
+  checkJobStatus?: boolean;
 }
 
 interface QueryBody {

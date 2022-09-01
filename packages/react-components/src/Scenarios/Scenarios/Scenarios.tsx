@@ -65,6 +65,7 @@ const Scenarios = (props: ScenariosProps) => {
     translations,
     timeZone,
     debug,
+    checkJobStatus = true
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>({
@@ -666,6 +667,7 @@ const Scenarios = (props: ScenariosProps) => {
           actionButton={actionButton}
           showReportButton={showReportButton}
           showEditButton={showEditButton}
+          checkJobStatus={checkJobStatus}
         />
       )}
       {dialog && (

@@ -100,6 +100,10 @@ interface ScenarioListProps {
    * Allow user to select multiple scenarios
    */
   multipleSelection?: boolean;
+  /**
+   * Check if Jobs need to be considered
+   */
+  checkJobStatus?: boolean;
 }
 
 export default ScenarioListProps;
