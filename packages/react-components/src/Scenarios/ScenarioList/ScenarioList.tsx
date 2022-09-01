@@ -34,7 +34,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     timeZone,
     multipleSelection,
     showYear,
-    checkJobStatus
+    checkJobStatus = true
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
   const classes = useStyles();
