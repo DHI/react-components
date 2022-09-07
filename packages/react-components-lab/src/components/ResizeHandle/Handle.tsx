@@ -61,6 +61,7 @@ const Handle: FC<HandleProps> = ({
               width: 18,
               translate: iconSizeTranslateMap[size],
             }}
+            color="secondary"
           />
         ) : (
           <ExpandLessIcon
@@ -70,6 +71,7 @@ const Handle: FC<HandleProps> = ({
               width: 18,
               translate: iconSizeTranslateMap[size],
             }}
+            color="secondary"
           />
         )}
       </IconBoxStyled>
