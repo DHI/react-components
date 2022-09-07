@@ -56,20 +56,22 @@ const Handle: FC<HandleProps> = ({
         {!isCollapsed ? (
           <DragHandleIcon
             sx={{
-              color: 'primary.main',
+              color: 'secondary.main',
               transform: 'translate(0, -5px)',
               width: 18,
               translate: iconSizeTranslateMap[size],
             }}
+            color="secondary"
           />
         ) : (
           <ExpandLessIcon
             sx={{
-              color: 'primary.main',
+              color: 'secondary.main',
               transform: 'translate(0, -5px)',
               width: 18,
               translate: iconSizeTranslateMap[size],
             }}
+            color="secondary"
           />
         )}
       </IconBoxStyled>

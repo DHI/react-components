@@ -42,7 +42,6 @@ const LegendBase: FC<LegendBaseProps> = ({
     <RootBoxStyled
       sx={{
         ...positionStylesMap[position],
-        boxShadow: collapsed && 'unset',
       }}
     >
       <ButtonBaseStyled disabled={!collapsable} onClick={toggleCollapsed}>
