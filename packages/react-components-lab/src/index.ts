@@ -29,6 +29,7 @@ export * from './components/CollapsableBox/types';
 
 // Legend (for use with number & color range)
 export { default as ContinuousLegend } from './components/ContinuousLegend/ContinuousLegend';
+export { default as Legend } from './components/ContinuousLegend/ContinuousLegend';
 export * from './components/ContinuousLegend/ContinuousLegend';
 export * from './components/ContinuousLegend/types';
 
