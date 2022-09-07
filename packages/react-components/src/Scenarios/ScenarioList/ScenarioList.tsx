@@ -34,6 +34,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     timeZone,
     multipleSelection,
     showYear,
+    checkJobStatus = true
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
   const classes = useStyles();
@@ -79,7 +80,11 @@ const ScenarioList = (props: ScenarioListProps) => {
     return sortBy(scenarioGroup, ['dateTime'])
       .reverse()
       .map((scenario, index) => {
-        const itemStatus = checkStatus(scenario.lastJob, status);
+        const itemStatus = checkJobStatus ? checkStatus(scenario.lastJob, status) : { 
+          name: 'Completed',
+          color: '#81C784',
+          message: 'Completed',
+        };
 
         return (
           <div
