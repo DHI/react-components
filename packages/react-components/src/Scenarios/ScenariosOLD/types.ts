@@ -149,6 +149,10 @@ interface ScenariosOLDProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * Show mooring notifications in scenario items
+   */
+  showMooringStatus?: boolean;
 }
 
 interface dataFilterbyPropertyObj {

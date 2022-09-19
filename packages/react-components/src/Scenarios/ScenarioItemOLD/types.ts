@@ -59,6 +59,10 @@ interface ScenarioItemOLDProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * Show mooring notifications in scenario items
+   */
+  showMooringStatus?: boolean;
 }
 
 export default ScenarioItemOLDProps;

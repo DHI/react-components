@@ -19,7 +19,11 @@ interface Status {
    * Scenario icon component
    */
   Icon?: any;
+
+  mooringStatus?: Status;
 }
+
+type NotificationStatus = 'Failure' | 'Warning' | null;
 
 interface DescriptionField {
   /**
@@ -186,4 +190,5 @@ export {
   QueryDates,
   ContextMenuClickHandler,
   CloseDialog,
+  NotificationStatus,
 };
