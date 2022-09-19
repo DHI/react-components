@@ -23,6 +23,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
     menu,
     scenario,
     timeZone,
+    showMooringStatus = false,
   } = props;
 
   const scenarioHour = date && showHour && (
@@ -30,6 +31,11 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
       <Typography component="div" className={classes.hourText}>
         {format(timeZone ? utcToTz(date, timeZone) : parseISO(date), 'HH:mm')}
       </Typography>
+      {showMooringStatus && (
+        <Typography className={classes.icon}>
+          <span style={{ color: status.color, width: 50 }}>{status.message}</span>
+        </Typography>
+      )}
     </Grid>
   );
 
@@ -43,10 +49,10 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
         }}
       >
         <div>
-          <Tooltip title={status.message ? status.message : ''}>
+          <Tooltip title={status.mooringStatus?.message ?? status.message}>
             <CircularProgress
               style={{
-                color: status.color,
+                color: status.mooringStatus?.color ?? status.color,
                 display: 'grid',
               }}
               variant={status.progress ? 'indeterminate' : 'determinate'}
