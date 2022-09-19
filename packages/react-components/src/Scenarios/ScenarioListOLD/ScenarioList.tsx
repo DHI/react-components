@@ -24,6 +24,7 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
     showMenu,
     nameField,
     timeZone,
+    showMooringStatus = false,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<ScenarioOLD[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
@@ -32,7 +33,7 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
   useEffect(() => {
     groupScenarios(scenarios);
   }, [scenarios]);
-  
+
   useEffect(() => {
     setSelectedId(selectedScenarioId);
   }, [selectedScenarioId]);
@@ -81,7 +82,8 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
               showMenu={showMenu}
               showStatus={showStatus}
               scenario={scenario}
-              status={checkStatus(scenario, status, true)}
+              status={checkStatus(scenario, status, true, showMooringStatus)}
+              showMooringStatus={showMooringStatus}
               timeZone={timeZone}
             />
           </div>
