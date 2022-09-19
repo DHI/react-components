@@ -2,7 +2,7 @@ import { addHours, differenceInMinutes, parseISO } from 'date-fns';
 import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
-import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
+import { Condition, DescriptionField, NotificationStatus, Scenario, Status } from '../Scenarios/types';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import { ErrorRounded } from '@material-ui/icons';
 
@@ -184,11 +184,17 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
   return body[0];
 };
 
-const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean) => {
+const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean, showMooringStatus?: boolean) => {
   let scenarioStatus;
   let progress;
+  let mooringNotifications: NotificationStatus | null;
 
   if (scenarioOLD) {
+    if (showMooringStatus) {
+      scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
+      progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
+      mooringNotifications = mooringNotificationStatus(scenario);
+    }
     scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
     progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
   } else {
@@ -199,6 +205,7 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
   const currentStatus = {
     ...status.find((s) => s.name === scenarioStatus),
     progress: scenarioStatus === 'InProgress' ? progress : 0,
+    mooringStatus: mooringNotifications && status.find((s) => s.name === mooringNotifications),
   };
 
   let result;
@@ -215,6 +222,21 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
   }
 
   return result;
+};
+
+const mooringNotificationStatus = (scenario: Scenario): NotificationStatus => {
+  const mooringArrangements = scenario.data?.results?.mooringArrangements;
+  if (!mooringArrangements) return null;
+
+  const { notifications }: any = Object.values(mooringArrangements)[0];
+  if (!notifications) return null;
+
+  const trueFailure = notifications.some((item) => item.firstFailure);
+  const trueWarning = notifications.some((item) => item.firstWarning);
+
+  const status = (trueFailure && 'Failure') || (trueWarning && 'Warning') || null;
+
+  return status;
 };
 
 /**
