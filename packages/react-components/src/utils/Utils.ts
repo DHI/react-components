@@ -225,15 +225,12 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
 };
 
 const mooringNotificationStatus = (scenario: Scenario): NotificationStatus => {
-  const mooringArrangements = scenario.data?.results?.mooringArrangements;
-  if (!mooringArrangements) return null;
+  const mooringArrangementName = scenario.data.mooring.mooringArrangementName as string;
+  const notifications = scenario.data?.results?.mooringArrangements[mooringArrangementName]?.notifications;
 
-  const { notifications }: any = Object.values(mooringArrangements)[0];
   if (!notifications) return null;
-
-  const trueFailure = notifications.some((item) => item.firstFailure);
-  const trueWarning = notifications.some((item) => item.firstWarning);
-
+  const trueFailure = notifications.find((item) => item.notificationType === 3);
+  const trueWarning = notifications.find((item) => item.notificationType === 2);
   const status = (trueFailure && 'Failure') || (trueWarning && 'Warning') || null;
 
   return status;
