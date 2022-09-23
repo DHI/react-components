@@ -1,3 +1,4 @@
+import { CircularProgress } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { clone } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -65,7 +66,8 @@ const Scenarios = (props: ScenariosProps) => {
     translations,
     timeZone,
     debug,
-    checkJobStatus = true
+    checkJobStatus = true,
+    showLoading = false,
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>({
@@ -566,7 +568,7 @@ const Scenarios = (props: ScenariosProps) => {
     if (!mounted.current) {
       return;
     }
-    
+
     const job = JSON.parse(jobAdded.data);
 
     if (debug) {
@@ -638,6 +640,13 @@ const Scenarios = (props: ScenariosProps) => {
     connectToSignalR();
     fetchScenariosList();
   }, [queryDates]);
+
+  if (showLoading && !scenarios)
+    return (
+      <div className={classes && classes.loading}>
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <div className={classes && classes.root}>
