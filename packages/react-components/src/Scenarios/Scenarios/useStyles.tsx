@@ -8,6 +8,12 @@ const styles = () => ({
     flexDirection: 'column',
     height: '100%',
   },
+  loading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
 });
 
 const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);
