@@ -65,7 +65,7 @@ const Scenarios = (props: ScenariosProps) => {
     translations,
     timeZone,
     debug,
-    checkJobStatus = true
+    checkJobStatus = true,
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>({
@@ -124,7 +124,8 @@ const Scenarios = (props: ScenariosProps) => {
         from: queryDates?.from || '',
         to: queryDates?.to || '',
       };
-    } else if (descriptionFields) {
+    }
+    if (descriptionFields) {
       obj = {
         ...obj,
         dataSelectors:
@@ -566,7 +567,7 @@ const Scenarios = (props: ScenariosProps) => {
     if (!mounted.current) {
       return;
     }
-    
+
     const job = JSON.parse(jobAdded.data);
 
     if (debug) {

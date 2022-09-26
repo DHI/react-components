@@ -12,9 +12,7 @@ import { fetchUrl } from '../helpers';
 const fetchJsonDocuments = (dataSource: DataSource, token: string) => {
   const dataSelectors =
     dataSource.dataSelectors && dataSource.dataSelectors.length > 0
-      ? `?dataSelectors=[${dataSource.dataSelectors
-          .map((dataSelector) => dataSelector.replace('data.', ''))
-          .join(',')}]`
+      ? `dataSelectors=[${dataSource.dataSelectors.map((dataSelector) => dataSelector.replace('data.', '')).join(',')}]`
       : '';
 
   return fetchUrl(
