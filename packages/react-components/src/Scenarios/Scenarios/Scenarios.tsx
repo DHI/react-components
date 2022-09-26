@@ -67,7 +67,6 @@ const Scenarios = (props: ScenariosProps) => {
     timeZone,
     debug,
     checkJobStatus = true,
-    showLoading = false,
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>({
@@ -642,7 +641,7 @@ const Scenarios = (props: ScenariosProps) => {
     fetchScenariosList();
   }, [queryDates]);
 
-  if (showLoading && !scenarios)
+  if (!scenarios)
     return (
       <div className={classes && classes.loading}>
         <CircularProgress />
