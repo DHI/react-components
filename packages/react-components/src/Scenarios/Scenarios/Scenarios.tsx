@@ -126,7 +126,8 @@ const Scenarios = (props: ScenariosProps) => {
         from: queryDates?.from || '',
         to: queryDates?.to || '',
       };
-    } else if (descriptionFields) {
+    }
+    if (descriptionFields) {
       obj = {
         ...obj,
         dataSelectors:
