@@ -229,7 +229,10 @@ const Scenarios = (props: ScenariosProps) => {
         console.log(error);
         setIsLoading(false);
       },
-      () =>  setIsLoading(false)
+      () => {
+        console.debug('fetchScenariosList complete');
+        setIsLoading(false);
+      },
     );
   };
 
@@ -582,10 +585,9 @@ const Scenarios = (props: ScenariosProps) => {
           multiSelectKeyPressed
             ? setFetchedScenarios([...remainingFetchedScenarios])
             : setFetchedScenarios([...newlyRemovedScenarios]); // ie removed becomes the single select
-          return nextSelection;
+          // return nextSelection;
         }
 
-        setIsLoading(true);
         const scenariosRecieved = newlyAddedScenarios.map((s) => getScenarioEx(s.fullName));
         forkJoin(scenariosRecieved).subscribe({
           next: (res: Scenario[]) => {
@@ -601,18 +603,15 @@ const Scenarios = (props: ScenariosProps) => {
           },
           complete: () => {
             console.debug(`multiple scenarios fetched`);
-            setIsLoading(false);
           },
           error: (err) => {
             console.error(`Error fetching scenarios: ${err.message}`);
-            setIsLoading(false);
-          }
+          },
         });
 
         return nextSelection;
       });
     } else {
-      setIsLoading(true);
       onScenarioSelected(scenario);
       getScenarioEx((scenario as Scenario).fullName).subscribe({
         next: (res: Scenario[]) => {
@@ -621,12 +620,10 @@ const Scenarios = (props: ScenariosProps) => {
         },
         complete: () => {
           console.debug(`single scenario fetched`);
-          setIsLoading(false);
         },
         error: (err) => {
           console.error(`Error fetching scenarios: ${err.message}`);
-          setIsLoading(false);
-        }
+        },
       });
     }
   };
