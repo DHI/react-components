@@ -220,10 +220,6 @@ interface ScenariosProps {
    * Check if Jobs need to be considered
    */
   checkJobStatus?: boolean;
-  /**
-   * Show circular progress loading
-   */
-  showLoading?: boolean;
 }
 
 interface QueryBody {

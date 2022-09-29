@@ -72,7 +72,7 @@ interface ScenarioListProps {
   /**
    * Emit event to client when scenario(s) selected by user
    */
-  onScenarioSelected: (scenario: Scenario | Scenario[]) => void;
+  onScenarioSelected: (scenario: Scenario | Scenario[], multiSelectKeyPressed: boolean) => void;
   /**
    * A ReactElement which is overridable to change the row's display.
    * @param scenario
