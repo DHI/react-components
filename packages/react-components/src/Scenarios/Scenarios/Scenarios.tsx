@@ -87,7 +87,7 @@ const Scenarios = (props: ScenariosProps) => {
   const classes = useStyles();
   const latestScenarios = useRef(null);
   const mounted = useRef(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   latestScenarios.current = scenarios;
 
@@ -144,7 +144,6 @@ const Scenarios = (props: ScenariosProps) => {
       };
     }
 
-    setIsLoading(true);
     fetchJsonDocuments(
       {
         ...obj,
@@ -167,6 +166,7 @@ const Scenarios = (props: ScenariosProps) => {
         const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
 
         if (!jobConnection) {
+          setIsLoading(false);
           setScenarios(newScenarios);
 
           if (onScenariosReceived) {
