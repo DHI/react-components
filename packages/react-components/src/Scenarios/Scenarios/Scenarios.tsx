@@ -87,6 +87,7 @@ const Scenarios = (props: ScenariosProps) => {
   const classes = useStyles();
   const latestScenarios = useRef(null);
   const mounted = useRef(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   latestScenarios.current = scenarios;
 
@@ -143,6 +144,7 @@ const Scenarios = (props: ScenariosProps) => {
       };
     }
 
+    setIsLoading(true);
     fetchJsonDocuments(
       {
         ...obj,
@@ -225,7 +227,9 @@ const Scenarios = (props: ScenariosProps) => {
       },
       (error) => {
         console.log(error);
+        setIsLoading(false);
       },
+      () =>  setIsLoading(false)
     );
   };
 
@@ -581,6 +585,7 @@ const Scenarios = (props: ScenariosProps) => {
           return nextSelection;
         }
 
+        setIsLoading(true);
         const scenariosRecieved = newlyAddedScenarios.map((s) => getScenarioEx(s.fullName));
         forkJoin(scenariosRecieved).subscribe({
           next: (res: Scenario[]) => {
@@ -594,19 +599,34 @@ const Scenarios = (props: ScenariosProps) => {
             }
             onScenarioSelected(nextSelection);
           },
-          complete: () => console.debug(`multiple scenarios fetched`),
+          complete: () => {
+            console.debug(`multiple scenarios fetched`);
+            setIsLoading(false);
+          },
+          error: (err) => {
+            console.error(`Error fetching scenarios: ${err.message}`);
+            setIsLoading(false);
+          }
         });
 
         return nextSelection;
       });
     } else {
+      setIsLoading(true);
       onScenarioSelected(scenario);
       getScenarioEx((scenario as Scenario).fullName).subscribe({
         next: (res: Scenario[]) => {
           //* Can/should set a loading var and clear it in complete()
           onScenarioReceived(res);
         },
-        complete: () => console.debug(`single scenario fetched`),
+        complete: () => {
+          console.debug(`single scenario fetched`);
+          setIsLoading(false);
+        },
+        error: (err) => {
+          console.error(`Error fetching scenarios: ${err.message}`);
+          setIsLoading(false);
+        }
       });
     }
   };
@@ -700,7 +720,7 @@ const Scenarios = (props: ScenariosProps) => {
     fetchScenariosList();
   }, [queryDates]);
 
-  if (!scenarios)
+  if (isLoading)
     return (
       <div className={classes && classes.loading}>
         <CircularProgress />
