@@ -57,7 +57,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     if (onScenarioSelected) {
       const filterScenarios = scenarios.filter((item) => selectedScenarios.indexOf(item.fullName) > -1);
 
-      onScenarioSelected(multipleSelection ? filterScenarios : filterScenarios[0], multiselectCtrlKey);
+      selectedScenarios.length > 0 && onScenarioSelected(multipleSelection ? filterScenarios : filterScenarios[0], multiselectCtrlKey);
     }
   }, [selectedScenarios]);
 
