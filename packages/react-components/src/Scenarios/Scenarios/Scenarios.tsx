@@ -2,6 +2,8 @@ import { CircularProgress } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { clone } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   cancelJob,
   deleteJsonDocument,
@@ -80,17 +82,21 @@ const Scenarios = (props: ScenariosProps) => {
   });
   const [scenarios, setScenarios] = useState<Scenario[]>();
   const [scenario, setScenario] = useState<Scenario>();
+  const [selectedScenarios, setSelectedScenarios] = useState<Scenario[]>([]);
+  const [fetchedScenarios, setFetchedScenarios] = useState<Scenario[]>([]);
   const classes = useStyles();
   const latestScenarios = useRef(null);
   const mounted = useRef(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   latestScenarios.current = scenarios;
 
   useEffect(() => {
     mounted.current = true;
-
+    console.debug('Scenarios component mounted');
     return () => {
       mounted.current = false;
+      console.debug('Scenarios component unmounted');
     };
   }, []);
 
@@ -138,6 +144,7 @@ const Scenarios = (props: ScenariosProps) => {
       };
     }
 
+    setIsLoading(true);
     fetchJsonDocuments(
       {
         ...obj,
@@ -220,7 +227,9 @@ const Scenarios = (props: ScenariosProps) => {
       },
       (error) => {
         console.log(error);
+        setIsLoading(false);
       },
+      () =>  setIsLoading(false)
     );
   };
 
@@ -361,26 +370,25 @@ const Scenarios = (props: ScenariosProps) => {
     setScenarios(updatedScenario);
   };
 
-  const getScenario = (id: string, resultCallback: (data: any) => void) => {
-    fetchJsonDocument(
+  /**
+   * Fetch JsonDocument by id
+   *
+   * @param {string} id
+   * @returns Observable<Scenario[]>
+   */
+  const getScenarioEx = (id: string) => {
+    return fetchJsonDocument(
       {
         host,
         connection: scenarioConnection,
       },
       token,
       id,
-    ).subscribe(
-      (res) => {
-        if (!mounted.current) {
-          return;
-        }
-
-        res.data = res.data ? JSON.parse(res.data) : res.data;
-        resultCallback(res);
-      },
-      (error) => {
-        console.log(error);
-      },
+    ).pipe(
+      map((res) => {
+        res.data = res.data && JSON.parse(res.data);
+        return res;
+      }),
     );
   };
 
@@ -506,49 +514,120 @@ const Scenarios = (props: ScenariosProps) => {
     });
   };
 
-  const onContextMenuClickHandler = (menuItem: MenuItem, scenario: Scenario) => {
-    getScenario(scenario.fullName!, (res) => {
-      switch (menuItem.id) {
-        case 'execute':
-          return executeDialog(res, menuItem);
-        case 'delete':
-          return deleteDialog(res);
-        case 'clone':
-          return cloneDialog(res);
-        case 'edit':
-          return editDialog(res);
-        case 'terminate':
-          return terminateDialog(
-            {
-              ...res,
-              lastJob: scenario.lastJob,
-            },
-            menuItem,
-          );
-        default:
-          return onContextMenuClick(menuItem, res);
-      }
+  const onContextMenuClickHandler = (menuItem: MenuItem, scenario: Scenario) =>
+    getScenarioEx(scenario.fullName!).subscribe({
+      next: (res) => {
+        switch (menuItem.id) {
+          case 'execute':
+            return executeDialog(res, menuItem);
+          case 'delete':
+            return deleteDialog(res);
+          case 'clone':
+            return cloneDialog(res);
+          case 'edit':
+            return editDialog(res);
+          case 'terminate':
+            return terminateDialog(
+              {
+                ...res,
+                lastJob: scenario.lastJob,
+              },
+              menuItem,
+            );
+          default:
+            return onContextMenuClick(menuItem, res);
+        }
+      },
     });
-  };
 
-  const onScenarioSelectedHandler = (scenario: Scenario | Scenario[]) => {
+  const onScenarioSelectedHandler = (scenario: Scenario | Scenario[], multiSelectKeyPressed: boolean) => {
     if (scenario === undefined) return null;
 
     if (multipleSelection) {
-      const currentSelectedScenarios = [];
+      /*
+       * This handler will always be called per select or de-select click, consequently the difference between
+       * the previous and next selection will always only differ by 1 scenario.
+       *
+       * But scenario argument will be an array of all selected items regardless.
+       *
+       * So here we check if current list of selected scenarios has been added to or de-selected (removed from)
+       * because we only want to send requests for new additions to the list, not repeat requests for the
+       * whole selected list of items.
+       *
+       * Note: when scenarios have been removed, there is no need to send any requests, simply return the
+       * the updated list of previously requested scenarios
+       */
 
-      const promise = new Promise((resolve, reject) => {
-        (scenario as Scenario[]).map((sce) => getScenario(sce.fullName!, (res) => currentSelectedScenarios.push(res)));
-        resolve(currentSelectedScenarios);
+      const nextSelection = scenario as Scenario[];
+
+      setSelectedScenarios((prevSelectedScenarios) => {
+        // if multiSelectKey has not been pressed then it simply behaves like a single select
+        // thats is - there is no previous selection
+        const cachedSelection = multiSelectKeyPressed ? prevSelectedScenarios : [];
+        const newlyAddedScenarios = nextSelection.filter(
+          (s) => !cachedSelection.some((p) => p.fullName === s.fullName),
+        );
+        const newlyRemovedScenarios = prevSelectedScenarios.filter(
+          (p) => !nextSelection.some((s) => s.fullName === p.fullName),
+        );
+
+        if (multiSelectKeyPressed && newlyRemovedScenarios.length > 0) {
+          // remove scenarios from fetchedScenarios list
+          const remainingFetchedScenarios = fetchedScenarios.filter((p) =>
+            nextSelection.some((s) => s.fullName === p.fullName),
+          );
+          onScenarioReceived(remainingFetchedScenarios);
+          onScenarioSelected(nextSelection);
+
+          multiSelectKeyPressed
+            ? setFetchedScenarios([...remainingFetchedScenarios])
+            : setFetchedScenarios([...newlyRemovedScenarios]); // ie removed becomes the single select
+          return nextSelection;
+        }
+
+        setIsLoading(true);
+        const scenariosRecieved = newlyAddedScenarios.map((s) => getScenarioEx(s.fullName));
+        forkJoin(scenariosRecieved).subscribe({
+          next: (res: Scenario[]) => {
+            //* Can/should set a loading var and clear it in complete()
+            if (multiSelectKeyPressed) {
+              onScenarioReceived([...fetchedScenarios, ...res]);
+              setFetchedScenarios([...fetchedScenarios, ...res]);
+            } else {
+              onScenarioReceived([...res]);
+              setFetchedScenarios([...res]);
+            }
+            onScenarioSelected(nextSelection);
+          },
+          complete: () => {
+            console.debug(`multiple scenarios fetched`);
+            setIsLoading(false);
+          },
+          error: (err) => {
+            console.error(`Error fetching scenarios: ${err.message}`);
+            setIsLoading(false);
+          }
+        });
+
+        return nextSelection;
       });
-
-      promise.then((res) => onScenarioReceived(res as Scenario[]));
-
-      onScenarioSelected(scenario);
     } else {
+      setIsLoading(true);
       onScenarioSelected(scenario);
-
-      getScenario((scenario as Scenario).fullName!, (res) => onScenarioReceived(res));
+      getScenarioEx((scenario as Scenario).fullName).subscribe({
+        next: (res: Scenario[]) => {
+          //* Can/should set a loading var and clear it in complete()
+          onScenarioReceived(res);
+        },
+        complete: () => {
+          console.debug(`single scenario fetched`);
+          setIsLoading(false);
+        },
+        error: (err) => {
+          console.error(`Error fetching scenarios: ${err.message}`);
+          setIsLoading(false);
+        }
+      });
     }
   };
 
@@ -641,7 +720,7 @@ const Scenarios = (props: ScenariosProps) => {
     fetchScenariosList();
   }, [queryDates]);
 
-  if (!scenarios)
+  if (isLoading)
     return (
       <div className={classes && classes.loading}>
         <CircularProgress />

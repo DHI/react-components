@@ -34,11 +34,12 @@ const ScenarioList = (props: ScenarioListProps) => {
     timeZone,
     multipleSelection,
     showYear,
-    checkJobStatus = true
+    checkJobStatus = true,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<Scenario[]>>();
   const classes = useStyles();
   const [selectedScenarios, setSelectedScenarios] = useState<string[]>([]);
+  const [multiselectCtrlKey, setMultiselectCtrlKey] = useState<boolean>(false);
   const elRowRefs = React.useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const ScenarioList = (props: ScenarioListProps) => {
     if (onScenarioSelected) {
       const filterScenarios = scenarios.filter((item) => selectedScenarios.indexOf(item.fullName) > -1);
 
-      onScenarioSelected(multipleSelection ? filterScenarios : filterScenarios[0]);
+      onScenarioSelected(multipleSelection ? filterScenarios : filterScenarios[0], multiselectCtrlKey);
     }
   }, [selectedScenarios]);
 
@@ -80,11 +81,13 @@ const ScenarioList = (props: ScenarioListProps) => {
     return sortBy(scenarioGroup, ['dateTime'])
       .reverse()
       .map((scenario, index) => {
-        const itemStatus = checkJobStatus ? checkStatus(scenario.lastJob, status) : { 
-          name: 'Completed',
-          color: '#81C784',
-          message: 'Completed',
-        };
+        const itemStatus = checkJobStatus
+          ? checkStatus(scenario.lastJob, status)
+          : {
+              name: 'Completed',
+              color: '#81C784',
+              message: 'Completed',
+            };
 
         return (
           <div
@@ -155,6 +158,7 @@ const ScenarioList = (props: ScenarioListProps) => {
 
   const handleMultiSelection = (e, scenario) => {
     if (multipleSelection) {
+      setMultiselectCtrlKey(!!e.ctrlKey);
       if (e.ctrlKey) {
         setSelectedScenarios((prevState) => {
           if (prevState.includes(scenario.fullName)) {
