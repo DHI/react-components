@@ -65,6 +65,7 @@ const styles = () => ({
     'alignItems': 'center',
     '& span': {
       fontSize: 10,
+      color: 'gray',
     },
   },
 });

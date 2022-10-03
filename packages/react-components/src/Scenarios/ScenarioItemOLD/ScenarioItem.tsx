@@ -33,7 +33,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
       </Typography>
       {showMooringStatus && (
         <Typography className={classes.icon}>
-          <span style={{ color: status.color, width: 50 }}>{status.message}</span>
+          <span style={{ width: 50 }}>{status.message}</span>
         </Typography>
       )}
     </Grid>
