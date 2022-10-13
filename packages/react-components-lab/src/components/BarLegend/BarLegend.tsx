@@ -6,6 +6,7 @@ import ImgLegendStyled from './ImgLegend.styled';
 const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
   const [val, setVals] = useState<number[] | undefined>();
   const theme = useTheme();
+
   useEffect(() => {
     if (
       length !== undefined &&
@@ -34,8 +35,9 @@ const BarLegend: FC<BarLegendProps> = ({ src, length, range, unit = '' }) => {
       {range &&
         (typeof range[0] === 'number' && typeof range[1] === 'number' && val ? (
           <Box display="flex" justifyContent="space-between">
-            {val.map((v: number) => (
-              <Typography key={`value-${v}`} sx={{ fontSize: 10 }}>
+            {val.map((v: number, index: number) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Typography key={index} sx={{ fontSize: 10 }}>
                 {`${v} ${unit}`}
               </Typography>
             ))}
