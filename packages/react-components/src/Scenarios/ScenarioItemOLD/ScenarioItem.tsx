@@ -49,7 +49,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
         }}
       >
         <div>
-          <Tooltip title={status.mooringStatus?.message ?? status.message}>
+          <Tooltip disableHoverListener={showMooringStatus} title={status.message}>
             <CircularProgress
               style={{
                 color: status.mooringStatus?.color ?? status.color,
@@ -79,6 +79,11 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
           {`${item.name}: ${item.value}`}
         </Typography>
       ))}
+      {showMooringStatus && status.mooringStatus && (
+        <Typography className={classes.textFields}>
+          <span style={{ color: status.mooringStatus?.color }}>{status.mooringStatus?.message}</span>
+        </Typography>
+      )}
     </Grid>
   );
 
