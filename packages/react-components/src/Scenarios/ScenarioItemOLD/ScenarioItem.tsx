@@ -23,7 +23,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
     menu,
     scenario,
     timeZone,
-    showMooringStatus = false,
+    statusOverride = false,
   } = props;
 
   const scenarioHour = date && showHour && (
@@ -31,7 +31,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
       <Typography component="div" className={classes.hourText}>
         {format(timeZone ? utcToTz(date, timeZone) : parseISO(date), 'HH:mm')}
       </Typography>
-      {showMooringStatus && (
+      {statusOverride && (
         <Typography className={classes.icon}>
           <span style={{ width: 50 }}>{status.message}</span>
         </Typography>
@@ -49,10 +49,10 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
         }}
       >
         <div>
-          <Tooltip disableHoverListener={showMooringStatus} title={status.message}>
+          <Tooltip disableHoverListener={statusOverride} title={status.message}>
             <CircularProgress
               style={{
-                color: status.mooringStatus?.color ?? status.color,
+                color: status.override?.color ?? status.color,
                 display: 'grid',
               }}
               variant={status.progress ? 'indeterminate' : 'determinate'}
@@ -79,9 +79,9 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
           {`${item.name}: ${item.value}`}
         </Typography>
       ))}
-      {showMooringStatus && status.mooringStatus && (
+      {statusOverride && status.override && (
         <Typography className={classes.textFields}>
-          <span style={{ color: status.mooringStatus?.color }}>{status.mooringStatus?.message}</span>
+          <span style={{ color: status.override?.color }}>{status.override?.message}</span>
         </Typography>
       )}
     </Grid>
