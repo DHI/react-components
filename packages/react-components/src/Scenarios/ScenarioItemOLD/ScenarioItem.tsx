@@ -79,7 +79,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
           {`${item.name}: ${item.value}`}
         </Typography>
       ))}
-      {statusOverride && status.override && (
+      {statusOverride && (
         <Typography className={classes.textFields}>
           <span style={{ color: status.override?.color }}>{status.override?.message}</span>
         </Typography>
