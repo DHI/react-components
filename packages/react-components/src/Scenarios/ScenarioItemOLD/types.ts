@@ -60,9 +60,9 @@ interface ScenarioItemOLDProps {
    */
   timeZone?: string;
   /**
-   * Show mooring notifications in scenario items
+   * Job status is override showing as a string under time in scenarios
    */
-  showMooringStatus?: boolean;
+  statusOverride?: boolean;
 }
 
 export default ScenarioItemOLDProps;

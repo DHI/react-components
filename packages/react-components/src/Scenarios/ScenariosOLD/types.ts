@@ -1,5 +1,5 @@
 import { JobParameters } from '../../api/types';
-import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
+import { DescriptionField, MenuItem, QueryDates, Scenario, Status, StatusOverride } from '../types';
 
 interface ScenariosOLDProps {
   /**
@@ -150,9 +150,13 @@ interface ScenariosOLDProps {
    */
   timeZone?: string;
   /**
-   * Show mooring notifications in scenario items
+   * Job status is override showing as a string under time in scenarios
    */
-  showMooringStatus?: boolean;
+  statusOverride?: boolean;
+  /**
+   * The function that returns the new status to override
+   */
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride;
 }
 
 interface dataFilterbyPropertyObj {

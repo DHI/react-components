@@ -20,10 +20,10 @@ interface Status {
    */
   Icon?: any;
 
-  mooringStatus?: Status;
+  override?: Status;
 }
 
-type NotificationStatus = 'Failure' | 'Warning' | null;
+type StatusOverride = 'Failure' | 'Warning' | null;
 
 interface DescriptionField {
   /**
@@ -190,5 +190,5 @@ export {
   QueryDates,
   ContextMenuClickHandler,
   CloseDialog,
-  NotificationStatus,
+  StatusOverride,
 };

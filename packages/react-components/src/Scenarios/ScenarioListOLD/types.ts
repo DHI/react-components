@@ -1,4 +1,4 @@
-import { DescriptionField, MenuItem, Scenario, Status } from '../types';
+import { DescriptionField, MenuItem, Scenario, Status, StatusOverride } from '../types';
 
 interface ScenarioListOLDProps {
   /**
@@ -62,9 +62,13 @@ interface ScenarioListOLDProps {
    */
   timeZone?: string;
   /**
-   * Show mooring notifications in scenario items
+   * Job status is override showing as a string under time in scenarios
    */
-  showMooringStatus?: boolean;
+  statusOverride?: boolean;
+  /**
+   * The function that returns the new status to override
+   */
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride;
 }
 
 export default ScenarioListOLDProps;
