@@ -24,8 +24,7 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
     showMenu,
     nameField,
     timeZone,
-    statusOverrideFunction,
-    statusOverride = false,
+    statusOverride,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<ScenarioOLD[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
@@ -83,7 +82,7 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
               showMenu={showMenu}
               showStatus={showStatus}
               scenario={scenario}
-              status={checkStatus(scenario, status, true, statusOverride, statusOverrideFunction)}
+              status={checkStatus(scenario, status, true, statusOverride)}
               statusOverride={statusOverride}
               timeZone={timeZone}
             />

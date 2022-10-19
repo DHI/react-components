@@ -23,7 +23,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
     menu,
     scenario,
     timeZone,
-    statusOverride = false,
+    statusOverride,
   } = props;
 
   const scenarioHour = date && showHour && (
@@ -49,7 +49,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
         }}
       >
         <div>
-          <Tooltip disableHoverListener={statusOverride} title={status.message}>
+          <Tooltip disableHoverListener={Boolean(statusOverride)} title={status.message}>
             <CircularProgress
               style={{
                 color: status.override?.color ?? status.color,

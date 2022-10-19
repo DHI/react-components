@@ -1,4 +1,4 @@
-import { MenuItem, ScenarioOLD, Status } from '../types';
+import { MenuItem, Scenario, ScenarioOLD, Status, StatusOverride } from '../types';
 
 // TODO: remove ScenarioItemProps
 interface ScenarioItemOLDProps {
@@ -60,9 +60,9 @@ interface ScenarioItemOLDProps {
    */
   timeZone?: string;
   /**
-   * Job status is override showing as a string under time in scenarios
+   * The function that returns the new status to override
    */
-  statusOverride?: boolean;
+  statusOverride?: (scenario: Scenario) => StatusOverride;
 }
 
 export default ScenarioItemOLDProps;

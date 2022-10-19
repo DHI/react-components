@@ -150,13 +150,9 @@ interface ScenariosOLDProps {
    */
   timeZone?: string;
   /**
-   * Job status is override showing as a string under time in scenarios
-   */
-  statusOverride?: boolean;
-  /**
    * The function that returns the new status to override
    */
-  statusOverrideFunction?: (scenario: Scenario) => StatusOverride;
+  statusOverride?: (scenario: Scenario) => StatusOverride;
 }
 
 interface dataFilterbyPropertyObj {
