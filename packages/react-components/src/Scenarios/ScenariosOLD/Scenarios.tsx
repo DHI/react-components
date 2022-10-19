@@ -49,7 +49,8 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
     addScenario,
     translations,
     timeZone,
-    showMooringStatus = false,
+    statusOverrideFunction,
+    statusOverride = false,
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>();
@@ -418,7 +419,8 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
         showStatus={showStatus}
         status={status}
         timeZone={timeZone}
-        showMooringStatus={showMooringStatus}
+        statusOverride={statusOverride}
+        statusOverrideFunction={statusOverrideFunction}
       />
     );
   }

@@ -2,7 +2,7 @@ import { addHours, differenceInMinutes, parseISO } from 'date-fns';
 import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
-import { Condition, DescriptionField, NotificationStatus, Scenario, Status } from '../Scenarios/types';
+import { Condition, DescriptionField, Scenario, Status, StatusOverride } from '../Scenarios/types';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import { ErrorRounded } from '@material-ui/icons';
 
@@ -184,16 +184,22 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
   return body[0];
 };
 
-const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean, showMooringStatus?: boolean) => {
+const checkStatus = (
+  scenario: Scenario,
+  status: Status[],
+  scenarioOLD?: boolean,
+  statusOverride?: boolean,
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride,
+) => {
   let scenarioStatus;
   let progress;
-  let mooringNotifications: NotificationStatus | null;
+  let newStatus: StatusOverride | null;
 
   if (scenarioOLD) {
-    if (showMooringStatus) {
+    if (statusOverride) {
       scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
       progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
-      mooringNotifications = mooringNotificationStatus(scenario);
+      newStatus = statusOverrideFunction(scenario);
     }
     scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
     progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
@@ -205,7 +211,7 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
   const currentStatus = {
     ...status.find((s) => s.name === scenarioStatus),
     progress: scenarioStatus === 'InProgress' ? progress : 0,
-    mooringStatus: mooringNotifications && status.find((s) => s.name === mooringNotifications),
+    override: newStatus && status.find((s) => s.name === newStatus),
   };
 
   let result;
@@ -222,18 +228,6 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
   }
 
   return result;
-};
-
-const mooringNotificationStatus = (scenario: Scenario): NotificationStatus => {
-  const mooringArrangementName = scenario.data.mooring.mooringArrangementName as string;
-  const notifications = scenario.data?.results?.mooringArrangements[mooringArrangementName]?.notifications;
-
-  if (!notifications) return null;
-  const trueFailure = notifications.find((item) => item.notificationType === 3);
-  const trueWarning = notifications.find((item) => item.notificationType === 2);
-  const status = (trueFailure && 'Failure') || (trueWarning && 'Warning') || null;
-
-  return status;
 };
 
 /**
