@@ -64,7 +64,7 @@ interface ScenarioListOLDProps {
   /**
    * The function that returns the new status to override
    */
-  statusOverride?: (scenario: Scenario) => StatusOverride;
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride;
 }
 
 export default ScenarioListOLDProps;

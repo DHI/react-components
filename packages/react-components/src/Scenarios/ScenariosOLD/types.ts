@@ -152,7 +152,7 @@ interface ScenariosOLDProps {
   /**
    * The function that returns the new status to override
    */
-  statusOverride?: (scenario: Scenario) => StatusOverride;
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride;
 }
 
 interface dataFilterbyPropertyObj {
