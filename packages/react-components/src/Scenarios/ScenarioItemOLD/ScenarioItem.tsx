@@ -14,7 +14,7 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
     date,
     showStatus,
     isSelected,
-    status,
+    currentStatus,
     name,
     description,
     showMenu,
@@ -23,7 +23,6 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
     menu,
     scenario,
     timeZone,
-    statusOverride,
   } = props;
 
   const scenarioHour = date && showHour && (
@@ -31,9 +30,9 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
       <Typography component="div" className={classes.hourText}>
         {format(timeZone ? utcToTz(date, timeZone) : parseISO(date), 'HH:mm')}
       </Typography>
-      {statusOverride && (
+      {currentStatus.override && (
         <Typography className={classes.icon}>
-          <span style={{ width: 50 }}>{status.message}</span>
+          <span style={{ width: 50 }}>{currentStatus.message}</span>
         </Typography>
       )}
     </Grid>
@@ -49,21 +48,21 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
         }}
       >
         <div>
-          <Tooltip disableHoverListener={Boolean(statusOverride)} title={status.message}>
+          <Tooltip disableHoverListener={Boolean(currentStatus.override)} title={currentStatus.message}>
             <CircularProgress
               style={{
-                color: status.override?.color ?? status.color,
+                color: currentStatus.override?.color ?? currentStatus.color,
                 display: 'grid',
               }}
-              variant={status.progress ? 'indeterminate' : 'determinate'}
-              value={status.progress ? status.progress : 100}
+              variant={currentStatus.progress ? 'indeterminate' : 'determinate'}
+              value={currentStatus.progress ? currentStatus.progress : 100}
               size={16}
-              thickness={status.progress ? 7 : 21}
+              thickness={currentStatus.progress ? 7 : 21}
             />
           </Tooltip>
         </div>
         <Typography component="span" className={classes.scenarioProgress}>
-          {status.progress ? `${status.progress}%` : null}
+          {currentStatus.progress ? `${currentStatus.progress}%` : null}
         </Typography>
       </div>
     </Grid>
@@ -79,9 +78,9 @@ const ScenarioItemOLD = (props: ScenarioItemOLDProps) => {
           {`${item.name}: ${item.value}`}
         </Typography>
       ))}
-      {statusOverride && (
+      {currentStatus.override && (
         <Typography className={classes.textFields}>
-          <span style={{ color: status.override?.color }}>{status.override?.message}</span>
+          <span style={{ color: currentStatus.override.color }}>{currentStatus.override.message}</span>
         </Typography>
       )}
     </Grid>
