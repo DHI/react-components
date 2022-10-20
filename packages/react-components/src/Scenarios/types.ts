@@ -6,7 +6,7 @@ interface Status {
   /**
    * Scenario status color
    */
-  color?: string;
+  color?: string | null;
   /**
    * Scenario status hand over message
    */
@@ -20,10 +20,10 @@ interface Status {
    */
   Icon?: any;
 
-  override?: Status;
+  override?: StatusOverride;
 }
 
-type StatusOverride = 'Failure' | 'Warning' | null;
+type StatusOverride = Omit<Status, 'progress' | 'Icon' | 'override'>;
 
 interface DescriptionField {
   /**

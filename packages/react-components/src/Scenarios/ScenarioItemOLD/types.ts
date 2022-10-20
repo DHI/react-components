@@ -17,7 +17,7 @@ interface ScenarioItemOLDProps {
    */
   onClick: (scenario) => void;
 
-  status: Status;
+  currentStatus: Status;
   /**
    * Indicates if the hour of the scenario should be shown
    */
