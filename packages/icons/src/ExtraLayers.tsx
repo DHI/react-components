@@ -1,0 +1,11 @@
+import React from 'react';
+import createSvgIcon from "../utils/createSvgIcon";
+
+export default createSvgIcon(
+    <>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M26.8205 17.2422L20.0213 22.5355L13.2128 17.2422L11.707 16.0689L20.0213 9.60229L28.3355 16.0689L26.8205 17.2422ZM25.3239 16.0689L20.0213 11.9395L14.7187 16.0689L20.0213 20.1983L25.3239 16.0689ZM13.2036 19.5886L20.012 24.882L26.8297 19.5794L28.3355 20.7526L20.0213 27.2192L11.707 20.7526L13.2036 19.5886Z" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1614 23.9717L19.9698 29.265L26.7874 23.9624L28.2932 25.1357L19.979 31.6023L11.6648 25.1357L13.1614 23.9717Z" />
+
+    </>,
+    'ExtraLayers'
+)
