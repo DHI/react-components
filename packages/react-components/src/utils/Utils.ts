@@ -188,18 +188,19 @@ const checkStatus = (
   scenario: Scenario,
   status: Status[],
   scenarioOLD?: boolean,
-  statusOverride?: (scenario: Scenario) => StatusOverride,
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride,
 ) => {
   let scenarioStatus;
   let progress;
-  let newStatus: StatusOverride | null;
+  let override: StatusOverride | null;
 
   if (scenarioOLD) {
-    if (statusOverride) {
+    if (statusOverrideFunction) {
       scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
       progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
-      newStatus = statusOverride(scenario);
+      override = statusOverrideFunction(scenario) ?? {};
     }
+
     scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
     progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
   } else {
@@ -210,7 +211,7 @@ const checkStatus = (
   const currentStatus = {
     ...status.find((s) => s.name === scenarioStatus),
     progress: scenarioStatus === 'InProgress' ? progress : 0,
-    override: newStatus && status.find((s) => s.name === newStatus),
+    override,
   };
 
   let result;

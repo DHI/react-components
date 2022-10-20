@@ -82,8 +82,7 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
               showMenu={showMenu}
               showStatus={showStatus}
               scenario={scenario}
-              status={checkStatus(scenario, status, true, statusOverrideFunction)}
-              statusOverride={statusOverrideFunction}
+              currentStatus={checkStatus(scenario, status, true, statusOverrideFunction)}
               timeZone={timeZone}
             />
           </div>
