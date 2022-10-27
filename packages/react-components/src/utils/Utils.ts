@@ -2,7 +2,7 @@ import { addHours, differenceInMinutes, parseISO } from 'date-fns';
 import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
-import { Condition, DescriptionField, Scenario, Status } from '../Scenarios/types';
+import { Condition, DescriptionField, Scenario, Status, StatusOverride } from '../Scenarios/types';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import { ErrorRounded } from '@material-ui/icons';
 
@@ -184,11 +184,23 @@ const changeObjectProperty = (objectItem: any, property: string, intent: any) =>
   return body[0];
 };
 
-const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean) => {
+const checkStatus = (
+  scenario: Scenario,
+  status: Status[],
+  scenarioOLD?: boolean,
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride,
+) => {
   let scenarioStatus;
   let progress;
+  let override: StatusOverride | null;
 
   if (scenarioOLD) {
+    if (statusOverrideFunction) {
+      scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
+      progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
+      override = statusOverrideFunction(scenario) ?? {};
+    }
+
     scenarioStatus = getObjectProperty(scenario, 'lastJobStatus');
     progress = Number(getObjectProperty(scenario, 'lastJobProgress'));
   } else {
@@ -199,6 +211,7 @@ const checkStatus = (scenario: Scenario, status: Status[], scenarioOLD?: boolean
   const currentStatus = {
     ...status.find((s) => s.name === scenarioStatus),
     progress: scenarioStatus === 'InProgress' ? progress : 0,
+    override,
   };
 
   let result;

@@ -1,4 +1,4 @@
-import { DescriptionField, MenuItem, Scenario, Status } from '../types';
+import { DescriptionField, MenuItem, Scenario, Status, StatusOverride } from '../types';
 
 interface ScenarioListOLDProps {
   /**
@@ -61,6 +61,10 @@ interface ScenarioListOLDProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * The function that returns the new status to override
+   */
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride;
 }
 
 export default ScenarioListOLDProps;

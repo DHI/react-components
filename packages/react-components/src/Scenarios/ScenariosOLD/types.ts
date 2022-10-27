@@ -1,5 +1,5 @@
 import { JobParameters } from '../../api/types';
-import { DescriptionField, MenuItem, QueryDates, Scenario, Status } from '../types';
+import { DescriptionField, MenuItem, QueryDates, Scenario, Status, StatusOverride } from '../types';
 
 interface ScenariosOLDProps {
   /**
@@ -149,6 +149,10 @@ interface ScenariosOLDProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * The function that returns the new status to override
+   */
+  statusOverrideFunction?: (scenario: Scenario) => StatusOverride | {};
 }
 
 interface dataFilterbyPropertyObj {

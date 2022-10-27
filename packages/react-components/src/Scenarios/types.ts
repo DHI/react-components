@@ -6,7 +6,7 @@ interface Status {
   /**
    * Scenario status color
    */
-  color?: string;
+  color?: string | null;
   /**
    * Scenario status hand over message
    */
@@ -19,7 +19,11 @@ interface Status {
    * Scenario icon component
    */
   Icon?: any;
+
+  override?: StatusOverride;
 }
+
+type StatusOverride = Omit<Status, 'progress' | 'Icon' | 'override'>;
 
 interface DescriptionField {
   /**
@@ -186,4 +190,5 @@ export {
   QueryDates,
   ContextMenuClickHandler,
   CloseDialog,
+  StatusOverride,
 };

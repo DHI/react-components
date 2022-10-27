@@ -59,6 +59,15 @@ const styles = () => ({
     display: 'grid',
     marginLeft: -15,
   },
+  icon: {
+    'display': 'flex',
+    'flexDirection': 'column',
+    'alignItems': 'center',
+    '& span': {
+      fontSize: 10,
+      color: 'gray',
+    },
+  },
 });
 const useStyles = makeStyles(styles as any, { withTheme: true } as WithStylesOptions<{}>);
 

@@ -1,4 +1,4 @@
-import { MenuItem, ScenarioOLD, Status } from '../types';
+import { MenuItem, Scenario, ScenarioOLD, Status, StatusOverride } from '../types';
 
 // TODO: remove ScenarioItemProps
 interface ScenarioItemOLDProps {
@@ -17,7 +17,7 @@ interface ScenarioItemOLDProps {
    */
   onClick: (scenario) => void;
 
-  status: Status;
+  currentStatus: Status;
   /**
    * Indicates if the hour of the scenario should be shown
    */
@@ -59,6 +59,10 @@ interface ScenarioItemOLDProps {
    * Time zone (IANA format) for date display
    */
   timeZone?: string;
+  /**
+   * The function that returns the new status to override
+   */
+  statusOverride?: (scenario: Scenario) => StatusOverride;
 }
 
 export default ScenarioItemOLDProps;
