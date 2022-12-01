@@ -20,7 +20,7 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { executeJobQuery, fetchLogs } from '../../api';
 import Loading from '../../common/Loading/Loading';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
@@ -77,6 +77,7 @@ const JobList = (props: JobListProps) => {
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(true);
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
+  const [datas, setDatas] = useState(null);
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
   const latestJobs = useRef(null);
 
@@ -271,7 +272,7 @@ const JobList = (props: JobListProps) => {
             control={
               <Switch
                 checked={textareaScrolled}
-                onChange={() => setTextareaScrolled(!textareaScrolled)}
+                // onChange={() => setTextareaScrolled(!textareaScrolled)}
                 color="primary"
                 name="textareaView"
                 inputProps={{ 'aria-label': 'textareaView checkbox' }}
@@ -288,7 +289,7 @@ const JobList = (props: JobListProps) => {
     const dataUpdated = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
 
-    console.log({ dataUpdated });
+    // console.log({ dataUpdated });
 
     const updatedJob = jobs.map((job) =>
       job.id === dataUpdated.Id
@@ -322,11 +323,14 @@ const JobList = (props: JobListProps) => {
     setJobsData(updatedJob);
   };
 
+  
+
+  
   const jobAdded = (job) => {
     const dataAdded = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
 
-    console.log({ dataAdded });
+    // console.log({ dataAdded });
 
     const addedJob = {
       taskId: dataAdded.TaskId,
@@ -348,10 +352,9 @@ const JobList = (props: JobListProps) => {
     setJobsData(jobs);
   };
 
-  const connectToSignalR = async () => {
+  const connectToSignalR = useCallback(() => {
     // Open connections
-    try {
-      await dataSources.forEach((source) => {
+   return dataSources.forEach((source) => {
         if (!source.host) {
           throw new Error('Host not provided.');
         }
@@ -378,10 +381,7 @@ const JobList = (props: JobListProps) => {
           })
           .catch((e) => console.log('Connection failed: ', e));
       });
-    } catch (err) {
-      console.log('SignalR connection failed: ', err);
-    }
-  };
+  },[dataSources]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -390,12 +390,10 @@ const JobList = (props: JobListProps) => {
 
     window.addEventListener('resize', handleResize);
 
-    connectToSignalR();
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [connectToSignalR]);
 
   return (
     <div className={classes.wrapper}>
