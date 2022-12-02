@@ -272,7 +272,7 @@ const JobList = (props: JobListProps) => {
             control={
               <Switch
                 checked={textareaScrolled}
-                // onChange={() => setTextareaScrolled(!textareaScrolled)}
+                onChange={() => setTextareaScrolled(!textareaScrolled)}
                 color="primary"
                 name="textareaView"
                 inputProps={{ 'aria-label': 'textareaView checkbox' }}
@@ -288,9 +288,6 @@ const JobList = (props: JobListProps) => {
   const jobUpdated = (job) => {
     const dataUpdated = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
-
-    // console.log({ dataUpdated });
-
     const updatedJob = jobs.map((job) =>
       job.id === dataUpdated.Id
         ? {
@@ -324,14 +321,9 @@ const JobList = (props: JobListProps) => {
   };
 
   
-
-  
   const jobAdded = (job) => {
     const dataAdded = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
-
-    // console.log({ dataAdded });
-
     const addedJob = {
       taskId: dataAdded.TaskId,
       id: dataAdded.Id,
