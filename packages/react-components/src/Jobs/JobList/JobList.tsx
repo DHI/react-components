@@ -77,7 +77,6 @@ const JobList = (props: JobListProps) => {
   const [textareaScrolled, setTextareaScrolled] = useState<boolean>(true);
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
-  const [datas, setDatas] = useState(null);
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
   const latestJobs = useRef(null);
 
