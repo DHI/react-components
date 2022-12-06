@@ -20,7 +20,7 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { executeJobQuery, fetchLogs } from '../../api';
 import Loading from '../../common/Loading/Loading';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
@@ -255,7 +255,7 @@ const JobList = (props: JobListProps) => {
     />
   );
 
-  const ToolbarRootComponent = (props: any) => (
+  const ToolbarRootComponent = useCallback((props: any) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
       <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>{props.children}</div>
       <DateFilter
@@ -282,7 +282,7 @@ const JobList = (props: JobListProps) => {
         </MUIGrid>
       </DateFilter>
     </div>
-  );
+  ),[]);
 
   const jobUpdated = (job) => {
     const dataUpdated = JSON.parse(job.data);
@@ -319,7 +319,6 @@ const JobList = (props: JobListProps) => {
     setJobsData(updatedJob);
   };
 
-  
   const jobAdded = (job) => {
     const dataAdded = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
@@ -343,9 +342,10 @@ const JobList = (props: JobListProps) => {
     setJobsData(jobs);
   };
 
-  const connectToSignalR = useCallback(() => {
+  const connectToSignalR = async () => {
     // Open connections
-   return dataSources.forEach((source) => {
+    try {
+      await dataSources.forEach((source) => {
         if (!source.host) {
           throw new Error('Host not provided.');
         }
@@ -372,7 +372,10 @@ const JobList = (props: JobListProps) => {
           })
           .catch((e) => console.log('Connection failed: ', e));
       });
-  },[dataSources]);
+    } catch (err) {
+      console.log('SignalR connection failed: ', err);
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -381,10 +384,12 @@ const JobList = (props: JobListProps) => {
 
     window.addEventListener('resize', handleResize);
 
+    connectToSignalR();
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [connectToSignalR]);
+  }, []);
 
   return (
     <div className={classes.wrapper}>
