@@ -13,7 +13,7 @@ import { parseISO } from 'date-fns';
 
 export default {
   title: 'Scenarios Components',
-  component: Scenario,
+  component: Scenarios,
 } as Meta;
 
 export const ScenariosStory = () => {
