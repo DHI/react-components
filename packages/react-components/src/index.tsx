@@ -15,6 +15,8 @@ export * from './Jobs/JobList/JobList';
 export * from './Jobs/JobList/types';
 export * from './Logs/LogList/LogList';
 export * from './Logs/LogList/types';
+export * from './Scalars/ScalarList/ScalarList';
+export * from './Scalars/ScalarList/types';
 export * from './Scenarios/ScenarioItem/ScenarioItem';
 export * from './Scenarios/ScenarioItem/types';
 export * from './Scenarios/ScenarioItemOLD/ScenarioItem';
