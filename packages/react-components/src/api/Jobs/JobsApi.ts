@@ -247,6 +247,42 @@ const fetchJobCount = (dataSource: DataSource, token: string) =>
     },
   }).pipe(tap((res) => console.log('job count fetched', res)));
 
+  /**
+
+ * /api/jobs/{connectionId}/{id}
+
+ * Fails a job with the specified job identifier and sets the status to Error.
+
+ * @param dataSource
+
+ * @param token
+
+ * @param id
+
+ */
+
+const failJob = (dataSource: DataSource, token: string, id: any) =>
+
+fetchJob(dataSource, token, id).subscribe((job) => {
+
+  job.status = 'Error';
+
+  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connection}`, {
+
+    method: 'PUT',
+
+    additionalHeaders: {
+
+      Authorization: `Bearer ${token}`,
+
+    },
+
+    body: job,
+
+  }).pipe(tap((res) => console.log('job set to Error', res)));
+
+});
+
 export {
   executeJobQuery,
   executeJob,
@@ -257,4 +293,5 @@ export {
   deleteJobs,
   fetchLastJob,
   fetchJobCount,
+  failJob,
 };
