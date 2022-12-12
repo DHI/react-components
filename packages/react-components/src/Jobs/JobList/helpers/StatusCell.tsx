@@ -1,10 +1,55 @@
-import { Box, CircularProgress, Tooltip, Typography } from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { blue, green, red, yellow } from '@material-ui/core/colors';
 import { Cancel, CancelScheduleSend, CheckCircle, Error, HelpOutline, HourglassEmpty } from '@material-ui/icons';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import GeneralDialog from '../../../common/GeneralDialog/GeneralDialog';
+import GeneralDialogProps from '../..//../common/GeneralDialog/types';
 
 const StatusCell = ({ row }: { row: any }) => {
   const { status, progress } = row;
+
+  const [dialog, setDialog] = useState<GeneralDialogProps>({
+    showDialog: false,
+    cancelLabel: 'No',
+    confirmLabel: 'Yes',
+    dialogId: '',
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
+
+  // const fetchJobList = () => {
+    
+  // executeJobQuery(dataSources, token, id).subscribe(
+  //   (response) => {
+  //     const logs = response.map((item) => item.data);
+  //   }
+  // )
+  // };
+
+  const executeDialog = () => {
+    setDialog({
+      ...dialog,
+      showDialog: true,
+      dialogId: 'execute',
+      title: 'alert',
+      message: 'Are you sure you want to set the Status of this job to Error',
+      // onConfirm: () => onEditScenario(),
+    });
+    console.log('open');
+  };
+  const closeDialog = () => {
+    setDialog({
+      ...dialog,
+      showDialog: false,
+    });
+    console.log('close');
+  };
 
   return useMemo(() => {
     switch (status) {
@@ -16,7 +61,7 @@ const StatusCell = ({ row }: { row: any }) => {
         );
       case 'InProgress':
         return (
-          <Tooltip title={status}>
+          <Tooltip title={status} onClick={executeDialog}>
             <Box position="relative" display="inline-flex">
               <CircularProgress style={{ color: blue[900] }} variant={'indeterminate'} size={28} thickness={4} />
               <Box
@@ -31,6 +76,16 @@ const StatusCell = ({ row }: { row: any }) => {
               >
                 <Typography variant="caption" component="div" style={{ fontSize: 10 }}>{`${progress}%`}</Typography>
               </Box>
+              <GeneralDialog
+                dialogId={dialog.dialogId}
+                title={dialog.title}
+                message={dialog.message}
+                cancelLabel={dialog.cancelLabel}
+                confirmLabel={dialog.confirmLabel}
+                showDialog={dialog.showDialog}
+                onConfirm={executeDialog}
+                onCancel={closeDialog}
+              />
             </Box>
           </Tooltip>
         );
@@ -66,7 +121,7 @@ const StatusCell = ({ row }: { row: any }) => {
           </Tooltip>
         );
     }
-  }, [status, progress]);
+  }, [status, dialog]);
 };
 
 export default StatusCell;
