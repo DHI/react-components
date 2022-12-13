@@ -13,7 +13,7 @@ import { failJob } from '../../../api/Jobs/JobsApi';
 import { DataSource } from '../../../api/types';
 
 const StatusCell = ({ row }: { row: any } ) => {
-  const { status, progress, taskId, token='', id=''} = row;
+  const { status, progress, taskId, id, connectionJobLog, hostJobLog, token} = row;
   const data = {
     hostJobLog:'', 
     hostId:'', 
@@ -22,7 +22,7 @@ const StatusCell = ({ row }: { row: any } ) => {
     id:''
   }
   const [dataSource, setDataSource] = useState<DataSource>();
-  console.log(dataSource);
+  // console.log(`${connectionJobLog}`, `${hostJobLog}`);
   
  
   
@@ -47,29 +47,30 @@ const StatusCell = ({ row }: { row: any } ) => {
     console.log('close');
   };
 
-  const fetchJobList = (dataSource:DataSource, token: string, id: any) => {
-    closeDialog();
-    console.log('dataSource: ', dataSource.host);
+  const fetchJobList = () => {
+    // closeDialog();
+    // console.log('dataSource: ', dataSource);
+    // setDataSource(dataSource)
         failJob(
           {
-            host: data.hostId || data.hostJobLog,
-            connection: data.connectionJobLog,
+            host: `${hostJobLog}`,
+            connection: `${connectionJobLog}`,
           },
-          data.tokenJobLog||token,
-          data.id||id, 
+          `${token}`,
+          `${id}`, 
         );
   };
-
-  const executeDialog = (dataSource:DataSource , token: string, id: any) => {
+  // console.log('failjob',fetchJobList());
+  const executeDialog = () => {
      setDialog({
       ...dialog,
       showDialog: true,
       dialogId: 'execute',
       title: 'alert',
       message: `Are you sure you want to set the Status of this job ${taskId} to Error`,
-      onConfirm: () => fetchJobList(dataSource, token, id),
+      onConfirm: () => fetchJobList(),
     });
-    // console.log('open');
+    // console.log(`${taskId}`);
   };
 
   return useMemo(() => {
@@ -82,7 +83,7 @@ const StatusCell = ({ row }: { row: any } ) => {
         );
       case 'InProgress':
         return (
-          <Tooltip title={status} onClick={() => executeDialog(dataSource, token, id)}>
+          <Tooltip title={status} onClick={() => executeDialog()}>
             <Box position="relative" display="inline-flex">
               <CircularProgress style={{ color: blue[900] }} variant={'indeterminate'} size={28} thickness={4} />
               <Box
@@ -142,7 +143,7 @@ const StatusCell = ({ row }: { row: any } ) => {
           </Tooltip>
         );
     }
-  }, [status, dialog]);
+  }, [status, dialog, executeDialog]);
 };
 
 export default StatusCell;
