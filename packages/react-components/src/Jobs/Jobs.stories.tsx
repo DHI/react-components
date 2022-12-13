@@ -11,19 +11,6 @@ export default {
 } as Meta;
 
 export const JobListStory = () => {
-  // const dataSources = (token) => {
-  //   token = '';
-  //   return [
-  //     {
-  //       token,
-  //       host: 'https://adhoc.ozsea.online',
-  //       connection: 'OzSea-Exe',
-  //       tokenJobLog: `${token}`,
-  //       hostJobLog: 'https://logging.seaportopx.com',
-  //       connectionJobLog: 'logs',
-  //     } as DataSource,
-  //   ];
-  // };
 
   const dataSources = (token) => [
     {

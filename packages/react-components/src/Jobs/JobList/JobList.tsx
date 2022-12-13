@@ -20,7 +20,7 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { executeJobQuery, fetchLogs } from '../../api';
 import Loading from '../../common/Loading/Loading';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
@@ -67,6 +67,9 @@ const JobList = (props: JobListProps) => {
     tokenJobLog: '',
     hostJobLog: '',
     connectionJobLog: '',
+    token: '',
+    host: '',
+    connection: '',
   };
 
   const [job, setJob] = useState<JobData>(initialJobData);
@@ -127,6 +130,9 @@ const JobList = (props: JobListProps) => {
             tokenJobLog: job.data.dataSource.tokenJobLog || '',
             hostJobLog: job.data.dataSource.hostJobLog || '',
             connectionJobLog: job.data.dataSource.connectionJobLog || '',
+            token: job.data.dataSource.token || '',
+            host: job.data.dataSource.host || '',
+            connection: job.data.dataSource.connection || '',
           };
 
           if (job.data.parameters) {
@@ -179,6 +185,9 @@ const JobList = (props: JobListProps) => {
       tokenJobLog = '',
       hostJobLog = '',
       connectionJobLog = '',
+      token = '',
+      host = '',
+      connection = '',
     } = row;
 
     if (job.id === id) {
@@ -223,6 +232,9 @@ const JobList = (props: JobListProps) => {
             hostJobLog,
             connectionJobLog,
             logs,
+            token,
+            host,
+            connection,
           });
 
           setLoading(false);
@@ -255,7 +267,7 @@ const JobList = (props: JobListProps) => {
     />
   );
 
-  const ToolbarRootComponent = (props: any) => (
+  const ToolbarRootComponent = useCallback((props: any) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
       <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>{props.children}</div>
       <DateFilter
@@ -282,12 +294,11 @@ const JobList = (props: JobListProps) => {
         </MUIGrid>
       </DateFilter>
     </div>
-  );
+  ),[]);
 
   const jobUpdated = (job) => {
     const dataUpdated = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
-
     console.log({ dataUpdated });
 
     const updatedJob = jobs.map((job) =>
@@ -325,9 +336,8 @@ const JobList = (props: JobListProps) => {
   const jobAdded = (job) => {
     const dataAdded = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
-
     console.log({ dataAdded });
-
+    
     const addedJob = {
       taskId: dataAdded.TaskId,
       id: dataAdded.Id,

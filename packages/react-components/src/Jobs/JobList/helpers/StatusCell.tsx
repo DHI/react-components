@@ -6,72 +6,10 @@ import {
 } from '@material-ui/core';
 import { blue, green, red, yellow } from '@material-ui/core/colors';
 import { Cancel, CancelScheduleSend, CheckCircle, Error, HelpOutline, HourglassEmpty } from '@material-ui/icons';
-import React, { useMemo, useState } from 'react';
-import GeneralDialog from '../../../common/GeneralDialog/GeneralDialog';
-import GeneralDialogProps from '../..//../common/GeneralDialog/types';
-import { failJob } from '../../../api/Jobs/JobsApi';
-import { DataSource } from '../../../api/types';
+import React, { useMemo } from 'react';
 
-const StatusCell = ({ row }: { row: any } ) => {
-  const { status, progress, taskId, id, connectionJobLog, hostJobLog, token} = row;
-  const data = {
-    hostJobLog:'', 
-    hostId:'', 
-    connectionJobLog:'',
-    tokenJobLog:'',
-    id:''
-  }
-  const [dataSource, setDataSource] = useState<DataSource>();
-  // console.log(`${connectionJobLog}`, `${hostJobLog}`);
-  
- 
-  
-
-  const [dialog, setDialog] = useState<GeneralDialogProps>({
-    showDialog: false,
-    cancelLabel: 'No' || 'Cancel',
-    confirmLabel: 'Yes' || 'Confirm',
-    dialogId: '',
-    title: '',
-    message: '',
-    onConfirm: null,
-  });
-  // console.log(dialog);
-  
-
-  const closeDialog = () => {
-    setDialog({
-      ...dialog,
-      showDialog: false,
-    });
-    console.log('close');
-  };
-
-  const fetchJobList = () => {
-    // closeDialog();
-    // console.log('dataSource: ', dataSource);
-    // setDataSource(dataSource)
-        failJob(
-          {
-            host: `${hostJobLog}`,
-            connection: `${connectionJobLog}`,
-          },
-          `${token}`,
-          `${id}`, 
-        );
-  };
-  // console.log('failjob',fetchJobList());
-  const executeDialog = () => {
-     setDialog({
-      ...dialog,
-      showDialog: true,
-      dialogId: 'execute',
-      title: 'alert',
-      message: `Are you sure you want to set the Status of this job ${taskId} to Error`,
-      onConfirm: () => fetchJobList(),
-    });
-    // console.log(`${taskId}`);
-  };
+const StatusCell = ({ row }: { row: any }) => {
+  const { status, progress } = row;
 
   return useMemo(() => {
     switch (status) {
@@ -83,7 +21,7 @@ const StatusCell = ({ row }: { row: any } ) => {
         );
       case 'InProgress':
         return (
-          <Tooltip title={status} onClick={() => executeDialog()}>
+          <Tooltip title={status}>
             <Box position="relative" display="inline-flex">
               <CircularProgress style={{ color: blue[900] }} variant={'indeterminate'} size={28} thickness={4} />
               <Box
@@ -98,16 +36,6 @@ const StatusCell = ({ row }: { row: any } ) => {
               >
                 <Typography variant="caption" component="div" style={{ fontSize: 10 }}>{`${progress}%`}</Typography>
               </Box>
-              <GeneralDialog
-                dialogId={dialog.dialogId}
-                title={dialog.title}
-                message={dialog.message}
-                cancelLabel={dialog.cancelLabel}
-                confirmLabel={dialog.confirmLabel}
-                showDialog={dialog.showDialog}
-                onConfirm={dialog.onConfirm}
-                onCancel={closeDialog}
-              />
             </Box>
           </Tooltip>
         );
@@ -143,7 +71,7 @@ const StatusCell = ({ row }: { row: any } ) => {
           </Tooltip>
         );
     }
-  }, [status, dialog, executeDialog]);
+  }, [status]);
 };
 
 export default StatusCell;

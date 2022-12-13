@@ -21,7 +21,6 @@ import React, { useEffect, useState } from 'react';
 import { fetchScalars } from '../../api';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
 import ScalarListProps, { ScalarData } from './types';
-import { AutoSizer } from 'react-virtualized';
 const DEFAULT_COLUMNS = [
   { title: 'Name', name: 'fullName' },
   { title: 'Time', name: 'dateTime' },
@@ -59,36 +58,32 @@ const ScalarList = (props: ScalarListProps) => {
   }, []);
 
   return (
-    <AutoSizer>
-      {({ width, height }) => (
-        <div style={{ width, height }}>
-          <Paper style={{ position: 'relative' }}>
-            <Grid rows={scalarData} columns={columns}>
-              <FilteringState defaultFilters={[]} />
-              <IntegratedFiltering />
+    <div style={{ display: 'flex', position: 'relative' }}>
+      <Paper style={{ position: 'relative' }}>
+        <Grid rows={scalarData} columns={columns}>
+          <FilteringState defaultFilters={[]} />
+          <IntegratedFiltering />
 
-              <SortingState defaultSorting={[{ columnName: 'fullName', direction: 'desc' }]} />
-              <IntegratedSorting />
+          <SortingState defaultSorting={[{ columnName: 'fullName', direction: 'desc' }]} />
+          <IntegratedSorting />
 
-              <GroupingState />
-              <IntegratedGrouping />
+          <GroupingState />
+          <IntegratedGrouping />
 
-              <VirtualTable columnExtensions={tableColumnExtensions} />
+          <VirtualTable columnExtensions={tableColumnExtensions} />
 
-              <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
+          <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
 
-              <TableHeaderRow />
-              <TableFilterRow />
+          <TableHeaderRow />
+          <TableFilterRow />
 
-              <Toolbar />
+          <Toolbar />
 
-              <TableColumnVisibility />
-              <ColumnChooser />
-            </Grid>
-          </Paper>
-        </div>
-      )}
-    </AutoSizer>
+          <TableColumnVisibility />
+          <ColumnChooser />
+        </Grid>
+      </Paper>
+    </div>
   );
 };
 

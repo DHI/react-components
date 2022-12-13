@@ -63,6 +63,12 @@ interface JobData {
   connectionJobLog: string;
   /** Logs based on the connectionJobLog */
   logs?: LogData[];
+  /** Token */
+  token: string;
+  /** Host */
+  host: string;
+  /** Connection */
+  connection: string;
 }
 
 interface FilterProps {
