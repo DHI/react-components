@@ -26,15 +26,13 @@ export const Cell = (props: any) => {
       return <td className="MuiTableCell-root"></td>;
     }
 
-    const difference = differenceInMinutes(new Date(props.row.started), new Date(props.row.requested));
-    const hour = Math.floor(difference / 60);
-    const minute = Math.floor(difference - hour * 60);
+    const differenceMinutes = differenceInMinutes(new Date(props.row.started), new Date(props.row.requested));
 
     let delayColor = '';
 
-    if (minute > 30) {
+    if (differenceMinutes > 30) {
       delayColor = 'darkorange';
-    } else if (minute > 60) {
+    } else if (differenceMinutes > 60) {
       delayColor = ' red';
     }
 

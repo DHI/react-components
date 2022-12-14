@@ -106,4 +106,4 @@ interface DateFilterProps {
 }
 
 export default JobListProps;
-export { JobData, FilterProps, JobDetailProps, DateFilterProps };
+export { JobData, FilterProps, JobDetailProps, DateFilterProps, Parameters };

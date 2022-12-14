@@ -1,9 +1,8 @@
-import { addHours, differenceInMinutes, parseISO } from 'date-fns';
+import { addHours, differenceInMinutes, differenceInHours, differenceInSeconds, parseISO } from 'date-fns';
 import { format, toDate, utcToZonedTime } from 'date-fns-tz';
 import jp from 'jsonpath';
 import { isArray } from 'lodash';
 import { Condition, DescriptionField, Scenario, Status, StatusOverride } from '../Scenarios/types';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import { ErrorRounded } from '@material-ui/icons';
 
 const dataObjectToArray = (data: { [x: string]: any }) => {
@@ -48,11 +47,6 @@ const getDescriptions = (
 
   for (const field of descriptionFields) {
     const value = getObjectProperty(scenarioData, field.field);
-
-    // if (!value) {
-    //   console.warn(`Could not find field reference: ${field.field}!`);
-    //   continue;
-    // }
 
     // Check if valid conditions met
     if (!field.condition || checkCondition(scenarioData, field.condition)) {
@@ -338,21 +332,23 @@ export const passwordStrength = (password?: string) => {
 };
 
 const calcTimeDifference = (beginDate: string, endDate: string) => {
-  const difference = differenceInMinutes(new Date(endDate), new Date(beginDate));
-  const hour = Math.floor(difference / 60);
-  const minute = Math.floor(difference - hour * 60);
-  const second = Math.floor(difference - minute * 60);
-
-  if (isNaN(difference)) {
+  if (endDate === undefined || beginDate === undefined) {
     return '';
   }
 
-  if (hour === 0 && minute === 0) {
-    return `${second}s`;
-  } else if (hour !== 0) {
-    return `${hour}h ${minute}m`;
+  const differenceHours = differenceInHours(new Date(endDate), new Date(beginDate));
+  const differenceMinutes = differenceInMinutes(new Date(endDate), new Date(beginDate));
+  const differenceSeconds = differenceInSeconds(new Date(endDate), new Date(beginDate));
+  const hour = differenceHours;
+  const minute = differenceMinutes - differenceHours * 60;
+  const second = differenceSeconds - differenceHours * 3600 - minute * 60;
+
+  if (hour !== 0 && minute !== 0) {
+    return `${hour}m ${minute}m ${second}s`;
+  } else if (minute !== 0) {
+    return `${minute}m ${second}s`;
   } else {
-    return `${minute}m`;
+    return `${second}s`;
   }
 };
 

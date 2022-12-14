@@ -99,6 +99,44 @@ const JobList = (props: JobListProps) => {
     { columnName: 'finished', criteria: dateGroupCriteria },
   ]);
 
+  const durationToSeconds = (duration: string | null): number => {
+    if (duration === '' || duration === null ) {
+      return 0;
+    }
+
+    const parts = duration.split(' ');
+    let seconds = 0;
+    for (let index = 0; index < parts.length; index++) {
+      if (parts[index].includes('h')) {
+        seconds += Number(parts[index].slice(0, -1)) * 3600;;
+      }
+      
+      if (parts[index].includes('m')) {
+        seconds += Number(parts[index].slice(0, -1)) * 60;
+      }
+
+      if (parts[index].includes('s')) {
+        seconds += Number(parts[index].slice(0, -1));
+      }
+    }
+
+    return seconds;
+  }
+
+  const compareDurations = (a, b) => {
+    const durationA = durationToSeconds(a);
+    const durationB = durationToSeconds(b);
+    if (durationA === durationB) {
+      return 0;
+    }
+    return durationA < durationB ? -1 : 1;
+  };
+
+  const [integratedSortingColumnExtensions] = useState([
+    { columnName: 'duration', compare: compareDurations },
+    { columnName: 'delay', compare: compareDurations },
+  ]);
+  
   const fetchJobList = () => {
     setLoading(true);
 
@@ -417,7 +455,7 @@ const JobList = (props: JobListProps) => {
           <IntegratedFiltering />
 
           <SortingState defaultSorting={[{ columnName: 'requested', direction: 'desc' }]} />
-          <IntegratedSorting />
+          <IntegratedSorting columnExtensions={integratedSortingColumnExtensions} />
 
           <DragDropProvider />
           <GroupingState />
