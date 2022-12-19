@@ -344,7 +344,7 @@ const calcTimeDifference = (beginDate: string, endDate: string) => {
   const second = differenceSeconds - differenceHours * 3600 - minute * 60;
 
   if (hour !== 0 && minute !== 0) {
-    return `${hour}m ${minute}m ${second}s`;
+    return `${hour}h ${minute}m ${second}s`;
   } else if (minute !== 0) {
     return `${minute}m ${second}s`;
   } else {
