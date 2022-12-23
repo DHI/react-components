@@ -1,9 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
-import { experimental_sx as sx } from '@mui/system';
 
 export default styled(Box)(({ theme }) =>
-  sx({
+  theme.unstable_sx({
     zIndex: 10,
     padding: theme.spacing(2, 2, 0.2, 2),
     width: 20,
