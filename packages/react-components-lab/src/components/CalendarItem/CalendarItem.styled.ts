@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { experimental_sx as sx } from '@mui/system';
 import { CalendarItemProps } from './types';
 
 const options = {
@@ -12,7 +11,7 @@ const options = {
 const CalendarItemBox = styled(
   Box,
   options
-)<Partial<CalendarItemProps>>(({ disabled, variant, active }) => {
+)<Partial<CalendarItemProps>>(({ disabled, variant, active, theme }) => {
   const getStyle = () => {
     if (disabled)
       return {
@@ -39,7 +38,6 @@ const CalendarItemBox = styled(
 
     return {};
   };
-
   const stableCss = {
     cursor: disabled ? 'default' : 'pointer',
     borderRadius: 4,
@@ -51,7 +49,7 @@ const CalendarItemBox = styled(
     ...getStyle(),
   } as const;
 
-  return sx(stableCss);
+  return theme.unstable_sx(stableCss);
 });
 
 export default CalendarItemBox;

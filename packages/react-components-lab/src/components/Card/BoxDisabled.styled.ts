@@ -1,9 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
-import { experimental_sx as sx } from '@mui/system';
 
-export default styled(Box)(
-  sx({
+export default styled(Box)(({ theme }) =>
+  theme.unstable_sx({
     position: 'absolute',
     top: 0,
     left: 0,
