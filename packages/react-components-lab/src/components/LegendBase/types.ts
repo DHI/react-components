@@ -1,3 +1,4 @@
+import { SxProps, Theme } from '@mui/material';
 import { ReactNode } from 'react';
 
 export interface LegendBaseProps {
@@ -7,4 +8,5 @@ export interface LegendBaseProps {
   defaultCollapsed?: boolean;
   collapsable?: boolean;
   children: ReactNode;
+  sx?: SxProps<Theme> | undefined;
 }
