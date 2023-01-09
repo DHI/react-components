@@ -33,6 +33,7 @@ const LegendBase: FC<LegendBaseProps> = ({
   defaultCollapsed = false,
   collapsable = false,
   children,
+  sx,
 }) => {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
@@ -41,6 +42,7 @@ const LegendBase: FC<LegendBaseProps> = ({
   return (
     <RootBoxStyled
       sx={{
+        ...sx,
         ...positionStylesMap[position],
       }}
     >
