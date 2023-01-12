@@ -274,16 +274,8 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
           color: dhiPalette.primary.main,
         },
         tooltip: {
-          backgroundColor: dhiPalette.mediumGrey.main,
-          border: `1px solid ${dhiPalette.darkGrey.main}`,
-          maxWidth: SPACING * 46, // 368px
-          minHeight: SPACING * 4, // 32px
-          fontSize: 14,
-          fontWeight: 'normal',
-          fontFamily: FONT_FAMILY,
-          padding: SPACING,
-          color: dhiPalette.primary.main,
-          boxSizing: 'border-box',
+          backgroundColor: dhiPalette.grey[200],
+          color: dhiPalette.text.primary,
         },
       },
     },
