@@ -1,3 +1,5 @@
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material';
 import { LegendBaseProps } from '../LegendBase/types';
 
 export interface StaticLegendItem {
@@ -6,4 +8,5 @@ export interface StaticLegendItem {
 }
 export interface StaticLegendProps extends Omit<LegendBaseProps, 'children'> {
   items: StaticLegendItem[];
+  sx?: SxProps<Theme> | undefined;
 }
