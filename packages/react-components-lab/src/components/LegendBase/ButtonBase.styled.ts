@@ -6,7 +6,7 @@ export default styled(ButtonBase)(({ theme }) => ({
   height: theme.spacing(5),
   display: 'flex',
   gap: theme.spacing(1),
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
   '&.MuiButtonBase-root': {
     background: theme.palette.background.default,
     padding: theme.spacing(1),
