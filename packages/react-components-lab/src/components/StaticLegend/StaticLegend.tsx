@@ -12,6 +12,7 @@ const StaticLegend: FC<StaticLegendProps> = ({
   position = 'bottomRight',
   defaultCollapsed = false,
   collapsable = false,
+  sx,
 }) => (
   <LegendBase
     unit={unit}
@@ -19,6 +20,7 @@ const StaticLegend: FC<StaticLegendProps> = ({
     position={position}
     collapsable={collapsable}
     defaultCollapsed={defaultCollapsed}
+    sx={sx}
   >
     {items.map((item, i) => (
       <Box
@@ -32,7 +34,7 @@ const StaticLegend: FC<StaticLegendProps> = ({
           {item.label}
         </TruncateTypographyStyled>
 
-        <ColorBoxStyled sx={{ backgroundColor: item.color }} />
+        <ColorBoxStyled sx={{ backgroundColor: item.color, flexShrink: 0 }} />
       </Box>
     ))}
   </LegendBase>
