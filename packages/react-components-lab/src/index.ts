@@ -80,6 +80,10 @@ export * from './components/Snackbar/types';
 export { default as ThemeProvider } from './components/ThemeProvider/ThemeProvider';
 export * from './components/ThemeProvider/types';
 
+// TimestepPlayer
+export { default as TimestepPlayer } from './components/TimestepPlayer/TimestepPlayer';
+export * from './components/TimestepPlayer/types';
+
 // Hooks
 export { default as useBelow } from './hooks/useBelow/useBelow';
 export { default as useLocalStorage } from './hooks/useLocalStorage/useLocalStorage';
