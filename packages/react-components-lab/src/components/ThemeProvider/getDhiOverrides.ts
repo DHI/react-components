@@ -211,7 +211,7 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
         head: {
           padding: '0',
           height: '44px',
-          backgroundColor: 'white',
+          backgroundColor: dhiPalette.background.paper,
           borderBottom: `2px solid ${dhiPalette.divider}`,
           userSelect: 'none',
           cursor: 'pointer ',
