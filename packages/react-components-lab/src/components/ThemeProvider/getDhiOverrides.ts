@@ -337,6 +337,22 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
         },
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          '& .Mui-expanded': {
+            backgroundColor: dhiPalette.grey[50],
+          },
+          '& .MuiAccordionDetails-root': {
+            fontWeight: 700,
+            backgroundColor: dhiPalette.grey[50],
+          },
+          '&:not(.Mui-expanded):hover .MuiAccordionSummary-root': {
+            backgroundColor: dhiPalette.primary.light,
+          },
+        },
+      },
+    },
   };
 };
 
