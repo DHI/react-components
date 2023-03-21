@@ -340,15 +340,28 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
     MuiAccordion: {
       styleOverrides: {
         root: {
-          '& .Mui-expanded': {
+          '& .MuiAccordionSummary-root.Mui-expanded': {
             backgroundColor: dhiPalette.grey[50],
+            transition: 'none',
+          },
+          '& .MuiAccordionSummary-root.Mui-disabled': {
+            PointerEvent: 'none',
+            opacity: 0.4,
+          },
+          '& .MuiAccordionSummary-root': {
+            '& .MuiTypography-root': {
+              fontWeight: 700,
+            },
+          },
+          '& .MuiAccordionSummary-expandIconWrapper .MuiSvgIcon-root': {
+            fill: dhiPalette.secondary.dark,
           },
           '& .MuiAccordionDetails-root': {
-            fontWeight: 700,
             backgroundColor: dhiPalette.grey[50],
           },
           '&:not(.Mui-expanded):hover .MuiAccordionSummary-root': {
-            backgroundColor: dhiPalette.primary.light,
+            transition: 'background-color 0.3s ease-in-out',
+            backgroundColor: `${dhiPalette.primary.main}10`,
           },
         },
       },
