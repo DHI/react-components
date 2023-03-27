@@ -337,6 +337,35 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
         },
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          '& .MuiAccordionSummary-root.Mui-expanded': {
+            backgroundColor: dhiPalette.grey[50],
+          },
+          '& .MuiAccordionSummary-root.Mui-disabled': {
+            opacity: 0.4,
+          },
+          '& .MuiAccordionSummary-root': {
+            '& .MuiTypography-root': {
+              fontWeight: 700,
+            },
+            '&:not(.Mui-expanded):hover': {
+              backgroundColor: `${dhiPalette.primary.main}10`,
+            },
+            '&.Mui-expanded:hover': {
+              backgroundColor: `${dhiPalette.primary.main}20`,
+            },
+          },
+          '& .MuiAccordionSummary-expandIconWrapper .MuiSvgIcon-root': {
+            fill: dhiPalette.secondary.dark,
+          },
+          '& .MuiAccordionDetails-root': {
+            backgroundColor: dhiPalette.grey[50],
+          },
+        },
+      },
+    },
   };
 };
 
