@@ -342,15 +342,19 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
         root: {
           '& .MuiAccordionSummary-root.Mui-expanded': {
             backgroundColor: dhiPalette.grey[50],
-            transition: 'none',
           },
           '& .MuiAccordionSummary-root.Mui-disabled': {
-            PointerEvent: 'none',
             opacity: 0.4,
           },
           '& .MuiAccordionSummary-root': {
             '& .MuiTypography-root': {
               fontWeight: 700,
+            },
+            '&:not(.Mui-expanded):hover': {
+              backgroundColor: `${dhiPalette.primary.main}10`,
+            },
+            '&.Mui-expanded:hover': {
+              backgroundColor: `${dhiPalette.primary.main}20`,
             },
           },
           '& .MuiAccordionSummary-expandIconWrapper .MuiSvgIcon-root': {
@@ -358,10 +362,6 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
           },
           '& .MuiAccordionDetails-root': {
             backgroundColor: dhiPalette.grey[50],
-          },
-          '&:not(.Mui-expanded):hover .MuiAccordionSummary-root': {
-            transition: 'background-color 0.3s ease-in-out',
-            backgroundColor: `${dhiPalette.primary.main}10`,
           },
         },
       },
