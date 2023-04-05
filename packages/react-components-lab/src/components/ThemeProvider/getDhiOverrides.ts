@@ -74,17 +74,13 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
     },
     MuiDialogContent: {
       styleOverrides: {
-        root: {
-          position: 'relative',
-          padding: 'unset',
-        },
+        root: {},
       },
     },
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          padding: 0,
-          marginBottom: 8,
+          paddingTop: 24,
         },
       },
     },
@@ -97,10 +93,7 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
     },
     MuiDialogActions: {
       styleOverrides: {
-        root: {
-          padding: 0,
-          marginTop: 16,
-        },
+        root: {},
       },
     },
     MuiButton: {
