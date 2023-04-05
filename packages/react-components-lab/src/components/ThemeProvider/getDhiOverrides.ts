@@ -366,6 +366,14 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
         },
       },
     },
+    MuiSlider: {
+      styleOverrides: {
+        valueLabel: {
+          backgroundColor: dhiPalette.grey[200],
+          color: dhiPalette.text.primary,
+        },
+      },
+    },
   };
 };
 
