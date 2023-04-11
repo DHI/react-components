@@ -1,5 +1,5 @@
 {
-  "version": "2.2.12",
+  "version": "2.2.13",
   "license": "MIT",
   "main": "dist/index.js",
   "name": "@dhi/react-components-lab",
