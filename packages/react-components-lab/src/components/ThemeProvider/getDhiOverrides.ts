@@ -335,6 +335,10 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
         root: {
           '& .MuiAccordionSummary-root.Mui-expanded': {
             backgroundColor: dhiPalette.grey[50],
+            minHeight: '50px',
+          },
+          '& .MuiAccordionSummary-content.Mui-expanded': {
+            margin: 0,
           },
           '& .MuiAccordionSummary-root.Mui-disabled': {
             opacity: 0.4,
@@ -347,7 +351,7 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
               backgroundColor: `${dhiPalette.primary.main}10`,
             },
             '&.Mui-expanded:hover': {
-              backgroundColor: `${dhiPalette.primary.main}20`,
+              backgroundColor: `${dhiPalette.secondary.light}80`,
             },
           },
           '& .MuiAccordionSummary-expandIconWrapper .MuiSvgIcon-root': {
@@ -356,6 +360,14 @@ const getDhiOverrides = (mode: PaletteMode): Components => {
           '& .MuiAccordionDetails-root': {
             backgroundColor: dhiPalette.grey[50],
           },
+        },
+      },
+    },
+    MuiSlider: {
+      styleOverrides: {
+        valueLabel: {
+          backgroundColor: dhiPalette.grey[200],
+          color: dhiPalette.text.primary,
         },
       },
     },
