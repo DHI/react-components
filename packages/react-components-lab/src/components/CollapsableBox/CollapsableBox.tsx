@@ -15,7 +15,7 @@ const CollapsableBox: FC<CollapsableBoxProps> = ({
   const gradient =
     theme.palette.mode === 'light'
       ? 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)'
-      : 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)';
+      : 'linear-gradient(180deg, rgba(18, 18, 18, 0) 0%, rgba(18, 18, 18, 1) 100%)';
 
   return (
     <Box
