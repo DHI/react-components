@@ -9,23 +9,27 @@ import {
 } from '@material-ui/icons';
 import React from 'react'
 import { Table } from '@devexpress/dx-react-grid';
+import { AutomationData } from '../AutomationsList/type';
+
+interface CellProps extends Table.DataCellProps {
+    onViewAutomation: (automation: AutomationData) => void;
+}
 
 export const FilterCellRow = (props) => {
-    const { column, filter, onFilter } = props;
+    const { column } = props;
 
     if (column.name === 'actions'
         || column.name === 'triggerCondition.conditional'
         || column.name === 'triggerCondition.isMet'
     ) {
-
         return <></>
     }
-    
+
     return <TableFilterRow.Cell {...props} />;
 };
 
-const Cell: React.FC<Table.DataCellProps> = (props) => {
-    const { column, row, tableRow, tableColumn } = props;
+const Cell: React.FC<CellProps> = (props) => {
+    const { column, row, tableRow, tableColumn, onViewAutomation } = props;
     const value = row[column.name];
 
     if (column.name === 'isEnabled') {
@@ -42,7 +46,6 @@ const Cell: React.FC<Table.DataCellProps> = (props) => {
     if (column.name === 'triggerCondition.conditional') {
         const triggers = row.triggerCondition?.triggers || [];
         const conditionals = row.triggerCondition?.conditional.match(/[\w]+|\s+|\(|\)|AND|OR/g) || [];
-
         const value = conditionals.map((conditional, index) => {
             let color = 'black';
             const id = conditional.trim();
@@ -53,7 +56,6 @@ const Cell: React.FC<Table.DataCellProps> = (props) => {
             else if (trigger && trigger.isMet) {
                 color = 'lightgreen'
             }
-
             return <span style={{ color }}>{conditional}</span>
         });
 
@@ -63,7 +65,6 @@ const Cell: React.FC<Table.DataCellProps> = (props) => {
             </td>
         )
     }
-
 
     if (column.name === 'triggerCondition.isMet') {
         return (
@@ -78,7 +79,7 @@ const Cell: React.FC<Table.DataCellProps> = (props) => {
     if (column.name === 'actions') {
         return (
             <td className="MuiTableCell-root">
-                <IconButton aria-label="view">
+                <IconButton aria-label="view" onClick={() => onViewAutomation(row)}>
                     <Visibility />
                 </IconButton>
                 <IconButton aria-label="edit">

@@ -25,6 +25,7 @@ import Cell, { FilterCellRow } from '../helper/cell';
 import ToolbarAutomations from '../helper/toolbarAutomations';
 import AutomationsListProps, { AutomationData } from './type';
 import { DUMMY_DATA_AUTOMATIONS } from './dummyData';
+import DetailAutomationsDialog from '../helper/detailAutomationsDialog';
 
 const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
@@ -44,8 +45,20 @@ const defaultColumnsNameArray = DEFAULT_COLUMNS.map((column) => column.name);
 function AutomationsList(props: AutomationsListProps) {
     const { dataSources, disabledColumns, parameters, startTimeUtc, dateTimeFormat, timeZone } = props;
     const [automations, setAutomations] = useState<AutomationData[]>(DUMMY_DATA_AUTOMATIONS)
+    const [detailAutomation, setDetailAutomation] = useState<AutomationData>()
     const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
     const [openFormAutomations, setOpenFormAutomations] = useState(false)
+    const [openDetailsAutomation, setOpenDetailAutomation] = useState(false)
+
+    const handleOpenDetailsAutomation = (automation: AutomationData) => {
+        setDetailAutomation(automation)
+        setOpenDetailAutomation(true)
+    }
+
+    const handleCloseDetailAutomation = () => {
+        setDetailAutomation(undefined)
+        setOpenDetailAutomation(false)
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -58,37 +71,46 @@ function AutomationsList(props: AutomationsListProps) {
     });
 
     return (
-        <Box>
-            <Paper style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}>
-                <ToolbarAutomations onClick={() => setOpenFormAutomations(true)} />
-                <Grid rows={automations} columns={DEFAULT_COLUMNS} >
-                    <FilteringState defaultFilters={[]} />
-                    <IntegratedFiltering />
+        <>
+            <DetailAutomationsDialog
+                open={openDetailsAutomation}
+                onClose={handleCloseDetailAutomation}
+                automation={detailAutomation}
+            />
+            <Box>
+                <Paper style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}>
+                    <ToolbarAutomations onClick={() => setOpenFormAutomations(true)} />
+                    <Grid rows={automations} columns={DEFAULT_COLUMNS} >
+                        <FilteringState defaultFilters={[]} />
+                        <IntegratedFiltering />
 
-                    <SortingState defaultSorting={[{ columnName: 'group', direction: 'asc' }]} />
-                    <IntegratedSorting />
+                        <SortingState defaultSorting={[{ columnName: 'group', direction: 'asc' }]} />
+                        <IntegratedSorting />
 
-                    <DragDropProvider />
-                    <GroupingState />
-                    <IntegratedGrouping />
+                        <DragDropProvider />
+                        <GroupingState />
+                        <IntegratedGrouping />
 
-                    <VirtualTable
-                        cellComponent={Cell}
-                        height={windowHeight - 230}
-                    />
+                        <VirtualTable
+                            cellComponent={(props) => (
+                                <Cell {...props} onViewAutomation={handleOpenDetailsAutomation} />
+                            )}
+                            height={windowHeight - 230}
+                        />
 
-                    <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
-                    <TableHeaderRow showSortingControls />
-                    <TableFilterRow cellComponent={FilterCellRow} />
+                        <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
+                        <TableHeaderRow showSortingControls />
+                        <TableFilterRow cellComponent={FilterCellRow} />
 
-                    <TableGroupRow />
-                    <Toolbar />
-                    <GroupingPanel showGroupingControls />
-                    <TableColumnVisibility defaultHiddenColumnNames={disabledColumns} />
-                    <ColumnChooser />
-                </Grid>
-            </Paper>
-        </Box>
+                        <TableGroupRow />
+                        <Toolbar />
+                        <GroupingPanel showGroupingControls />
+                        <TableColumnVisibility defaultHiddenColumnNames={disabledColumns} />
+                        <ColumnChooser />
+                    </Grid>
+                </Paper>
+            </Box>
+        </>
     )
 }
 

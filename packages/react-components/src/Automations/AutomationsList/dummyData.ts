@@ -27,6 +27,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 },
                 {
@@ -35,6 +36,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: false
                 }
             ],
@@ -66,6 +68,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 },
                 {
@@ -74,6 +77,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 }
             ],
@@ -105,6 +109,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 },
                 {
@@ -113,6 +118,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: false
                 },
                 {
@@ -121,6 +127,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 },
                 {
@@ -129,6 +136,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: false
                 }
             ],
@@ -160,6 +168,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 },
                 {
@@ -168,6 +177,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: false
                 }
             ],
@@ -199,6 +209,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 },
                 {
@@ -207,6 +218,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: false
                 }
             ],
@@ -238,6 +250,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 },
                 {
@@ -246,6 +259,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: false
                 },
                 {
@@ -254,50 +268,53 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: true
                 }
             ],
         }
     },
-    // {
-    //     id: 'group6/automation7',
-    //     taskId: 'Workflows.DownloadRTNGFS',
-    //     workflowInputParametersFilePath: "C:\\Services\\JobExecutor\\Script\\DownloadRTNGFSParam.json",
-    //     fullName: "group6/automation7",
-    //     group: "group6",
-    //     name: "automation7",
-    //     updated: "2023-05-23T05:04:34.8177343Z",
-    //     hostGroup: "Minion",
-    //     hostId: "Minion",
-    //     priority: 1,
-    //     isEnabled: true,
-    //     tag: 'tag',
-    //     parameters: {
-    //         utcNow: '05:04:34'
-    //     },
-    //     triggerCondition: {
-    //         conditional: "trigger1 AND trigger2",
-    //         isMet: true,
-    //         triggers: [
-    //             {
-    //                 id: 'trigger1',
-    //                 interval: "06:00:00",
-    //                 description: "Download GFS every six hours",
-    //                 isEnabled: true,
-    //                 startTimeUtc: '2023-05-16T17:00:00',
-    //                 isMet: true
-    //             },
-    //             {
-    //                 id: 'trigger2',
-    //                 interval: "06:00:00",
-    //                 description: "Download GFS every six hours",
-    //                 isEnabled: true,
-    //                 startTimeUtc: '2023-05-16T17:00:00',
-    //                 isMet: false
-    //             }
-    //         ],
-    //     }
-    // },
+    {
+        id: 'group6/automation7',
+        taskId: 'Workflows.DownloadRTNGFS',
+        workflowInputParametersFilePath: "C:\\Services\\JobExecutor\\Script\\DownloadRTNGFSParam.json",
+        fullName: "group6/automation7",
+        group: "group6",
+        name: "automation7",
+        updated: "2023-05-23T05:04:34.8177343Z",
+        hostGroup: "Minion",
+        hostId: "Minion",
+        priority: 1,
+        isEnabled: true,
+        tag: 'tag',
+        parameters: {
+            utcNow: '05:04:34'
+        },
+        triggerCondition: {
+            conditional: "trigger1 AND trigger2",
+            isMet: false,
+            triggers: [
+                {
+                    id: 'trigger1',
+                    interval: "06:00:00",
+                    description: "Download GFS every six hours",
+                    isEnabled: true,
+                    startTimeUtc: '2023-05-16T17:00:00',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
+                    isMet: false
+                },
+                {
+                    id: 'trigger2',
+                    interval: "06:00:00",
+                    description: "Download GFS every six hours",
+                    isEnabled: true,
+                    startTimeUtc: '2023-05-16T17:00:00',
+    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
+                    isMet: false
+                }
+            ],
+        }
+    },
     // {
     //     id: 'group6/automation8',
     //     taskId: 'Workflows.DownloadRTNGFS',
@@ -324,6 +341,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //                 description: "Download GFS every six hours",
     //                 isEnabled: true,
     //                 startTimeUtc: '2023-05-16T17:00:00',
+    // type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
     //                 isMet: true
     //             },
     //             {
@@ -332,6 +350,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //                 description: "Download GFS every six hours",
     //                 isEnabled: true,
     //                 startTimeUtc: '2023-05-16T17:00:00',
+    // type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
     //                 isMet: false
     //             }
     //         ],
@@ -363,6 +382,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //                 description: "Download GFS every six hours",
     //                 isEnabled: true,
     //                 startTimeUtc: '2023-05-16T17:00:00',
+    // type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
     //                 isMet: true
     //             },
     //             {
@@ -371,6 +391,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //                 description: "Download GFS every six hours",
     //                 isEnabled: true,
     //                 startTimeUtc: '2023-05-16T17:00:00',
+    // type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
     //                 isMet: false
     //             }
     //         ],

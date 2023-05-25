@@ -76,6 +76,9 @@ interface ITrigger {
     startTimeUtc: string
     /** check for color status */
     isMet: boolean
+    /** type for trigger */
+    type: string
+
 }
 
 interface IParameters {
