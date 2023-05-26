@@ -309,7 +309,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
                     description: "Download GFS every six hours",
                     isEnabled: true,
                     startTimeUtc: '2023-05-16T17:00:00',
-    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
+                    type: 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs, Version=10.1.0.0, Culture=neutral, PublicKeyToken=null"',
                     isMet: false
                 }
             ],

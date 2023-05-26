@@ -13,6 +13,7 @@ import { AutomationData } from '../AutomationsList/type';
 
 interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
+    onEditAutomation: (automation: AutomationData) => void;
 }
 
 export const FilterCellRow = (props) => {
@@ -29,7 +30,14 @@ export const FilterCellRow = (props) => {
 };
 
 const Cell: React.FC<CellProps> = (props) => {
-    const { column, row, tableRow, tableColumn, onViewAutomation } = props;
+    const {
+        column,
+        row,
+        tableRow,
+        tableColumn,
+        onViewAutomation,
+        onEditAutomation
+    } = props;
     const value = row[column.name];
 
     if (column.name === 'isEnabled') {
@@ -46,7 +54,7 @@ const Cell: React.FC<CellProps> = (props) => {
     if (column.name === 'triggerCondition.conditional') {
         const triggers = row.triggerCondition?.triggers || [];
         const conditionals = row.triggerCondition?.conditional.match(/[\w]+|\s+|\(|\)|AND|OR/g) || [];
-        const value = conditionals.map((conditional, index) => {
+        const value = conditionals.map((conditional) => {
             let color = 'black';
             const id = conditional.trim();
             const trigger = triggers.find(trigger => trigger.id === id);
@@ -54,7 +62,7 @@ const Cell: React.FC<CellProps> = (props) => {
                 color = 'red';
             }
             else if (trigger && trigger.isMet) {
-                color = 'lightgreen'
+                color = 'green'
             }
             return <span style={{ color }}>{conditional}</span>
         });
@@ -82,7 +90,7 @@ const Cell: React.FC<CellProps> = (props) => {
                 <IconButton aria-label="view" onClick={() => onViewAutomation(row)}>
                     <Visibility />
                 </IconButton>
-                <IconButton aria-label="edit">
+                <IconButton aria-label="edit" onClick={() => onEditAutomation(row)}>
                     <Edit />
                 </IconButton>
                 <IconButton aria-label="delete">

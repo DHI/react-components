@@ -7,7 +7,7 @@ export default {
   component: AutomationsList,
 } as Meta;
 
-const disabledColumns = ['fullName', 'updated', 'taskId']
+const disabledColumns = ['fullName', 'updated', 'taskId', 'hostId']
 
 export const AutomationsStory = () => {
   return (

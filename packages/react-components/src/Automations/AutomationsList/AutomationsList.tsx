@@ -26,6 +26,7 @@ import ToolbarAutomations from '../helper/toolbarAutomations';
 import AutomationsListProps, { AutomationData } from './type';
 import { DUMMY_DATA_AUTOMATIONS } from './dummyData';
 import DetailAutomationsDialog from '../helper/detailAutomationsDialog';
+import FormAutomationDialog from '../helper/formAutomationDialog';
 
 const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
@@ -54,10 +55,20 @@ function AutomationsList(props: AutomationsListProps) {
         setDetailAutomation(automation)
         setOpenDetailAutomation(true)
     }
-
+    
     const handleCloseDetailAutomation = () => {
         setDetailAutomation(undefined)
         setOpenDetailAutomation(false)
+    }
+    
+    const handleOpenFormAutomation = (automation?: AutomationData) => {
+        setDetailAutomation(automation ?? undefined)
+        setOpenFormAutomations(true)
+     }
+
+    const handleCloseFormAutomation = () => {
+        setDetailAutomation(undefined)
+        setOpenFormAutomations(false)
     }
 
     useEffect(() => {
@@ -77,9 +88,14 @@ function AutomationsList(props: AutomationsListProps) {
                 onClose={handleCloseDetailAutomation}
                 automation={detailAutomation}
             />
+            <FormAutomationDialog
+                open={openFormAutomations}
+                onClose={handleCloseFormAutomation}
+                automation={detailAutomation}
+            />
             <Box>
                 <Paper style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}>
-                    <ToolbarAutomations onClick={() => setOpenFormAutomations(true)} />
+                    <ToolbarAutomations onClick={() => handleOpenFormAutomation(undefined)} />
                     <Grid rows={automations} columns={DEFAULT_COLUMNS} >
                         <FilteringState defaultFilters={[]} />
                         <IntegratedFiltering />
@@ -93,7 +109,11 @@ function AutomationsList(props: AutomationsListProps) {
 
                         <VirtualTable
                             cellComponent={(props) => (
-                                <Cell {...props} onViewAutomation={handleOpenDetailsAutomation} />
+                                <Cell 
+                                {...props} 
+                                onViewAutomation={handleOpenDetailsAutomation} 
+                                onEditAutomation={handleOpenFormAutomation}
+                                />
                             )}
                             height={windowHeight - 230}
                         />

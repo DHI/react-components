@@ -54,7 +54,7 @@ interface AutomationData {
     workflowInputParametersFilePath: string;
 }
 
-interface ITriggerCondition {
+export interface ITriggerCondition {
     /** list of all trigger */
     triggers: ITrigger[],
     /** list of trigger condition */
@@ -67,13 +67,13 @@ interface ITrigger {
     /** id for trigger */
     id: string;
     /** description for trigger */
-    description: string;
+    description?: string;
     /** enabling for trigger */
     isEnabled: boolean;
     /** Interval for trigger */
-    interval: string;
+    interval?: string;
     /** time utc for trigger */
-    startTimeUtc: string
+    startTimeUtc?: string
     /** check for color status */
     isMet: boolean
     /** type for trigger */
