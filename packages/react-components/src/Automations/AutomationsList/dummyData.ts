@@ -1,4 +1,4 @@
-import { AutomationData } from "./type";
+import { AutomationData } from "../type";
 
 export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AutomationData } from '../AutomationsList/type';
+import { AutomationData, IFormAutomationDialog, ITriggerParameter } from '../type';
 import {
   Accordion,
   AccordionDetails,
@@ -14,70 +14,22 @@ import {
   FormControlLabel,
   Grid,
   MenuItem,
-  OutlinedInput,
   Paper,
   Select,
   Switch,
   TextField,
   Typography,
-  makeStyles
 } from '@material-ui/core';
 import { TriggerList } from './detailAutomationsDialog';
 import DateInput from '../../common/DateInput/DateInput';
 import { ExpandMore } from '@material-ui/icons';
-import { DUMMY_DATA_AUTOMATIONS } from '../AutomationsList/dummyData';
-import { ITriggerCondition } from '../AutomationsList/type'
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  select: {
-    '& .MuiOutlinedInput-input': {
-      paddingTop: '10px',
-      paddingBottom: '10px',
-      fontSize: '0.875rem',
-    },
-    '& .MuiInputLabel-outlined': {
-      transform: 'translate(14px, 12px) scale(1)',
-    },
-    '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-      transform: 'translate(14px, -6px) scale(0.75)',
-    },
-    '& .MuiOutlinedInput-root': {
-      '&:hover fieldset': {
-        borderColor: 'rgba(0, 0, 0, 0.23)',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'rgba(0, 0, 0, 0.23)',
-      },
-    },
-    '& .MuiOutlinedInput-notchedOutline': {
-      borderWidth: '1px',
-    },
-  },
-}));
-
-
-interface IFormAutomationDialog {
-  open: boolean;
-  onClose: () => void;
-  automation?: AutomationData
-}
-
-interface ITriggerParameter {
-  triggerType: string,
-  triggerValues: any,
-  setTriggerValues: (value) => void
-}
-
-const DUMMY = DUMMY_DATA_AUTOMATIONS[0]
+import { ITriggerCondition } from '../type'
+import { FormAutomationStyles } from '../styles';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   open, onClose, automation
 }) => {
-  const classes = useStyles();
+  const classes = FormAutomationStyles();
   const [formValues, setFormValues] = useState({
     name: '',
     group: '',
@@ -100,7 +52,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   })
 
   useEffect(() => {
-    if(automation){
+    if (automation) {
       setFormValues({
         name: automation.name,
         group: automation.group,
@@ -112,9 +64,9 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
 
       setTrigger({
         triggerCondition: automation.triggerCondition.conditional,
-        triggerId: '', 
-        type: '', 
-        enabled: automation.isEnabled 
+        triggerId: '',
+        type: '',
+        enabled: automation.isEnabled
       });
 
       setInputTriggers(automation.triggerCondition);
@@ -158,7 +110,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const handleRemoveTrigger = (triggerId) => {
     setInputTriggers(prevState => {
       const updatedTriggers = prevState.triggers.filter(trigger => trigger.id !== triggerId);
-  
+
       return {
         ...prevState,
         triggers: updatedTriggers
@@ -183,22 +135,22 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     })
     setTriggerParameters({})
     setInputTriggers({
-    triggers: [],
-    isMet: false,
-    conditional: ''
-  })
+      triggers: [],
+      isMet: false,
+      conditional: ''
+    })
     onClose()
   }
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth='md'>
-      <Paper elevation={3} style={{ padding: '10px' }}>
-        <DialogTitle style={{ padding: '5px' }}>
+    <Dialog open={open} maxWidth='md'>
+      <Paper elevation={3} className={classes.paperStyle} >
+        <DialogTitle className={classes.dialogTitle}>
           <Typography variant='body1' align='left'>Add New Automation</Typography>
         </DialogTitle>
         <Divider />
         <DialogContent>
-          <Box style={{ padding: '15px 0' }}>
+          <Box className={classes.boxDialog}>
             <Grid container spacing={3}>
               <Grid item xs={6}>
                 <TextField
@@ -270,7 +222,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                 />
               </Grid>
             </Grid>
-            <Accordion style={{ marginTop: '25px' }}>
+            <Accordion className={classes.accordion}>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Typography variant="body1" align="left">Trigger</Typography>
               </AccordionSummary>
@@ -291,11 +243,11 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                     <Box mt={2} mb={2}>
                       <Typography variant="subtitle1" align="left">Add New Trigger</Typography>
                     </Box>
-                    <Box sx={{ border: '1px solid lightgrey', padding: '15px', borderRadius: '10px' }}>
+                    <Box className={classes.boxAccordion}>
                       <Grid container spacing={3}>
                         <Grid item xs={6}>
                           <Box display="flex" alignItems="center">
-                            <Typography variant="body1" style={{ marginRight: '10px', width: '10%' }}>
+                            <Typography variant="body1" className={classes.typographyAccordion}>
                               Id
                             </Typography>
                             <TextField
@@ -324,7 +276,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                         </Grid>
                         <Grid item xs={6}>
                           <Box display="flex" alignItems="center">
-                            <Typography variant="body1" style={{ marginRight: '10px', width: '10%' }}>
+                            <Typography variant="body1" className={classes.typographyAccordion}>
                               Type
                             </Typography>
                             <Select
@@ -347,22 +299,17 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                           triggerValues={triggerParameters}
                         />
                       </Grid>
-                      <Grid item xs={12} style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                      <Grid item xs={12} className={classes.gridAddButton}>
                         <Button
                           variant='outlined'
-                          style={{ marginLeft: 'auto' }}
+                          className={classes.addButton}
                           onClick={handleAddTrigger}
                         >
                           Add
                         </Button>
                       </Grid>
                     </Box>
-                    <Box sx={{
-                      border: '1px solid lightgrey',
-                      padding: '15px',
-                      borderRadius: '10px',
-                      marginTop: '20px'
-                    }}>
+                    <Box className={classes.boxParameter}>
                       <TriggerList triggerList={inputTriggers.triggers ?? []} handleDelete={handleRemoveTrigger} />
                     </Box>
                   </Grid>
@@ -381,6 +328,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
 }
 
 const TriggerParameterForm: React.FC<ITriggerParameter> = ({ triggerType, triggerValues, setTriggerValues }) => {
+  const classes = FormAutomationStyles()
   const handleChangeText = (event) => {
     setTriggerValues({
       ...triggerValues,
@@ -414,8 +362,8 @@ const TriggerParameterForm: React.FC<ITriggerParameter> = ({ triggerType, trigge
   switch (triggerType) {
     case 'scheduledTrigger':
       return (
-        <Box sx={{ border: '1px solid lightgrey', padding: '15px', borderRadius: '10px', marginTop: '20px' }}>
-          <Typography style={{ marginBottom: '20px' }}>Trigger Parameter</Typography>
+        <Box className={classes.boxParameter}>
+          <Typography className={classes.typographyScheduledTrigger}>Trigger Parameter</Typography>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField

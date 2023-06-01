@@ -1,9 +1,9 @@
-import { DataSource } from '../../api/types';
-import { DateProps } from '../../common/types';
+import { DataSource } from '../api/types';
+import { DateProps } from '../common/types';
 
 interface AutomationsListProps {
-    /** Data source to get the logs data */
-    dataSources?: DataSource[];
+    /** Data source to get the automations data */
+    dataSources: DataSource;
     /** Hide or show columns */
     disabledColumns?: string[];
     /** Data source to get the logs specific parameters */
@@ -119,5 +119,34 @@ interface DateFilterProps {
     onClearDateFilter: () => void;
 }
 
+interface IFormAutomationDialog {
+    open: boolean;
+    onClose: () => void;
+    automation?: AutomationData
+}
+
+interface ITriggerParameter {
+    triggerType: string,
+    triggerValues: any,
+    setTriggerValues: (value) => void
+}
+
+
+interface DetailAutomationsDialogProps {
+    open: boolean;
+    onClose: () => void;
+    automation?: AutomationData
+}
+
+
 export default AutomationsListProps;
-export { AutomationData, FilterProps, AutomationDetailProps, DateFilterProps, Parameters };
+export {
+    AutomationData,
+    FilterProps,
+    AutomationDetailProps,
+    DateFilterProps,
+    Parameters,
+    IFormAutomationDialog,
+    ITriggerParameter,
+    DetailAutomationsDialogProps,
+};

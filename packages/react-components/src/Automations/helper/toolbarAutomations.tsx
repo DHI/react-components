@@ -1,25 +1,24 @@
-import { TableColumnVisibility } from '@devexpress/dx-react-grid'
-import { Box, Divider, IconButton, Typography } from '@material-ui/core'
+import { Box, Divider, IconButton, Typography, makeStyles } from '@material-ui/core'
 import { AddCircleOutlined } from '@material-ui/icons'
 import React from 'react'
+import { ToolbarStyles } from '../styles'
 
-interface Props {
+const ToolbarAutomations: React.FC<{
     onClick: () => void
-}
-
-const ToolbarAutomations: React.FC<Props> = ({onClick}) => {
+}> = ({ onClick }) => {
+    const classes = ToolbarStyles()
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '20px', alignItems: 'center' }}>
+            <Box className={classes.box}>
                 <Typography variant='h5'>
                     Automations
                 </Typography>
                 <Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton style={{ padding: 1 }} onClick={onClick}>
+                    <Box className={classes.addBox}>
+                        <IconButton className={classes.iconButton} onClick={onClick}>
                             <AddCircleOutlined />
                         </IconButton>
-                        <Typography variant='body2' style={{ marginLeft: 3 }}>Create a new Automations</Typography>
+                        <Typography variant='body2' className={classes.typography}>Create a new Automations</Typography>
                     </Box>
                 </Box>
             </Box>

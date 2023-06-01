@@ -12,61 +12,47 @@ import {
   Paper,
   Typography
 } from '@material-ui/core';
-import { AutomationData } from '../AutomationsList/type';
+import { DetailAutomationsDialogProps } from '../type';
 import { HighlightOff } from '@material-ui/icons';
-
-interface DetailAutomationsDialogProps {
-  open: boolean;
-  onClose: () => void;
-  automation?: AutomationData
-}
+import { DetailAutomationStyle } from '../styles';
 
 export const TriggerList = ({ triggerList, handleDelete }) => {
+  const classes = DetailAutomationStyle();
+
   if (!triggerList) return null
-  return (<Box style={{ maxHeight: '300px', overflowY: 'auto' }}>
+
+  return (<Box className={classes.triggerListContainer}>
     {triggerList?.map((trigger) =>
-      <>
-        <Box
-          key={trigger.id}
-          sx={{
-            position: 'relative',
-            border: '1px solid lightgray',
-            borderRadius: '10px',
-            padding: '10px',
-            marginBottom: '10px'
-          }}
-        >
-          {handleDelete &&
-            <IconButton
-              style={{
-                position: 'absolute',
-                top: '5px',
-                right: '5px',
-                zIndex: 1,
-                padding: 0,
-              }}
-              onClick={() => handleDelete(trigger.id)}
-            >
-              <HighlightOff />
-            </IconButton>
-          }
-          <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Id: </strong> {trigger.id}</Typography>
-          <Typography variant="body1" style={{ lineHeight: '2' }}><strong>StartTimeUtc:</strong> {trigger.startTimeUtc}</Typography>
-          <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Interval:</strong> {trigger.interval}</Typography>
-          <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Description:</strong> {trigger.description}</Typography>
-          <Typography variant="body1" style={{ lineHeight: '2' }}><strong>IsEnabled:</strong> {`${trigger.isEnabled}`}</Typography>
-          <Typography variant="body1" style={{ lineHeight: '2' }}><strong>IsMet:</strong> {`${trigger.isMet}`}</Typography>
-          <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Type:</strong> {trigger.type}</Typography>
-        </Box>
-      </>
+      <Box
+        key={trigger.id}
+        className={classes.triggerBox}
+      >
+        {handleDelete &&
+          <IconButton
+            className={classes.iconButton}
+            onClick={() => handleDelete(trigger.id)}
+          >
+            <HighlightOff />
+          </IconButton>
+        }
+        <Typography variant="body1" className={classes.typography}><strong>Id: </strong> {trigger.id}</Typography>
+        <Typography variant="body1" className={classes.typography}><strong>StartTimeUtc:</strong> {trigger.startTimeUtc}</Typography>
+        <Typography variant="body1" className={classes.typography}><strong>Interval:</strong> {trigger.interval}</Typography>
+        <Typography variant="body1" className={classes.typography}><strong>Description:</strong> {trigger.description}</Typography>
+        <Typography variant="body1" className={classes.typography}><strong>IsEnabled:</strong> {`${trigger.isEnabled}`}</Typography>
+        <Typography variant="body1" className={classes.typography}><strong>IsMet:</strong> {`${trigger.isMet}`}</Typography>
+        <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type}</Typography>
+      </Box>
     )}
   </Box>)
 }
 
 const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClose, automation }) => {
+  const classes = DetailAutomationStyle();
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth='xl'>
-      <Paper elevation={3} style={{ padding: '10px' }}>
+      <Paper elevation={3} className={classes.paperStyle}>
         <DialogTitle>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant='h4' align='center'>{automation?.taskId}</Typography>
@@ -78,23 +64,23 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
         <DialogContent>
           <Box>
             <DialogContentText>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Task Id:</strong> {automation?.taskId}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Full Name:</strong> {automation?.fullName}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Name:</strong> {automation?.name}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Group:</strong> {automation?.group}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Is Enabled:</strong> {`${automation?.isEnabled}`}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Priority:</strong> {automation?.priority}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Tag:</strong> {automation?.tag}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>WorkflowInputParameters:</strong> {automation?.workflowInputParametersFilePath}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Parameters:</strong> {automation?.parameters.utcNow}</Typography>
-              <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Updated:</strong> {automation?.updated}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Task Id:</strong> {automation?.taskId}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Full Name:</strong> {automation?.fullName}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Name:</strong> {automation?.name}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Group:</strong> {automation?.group}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Is Enabled:</strong> {`${automation?.isEnabled}`}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Priority:</strong> {automation?.priority}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>WorkflowInputParameters:</strong> {automation?.workflowInputParametersFilePath}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Parameters:</strong> {automation?.parameters.utcNow}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Updated:</strong> {automation?.updated}</Typography>
             </DialogContentText>
-            <Paper style={{ padding: '15px' }}>
-              <Box style={{ marginBottom: '15px' }}>
-                <Typography variant='h6' style={{ lineHeight: '2' }}>Trigger List</Typography>
-                <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Trigger Condition:</strong> {automation?.triggerCondition.conditional}</Typography>
-                <Typography variant="body1" style={{ lineHeight: '2' }}><strong>Final Condition:</strong> {`${automation?.triggerCondition.isMet}`}</Typography>
+            <Paper className={classes.dialogContentPaper}>
+              <Box className={classes.boxStyle}>
+                <Typography variant='h6' className={classes.typography}>Trigger List</Typography>
+                <Typography variant="body1" className={classes.typography} ><strong>Trigger Condition:</strong> {automation?.triggerCondition.conditional}</Typography>
+                <Typography variant="body1" className={classes.typography}><strong>Final Condition:</strong> {`${automation?.triggerCondition.isMet ?? false}`}</Typography>
               </Box>
               <TriggerList triggerList={automation?.triggerCondition.triggers} handleDelete={undefined} />
             </Paper>
