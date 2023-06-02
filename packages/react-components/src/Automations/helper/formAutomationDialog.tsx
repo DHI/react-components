@@ -6,6 +6,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -25,24 +26,26 @@ import DateInput from '../../common/DateInput/DateInput';
 import { ExpandMore } from '@material-ui/icons';
 import { ITriggerCondition } from '../type'
 import { FormAutomationStyles } from '../styles';
+import { createNewAutomation, updateAutomation } from '../../api/Automations/AutomationApi';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
-  open, onClose, automation
+  open, onClose, automation, dataSources, fetchData, setLoading, loading
 }) => {
   const classes = FormAutomationStyles();
+  const [addMode, setAddMode] = useState(true)
   const [formValues, setFormValues] = useState({
     name: '',
     group: '',
     taskId: '',
     hostId: '',
     priority: 0,
-    enabled: false,
+    isEnabled: false,
   });
   const [trigger, setTrigger] = useState({
     triggerCondition: '',
     triggerId: '',
     type: '',
-    enabled: false
+    isEnabled: false
   })
   const [triggerParameters, setTriggerParameters] = useState({});
   const [inputTriggers, setInputTriggers] = useState<ITriggerCondition>({
@@ -52,21 +55,22 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   })
 
   useEffect(() => {
-    if (automation) {
+    if (automation && open) {
+      setAddMode(false)
       setFormValues({
         name: automation.name,
         group: automation.group,
         taskId: automation.taskId,
         hostId: automation.hostId,
         priority: automation.priority,
-        enabled: automation.isEnabled
+        isEnabled: automation.isEnabled
       });
 
       setTrigger({
         triggerCondition: automation.triggerCondition.conditional,
         triggerId: '',
         type: '',
-        enabled: automation.isEnabled
+        isEnabled: automation.isEnabled
       });
 
       setInputTriggers(automation.triggerCondition);
@@ -92,7 +96,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     const newTrigger = {
       id: trigger.triggerId,
       description: triggerParam.description,
-      isEnabled: trigger.enabled,
+      isEnabled: trigger.isEnabled,
       isMet: true,
       type: trigger.type,
       startTimeUtc: triggerParam.startTimeUtc,
@@ -123,7 +127,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       triggerCondition: '',
       triggerId: '',
       type: '',
-      enabled: false
+      isEnabled: false
     })
     setFormValues({
       name: '',
@@ -131,7 +135,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       taskId: '',
       hostId: '',
       priority: 0,
-      enabled: false,
+      isEnabled: false,
     })
     setTriggerParameters({})
     setInputTriggers({
@@ -142,11 +146,69 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     onClose()
   }
 
+  const handleSubmitData = () => {
+    alert(addMode)
+    setLoading(true)
+    const automationData: AutomationData = {
+      ...formValues,
+      fullName: `${formValues.group}/${formValues.name}`,
+      id: `${formValues.group}/${formValues.name}`,
+      updated: new Date().toISOString(),
+      triggerCondition: inputTriggers,
+      hostGroup: formValues.group, // No state provided for this field
+      workflowInputParametersFilePath: '', // No state provided for this field
+      tag: '', // No state provided for this field
+    };
+
+    if (addMode) {
+      createNewAutomation(dataSources, automationData).subscribe({
+        next: async () => {
+          try {
+            await fetchData(true);
+            handleClose()
+          } catch (err) {
+            console.log(err);
+          } finally {
+            onClose();
+            setLoading(false);
+          }
+        },
+        error: (err) => {
+          console.log('Error creating new automation:', err);
+        }
+      });
+    } else {
+      const updatedPayload = {
+        ...automationData,
+        id: automation?.id
+      }
+      updateAutomation(dataSources, updatedPayload).subscribe({
+        next: async () => {
+          try {
+            await fetchData(true);
+            handleClose()
+          } catch (err) {
+            console.log(err);
+          } finally {
+            onClose();
+            setLoading(false);
+          }
+        },
+        error: (err) => {
+          console.log('Error update automation:', err);
+        }
+      });
+    }
+
+  }
+
   return (
     <Dialog open={open} maxWidth='md'>
       <Paper elevation={3} className={classes.paperStyle} >
         <DialogTitle className={classes.dialogTitle}>
-          <Typography variant='body1' align='left'>Add New Automation</Typography>
+          <Typography variant='body1' align='left'>
+            {!addMode ? 'Update Automation' : 'Add New Automation'}
+          </Typography>
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -211,13 +273,13 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={formValues.enabled}
+                      checked={formValues.isEnabled}
                       onChange={handleChange}
-                      name='enabled'
+                      name='isEnabled'
                       color='primary'
                     />
                   }
-                  labelPlacement="start" // Meletakkan label di sebelah kiri switch
+                  labelPlacement="start"
                   label='Enabled'
                 />
               </Grid>
@@ -264,9 +326,9 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                           <FormControlLabel
                             control={
                               <Switch
-                                checked={trigger.enabled}
+                                checked={trigger.isEnabled}
                                 onChange={handleChangeTrigger}
-                                name='enabled'
+                                name='isEnabled'
                                 color='primary'
                               />
                             }
@@ -287,7 +349,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                               value={trigger.type}
                               onChange={handleChangeTrigger}
                             >
-                              <MenuItem value='scheduledTrigger'>Scheduled Trigger</MenuItem>
+                              <MenuItem value='DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs'>Scheduled Trigger</MenuItem>
                             </Select>
                           </Box>
                         </Grid>
@@ -320,7 +382,15 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="contained">Close</Button>
-          <Button onClick={() => alert('submit')} variant='contained' color="primary">Create</Button>
+          <Button
+            onClick={handleSubmitData}
+            disabled={loading}
+            variant='contained'
+            color="primary"
+          >
+            {loading ? <CircularProgress size={24} /> :
+              !addMode ? 'Update' : 'Create'}
+          </Button>
         </DialogActions>
       </Paper>
     </Dialog>
@@ -360,7 +430,7 @@ const TriggerParameterForm: React.FC<ITriggerParameter> = ({ triggerType, trigge
   };
 
   switch (triggerType) {
-    case 'scheduledTrigger':
+    case 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs':
       return (
         <Box className={classes.boxParameter}>
           <Typography className={classes.typographyScheduledTrigger}>Trigger Parameter</Typography>

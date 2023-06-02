@@ -51,10 +51,6 @@ function AutomationsList(props: AutomationsListProps) {
     const {
         dataSources,
         disabledColumns,
-        parameters,
-        startTimeUtc,
-        dateTimeFormat,
-        timeZone
     } = props;
     const classes = AutomationsListStyles();
     const [automations, setAutomations] = useState<AutomationData[]>([])
@@ -93,15 +89,21 @@ function AutomationsList(props: AutomationsListProps) {
         };
     }, []);
 
-
     const fetchInitialData = async (change?: boolean) => {
-        setLoading(true);  // Start the loading state
+        setLoading(true); 
         const newAutomations: AutomationData[] = [];
         try {
             const listGroupId = await fetchGroupId(dataSources).toPromise();
+            const uniqueGroupSet = new Set();
+
             for (let element of listGroupId) {
                 const group = element.split('/');
-                const automationsData = await fetchListAutomations(dataSources, group[0]).toPromise();
+                const groupId = group[0];
+                if (uniqueGroupSet.has(groupId)) {
+                    continue;
+                }
+                uniqueGroupSet.add(groupId);            
+                const automationsData = await fetchListAutomations(dataSources, groupId).toPromise();
                 if (change) {
                     newAutomations.push(...automationsData);
                 } else {
@@ -114,10 +116,9 @@ function AutomationsList(props: AutomationsListProps) {
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false);  // End the loading state
+            setLoading(false);
         }
     };
-
 
     const handleOpenDeleteDialog = (id: string) => {
         setDialog({
@@ -215,6 +216,10 @@ function AutomationsList(props: AutomationsListProps) {
                 automation={detailAutomation}
             />
             <FormAutomationDialog
+                dataSources={dataSources}
+                setLoading={setLoading}
+                loading={loading}
+                fetchData={fetchInitialData}
                 open={openFormAutomations}
                 onClose={handleCloseFormAutomation}
                 automation={detailAutomation}

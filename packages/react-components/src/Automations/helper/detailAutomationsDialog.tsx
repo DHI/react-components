@@ -73,7 +73,7 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
               <Typography variant="body1" className={classes.typography}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>WorkflowInputParameters:</strong> {automation?.workflowInputParametersFilePath}</Typography>
-              <Typography variant="body1" className={classes.typography}><strong>Parameters:</strong> {automation?.parameters.utcNow}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Parameters:</strong> {automation?.parameters?.utcNow}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Updated:</strong> {automation?.updated}</Typography>
             </DialogContentText>
             <Paper className={classes.dialogContentPaper}>

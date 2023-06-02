@@ -1,6 +1,7 @@
 import { tap } from 'rxjs/operators';
 import { DataSource } from '../types';
 import { fetchUrl } from '../helpers';
+import { AutomationData } from '../../Automations/type';
 
 /**
  * /DSWebAPI/api/automations/ids
@@ -54,19 +55,80 @@ export const fetchListAutomations = (
 
 /**
  * /DSWebAPI/api/automations
- * Gets a list of automations entries.
+ * create new automation.
  * @param dataSources
- * @param group
+ * @param object
  */
 export const createNewAutomation = (
     dataSources: DataSource,
-    group: string
+    payload: AutomationData
 ) => {
-    return fetchUrl(`${dataSources.host}/DSWebAPI/api/automations/?group=${group}`, {
-        method: 'GET',
+    const type = "DHI.Services.Jobs.Automations.Automation, DHI.Services.Jobs";
+    
+    if (payload.triggerCondition && payload.triggerCondition.triggers) {
+        payload.triggerCondition.triggers = payload.triggerCondition.triggers.map((trigger) => {
+            return {
+                "$type": trigger.type,
+                ...trigger
+            };
+        });
+    }
+
+    const body = {
+        "$type": type,
+        ...payload
+    };
+
+    return fetchUrl(`${dataSources.host}/DSWebAPI/api/automations`, {
+        method: 'POST',
         additionalHeaders: {
             Authorization: `Bearer ${dataSources.token}`,
         },
+        body: JSON.stringify(body)
+    }).pipe(
+        tap(
+            // (res) => {
+            //     console.log('update text', res);
+            // },
+            // (error) => {
+            //     console.log(error);
+            // },
+        ),
+    );
+};
+
+/**
+ * /DSWebAPI/api/automations
+ * create new automation.
+ * @param dataSources
+ * @param object
+ */
+export const updateAutomation = (
+    dataSources: DataSource,
+    payload: AutomationData
+) => {
+    const type = "DHI.Services.Jobs.Automations.Automation, DHI.Services.Jobs";
+    
+    if (payload.triggerCondition && payload.triggerCondition.triggers) {
+        payload.triggerCondition.triggers = payload.triggerCondition.triggers.map((trigger) => {
+            return {
+                "$type": trigger.type,
+                ...trigger
+            };
+        });
+    }
+
+    const body = {
+        "$type": type,
+        ...payload
+    };
+
+    return fetchUrl(`${dataSources.host}/DSWebAPI/api/automations`, {
+        method: 'PUT',
+        additionalHeaders: {
+            Authorization: `Bearer ${dataSources.token}`,
+        },
+        body: JSON.stringify(body)
     }).pipe(
         tap(
             // (res) => {

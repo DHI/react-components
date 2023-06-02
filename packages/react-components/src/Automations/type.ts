@@ -25,7 +25,7 @@ interface Parameters {
 
 interface AutomationData {
     /** Id of Automation */
-    id: string;
+    id?: string;
     /** Task Id of Automation */
     taskId: string;
     /** Group of the Automation */
@@ -47,7 +47,7 @@ interface AutomationData {
     /** updated time of Automation */
     updated: string;
     /** Parameters of Automation */
-    parameters: IParameters;
+    parameters?: IParameters;
     /** List Trigger of Automation */
     triggerCondition: ITriggerCondition;
     /** WorkflowInput of Automation */
@@ -120,6 +120,10 @@ interface DateFilterProps {
 }
 
 interface IFormAutomationDialog {
+    dataSources: DataSource;
+    fetchData: (change?: boolean) => void
+    loading: boolean
+    setLoading: (state: boolean) => void
     open: boolean;
     onClose: () => void;
     automation?: AutomationData
