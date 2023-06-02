@@ -14,6 +14,8 @@ import { AutomationData } from '../type';
 interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
     onEditAutomation: (automation: AutomationData) => void;
+    onDeleteDialog: (id: string) => void
+    isLoading: boolean
 }
 
 export const FilterCellRow = (props) => {
@@ -37,6 +39,8 @@ const Cell: React.FC<CellProps> = (props) => {
         tableColumn,
         onViewAutomation,
         onEditAutomation,
+        onDeleteDialog,
+        isLoading,
         ...rest
     } = props;
     const value = row[column.name];
@@ -48,6 +52,17 @@ const Cell: React.FC<CellProps> = (props) => {
                     <CheckOutlined style={{ color: 'green' }} /> :
                     <CloseRounded style={{ color: 'red' }} />
                 }
+            </td>
+        );
+    }
+
+    if (column.name === 'updated') {
+        const date = new Date(value);
+        const formattedDate = date.toISOString().split('.')[0].replace("T", " ");
+
+        return (
+            <td className="MuiTableCell-root">
+                {formattedDate}
             </td>
         );
     }
@@ -88,13 +103,13 @@ const Cell: React.FC<CellProps> = (props) => {
     if (column.name === 'actions') {
         return (
             <td className="MuiTableCell-root">
-                <IconButton aria-label="view" onClick={() => onViewAutomation(row)}>
+                <IconButton aria-label="view" disabled={isLoading} onClick={() => onViewAutomation(row)}>
                     <Visibility />
                 </IconButton>
-                <IconButton aria-label="edit" onClick={() => onEditAutomation(row)}>
+                <IconButton aria-label="edit" disabled={isLoading} onClick={() => onEditAutomation(row)}>
                     <Edit />
                 </IconButton>
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete" disabled={isLoading} onClick={() => onDeleteDialog(row.id)}>
                     <DeleteOutline />
                 </IconButton>
             </td>

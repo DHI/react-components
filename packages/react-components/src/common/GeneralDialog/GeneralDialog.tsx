@@ -1,9 +1,19 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React from 'react';
 import GeneralDialogProps from './types';
 
 const GeneralDialog = (props: GeneralDialogProps) => {
-  const { dialogId, title, message, cancelLabel, confirmLabel, showDialog, onConfirm, onCancel } = props;
+  const {
+    dialogId,
+    title,
+    message,
+    cancelLabel,
+    confirmLabel,
+    showDialog,
+    onConfirm,
+    onCancel,
+    isLoading
+  } = props;
 
   const setCancel = () => {
     onCancel && onCancel();
@@ -29,8 +39,8 @@ const GeneralDialog = (props: GeneralDialogProps) => {
         <Button onClick={setCancel} variant="outlined">
           {cancelLabel || 'Cancel'}
         </Button>
-        <Button onClick={setConfirm} color="primary" variant="contained">
-          {confirmLabel || 'Confirm'}
+        <Button onClick={setConfirm} color="primary" variant="contained" disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} /> : confirmLabel || 'Confirm'}
         </Button>
       </DialogActions>
     </Dialog>

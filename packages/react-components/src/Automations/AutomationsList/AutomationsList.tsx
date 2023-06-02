@@ -24,11 +24,13 @@ import { Box, Paper } from '@material-ui/core';
 import Cell, { FilterCellRow } from '../helper/cell';
 import ToolbarAutomations from '../helper/toolbarAutomations';
 import AutomationsListProps, { AutomationData } from '../type';
-import { DUMMY_DATA_AUTOMATIONS } from './dummyData';
 import DetailAutomationsDialog from '../helper/detailAutomationsDialog';
 import FormAutomationDialog from '../helper/formAutomationDialog';
 import { AutomationsListStyles } from '../styles';
-import { fetchGroupId, fetchListAutomations } from '../../api/Automations/AutomationApi';
+import { deleteAutomation, fetchGroupId, fetchListAutomations } from '../../api/Automations/AutomationApi';
+import Loading from '../../common/Loading/Loading';
+import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
+import GeneralDialogProps from '../../common/GeneralDialog/types';
 
 const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
@@ -60,12 +62,20 @@ function AutomationsList(props: AutomationsListProps) {
     const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
     const [openFormAutomations, setOpenFormAutomations] = useState(false)
     const [openDetailsAutomation, setOpenDetailAutomation] = useState(false)
+    const [dialog, setDialog] = useState<GeneralDialogProps>({
+        dialogId: '',
+        showDialog: false,
+        title: ``,
+        message: ``,
+        cancelLabel: 'Cancel',
+        confirmLabel: 'Confirm',
+        onConfirm: () => null,
+    });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let intervalId;
         (async () => {
-            setLoading(true);
             try {
                 await fetchInitialData();
                 intervalId = setInterval(async () => {
@@ -73,8 +83,6 @@ function AutomationsList(props: AutomationsListProps) {
                 }, 20000);
             } catch (error) {
                 console.log('err', error);
-            } finally {
-                setLoading(false);
             }
         })()
 
@@ -86,22 +94,76 @@ function AutomationsList(props: AutomationsListProps) {
     }, []);
 
 
-    const fetchInitialData = async (interval?: boolean) => {
-        const newAutomations : AutomationData[] = [];
-        const listGroupId = await fetchGroupId(dataSources).toPromise();
-        for (let element of listGroupId) {
-            const group = element.split('/');
-            const automationsData = await fetchListAutomations(dataSources, group[0]).toPromise();
-            if (interval) {
-                newAutomations.push(...automationsData);
-            } else {
-                setAutomations((prevVal) => [...prevVal, ...automationsData]);
+    const fetchInitialData = async (change?: boolean) => {
+        setLoading(true);  // Start the loading state
+        const newAutomations: AutomationData[] = [];
+        try {
+            const listGroupId = await fetchGroupId(dataSources).toPromise();
+            for (let element of listGroupId) {
+                const group = element.split('/');
+                const automationsData = await fetchListAutomations(dataSources, group[0]).toPromise();
+                if (change) {
+                    newAutomations.push(...automationsData);
+                } else {
+                    setAutomations((prevVal) => [...prevVal, ...automationsData]);
+                }
             }
+            if (change) {
+                setAutomations(newAutomations);
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);  // End the loading state
         }
-    
-        if (interval) {
-            setAutomations(newAutomations);
-        }
+    };
+
+
+    const handleOpenDeleteDialog = (id: string) => {
+        setDialog({
+            dialogId: 'delete',
+            showDialog: true,
+            title: `Delete Automation`,
+            message: `
+                This will delete the selected scenario from the list. After it is
+                deleted you cannot retrieve the data. Are you sure you want to 
+                delete this Automation?`,
+            cancelLabel: 'Cancel',
+            confirmLabel: 'Confirm',
+            onConfirm: () => onDeleteAutomation(id),
+        });
+    };
+
+    const onDeleteAutomation = (id: string) => {
+        setLoading(true);
+        deleteAutomation(dataSources, id).subscribe({
+            next: async (res) => {
+                try {
+                    if (res.status === 204) {
+                        await fetchInitialData(true);
+                    } else {
+                        console.log('Failed delete automation');
+                    }
+                } catch (err) {
+                    console.log(err);
+                } finally {
+                    handleCloseDeleteDialog();
+                    setLoading(false);
+                }
+            },
+            error: (err) => {
+                console.log(err);
+                handleCloseDeleteDialog();
+                setLoading(false);
+            }
+        });
+    }
+
+    const handleCloseDeleteDialog = () => {
+        setDialog({
+            ...dialog,
+            showDialog: false,
+        });
     };
 
     const handleOpenDetailsAutomation = (automation: AutomationData) => {
@@ -136,6 +198,17 @@ function AutomationsList(props: AutomationsListProps) {
 
     return (
         <>
+            <GeneralDialog
+                dialogId={dialog.dialogId}
+                title={dialog.title}
+                message={dialog.message}
+                cancelLabel={dialog.cancelLabel}
+                confirmLabel={dialog.confirmLabel}
+                showDialog={dialog.showDialog}
+                onConfirm={dialog.onConfirm}
+                onCancel={handleCloseDeleteDialog}
+                isLoading={loading}
+            />
             <DetailAutomationsDialog
                 open={openDetailsAutomation}
                 onClose={handleCloseDetailAutomation}
@@ -149,6 +222,7 @@ function AutomationsList(props: AutomationsListProps) {
             <Box>
                 <Paper className={classes.paperStyle}>
                     <ToolbarAutomations onClick={() => handleOpenFormAutomation(undefined)} />
+                    {loading && <Loading />}
                     <Grid rows={automations} columns={DEFAULT_COLUMNS} >
                         <FilteringState defaultFilters={[]} />
                         <IntegratedFiltering />
@@ -166,6 +240,8 @@ function AutomationsList(props: AutomationsListProps) {
                                     {...props}
                                     onViewAutomation={handleOpenDetailsAutomation}
                                     onEditAutomation={handleOpenFormAutomation}
+                                    onDeleteDialog={handleOpenDeleteDialog}
+                                    isLoading={loading}
                                 />
                             )}
                             height={windowHeight - 230}
