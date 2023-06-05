@@ -10,7 +10,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         name: "automation1",
         updated: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
-        hostId: "Minion",
+        
         priority: 1,
         isEnabled: true,
         tag: 'tag',
@@ -51,7 +51,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         name: "automation2",
         updated: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
-        hostId: "Minion",
+        
         priority: 1,
         isEnabled: false,
         tag: 'tag',
@@ -92,7 +92,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         name: "automation3",
         updated: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
-        hostId: "Minion",
+        
         priority: 1,
         isEnabled: true,
         tag: 'tag',
@@ -151,7 +151,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         name: "automation3",
         updated: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
-        hostId: "Minion",
+        
         priority: 1,
         isEnabled: true,
         tag: 'tag',
@@ -192,7 +192,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         name: "automation5",
         updated: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
-        hostId: "Minion",
+        
         priority: 1,
         isEnabled: true,
         tag: 'tag',
@@ -233,7 +233,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         name: "automation6",
         updated: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
-        hostId: "Minion",
+        
         priority: 1,
         isEnabled: true,
         tag: 'tag',
@@ -283,7 +283,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         name: "automation7",
         updated: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
-        hostId: "Minion",
+        
         priority: 1,
         isEnabled: true,
         tag: 'tag',
@@ -324,7 +324,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //     name: "automation8",
     //     updated: "2023-05-23T05:04:34.8177343Z",
     //     hostGroup: "Minion",
-    //     hostId: "Minion",
+    //     
     //     priority: 1,
     //     isEnabled: false,
     //     tag: 'tag',
@@ -365,7 +365,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //     name: "automation9",
     //     updated: "2023-05-23T05:04:34.8177343Z",
     //     hostGroup: "Minion",
-    //     hostId: "Minion",
+    //     
     //     priority: 1,
     //     isEnabled: false,
     //     tag: 'tag',

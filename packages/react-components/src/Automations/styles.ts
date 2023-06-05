@@ -43,6 +43,9 @@ export const DetailAutomationStyle = makeStyles({
 
 
 export const FormAutomationStyles = makeStyles((theme) => ({
+  buttonParam: {
+    marginBottom: '5px',
+  },
   boxParameter: {
     border: '1px solid lightgrey',
     padding: '15px',

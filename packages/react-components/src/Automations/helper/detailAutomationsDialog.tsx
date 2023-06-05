@@ -21,30 +21,31 @@ export const TriggerList = ({ triggerList, handleDelete }) => {
 
   if (!triggerList) return null
 
-  return (<Box className={classes.triggerListContainer}>
-    {triggerList?.map((trigger) =>
-      <Box
-        key={trigger.id}
-        className={classes.triggerBox}
-      >
-        {handleDelete &&
-          <IconButton
-            className={classes.iconButton}
-            onClick={() => handleDelete(trigger.id)}
-          >
-            <HighlightOff />
-          </IconButton>
-        }
-        <Typography variant="body1" className={classes.typography}><strong>Id: </strong> {trigger.id}</Typography>
-        <Typography variant="body1" className={classes.typography}><strong>StartTimeUtc:</strong> {trigger.startTimeUtc}</Typography>
-        <Typography variant="body1" className={classes.typography}><strong>Interval:</strong> {trigger.interval}</Typography>
-        <Typography variant="body1" className={classes.typography}><strong>Description:</strong> {trigger.description}</Typography>
-        <Typography variant="body1" className={classes.typography}><strong>IsEnabled:</strong> {`${trigger.isEnabled}`}</Typography>
-        <Typography variant="body1" className={classes.typography}><strong>IsMet:</strong> {`${trigger.isMet}`}</Typography>
-        <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
-      </Box>
-    )}
-  </Box>)
+  return (
+    <Box className={classes.triggerListContainer}>
+      {triggerList?.map((trigger) =>
+        <Box
+          key={trigger.id}
+          className={classes.triggerBox}
+        >
+          {handleDelete &&
+            <IconButton
+              className={classes.iconButton}
+              onClick={() => handleDelete(trigger.id)}
+            >
+              <HighlightOff />
+            </IconButton>
+          }
+          <Typography variant="body1" className={classes.typography}><strong>Id: </strong> {trigger.id}</Typography>
+          <Typography variant="body1" className={classes.typography}><strong>StartTimeUtc:</strong> {trigger.startTimeUtc?.split('.')[0].replace("T", " ")}</Typography>
+          <Typography variant="body1" className={classes.typography}><strong>Interval:</strong> {trigger.interval}</Typography>
+          <Typography variant="body1" className={classes.typography}><strong>Description:</strong> {trigger.description}</Typography>
+          <Typography variant="body1" className={classes.typography}><strong>IsEnabled:</strong> {`${trigger.isEnabled}`}</Typography>
+          <Typography variant="body1" className={classes.typography}><strong>IsMet:</strong> {`${trigger.isMet}`}</Typography>
+          <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
+        </Box>
+      )}
+    </Box>)
 }
 
 const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClose, automation }) => {
@@ -73,8 +74,16 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
               <Typography variant="body1" className={classes.typography}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>WorkflowInputParameters:</strong> {automation?.workflowInputParametersFilePath}</Typography>
-              <Typography variant="body1" className={classes.typography}><strong>Parameters:</strong> {automation?.parameters?.utcNow}</Typography>
-              <Typography variant="body1" className={classes.typography}><strong>Updated:</strong> {automation?.updated}</Typography>
+              <Typography variant="body1" className={classes.typography}>
+                <strong>Parameters:</strong>
+                {Object.entries(automation?.parameters || {}).map(([key, value], index) => (
+                  <span key={key}>
+                    <br />
+                    {index + 1}. {key}: {value}
+                  </span>
+                ))}
+              </Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Updated:</strong> {automation?.updated.split('.')[0].replace("T", " ")}</Typography>
             </DialogContentText>
             <Paper className={classes.dialogContentPaper}>
               <Box className={classes.boxStyle}>

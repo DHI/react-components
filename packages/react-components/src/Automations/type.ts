@@ -6,8 +6,6 @@ interface AutomationsListProps {
     dataSources: DataSource;
     /** Hide or show columns */
     disabledColumns?: string[];
-    /** Data source to get the logs specific parameters */
-    parameters?: Parameters[];
     /** The date time format that the dates shown in */
     dateTimeFormat?: string;
     /** Selected date for log entries from */
@@ -16,11 +14,6 @@ interface AutomationsListProps {
     timeZone?: string;
     /** Emit event to client when Automations received from the server */
     onReceived?: (data: any) => void;
-}
-
-interface Parameters {
-    /** Name to populate Automations table matching the payload */
-    utcNow: string
 }
 
 interface AutomationData {
@@ -133,13 +126,18 @@ interface ITriggerParameter {
     setTriggerValues: (value) => void
 }
 
-
 interface DetailAutomationsDialogProps {
     open: boolean;
     onClose: () => void;
     automation?: AutomationData
 }
 
+interface DynamicFieldProps {
+    index: number;
+    parameter: IParameters;
+    updateField: (index: number, key: string, value: string) => void;
+    removeField: (index: number) => void;
+}
 
 export default AutomationsListProps;
 export {
@@ -147,8 +145,9 @@ export {
     FilterProps,
     AutomationDetailProps,
     DateFilterProps,
-    Parameters,
+    IParameters,
     IFormAutomationDialog,
     ITriggerParameter,
     DetailAutomationsDialogProps,
+    DynamicFieldProps
 };

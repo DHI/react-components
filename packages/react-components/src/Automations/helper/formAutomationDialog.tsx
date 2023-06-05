@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { AutomationData, IFormAutomationDialog, ITriggerParameter } from '../type';
+import { AutomationData, IFormAutomationDialog, IParameters, ITriggerParameter } from '../type';
 import {
   Accordion,
   AccordionDetails,
@@ -26,8 +26,8 @@ import { ExpandMore } from '@material-ui/icons';
 import { ITriggerCondition } from '../type'
 import { FormAutomationStyles } from '../styles';
 import { createNewAutomation, updateAutomation } from '../../api/Automations/AutomationApi';
-import { initialTrigger, fields, initialFormValues, triggerFields } from './const';
-import { TriggerParameterForm } from './triggerParameterForm';
+import { initialTrigger, fields, initialFormValues, triggerFields, initialFormErrors, initialTriggerError } from './const';
+import { DynamicField, TriggerParameterForm } from './triggerParameterForm';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   open, onClose, automation, dataSources, fetchData, setLoading, loading
@@ -35,42 +35,37 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const classes = FormAutomationStyles();
   const [addMode, setAddMode] = useState(true)
   const [formValues, setFormValues] = useState(initialFormValues);
+  const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [trigger, setTrigger] = useState(initialTrigger);
+  const [triggerErrors, setTriggerErrors] = useState(initialTriggerError)
   const [triggerParameters, setTriggerParameters] = useState({});
   const [inputTriggers, setInputTriggers] = useState<ITriggerCondition>({
     triggers: [],
     isMet: false,
     conditional: ''
   })
+  const [parameters, setParameters] = useState<IParameters[]>([]);
 
   useEffect(() => {
     if (automation && open) {
       setAddMode(false)
       setFormValues({
         name: automation.name,
-        nameError: false,
         group: automation.group,
-        groupError: false,
         taskId: automation.taskId,
-        taskIdError: false,
         hostGroup: automation.hostGroup,
-        hostGroupError: false,
         priority: automation.priority,
-        priorityError: false,
         workflowInputParametersFilePath: automation.workflowInputParametersFilePath,
-        workflowInputParametersFilePathError: false,
         tag: automation.tag,
-        tagError: false,
         isEnabled: automation.isEnabled
       });
 
+      setParameters(Object.entries(automation.parameters || {}).map(([key, value]) => ({ key, value })));
+
       setTrigger({
         triggerCondition: automation.triggerCondition.conditional,
-        triggerConditionError: false,
         triggerId: '',
-        triggerIdError: false,
         type: '',
-        typeError: false,
         isEnabled: automation.isEnabled
       });
 
@@ -93,7 +88,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       [name]: type === 'checkbox' ? checked : value,
     }));
 
-    setFormValues(prevValues => setError(prevValues, `${name}Error`, type, value));
+    setFormErrors(prevValues => setError(prevValues, `${name}Error`, type, value));
   }, [setError]);
 
   const handleChangeTrigger = useCallback((event) => {
@@ -127,6 +122,22 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     }));
   }, [trigger, triggerParameters]);
 
+  const handleAddField = useCallback(() => {
+    setParameters(prevParameters => [...prevParameters, { key: "", value: "" }]);
+  }, []);
+
+  const handleUpdateField = useCallback((index: number, key: string, value: string) => {
+    setParameters(prevParameters => {
+      const newParameters = [...prevParameters];
+      newParameters[index] = { key, value };
+      return newParameters;
+    });
+  }, []);
+
+  const handleRemoveField = useCallback((index: number) => {
+    setParameters(prevParameters => prevParameters.filter((_, i) => i !== index));
+  }, []);
+
   const handleRemoveTrigger = useCallback((triggerId) => {
     setInputTriggers(prevState => {
       const updatedTriggers = prevState.triggers.filter(trigger => trigger.id !== triggerId);
@@ -141,6 +152,9 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const handleClose = useCallback(() => {
     setFormValues(initialFormValues);
     setTrigger(initialTrigger);
+    setFormErrors(initialFormErrors)
+    setTriggerErrors(initialTriggerError)
+    setParameters([])
     setTriggerParameters({});
     setInputTriggers({
       triggers: [],
@@ -154,7 +168,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const handleSubmitData = () => {
     let hasError = false;
 
-    const newFormValues = { ...formValues };
+    const newFormValues = { ...formErrors };
     fields.forEach((field) => {
       if (!formValues[field]) {
         newFormValues[`${field}Error`] = true;
@@ -162,7 +176,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       }
     });
 
-    const newTrigger = { ...trigger };
+    const newTrigger = { ...triggerErrors };
     triggerFields.forEach((field) => {
       if (!trigger[field]) {
         newTrigger[`${field}Error`] = true;
@@ -170,8 +184,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       }
     });
 
-    setFormValues(newFormValues);
-    setTrigger(newTrigger);
+    setFormErrors(newFormValues);
+    setTriggerErrors(newTrigger);
 
     if (hasError) {
       return; // Stop the function if there are errors
@@ -179,12 +193,24 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
 
     // Continue with the previous code if there are no errors
     setLoading(true);
+    const paramPayload = parameters.reduce((acc, { key, value }) => {
+      return {
+        ...acc,
+        [key]: value,
+      };
+    }, {});
+    const paramTriggerCondition = {
+      ...inputTriggers,
+      conditional: trigger.triggerCondition,
+      isEnable: trigger.isEnabled
+    }
     const automationData: AutomationData = {
       ...formValues,
       fullName: `${formValues.group}/${formValues.name}`,
       id: `${formValues.group}/${formValues.name}`,
       updated: new Date().toISOString(),
-      triggerCondition: inputTriggers,
+      triggerCondition: paramTriggerCondition,
+      parameters: paramPayload,
     };
 
     if (addMode) {
@@ -242,8 +268,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
             <Grid container spacing={3}>
               <Grid item xs={6}>
                 <TextField
-                  error={formValues.nameError}
-                  helperText={formValues.nameError ? "Name is required" : ""}
+                  error={formErrors.nameError}
+                  helperText={formErrors.nameError ? "Name is required" : ""}
                   name='name'
                   label='Name'
                   variant="outlined"
@@ -255,8 +281,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  error={formValues.groupError}
-                  helperText={formValues.groupError ? "Group is required" : ""}
+                  error={formErrors.groupError}
+                  helperText={formErrors.groupError ? "Group is required" : ""}
                   name='group'
                   label='Group'
                   variant="outlined"
@@ -268,8 +294,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  error={formValues.taskIdError}
-                  helperText={formValues.taskIdError ? "Task Id is required" : ""}
+                  error={formErrors.taskIdError}
+                  helperText={formErrors.taskIdError ? "Task Id is required" : ""}
                   name='taskId'
                   label='Task Id'
                   variant="outlined"
@@ -281,8 +307,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  error={formValues.hostGroupError}
-                  helperText={formValues.hostGroupError ? "Host Group is required" : ""}
+                  error={formErrors.hostGroupError}
+                  helperText={formErrors.hostGroupError ? "Host Group is required" : ""}
                   name='hostGroup'
                   label='Host Group'
                   variant="outlined"
@@ -294,10 +320,10 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  error={formValues.workflowInputParametersFilePathError}
-                  helperText={formValues.workflowInputParametersFilePathError ? "Workflow is required" : ""}
+                  error={formErrors.workflowInputParametersFilePathError}
+                  helperText={formErrors.workflowInputParametersFilePathError ? "Workflow is required" : ""}
                   name='workflowInputParametersFilePath'
-                  label='Workflow Input Parameters'
+                  label='Workflow Input Parameters File Path'
                   variant="outlined"
                   size='small'
                   fullWidth
@@ -307,8 +333,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  error={formValues.tagError}
-                  helperText={formValues.tag ? "Tag is required" : ""}
+                  error={formErrors.tagError}
+                  helperText={formErrors.tagError ? "Tag is required" : ""}
                   name='tag'
                   label='Tag'
                   variant="outlined"
@@ -320,8 +346,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  error={formValues.priorityError}
-                  helperText={formValues.priorityError ? "Priority is required" : ""}
+                  error={formErrors.priorityError}
+                  helperText={formErrors.priorityError ? "Priority is required" : ""}
                   name='priority'
                   label='Priority'
                   variant="outlined"
@@ -345,6 +371,20 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                   label='Enabled'
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Box>
+                  <Button onClick={handleAddField} variant='outlined' className={classes.buttonParam}>Add New Parameters</Button>
+                  {parameters.map((parameter, i) => (
+                    <DynamicField
+                      key={i}
+                      index={i}
+                      parameter={parameter}
+                      updateField={handleUpdateField}
+                      removeField={handleRemoveField}
+                    />
+                  ))}
+                </Box>
+              </Grid>
             </Grid>
             <Accordion className={classes.accordion}>
               <AccordionSummary expandIcon={<ExpandMore />}>
@@ -354,8 +394,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <TextField
-                      error={trigger.triggerConditionError}
-                      helperText={trigger.triggerConditionError ? "Trigger Condition is required" : ""}
+                      error={triggerErrors.triggerConditionError}
+                      helperText={triggerErrors.triggerConditionError ? "Trigger Condition is required" : ""}
                       name='triggerCondition'
                       label='Trigger Condition'
                       variant="outlined"
@@ -381,8 +421,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                               Id
                             </Typography>
                             <TextField
-                              error={trigger.triggerIdError}
-                              helperText={trigger.triggerIdError ? "Trigger Id is required" : ""}
+                              error={triggerErrors.triggerIdError}
+                              helperText={triggerErrors.triggerIdError ? "Trigger Id is required" : ""}
                               name='triggerId'
                               variant="outlined"
                               size="small"
