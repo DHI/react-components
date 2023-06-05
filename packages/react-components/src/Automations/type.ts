@@ -30,8 +30,6 @@ interface AutomationData {
     taskId: string;
     /** Group of the Automation */
     group: string;
-    /** Host of Automation  */
-    hostId: string;
     /** Host group of Automations */
     hostGroup: string;
     /** priority of Automations */
@@ -82,7 +80,7 @@ interface ITrigger {
 }
 
 interface IParameters {
-    utcNow: string;
+    [key: string]: string;
 }
 
 interface FilterProps {

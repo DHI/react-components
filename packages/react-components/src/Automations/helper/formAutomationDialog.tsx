@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AutomationData, IFormAutomationDialog, ITriggerParameter } from '../type';
 import {
   Accordion,
@@ -22,31 +22,20 @@ import {
   Typography,
 } from '@material-ui/core';
 import { TriggerList } from './detailAutomationsDialog';
-import DateInput from '../../common/DateInput/DateInput';
 import { ExpandMore } from '@material-ui/icons';
 import { ITriggerCondition } from '../type'
 import { FormAutomationStyles } from '../styles';
 import { createNewAutomation, updateAutomation } from '../../api/Automations/AutomationApi';
+import { initialTrigger, fields, initialFormValues, triggerFields } from './const';
+import { TriggerParameterForm } from './triggerParameterForm';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   open, onClose, automation, dataSources, fetchData, setLoading, loading
 }) => {
   const classes = FormAutomationStyles();
   const [addMode, setAddMode] = useState(true)
-  const [formValues, setFormValues] = useState({
-    name: '',
-    group: '',
-    taskId: '',
-    hostId: '',
-    priority: 0,
-    isEnabled: false,
-  });
-  const [trigger, setTrigger] = useState({
-    triggerCondition: '',
-    triggerId: '',
-    type: '',
-    isEnabled: false
-  })
+  const [formValues, setFormValues] = useState(initialFormValues);
+  const [trigger, setTrigger] = useState(initialTrigger);
   const [triggerParameters, setTriggerParameters] = useState({});
   const [inputTriggers, setInputTriggers] = useState<ITriggerCondition>({
     triggers: [],
@@ -59,17 +48,29 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       setAddMode(false)
       setFormValues({
         name: automation.name,
+        nameError: false,
         group: automation.group,
+        groupError: false,
         taskId: automation.taskId,
-        hostId: automation.hostId,
+        taskIdError: false,
+        hostGroup: automation.hostGroup,
+        hostGroupError: false,
         priority: automation.priority,
+        priorityError: false,
+        workflowInputParametersFilePath: automation.workflowInputParametersFilePath,
+        workflowInputParametersFilePathError: false,
+        tag: automation.tag,
+        tagError: false,
         isEnabled: automation.isEnabled
       });
 
       setTrigger({
         triggerCondition: automation.triggerCondition.conditional,
+        triggerConditionError: false,
         triggerId: '',
+        triggerIdError: false,
         type: '',
+        typeError: false,
         isEnabled: automation.isEnabled
       });
 
@@ -77,21 +78,36 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     }
   }, [automation]);
 
-  const handleChange = (event) => {
-    setFormValues({
-      ...formValues,
-      [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
-    });
-  };
+  const setError = useCallback((object, name, type, value) => {
+    return {
+      ...object,
+      [name]: type === 'checkbox' ? value : !value,
+    };
+  }, []);
 
-  const handleChangeTrigger = (event) => {
-    setTrigger({
-      ...trigger,
-      [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
-    });
-  };
+  const handleChange = useCallback((event) => {
+    const { name, type, value, checked } = event.target;
 
-  const handleAddTrigger = () => {
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+
+    setFormValues(prevValues => setError(prevValues, `${name}Error`, type, value));
+  }, [setError]);
+
+  const handleChangeTrigger = useCallback((event) => {
+    const { name, type, value, checked } = event.target;
+
+    setTrigger(prevTrigger => ({
+      ...prevTrigger,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+
+    setTrigger(prevTrigger => setError(prevTrigger, `${name}Error`, type, value));
+  }, [setError]);
+
+  const handleAddTrigger = useCallback(() => {
     const triggerParam = triggerParameters[trigger.type]
     const newTrigger = {
       id: trigger.triggerId,
@@ -109,9 +125,9 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       isMet: true,
       conditional: trigger.triggerCondition
     }));
-  }
+  }, [trigger, triggerParameters]);
 
-  const handleRemoveTrigger = (triggerId) => {
+  const handleRemoveTrigger = useCallback((triggerId) => {
     setInputTriggers(prevState => {
       const updatedTriggers = prevState.triggers.filter(trigger => trigger.id !== triggerId);
 
@@ -120,44 +136,55 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         triggers: updatedTriggers
       };
     });
-  };
+  }, []);
 
-  const handleClose = () => {
-    setTrigger({
-      triggerCondition: '',
-      triggerId: '',
-      type: '',
-      isEnabled: false
-    })
-    setFormValues({
-      name: '',
-      group: '',
-      taskId: '',
-      hostId: '',
-      priority: 0,
-      isEnabled: false,
-    })
-    setTriggerParameters({})
+  const handleClose = useCallback(() => {
+    setFormValues(initialFormValues);
+    setTrigger(initialTrigger);
+    setTriggerParameters({});
     setInputTriggers({
       triggers: [],
       isMet: false,
       conditional: ''
-    })
-    onClose()
-  }
+    });
+    setAddMode(true);
+    onClose();
+  }, [initialFormValues, initialTrigger, onClose]);
 
   const handleSubmitData = () => {
-    alert(addMode)
-    setLoading(true)
+    let hasError = false;
+
+    const newFormValues = { ...formValues };
+    fields.forEach((field) => {
+      if (!formValues[field]) {
+        newFormValues[`${field}Error`] = true;
+        hasError = true;
+      }
+    });
+
+    const newTrigger = { ...trigger };
+    triggerFields.forEach((field) => {
+      if (!trigger[field]) {
+        newTrigger[`${field}Error`] = true;
+        hasError = true;
+      }
+    });
+
+    setFormValues(newFormValues);
+    setTrigger(newTrigger);
+
+    if (hasError) {
+      return; // Stop the function if there are errors
+    }
+
+    // Continue with the previous code if there are no errors
+    setLoading(true);
     const automationData: AutomationData = {
       ...formValues,
       fullName: `${formValues.group}/${formValues.name}`,
       id: `${formValues.group}/${formValues.name}`,
       updated: new Date().toISOString(),
       triggerCondition: inputTriggers,
-      hostGroup: formValues.group, // No state provided for this field
-      workflowInputParametersFilePath: '', // No state provided for this field
-      tag: '', // No state provided for this field
     };
 
     if (addMode) {
@@ -165,7 +192,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         next: async () => {
           try {
             await fetchData(true);
-            handleClose()
+            handleClose();
           } catch (err) {
             console.log(err);
           } finally {
@@ -175,18 +202,18 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         },
         error: (err) => {
           console.log('Error creating new automation:', err);
-        }
+        },
       });
     } else {
       const updatedPayload = {
         ...automationData,
-        id: automation?.id
-      }
+        id: automation?.id,
+      };
       updateAutomation(dataSources, updatedPayload).subscribe({
         next: async () => {
           try {
             await fetchData(true);
-            handleClose()
+            handleClose();
           } catch (err) {
             console.log(err);
           } finally {
@@ -196,11 +223,10 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         },
         error: (err) => {
           console.log('Error update automation:', err);
-        }
+        },
       });
     }
-
-  }
+  };
 
   return (
     <Dialog open={open} maxWidth='md'>
@@ -216,6 +242,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
             <Grid container spacing={3}>
               <Grid item xs={6}>
                 <TextField
+                  error={formValues.nameError}
+                  helperText={formValues.nameError ? "Name is required" : ""}
                   name='name'
                   label='Name'
                   variant="outlined"
@@ -227,6 +255,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  error={formValues.groupError}
+                  helperText={formValues.groupError ? "Group is required" : ""}
                   name='group'
                   label='Group'
                   variant="outlined"
@@ -238,6 +268,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  error={formValues.taskIdError}
+                  helperText={formValues.taskIdError ? "Task Id is required" : ""}
                   name='taskId'
                   label='Task Id'
                   variant="outlined"
@@ -249,17 +281,47 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  name='hostId'
-                  label='Host Id'
+                  error={formValues.hostGroupError}
+                  helperText={formValues.hostGroupError ? "Host Group is required" : ""}
+                  name='hostGroup'
+                  label='Host Group'
                   variant="outlined"
                   size='small'
                   fullWidth
-                  value={formValues.hostId}
+                  value={formValues.hostGroup}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  error={formValues.workflowInputParametersFilePathError}
+                  helperText={formValues.workflowInputParametersFilePathError ? "Workflow is required" : ""}
+                  name='workflowInputParametersFilePath'
+                  label='Workflow Input Parameters'
+                  variant="outlined"
+                  size='small'
+                  fullWidth
+                  value={formValues.workflowInputParametersFilePath}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  error={formValues.tagError}
+                  helperText={formValues.tag ? "Tag is required" : ""}
+                  name='tag'
+                  label='Tag'
+                  variant="outlined"
+                  size='small'
+                  fullWidth
+                  value={formValues.tag}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  error={formValues.priorityError}
+                  helperText={formValues.priorityError ? "Priority is required" : ""}
                   name='priority'
                   label='Priority'
                   variant="outlined"
@@ -292,11 +354,17 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <TextField
+                      error={trigger.triggerConditionError}
+                      helperText={trigger.triggerConditionError ? "Trigger Condition is required" : ""}
                       name='triggerCondition'
                       label='Trigger Condition'
                       variant="outlined"
                       size="small"
                       fullWidth
+                      style={{
+                        background: inputTriggers.triggers.length === 0 ? '#e0e0e0' : 'inherit',
+                      }}
+                      disabled={inputTriggers.triggers.length === 0}
                       value={trigger.triggerCondition}
                       onChange={handleChangeTrigger}
                     />
@@ -313,6 +381,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                               Id
                             </Typography>
                             <TextField
+                              error={trigger.triggerIdError}
+                              helperText={trigger.triggerIdError ? "Trigger Id is required" : ""}
                               name='triggerId'
                               variant="outlined"
                               size="small"
@@ -364,6 +434,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                       <Grid item xs={12} className={classes.gridAddButton}>
                         <Button
                           variant='outlined'
+                          disabled={trigger.triggerId === '' || trigger.type === ''}
                           className={classes.addButton}
                           onClick={handleAddTrigger}
                         >
@@ -384,7 +455,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
           <Button onClick={handleClose} variant="contained">Close</Button>
           <Button
             onClick={handleSubmitData}
-            disabled={loading}
+            disabled={loading || inputTriggers.triggers.length === 0}
             variant='contained'
             color="primary"
           >
@@ -396,86 +467,5 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     </Dialog>
   )
 }
-
-const TriggerParameterForm: React.FC<ITriggerParameter> = ({ triggerType, triggerValues, setTriggerValues }) => {
-  const classes = FormAutomationStyles()
-  const handleChangeText = (event) => {
-    setTriggerValues({
-      ...triggerValues,
-      [triggerType]: {
-        ...triggerValues[triggerType],
-        description: event.target.value
-      },
-    });
-  };
-
-  const handleChangeInterval = (event) => {
-    setTriggerValues({
-      ...triggerValues,
-      [triggerType]: {
-        ...triggerValues[triggerType],
-        interval: event.target.value
-      },
-    });
-  };
-
-  const handleChangeDate = (value) => {
-    setTriggerValues({
-      ...triggerValues,
-      [triggerType]: {
-        ...triggerValues[triggerType],
-        startTimeUtc: value
-      },
-    });
-  };
-
-  switch (triggerType) {
-    case 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs':
-      return (
-        <Box className={classes.boxParameter}>
-          <Typography className={classes.typographyScheduledTrigger}>Trigger Parameter</Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
-              <TextField
-                name='description'
-                label='Description'
-                variant="outlined"
-                multiline
-                maxRows={4}
-                size="small"
-                fullWidth
-                value={triggerValues[triggerType]?.description || ''}
-                onChange={handleChangeText}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                name='interval'
-                label='Interval'
-                variant="outlined"
-                size="small"
-                fullWidth
-                value={triggerValues[triggerType]?.interval || ''}
-                onChange={handleChangeInterval}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <DateInput
-                label="Start Date Time"
-                dateFormat={'yyyy-MM-dd'}
-                timeZone={'Australia/Brisbane'}
-                defaultDate={triggerValues[triggerType]?.startTimeUtc || new Date().toISOString()}
-                dateSelected={handleChangeDate}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-      )
-    default:
-      return null;
-  }
-}
-
-
 
 export default FormAutomationDialog

@@ -41,7 +41,7 @@ export const TriggerList = ({ triggerList, handleDelete }) => {
         <Typography variant="body1" className={classes.typography}><strong>Description:</strong> {trigger.description}</Typography>
         <Typography variant="body1" className={classes.typography}><strong>IsEnabled:</strong> {`${trigger.isEnabled}`}</Typography>
         <Typography variant="body1" className={classes.typography}><strong>IsMet:</strong> {`${trigger.isMet}`}</Typography>
-        <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type}</Typography>
+        <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
       </Box>
     )}
   </Box>)

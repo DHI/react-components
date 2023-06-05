@@ -37,7 +37,7 @@ const DEFAULT_COLUMNS = [
     { title: 'Full Name', name: 'fullName' },
     { title: 'Task Id', name: 'taskId' },
     { title: 'Enabled', name: 'isEnabled' },
-    { title: 'Host Id', name: 'hostId' },
+    { title: 'Host Group', name: 'hostGroup' },
     { title: 'Priority', name: 'priority' },
     { title: 'Updated Time', name: 'updated' },
     { title: 'Trigger Condition', name: 'triggerCondition.conditional' },

@@ -57,14 +57,20 @@ const Cell: React.FC<CellProps> = (props) => {
     }
 
     if (column.name === 'updated') {
-        const date = new Date(value);
-        const formattedDate = date.toISOString().split('.')[0].replace("T", " ");
-
+        if (value) {
+            const date = new Date(value);
+            const formattedDate = date?.toISOString().split('.')[0].replace("T", " ");
+            return (
+                <td className="MuiTableCell-root">
+                    {formattedDate}
+                </td>
+            );
+        }
         return (
             <td className="MuiTableCell-root">
-                {formattedDate}
+                {''}
             </td>
-        );
+        )
     }
 
     if (column.name === 'triggerCondition.conditional') {
