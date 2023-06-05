@@ -42,7 +42,7 @@ interface AutomationData {
     /** List Trigger of Automation */
     triggerCondition: ITriggerCondition;
     /** WorkflowInput of Automation */
-    workflowInputParametersFilePath: string;
+    workflowInputParametersFilePath?: string;
 }
 
 export interface ITriggerCondition {

@@ -7,7 +7,6 @@ export const initialFormValues = {
   group: '',
   taskId: '',
   hostGroup: '',
-  workflowInputParametersFilePath: '',
   priority: 0,
   tag: '',
   isEnabled: false,
@@ -18,7 +17,6 @@ export const initialFormErrors = {
   groupError: false,
   taskIdError: false,
   hostGroupError: false,
-  workflowInputParametersFilePathError: false,
   priorityError: false,
   tagError: false,
 };

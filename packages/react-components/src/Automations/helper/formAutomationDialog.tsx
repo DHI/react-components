@@ -55,7 +55,6 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         taskId: automation.taskId,
         hostGroup: automation.hostGroup,
         priority: automation.priority,
-        workflowInputParametersFilePath: automation.workflowInputParametersFilePath,
         tag: automation.tag,
         isEnabled: automation.isEnabled
       });
@@ -315,19 +314,6 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
                   size='small'
                   fullWidth
                   value={formValues.hostGroup}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  error={formErrors.workflowInputParametersFilePathError}
-                  helperText={formErrors.workflowInputParametersFilePathError ? "Workflow is required" : ""}
-                  name='workflowInputParametersFilePath'
-                  label='Workflow Input Parameters File Path'
-                  variant="outlined"
-                  size='small'
-                  fullWidth
-                  value={formValues.workflowInputParametersFilePath}
                   onChange={handleChange}
                 />
               </Grid>
