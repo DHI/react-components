@@ -43,12 +43,12 @@ export const fetchListAutomations = (
         },
     }).pipe(
         tap(
-            // (res) => {
-            //     console.log('update text', res);
-            // },
-            // (error) => {
-            //     console.log(error);
-            // },
+            (res) => {
+                console.log('fetch group', res);
+            },
+            (error) => {
+                console.log(error);
+            },
         ),
     );
 };
@@ -64,7 +64,7 @@ export const createNewAutomation = (
     payload: AutomationData
 ) => {
     const type = "DHI.Services.Jobs.Automations.Automation, DHI.Services.Jobs";
-    
+
     if (payload.triggerCondition && payload.triggerCondition.triggers) {
         payload.triggerCondition.triggers = payload.triggerCondition.triggers.map((trigger) => {
             return {
@@ -87,12 +87,12 @@ export const createNewAutomation = (
         body: JSON.stringify(body)
     }).pipe(
         tap(
-            // (res) => {
-            //     console.log('update text', res);
-            // },
-            // (error) => {
-            //     console.log(error);
-            // },
+            (res) => {
+                console.log('create automation', res);
+            },
+            (error) => {
+                console.log(error);
+            },
         ),
     );
 };
@@ -108,7 +108,7 @@ export const updateAutomation = (
     payload: AutomationData
 ) => {
     const type = "DHI.Services.Jobs.Automations.Automation, DHI.Services.Jobs";
-    
+
     if (payload.triggerCondition && payload.triggerCondition.triggers) {
         payload.triggerCondition.triggers = payload.triggerCondition.triggers.map((trigger) => {
             return {
@@ -131,12 +131,12 @@ export const updateAutomation = (
         body: JSON.stringify(body)
     }).pipe(
         tap(
-            // (res) => {
-            //     console.log('update text', res);
-            // },
-            // (error) => {
-            //     console.log(error);
-            // },
+            (res) => {
+                console.log('update automation', res);
+            },
+            (error) => {
+                console.log(error);
+            },
         ),
     );
 };
@@ -156,4 +156,29 @@ export const deleteAutomation = (dataSource: DataSource, id: string) => {
             Authorization: `Bearer ${dataSource.token}`,
         },
     })
+}
+
+/**
+ * /api/scalars/wf-scalars/{query}
+ * Get the scalar with the specified group.
+ * @param dataSource
+ * @param id
+ */
+export const getScalarStatus = (dataSource: DataSource, query: string) => {
+    return fetchUrl(`${dataSource.host}/DSWebAPI/api/scalars/${dataSource.connection}/Job Automator|${dataSource.host.split("//")[1].split("/")[0].toUpperCase()}|${query}`,
+        {
+            method: 'GET',
+            additionalHeaders: {
+                Authorization: `Bearer ${dataSource.token}`,
+            },
+        }).pipe(
+            tap(
+                (res) => {
+                    console.log('get scalar', res);
+                },
+                (error) => {
+                    console.log(error);
+                },
+            ),
+        );
 }

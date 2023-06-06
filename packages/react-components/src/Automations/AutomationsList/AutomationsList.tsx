@@ -27,7 +27,7 @@ import AutomationsListProps, { AutomationData } from '../type';
 import DetailAutomationsDialog from '../helper/detailAutomationsDialog';
 import FormAutomationDialog from '../helper/formAutomationDialog';
 import { AutomationsListStyles } from '../styles';
-import { deleteAutomation, fetchGroupId, fetchListAutomations } from '../../api/Automations/AutomationApi';
+import { deleteAutomation, fetchGroupId, fetchListAutomations, getScalarStatus } from '../../api/Automations/AutomationApi';
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
@@ -74,9 +74,9 @@ function AutomationsList(props: AutomationsListProps) {
         (async () => {
             try {
                 await fetchInitialData();
-                intervalId = setInterval(async () => {
-                    await fetchInitialData(true);
-                }, 20000);
+                // intervalId = setInterval(async () => {
+                //     await fetchInitialData(true);
+                // }, 20000);
             } catch (error) {
                 console.log('err', error);
             }
@@ -90,7 +90,7 @@ function AutomationsList(props: AutomationsListProps) {
     }, []);
 
     const fetchInitialData = async (change?: boolean) => {
-        setLoading(true); 
+        setLoading(true);
         const newAutomations: AutomationData[] = [];
         try {
             const listGroupId = await fetchGroupId(dataSources).toPromise();
@@ -102,8 +102,19 @@ function AutomationsList(props: AutomationsListProps) {
                 if (uniqueGroupSet.has(groupId)) {
                     continue;
                 }
-                uniqueGroupSet.add(groupId);            
+                uniqueGroupSet.add(groupId);
                 const automationsData = await fetchListAutomations(dataSources, groupId).toPromise();
+
+                for (let automation of automationsData) {
+                    for (let trigger of automation.triggerCondition.triggers) {
+                        const id = automation.id.replace(/\//g, '|')
+                        const triggerId = trigger.id
+                        const props = 'Is Met'
+                        const scalarStatus = await getScalarStatus(dataSources, `${id}|${triggerId}|${props}`);
+                        console.log(scalarStatus)
+                    }
+                }
+
                 if (change) {
                     newAutomations.push(...automationsData);
                 } else {

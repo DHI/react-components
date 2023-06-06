@@ -17,6 +17,7 @@ export const AutomationsStory = () => {
     ({
       token,
       host: 'http://my-kl18',
+      connection: 'wf-scalars',
     }) as DataSource
 
   return (

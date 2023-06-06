@@ -62,7 +62,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       setParameters(Object.entries(automation.parameters || {}).map(([key, value]) => ({ key, value })));
 
       setTrigger({
-        triggerCondition: automation.triggerCondition.conditional,
+        triggerCondition: '',
         triggerId: '',
         type: '',
         isEnabled: automation.isEnabled
@@ -98,7 +98,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       [name]: type === 'checkbox' ? checked : value,
     }));
 
-    setTrigger(prevTrigger => setError(prevTrigger, `${name}Error`, type, value));
+    setTriggerErrors(prevTrigger => setError(prevTrigger, `${name}Error`, type, value));
   }, [setError]);
 
   const handleAddTrigger = useCallback(() => {
@@ -170,14 +170,16 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     const newFormValues = { ...formErrors };
     fields.forEach((field) => {
       if (!formValues[field]) {
+        console.log('ada')
         newFormValues[`${field}Error`] = true;
         hasError = true;
       }
     });
-
+    
     const newTrigger = { ...triggerErrors };
     triggerFields.forEach((field) => {
       if (!trigger[field]) {
+        console.log('ada trigger')
         newTrigger[`${field}Error`] = true;
         hasError = true;
       }

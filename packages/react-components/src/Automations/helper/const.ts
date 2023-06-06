@@ -1,5 +1,5 @@
 
-export const fields = ['name', 'group', 'taskId', 'hostGroup', 'priority', 'tag', 'workflowInputParametersFilePath'];
+export const fields = ['name', 'group', 'taskId', 'hostGroup', 'priority', 'tag'];
 export const triggerFields = ['triggerCondition'];
 
 export const initialFormValues = {
