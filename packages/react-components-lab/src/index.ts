@@ -40,6 +40,7 @@ export * from './components/GapBox/types';
 
 // InputFile
 export { default as InputFile } from './components/InputFile/InputFile';
+export { InputFileProps } from './components/InputFile/types';
 
 // LegendBase
 export { default as LegendBase } from './components/LegendBase/LegendBase';

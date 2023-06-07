@@ -8,11 +8,22 @@ import InputFileIconButton from './InputFileIconButton';
 const InputFile: FC<InputFileProps> = (props) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  const { variant, accept, onFilesRejected, onFilesUploaded, replaceOnUpload } =
-    props;
+  const {
+    variant,
+    accept,
+    quantity,
+    replaceOnUpload,
+    onFilesRejected,
+    onFilesUploaded,
+  } = props;
 
   const uploadFiles = (transferFiles: File[] | FileList) => {
     if (!transferFiles || !transferFiles.length) {
+      return;
+    }
+
+    if (quantity === 'single' && transferFiles.length > 1) {
+      onFilesRejected?.(Array.from<File>(transferFiles));
       return;
     }
 
