@@ -7,7 +7,7 @@ import { DeleteOutline } from "@material-ui/icons";
 import Form from "@rjsf/core";
 import validator from '@rjsf/validator-ajv8';
 import { RegistryWidgetsType } from "@rjsf/utils";
-import { uiSchema, schema } from "../AutomationsList/dummyData";
+import { uiSchema, schema } from "../helper/const";
 
 const CustomDateTime = (props) => {
   const { label, onChange, value } = props;
