@@ -6,14 +6,6 @@ interface AutomationsListProps {
     dataSources: DataSource;
     /** Hide or show columns */
     disabledColumns?: string[];
-    /** The date time format that the dates shown in */
-    dateTimeFormat?: string;
-    /** Selected date for log entries from */
-    startTimeUtc?: string;
-    /** Time zone to display data from the server to user time */
-    timeZone?: string;
-    /** Emit event to client when Automations received from the server */
-    onReceived?: (data: any) => void;
 }
 
 interface AutomationData {
@@ -35,8 +27,10 @@ interface AutomationData {
     fullName: string;
     /** name of Automation */
     name: string;
-    /** updated time of Automation */
-    updated: string;
+    /** requested time of Automation that are related to Job */
+    requested?: string;
+    /** current status of Automation that are related to Job */
+    currentStatus?: string;
     /** Parameters of Automation */
     parameters?: IParameters;
     /** List Trigger of Automation */
@@ -51,7 +45,7 @@ export interface ITriggerCondition {
     /** list of trigger condition */
     conditional: string
     /** status for final condition */
-    isMet: boolean
+    isMet?: boolean
 }
 
 interface ITrigger {
@@ -66,7 +60,7 @@ interface ITrigger {
     /** time utc for trigger */
     startTimeUtc?: string
     /** check for color status */
-    isMet: boolean
+    isMet?: boolean
     /** type for trigger */
     type: string
 

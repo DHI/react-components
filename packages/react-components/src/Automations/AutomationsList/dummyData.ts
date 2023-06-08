@@ -1,4 +1,5 @@
 import { AutomationData } from "../type";
+import { JSONSchema7 } from 'json-schema';
 
 export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     {
@@ -8,7 +9,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         fullName: "group3/automation1",
         group: "group3",
         name: "automation1",
-        updated: "2023-05-23T05:04:34.8177343Z",
+        requested: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
         
         priority: 1,
@@ -49,7 +50,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         fullName: "group3/automation2",
         group: "group3",
         name: "automation2",
-        updated: "2023-05-23T05:04:34.8177343Z",
+        requested: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
         
         priority: 1,
@@ -90,7 +91,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         fullName: "group4/automation3",
         group: "group4",
         name: "automation3",
-        updated: "2023-05-23T05:04:34.8177343Z",
+        requested: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
         
         priority: 1,
@@ -149,7 +150,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         fullName: "group4/automation4",
         group: "group4",
         name: "automation3",
-        updated: "2023-05-23T05:04:34.8177343Z",
+        requested: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
         
         priority: 1,
@@ -190,7 +191,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         fullName: "group5/automation5",
         group: "group5",
         name: "automation5",
-        updated: "2023-05-23T05:04:34.8177343Z",
+        requested: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
         
         priority: 1,
@@ -231,7 +232,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         fullName: "group5/automation6",
         group: "group5",
         name: "automation6",
-        updated: "2023-05-23T05:04:34.8177343Z",
+        requested: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
         
         priority: 1,
@@ -281,7 +282,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
         fullName: "group6/automation7",
         group: "group6",
         name: "automation7",
-        updated: "2023-05-23T05:04:34.8177343Z",
+        requested: "2023-05-23T05:04:34.8177343Z",
         hostGroup: "Minion",
         
         priority: 1,
@@ -322,7 +323,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //     fullName: "group6/automation8",
     //     group: "group6",
     //     name: "automation8",
-    //     updated: "2023-05-23T05:04:34.8177343Z",
+    //     requested: "2023-05-23T05:04:34.8177343Z",
     //     hostGroup: "Minion",
     //     
     //     priority: 1,
@@ -363,7 +364,7 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //     fullName: "group7/automation9",
     //     group: "group7",
     //     name: "automation9",
-    //     updated: "2023-05-23T05:04:34.8177343Z",
+    //     requested: "2023-05-23T05:04:34.8177343Z",
     //     hostGroup: "Minion",
     //     
     //     priority: 1,
@@ -398,3 +399,42 @@ export const DUMMY_DATA_AUTOMATIONS: AutomationData[] = [
     //     }
     // },
 ]
+
+export const uiSchema = {
+  startTimeUtc: {
+    "ui:options": {
+      label: false
+    }
+  },
+  description: {
+    "ui:widget": "text",
+    "ui:options": {
+      label: false
+    }
+  },
+  interval: {
+    "ui:widget": "text",
+    "ui:options": {
+      label: false
+    }
+  },
+};
+
+export const schema : JSONSchema7 = {
+  type: "object",
+  properties: {
+    startTimeUtc: {
+      type: "string",
+      format: "date-time",
+      title: "Start Date Time"
+    },
+    description: {
+      type: "string",
+      title: "Description"
+    },
+    interval: {
+      type: "string",
+      title: "Interval"
+    }
+  }
+};

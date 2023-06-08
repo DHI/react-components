@@ -39,12 +39,31 @@ export const DetailAutomationStyle = makeStyles({
   boxStyle: {
     marginBottom: '15px'
   }
-});
+})
 
+export const CustomField = makeStyles((theme) => ({
+  textField: {
+    margin: theme.spacing(1),
+  },
+  dateTime: {
+    margin: theme.spacing(1)
+  }
+}));
 
 export const FormAutomationStyles = makeStyles((theme) => ({
   buttonParam: {
     marginBottom: '5px',
+  },
+  form: {
+    width: '100%',
+    border: 'none',
+    '& > div > fieldset': {
+      border: '1px solid lightgrey',
+      borderRadius: '10px',
+    },
+    '& > div > button' : {
+      display: 'none'
+    }
   },
   boxParameter: {
     border: '1px solid lightgrey',

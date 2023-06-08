@@ -27,21 +27,28 @@ import AutomationsListProps, { AutomationData } from '../type';
 import DetailAutomationsDialog from '../helper/detailAutomationsDialog';
 import FormAutomationDialog from '../helper/formAutomationDialog';
 import { AutomationsListStyles } from '../styles';
-import { deleteAutomation, fetchGroupId, fetchListAutomations, getScalarStatus } from '../../api/Automations/AutomationApi';
+import {
+    deleteAutomation,
+    fetchGroupId,
+    fetchListAutomations,
+    getScalarStatus,
+    fetchJob
+} from '../../api/Automations/AutomationApi';
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
+import { applyConditionStatus, applyLastJobIdStatus, applyTriggerStatus, processScalarStatus } from '../helper/helper';
 
 const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
-    { title: 'Full Name', name: 'fullName' },
+    { title: 'Name', name: 'name' },
     { title: 'Task Id', name: 'taskId' },
     { title: 'Enabled', name: 'isEnabled' },
     { title: 'Host Group', name: 'hostGroup' },
-    { title: 'Priority', name: 'priority' },
-    { title: 'Updated Time', name: 'updated' },
     { title: 'Trigger Condition', name: 'triggerCondition.conditional' },
-    { title: 'Final Statement', name: 'triggerCondition.isMet' },
+    { title: 'Is Met', name: 'triggerCondition.isMet' },
+    { title: 'Last Requested Time', name: 'requested' },
+    { title: 'Current Status', name: 'currentStatus' },
     { title: 'Actions', name: 'actions' },
 ];
 
@@ -76,7 +83,7 @@ function AutomationsList(props: AutomationsListProps) {
                 await fetchInitialData();
                 // intervalId = setInterval(async () => {
                 //     await fetchInitialData(true);
-                // }, 20000);
+                // }, 25000);
             } catch (error) {
                 console.log('err', error);
             }
@@ -89,40 +96,46 @@ function AutomationsList(props: AutomationsListProps) {
         };
     }, []);
 
+    const processGroupIds = async (listGroupId, dataSources, conditionStatusMap: Map<string, boolean>, lastJobIdMap: Map<string, any>, triggerStatusMap: Map<string, boolean>, change?: boolean) => {
+        const newAutomations: AutomationData[] = [];
+        const uniqueGroupSet = new Set();
+    
+        for (let element of listGroupId) {
+            const group = element.split('/');
+            const groupId = group[0];
+            if (uniqueGroupSet.has(groupId)) {
+                continue;
+            }
+            uniqueGroupSet.add(groupId);
+            const automationsData = await fetchListAutomations(dataSources, groupId).toPromise();
+    
+            for (let automation of automationsData) {
+                applyConditionStatus(conditionStatusMap, automation);
+                applyLastJobIdStatus(lastJobIdMap, dataSources, automation);
+                applyTriggerStatus(triggerStatusMap, automation);
+            }
+    
+            if (change) {
+                newAutomations.push(...automationsData);
+            } else {
+                setAutomations((prevVal) => [...prevVal, ...automationsData]);
+            }
+        }
+        
+        return newAutomations;
+    }
+    
     const fetchInitialData = async (change?: boolean) => {
         setLoading(true);
-        const newAutomations: AutomationData[] = [];
         try {
             const listGroupId = await fetchGroupId(dataSources).toPromise();
-            const uniqueGroupSet = new Set();
-
-            for (let element of listGroupId) {
-                const group = element.split('/');
-                const groupId = group[0];
-                if (uniqueGroupSet.has(groupId)) {
-                    continue;
-                }
-                uniqueGroupSet.add(groupId);
-                const automationsData = await fetchListAutomations(dataSources, groupId).toPromise();
-
-                for (let automation of automationsData) {
-                    for (let trigger of automation.triggerCondition.triggers) {
-                        const id = automation.id.replace(/\//g, '|')
-                        const triggerId = trigger.id
-                        const props = 'Is Met'
-                        const scalarStatus = await getScalarStatus(dataSources, `${id}|${triggerId}|${props}`);
-                        console.log(scalarStatus)
-                    }
-                }
-
-                if (change) {
-                    newAutomations.push(...automationsData);
-                } else {
-                    setAutomations((prevVal) => [...prevVal, ...automationsData]);
-                }
-            }
+            const scalarStatus = await getScalarStatus(dataSources).toPromise();
+    
+            const {conditionStatusMap, lastJobIdMap, triggerStatusMap} = processScalarStatus(scalarStatus);
+            const automationsData = await processGroupIds(listGroupId, dataSources, conditionStatusMap, lastJobIdMap, triggerStatusMap, change);
+            
             if (change) {
-                setAutomations(newAutomations);
+                setAutomations(automationsData);
             }
         } catch (error) {
             console.error(error);

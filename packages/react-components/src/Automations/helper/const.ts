@@ -1,5 +1,5 @@
 
-export const fields = ['name', 'group', 'taskId', 'hostGroup', 'priority', 'tag'];
+export const fields = ['name', 'group', 'taskId', 'hostGroup', 'tag'];
 export const triggerFields = ['triggerCondition'];
 
 export const initialFormValues = {
@@ -17,7 +17,6 @@ export const initialFormErrors = {
   groupError: false,
   taskIdError: false,
   hostGroupError: false,
-  priorityError: false,
   tagError: false,
 };
 

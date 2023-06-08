@@ -44,7 +44,7 @@ export const fetchListAutomations = (
     }).pipe(
         tap(
             (res) => {
-                console.log('fetch group', res);
+                // console.log('fetch group', res);
             },
             (error) => {
                 console.log(error);
@@ -164,8 +164,8 @@ export const deleteAutomation = (dataSource: DataSource, id: string) => {
  * @param dataSource
  * @param id
  */
-export const getScalarStatus = (dataSource: DataSource, query: string) => {
-    return fetchUrl(`${dataSource.host}/DSWebAPI/api/scalars/${dataSource.connection}/Job Automator|${dataSource.host.split("//")[1].split("/")[0].toUpperCase()}|${query}`,
+export const getScalarStatus = (dataSource: DataSource) => {
+    return fetchUrl(`${dataSource.host}/DSWebAPI/api/scalars/${dataSource.connection}?group=Job Automator|${dataSource.host.split("//")[1].split("/")[0].toUpperCase()}`,
         {
             method: 'GET',
             additionalHeaders: {
@@ -182,3 +182,18 @@ export const getScalarStatus = (dataSource: DataSource, query: string) => {
             ),
         );
 }
+
+/**
+ * /api/jobs/{connectionId}/{id}
+ * Gets the job with the specified identifier.
+ * @param dataSource
+ * @param token
+ * @param id
+ */
+export const fetchJob = (dataSource: DataSource, id: string) =>
+  fetchUrl(`${dataSource.host}/DSWebApi/api/jobs/${dataSource.connectionJobLog}/${id}`, {
+    method: 'GET',
+    additionalHeaders: {
+      Authorization: `Bearer ${dataSource.token}`,
+    },
+  }).pipe(tap((res) => console.log('job fetched executed', res)));

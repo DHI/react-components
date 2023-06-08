@@ -83,13 +83,14 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
                   </span>
                 ))}
               </Typography>
-              <Typography variant="body1" className={classes.typography}><strong>Updated:</strong> {automation?.updated.split('.')[0].replace("T", " ")}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Requested Time:</strong> {automation?.requested?.split('.')[0].replace("T", " ")}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Current Status:</strong> {automation?.currentStatus}</Typography>
             </DialogContentText>
             <Paper className={classes.dialogContentPaper}>
               <Box className={classes.boxStyle}>
                 <Typography variant='h6' className={classes.typography}>Trigger List</Typography>
                 <Typography variant="body1" className={classes.typography} ><strong>Trigger Condition:</strong> {automation?.triggerCondition.conditional}</Typography>
-                <Typography variant="body1" className={classes.typography}><strong>Final Condition:</strong> {`${automation?.triggerCondition.isMet ?? false}`}</Typography>
+                <Typography variant="body1" className={classes.typography}><strong>Final Condition:</strong> {`${automation?.triggerCondition.isMet}`}</Typography>
               </Box>
               <TriggerList triggerList={automation?.triggerCondition.triggers} handleDelete={undefined} />
             </Paper>

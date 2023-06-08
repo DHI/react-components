@@ -5,7 +5,15 @@ import {
   Typography,
 } from '@material-ui/core';
 import { blue, green, red, yellow } from '@material-ui/core/colors';
-import { Cancel, CancelScheduleSend, CheckCircle, Error, HelpOutline, HourglassEmpty } from '@material-ui/icons';
+import {
+  Cancel,
+  CancelScheduleSend,
+  CheckCircle,
+  Error,
+  HelpOutline,
+  HourglassEmpty,
+  TimerOffOutlined,
+} from '@material-ui/icons';
 import React, { useMemo } from 'react';
 
 const StatusCell = ({ row }: { row: any }) => {
@@ -62,6 +70,12 @@ const StatusCell = ({ row }: { row: any }) => {
         return (
           <Tooltip title={status}>
             <CancelScheduleSend style={{ color: yellow[900] }} />
+          </Tooltip>
+        );
+      case 'Not Running':
+        return (
+          <Tooltip title={status}>
+            <TimerOffOutlined style={{ color: yellow[900] }} />
           </Tooltip>
         );
       default:
