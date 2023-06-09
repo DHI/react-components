@@ -44,7 +44,7 @@ export const fetchListAutomations = (
     }).pipe(
         tap(
             (res) => {
-                // console.log('fetch group', res);
+                console.log('fetch group', res);
             },
             (error) => {
                 console.log(error);
