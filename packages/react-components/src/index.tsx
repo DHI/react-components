@@ -41,6 +41,8 @@ export * from './Timeseries/TimeseriesExporter/types';
 export * from './UserGroups/UserGroups';
 export * from './utils/Utils';
 export * from './Maps';
+export * from './Automations/AutomationsList/AutomationsList'
+export * from './Automations/type';
 
 // ThemeProvider
 export { default as ThemeProvider } from './ThemeProvider/ThemeProvider';

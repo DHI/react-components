@@ -70,19 +70,6 @@ interface IParameters {
     [key: string]: string;
 }
 
-interface FilterProps {
-    column: {
-        /** Value that use to filter the data */
-        filterValue: string;
-        /** Function to set the filter value data */
-        setFilter: React.Dispatch<React.SetStateAction<string>>;
-        /** Row before data filtered */
-        preFilteredRows: any;
-        /** The id of column to be filtered */
-        id: string;
-    };
-}
-
 interface AutomationDetailProps {
     detail: AutomationData;
     /**  Boolean to scroll the Automationdetail textarea down on load. */
@@ -93,15 +80,6 @@ interface AutomationDetailProps {
     dateTimeFormat: string;
     /** Button to close Automation Detail container */
     onClose: () => void;
-}
-
-interface DateFilterProps {
-    dateTimeFormat: string;
-    startTimeUtc: string;
-    timeZone: string;
-    date: DateProps;
-    onSetDate: (date: DateProps) => void;
-    onClearDateFilter: () => void;
 }
 
 interface IFormAutomationDialog {
@@ -136,9 +114,7 @@ interface DynamicFieldProps {
 export default AutomationsListProps;
 export {
     AutomationData,
-    FilterProps,
     AutomationDetailProps,
-    DateFilterProps,
     IParameters,
     IFormAutomationDialog,
     ITriggerParameter,
