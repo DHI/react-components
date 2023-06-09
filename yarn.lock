@@ -1977,7 +1977,6 @@ __metadata:
     "@microsoft/signalr": ^5.0.7
     "@react-hook/window-size": ^3.0.7
     "@rjsf/core": ^5.8.1
-    "@rjsf/material-ui": ^5.8.1
     "@rjsf/utils": ^5.8.1
     "@rjsf/validator-ajv8": ^5.8.1
     "@types/classnames": ^2.2.10
@@ -3669,19 +3668,6 @@ __metadata:
     "@rjsf/utils": ^5.8.x
     react: ^16.14.0 || >=17
   checksum: 616691f66285c89d7fb378bbad787960adcf7e8941b3287dce543f022dce3106b80d41cf1f41de926cd8dbe1f5006c5fcc0a6597bbca7ee9a13d422b967bb986
-  languageName: node
-  linkType: hard
-
-"@rjsf/material-ui@npm:^5.8.1":
-  version: 5.8.1
-  resolution: "@rjsf/material-ui@npm:5.8.1"
-  peerDependencies:
-    "@material-ui/core": ^4.12.3
-    "@material-ui/icons": ^4.11.2
-    "@rjsf/core": ^5.8.x
-    "@rjsf/utils": ^5.8.x
-    react: ^16.14.0 || >=17
-  checksum: 30ab5fbd5626a78f44b8d818896f7535adb1b676cffe4afd448dcc3d2b4005c3809de6546f765f917049b813586b5610fea9d0222c17e5f941c2fee4c0708c5f
   languageName: node
   linkType: hard
 
