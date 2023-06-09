@@ -31,6 +31,11 @@ interface GeneralDialogProps {
    * Handler when dialog confirmed
    */
   onConfirm?: () => void;
+  /**
+   * when state is Loading
+   */
+  isLoading?: boolean;
+  
 }
 
 export default GeneralDialogProps;
