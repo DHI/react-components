@@ -1,8 +1,8 @@
 import { Upload } from '@mui/icons-material';
 import { IconButton, Stack, Typography } from '@mui/material';
 import React, { FC } from 'react';
-import { InputFileProps, InputVariantProps } from './types';
 import InputFileBase from './InputFileBase';
+import { InputFileProps, InputVariantProps } from './types';
 
 const InputFileIconButton: FC<Partial<InputFileProps> & InputVariantProps> = ({
   icon,

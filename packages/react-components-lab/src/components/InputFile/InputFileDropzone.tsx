@@ -1,11 +1,11 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable react/no-array-index-key  */
-import { Clear, FileUpload } from '@mui/icons-material';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { Upload } from '@mui/icons-material';
+import { Box, Chip, Stack, Typography } from '@mui/material';
 import React, { DragEvent, FC, MouseEvent, useState } from 'react';
-import { InputFileProps, InputVariantProps } from './types';
-import styles from './styles';
 import InputFileBase from './InputFileBase';
+import styles from './styles';
+import { InputFileProps, InputVariantProps } from './types';
 
 const InputFileDropzone: FC<Partial<InputFileProps> & InputVariantProps> = ({
   accept,
@@ -75,7 +75,7 @@ const InputFileDropzone: FC<Partial<InputFileProps> & InputVariantProps> = ({
       onDrop={handleDrop}
     >
       <Stack alignItems="center" justifyContent="center">
-        {icon || <FileUpload fontSize="large" />}
+        {icon || <Upload fontSize="large" />}
 
         <Typography variant="h3">
           {dragging
@@ -89,20 +89,27 @@ const InputFileDropzone: FC<Partial<InputFileProps> & InputVariantProps> = ({
             quantity={quantity}
           />
 
-          {showFiles &&
-            files.map((file, i) => (
-              <Stack alignItems="center" direction="row" key={`file-${i}`}>
-                <IconButton
+          {showFiles && (
+            <Stack
+              alignItems="center"
+              direction="row"
+              flexWrap="wrap"
+              gap={0.5}
+              justifyContent="center"
+              mx={1}
+            >
+              {files.map((file, i) => (
+                <Chip
+                  color="secondary"
+                  key={`file-${i}`}
+                  label={file.name}
                   size="small"
-                  sx={{ height: 24, width: 24 }}
-                  disableRipple
-                  onClick={handleRemoveFile(i)}
-                >
-                  <Clear />
-                </IconButton>
-                <Typography key={i}>{file.name}</Typography>
-              </Stack>
-            ))}
+                  variant="outlined"
+                  onDelete={handleRemoveFile(i)}
+                />
+              ))}
+            </Stack>
+          )}
         </Box>
       </Stack>
     </Box>

@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
+import InputFileButton from './InputFileButton';
+import InputFileDropzone from './InputFileDropzone';
+import InputFileIconButton from './InputFileIconButton';
 import { InputFileProps } from './types';
 import { validateFiles } from './util';
-import InputFileDropzone from './InputFileDropzone';
-import InputFileButton from './InputFileButton';
-import InputFileIconButton from './InputFileIconButton';
 
 const InputFile: FC<InputFileProps> = (props) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -13,8 +13,8 @@ const InputFile: FC<InputFileProps> = (props) => {
     accept,
     quantity,
     replaceOnUpload,
-    onFilesRejected,
-    onFilesUploaded,
+    getFiles,
+    getRejectedFiles,
   } = props;
 
   const uploadFiles = (transferFiles: File[] | FileList) => {
@@ -23,7 +23,7 @@ const InputFile: FC<InputFileProps> = (props) => {
     }
 
     if (quantity === 'single' && transferFiles.length > 1) {
-      onFilesRejected?.(Array.from<File>(transferFiles));
+      getRejectedFiles?.(Array.from<File>(transferFiles));
       return;
     }
 
@@ -32,8 +32,8 @@ const InputFile: FC<InputFileProps> = (props) => {
       accept
     );
 
-    if (rejectedFiles.length && onFilesRejected) {
-      onFilesRejected(rejectedFiles);
+    if (rejectedFiles.length && getRejectedFiles) {
+      getRejectedFiles(rejectedFiles);
     }
 
     if (!theFiles.length) {
@@ -42,13 +42,13 @@ const InputFile: FC<InputFileProps> = (props) => {
 
     if (replaceOnUpload) {
       setFiles(theFiles);
-      onFilesUploaded?.(theFiles);
+      getFiles?.(theFiles);
       return;
     }
 
     setFiles((prevFiles) => {
       const newFiles = [...prevFiles, ...theFiles];
-      onFilesUploaded?.(newFiles);
+      getFiles?.(newFiles);
       return newFiles;
     });
   };
