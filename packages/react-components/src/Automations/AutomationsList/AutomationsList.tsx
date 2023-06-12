@@ -292,4 +292,4 @@ function AutomationsList(props: AutomationsListProps) {
     )
 }
 
-export default AutomationsList
+export { AutomationsList }
