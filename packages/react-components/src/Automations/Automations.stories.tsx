@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react/types-6-0.d';
 import React from 'react';
-import AutomationsList from './AutomationsList/AutomationsList';
+import { AutomationsList } from './AutomationsList/AutomationsList';
 import { DataSource } from '../api/types';
 import { LoginGate } from '../Auth/LoginGate';
 
@@ -16,7 +16,7 @@ export const AutomationsStory = () => {
   const dataSources = (token) =>
     ({
       token,
-      host: 'http://my-kl18',
+      host: 'http://my-kl18/DSWebAPI',
       connection: 'wf-scalars',
       connectionJobLog: 'wf-jobs',
     }) as DataSource

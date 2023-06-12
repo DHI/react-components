@@ -4,12 +4,12 @@ import { fetchUrl } from '../helpers';
 import { AutomationData } from '../../Automations/type';
 
 /**
- * /DSWebAPI/api/automations/ids
+ * /api/automations/ids
  * Gets a list of group ids entries.
  * @param dataSources
  */
 export const fetchGroupId = (dataSources: DataSource) => {
-    return fetchUrl(`${dataSources.host}/DSWebAPI/api/automations/ids`, {
+    return fetchUrl(`${dataSources.host}/api/automations/ids`, {
         method: 'GET',
         additionalHeaders: {
             Authorization: `Bearer ${dataSources.token}`,
@@ -27,7 +27,7 @@ export const fetchGroupId = (dataSources: DataSource) => {
 };
 
 /**
- * /DSWebAPI/api/automations
+ * /api/automations
  * Gets a list of automations entries.
  * @param dataSources
  * @param group
@@ -36,7 +36,7 @@ export const fetchListAutomations = (
     dataSources: DataSource,
     group: string
 ) => {
-    return fetchUrl(`${dataSources.host}/DSWebAPI/api/automations/?group=${group}`, {
+    return fetchUrl(`${dataSources.host}/api/automations/?group=${group}`, {
         method: 'GET',
         additionalHeaders: {
             Authorization: `Bearer ${dataSources.token}`,
@@ -54,7 +54,7 @@ export const fetchListAutomations = (
 };
 
 /**
- * /DSWebAPI/api/automations
+ * /api/automations
  * create new automation.
  * @param dataSources
  * @param object
@@ -79,7 +79,7 @@ export const createNewAutomation = (
         ...payload
     };
 
-    return fetchUrl(`${dataSources.host}/DSWebAPI/api/automations`, {
+    return fetchUrl(`${dataSources.host}/api/automations`, {
         method: 'POST',
         additionalHeaders: {
             Authorization: `Bearer ${dataSources.token}`,
@@ -98,7 +98,7 @@ export const createNewAutomation = (
 };
 
 /**
- * /DSWebAPI/api/automations
+ * /api/automations
  * create new automation.
  * @param dataSources
  * @param object
@@ -123,7 +123,7 @@ export const updateAutomation = (
         ...payload
     };
 
-    return fetchUrl(`${dataSources.host}/DSWebAPI/api/automations`, {
+    return fetchUrl(`${dataSources.host}/api/automations`, {
         method: 'PUT',
         additionalHeaders: {
             Authorization: `Bearer ${dataSources.token}`,
@@ -150,7 +150,7 @@ export const updateAutomation = (
  */
 export const deleteAutomation = (dataSource: DataSource, id: string) => {
     const splitedId = id.split('/')
-    return fetchUrl(`${dataSource.host}/DSWebAPI/api/automations/${splitedId[0]}|${splitedId[1]}`, {
+    return fetchUrl(`${dataSource.host}/api/automations/${splitedId[0]}|${splitedId[1]}`, {
         method: 'DELETE',
         additionalHeaders: {
             Authorization: `Bearer ${dataSource.token}`,
@@ -165,7 +165,7 @@ export const deleteAutomation = (dataSource: DataSource, id: string) => {
  * @param id
  */
 export const getScalarStatus = (dataSource: DataSource) => {
-    return fetchUrl(`${dataSource.host}/DSWebAPI/api/scalars/${dataSource.connection}?group=Job Automator|${dataSource.host.split("//")[1].split("/")[0].toUpperCase()}`,
+    return fetchUrl(`${dataSource.host}/api/scalars/${dataSource.connection}?group=Job Automator|${dataSource.host.split("//")[1].split("/")[0].toUpperCase()}`,
         {
             method: 'GET',
             additionalHeaders: {
@@ -191,7 +191,7 @@ export const getScalarStatus = (dataSource: DataSource) => {
  * @param id
  */
 export const fetchJob = (dataSource: DataSource, id: string) =>
-  fetchUrl(`${dataSource.host}/DSWebApi/api/jobs/${dataSource.connectionJobLog}/${id}`, {
+  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connectionJobLog}/${id}`, {
     method: 'GET',
     additionalHeaders: {
       Authorization: `Bearer ${dataSource.token}`,
