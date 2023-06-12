@@ -16,7 +16,7 @@ export const AutomationsStory = () => {
   const dataSources = (token) =>
     ({
       token,
-      host: 'http://my-kl18',
+      host: 'http://my-kl18/DSWebAPI',
       connection: 'wf-scalars',
       connectionJobLog: 'wf-jobs',
     }) as DataSource
