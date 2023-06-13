@@ -28,6 +28,7 @@ export const DetailAutomationStyle = makeStyles({
     padding: 0,
   },
   typography: {
+    fontSize: '12px',
     lineHeight: '2'
   },
   paperStyle: {

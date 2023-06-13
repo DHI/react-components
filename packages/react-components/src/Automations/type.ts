@@ -32,7 +32,7 @@ interface AutomationData {
     /** current status of Automation that are related to Job */
     currentStatus?: string;
     /** Parameters of Automation */
-    parameters?: IParameters;
+    taskParameters?: IParameters;
     /** List Trigger of Automation */
     triggerCondition: ITriggerCondition;
     /** WorkflowInput of Automation */
@@ -48,7 +48,7 @@ export interface ITriggerCondition {
     isMet?: boolean
 }
 
-interface ITrigger {
+export interface ITrigger {
     /** id for trigger */
     id: string;
     /** description for trigger */
@@ -119,5 +119,5 @@ export {
     IFormAutomationDialog,
     ITriggerParameter,
     DetailAutomationsDialogProps,
-    DynamicFieldProps
+    DynamicFieldProps,
 };

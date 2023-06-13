@@ -59,7 +59,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         isEnabled: automation.isEnabled
       });
 
-      setParameters(Object.entries(automation.parameters || {}).map(([key, value]) => ({ key, value })));
+      setParameters(Object.entries(automation.taskParameters || {}).map(([key, value]) => ({ key, value })));
 
       setTrigger({
         triggerCondition: automation.triggerCondition.conditional,
@@ -205,7 +205,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       fullName: `${formValues.group}/${formValues.name}`,
       id: `${formValues.group}/${formValues.name}`,
       triggerCondition: paramTriggerCondition,
-      parameters: paramPayload,
+      taskParameters: paramPayload,
     };
 
     if (addMode) {
