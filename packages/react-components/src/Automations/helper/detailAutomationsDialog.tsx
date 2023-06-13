@@ -5,25 +5,26 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
+  Grid,
   IconButton,
   Paper,
   Typography
 } from '@material-ui/core';
 import { DetailAutomationsDialogProps } from '../type';
-import { HighlightOff } from '@material-ui/icons';
+import { CloseOutlined, HighlightOff, RadioButtonUnchecked } from '@material-ui/icons';
 import { DetailAutomationStyle } from '../styles';
+import { TriggerCell } from './cell';
 
-export const TriggerList = ({ triggerList, handleDelete }) => {
+export const TriggerList = ({ triggerList, handleDelete, editMode = true }) => {
   const classes = DetailAutomationStyle();
 
   if (!triggerList) return null
 
   return (
     <Box className={classes.triggerListContainer}>
-      {triggerList?.map((trigger) =>
+      {editMode && triggerList?.map((trigger) =>
         <Box
           key={trigger.id}
           className={classes.triggerBox}
@@ -45,6 +46,62 @@ export const TriggerList = ({ triggerList, handleDelete }) => {
           <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
         </Box>
       )}
+      {!editMode && triggerList?.map((trigger) =>
+        <Box
+          key={trigger.id}
+          style={{
+            overflow: 'hidden',
+          }}
+        >
+          <Paper style={{
+            borderRadius: '10px',
+            border: '1px solid rgba(217, 217, 217, 1)',
+            boxShadow: '0 2px 4px rgba(217, 217, 217, 1)',
+            marginTop: '10px',
+          }}>
+            <Box style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderTopRightRadius: '10px',
+              borderTopLeftRadius: '10px',
+              borderBottom: '1px solid rgba(217, 217, 217, 1)',
+              padding: '10px',
+              background: 'rgba(248, 248, 248, 1)',
+
+            }}>
+              <Typography
+                variant='body1'
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: trigger.isMet ? 'green' : 'red'
+                }}>
+                <RadioButtonUnchecked style={{ marginRight: '5px' }} />
+                {trigger.id}
+              </Typography>
+              <Typography variant="body1" className={classes.typography}>{trigger.isEnabled ? 'Enable' : 'Disable'}</Typography>
+            </Box>
+            <Divider />
+            <Box style={{ padding: '10px' }}>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                  <Typography variant="body1" className={classes.typography}><strong>Interval:</strong> {trigger.interval}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1" className={classes.typography}><strong>StartTimeUtc:</strong> {trigger.startTimeUtc?.split('.')[0].replace("T", " ")}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1" className={classes.typography}><strong>Description:</strong> {trigger.description}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          </Paper>
+        </Box>
+      )}
     </Box>)
 }
 
@@ -52,53 +109,106 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
   const classes = DetailAutomationStyle();
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth='xl'>
-      <Paper elevation={3} className={classes.paperStyle}>
-        <DialogTitle>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant='h4' align='center'>{automation?.taskId}</Typography>
-            <Typography variant='h5' align='center'>{automation?.name}</Typography>
-            <Typography variant='h6' align='center'>{automation?.group}</Typography>
-          </Box>
+    <Dialog open={open} onClose={onClose} maxWidth='lg'>
+      <IconButton
+        style={{
+          position: 'absolute',
+          right: '5px',
+          top: '5px'
+        }}
+        size='small'
+        onClick={onClose}
+      >
+        <CloseOutlined />
+      </IconButton>
+      <Paper elevation={3}>
+        <DialogTitle style={{ padding: '5px 10px' }}>
+          <Typography variant='h6'>Automation Detail</Typography>
         </DialogTitle>
-        <Divider />
-        <DialogContent>
-          <Box>
-            <DialogContentText>
+        <DialogContent
+          style={{
+            background: 'rgba(248, 248, 248, 1)',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            borderTop: '2px solid rgba(217, 217, 217, 1)',
+            borderBottom: '2px solid rgba(217, 217, 217, 1)'
+          }}>
+          <Grid container spacing={3}>
+            <Grid item xs={3}>
               <Typography variant="body1" className={classes.typography}><strong>Task Id:</strong> {automation?.taskId}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Full Name:</strong> {automation?.fullName}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Name:</strong> {automation?.name}</Typography>
+            </Grid>
+            <Grid item xs={3}>
               <Typography variant="body1" className={classes.typography}><strong>Group:</strong> {automation?.group}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Is Enabled:</strong> {`${automation?.isEnabled}`}</Typography>
+            </Grid>
+            <Grid item xs={3}>
               <Typography variant="body1" className={classes.typography}><strong>Priority:</strong> {automation?.priority}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
+            </Grid>
+            <Grid item xs={3}>
               <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>WorkflowInputParameters:</strong> {automation?.workflowInputParametersFilePath}</Typography>
               <Typography variant="body1" className={classes.typography}>
                 <strong>Parameters:</strong>
-                {Object.entries(automation?.parameters || {}).map(([key, value], index) => (
+                {Object.entries(automation?.taskParameters || {}).map(([key, value], index) => (
                   <span key={key}>
                     <br />
                     {index + 1}. {key}: {value}
                   </span>
                 ))}
               </Typography>
+            </Grid>
+            <Grid item xs={6}>
               <Typography variant="body1" className={classes.typography}><strong>Requested Time:</strong> {automation?.requested?.split('.')[0].replace("T", " ")}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Current Status:</strong> {automation?.currentStatus}</Typography>
-            </DialogContentText>
-            <Paper className={classes.dialogContentPaper}>
-              <Box className={classes.boxStyle}>
-                <Typography variant='h6' className={classes.typography}>Trigger List</Typography>
-                <Typography variant="body1" className={classes.typography} ><strong>Trigger Condition:</strong> {automation?.triggerCondition.conditional}</Typography>
-                <Typography variant="body1" className={classes.typography}><strong>Final Condition:</strong> {`${automation?.triggerCondition.isMet}`}</Typography>
-              </Box>
-              <TriggerList triggerList={automation?.triggerCondition.triggers} handleDelete={undefined} />
-            </Paper>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogContent style={{ padding: '10px' }}>
+          <Box style={{
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <Box
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '10px',
+                border: '1px solid rgba(217, 217, 217, 1)',
+                borderBottom: 'none',
+                borderTopLeftRadius: '10px',
+                borderTopRightRadius: '10px',
+                background: `${automation?.triggerCondition?.isMet ? 'green' : 'red'}`
+              }}
+            >
+              <Typography style={{ color: 'white' }}>
+                Trigger Operation
+              </Typography>
+              <Typography style={{ color: 'white', fontSize: '12px' }}>
+                Final Condition :<strong>{`${automation?.triggerCondition?.isMet ?? false}`}</strong>
+              </Typography>
+            </Box>
+            <Box
+              style={{
+                padding: '10px',
+                border: '1px solid rgba(217, 217, 217, 1)',
+                borderTop: 'none',
+                borderBottomLeftRadius: '10px',
+                borderBottomRightRadius: '10px',
+                minHeight: '20px',
+                marginBottom: '10px'
+              }}
+            >
+              <TriggerCell
+                input={automation?.triggerCondition?.conditional}
+                triggerList={automation?.triggerCondition?.triggers}
+              />
+            </Box>
+            <TriggerList editMode={false} triggerList={automation?.triggerCondition?.triggers} handleDelete={undefined} />
           </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">Close</Button>
-        </DialogActions>
       </Paper>
     </Dialog>
   );

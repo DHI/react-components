@@ -1,5 +1,5 @@
 import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { IconButton } from '@material-ui/core';
+import { Chip, IconButton } from '@material-ui/core';
 import {
     CheckOutlined,
     CloseRounded,
@@ -9,7 +9,7 @@ import {
 } from '@material-ui/icons';
 import React from 'react'
 import { Table } from '@devexpress/dx-react-grid';
-import { AutomationData } from '../type';
+import { AutomationData, ITrigger } from '../type';
 import StatusCell from '../../Jobs/JobList/helpers/StatusCell'
 
 interface CellProps extends Table.DataCellProps {
@@ -32,6 +32,38 @@ export const FilterCellRow = (props) => {
 
     return <TableFilterRow.Cell {...props} />;
 };
+
+export const TriggerCell: React.FC<{ input: string, triggerList: ITrigger[] }> = ({ input, triggerList }) => {
+    const triggers = triggerList
+    const conditionals = input?.match(/[\w]+|\s+|\(|\)|AND|OR/g) || [];
+    const value = conditionals.map((conditional, index) => {
+        let color = 'lightgray';
+        let fontColor = 'black';
+        const id = conditional.trim();
+        if (!id) {
+            return <></>
+        }
+        const trigger = triggers.find(trigger => trigger.id === id);
+        if (trigger && !trigger.isMet) {
+            color = 'red';
+            fontColor = 'white'
+        }
+        else if (trigger && trigger.isMet) {
+            color = 'green'
+            fontColor = 'white'
+        }
+        if (trigger && !trigger.isEnabled) {
+            color = 'ligthgray'
+        }
+        return <Chip
+            key={index}
+            label={conditional}
+            style={{ background: color, margin: '5px', color: fontColor }}
+        />
+    });
+
+    return <>{value}</>
+}
 
 const Cell: React.FC<CellProps> = (props) => {
     const {
