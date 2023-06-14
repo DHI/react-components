@@ -149,9 +149,8 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
             </Grid>
             <Grid item xs={3}>
               <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
-              <Typography variant="body1" className={classes.typography}><strong>WorkflowInputParameters:</strong> {automation?.workflowInputParametersFilePath}</Typography>
               <Typography variant="body1" className={classes.typography}>
-                <strong>Parameters:</strong>
+                <strong>Task Parameters:</strong>
                 {Object.entries(automation?.taskParameters || {}).map(([key, value], index) => (
                   <span key={key}>
                     <br />
