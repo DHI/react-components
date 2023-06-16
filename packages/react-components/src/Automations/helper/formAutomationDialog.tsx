@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { AutomationData, IFormAutomationDialog, IParameters, ITriggerParameter } from '../type';
+import { AutomationData, IFormAutomationDialog, IParameters } from '../type';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   CircularProgress,
@@ -12,32 +9,22 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  FormControlLabel,
-  Grid,
-  MenuItem,
   Paper,
-  Select,
-  Switch,
-  TextField,
   Typography,
 } from '@material-ui/core';
-import { TriggerList } from './detailAutomationsDialog';
-import { ExpandMore } from '@material-ui/icons';
 import { ITriggerCondition } from '../type'
 import { FormAutomationStyles } from '../styles';
 import { createNewAutomation, updateAutomation } from '../../api/Automations/AutomationApi';
 import { initialTrigger, fields, initialFormValues, triggerFields, initialFormErrors, initialTriggerError } from './const';
-import { DynamicField, TriggerParameterForm } from './triggerParameterForm';
+import FormInputTrigger from './formInputTrigger'
+import FormInputAutomation from './formInputAutomation'
+import { useForm } from './helper';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   open, onClose, automation, dataSources, fetchData
 }) => {
   const classes = FormAutomationStyles();
   const [addMode, setAddMode] = useState(true)
-  const [formValues, setFormValues] = useState(initialFormValues);
-  const [formErrors, setFormErrors] = useState(initialFormErrors);
-  const [trigger, setTrigger] = useState(initialTrigger);
-  const [triggerErrors, setTriggerErrors] = useState(initialTriggerError)
   const [triggerParameters, setTriggerParameters] = useState({});
   const [inputTriggers, setInputTriggers] = useState<ITriggerCondition>({
     triggers: [],
@@ -46,10 +33,13 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const [parameters, setParameters] = useState<IParameters[]>([]);
   const [loading, setLoading] = useState(false)
 
+  const form = useForm(initialFormValues, initialFormErrors);
+  const triggerForm = useForm(initialTrigger, initialTriggerError);
+
   useEffect(() => {
     if (automation && open) {
       setAddMode(false)
-      setFormValues({
+      form.setValues({
         name: automation.name,
         group: automation.group,
         taskId: automation.taskId,
@@ -61,7 +51,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
 
       setParameters(Object.entries(automation.taskParameters || {}).map(([key, value]) => ({ key, value })));
 
-      setTrigger({
+      triggerForm.setValues({
         triggerCondition: automation.triggerCondition.conditional,
         triggerId: '',
         type: '',
@@ -72,42 +62,13 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     }
   }, [automation]);
 
-  const setError = useCallback((object, name, type, value) => {
-    return {
-      ...object,
-      [name]: type === 'checkbox' ? value : !value,
-    };
-  }, []);
-
-  const handleChange = useCallback((event) => {
-    const { name, type, value, checked } = event.target;
-
-    setFormValues(prevValues => ({
-      ...prevValues,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-
-    setFormErrors(prevValues => setError(prevValues, `${name}Error`, type, value));
-  }, [setError]);
-
-  const handleChangeTrigger = useCallback((event) => {
-    const { name, type, value, checked } = event.target;
-
-    setTrigger(prevTrigger => ({
-      ...prevTrigger,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-
-    setTriggerErrors(prevTrigger => setError(prevTrigger, `${name}Error`, type, value));
-  }, [setError]);
-
   const handleAddTrigger = useCallback(() => {
-    const triggerParam = triggerParameters[trigger.type]
+    const triggerParam = triggerParameters[triggerForm.values.type]
     const newTrigger = {
-      id: trigger.triggerId,
+      id: triggerForm.values.triggerId,
       description: triggerParam.description,
-      isEnabled: trigger.isEnabled,
-      type: trigger.type,
+      isEnabled: triggerForm.values.isEnabled,
+      type: triggerForm.values.type,
       startTimeUtc: triggerParam.startTimeUtc,
       interval: triggerParam.interval
     };
@@ -115,9 +76,9 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     setInputTriggers(prevState => ({
       ...prevState,
       triggers: [...prevState.triggers, newTrigger],
-      conditional: trigger.triggerCondition
+      conditional: triggerForm.values.triggerCondition
     }));
-  }, [trigger, triggerParameters]);
+  }, [triggerForm.values, triggerParameters]);
 
   const handleAddField = useCallback(() => {
     setParameters(prevParameters => [...prevParameters, { key: "", value: "" }]);
@@ -146,10 +107,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   }, []);
 
   const handleClose = useCallback(() => {
-    setFormValues(initialFormValues);
-    setTrigger(initialTrigger);
-    setFormErrors(initialFormErrors)
-    setTriggerErrors(initialTriggerError)
+    form.setValues(initialFormValues);
+    triggerForm.setValues(initialTrigger);
     setParameters([])
     setTriggerParameters({});
     setInputTriggers({
@@ -164,24 +123,24 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const handleSubmitData = () => {
     let hasError = false;
 
-    const newFormValues = { ...formErrors };
+    const newFormErrors = { ...form.errors };
     fields.forEach((field) => {
-      if (!formValues[field]) {
-        newFormValues[`${field}Error`] = true;
-        hasError = true;
-      }
-    });
-    
-    const newTrigger = { ...triggerErrors };
-    triggerFields.forEach((field) => {
-      if (!trigger[field]) {
-        newTrigger[`${field}Error`] = true;
+      if (!form.values[field]) {
+        newFormErrors[`${field}Error`] = true;
         hasError = true;
       }
     });
 
-    setFormErrors(newFormValues);
-    setTriggerErrors(newTrigger);
+    const newTriggerErrors = { ...triggerForm.errors };
+    triggerFields.forEach((field) => {
+      if (!triggerForm.values[field]) {
+        newTriggerErrors[`${field}Error`] = true;
+        hasError = true;
+      }
+    });
+
+    form.setErrors(newFormErrors);
+    triggerForm.setErrors(newTriggerErrors);
 
     if (hasError) {
       return; // Stop the function if there are errors
@@ -197,13 +156,13 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     }, {});
     const paramTriggerCondition = {
       ...inputTriggers,
-      conditional: trigger.triggerCondition,
-      isEnable: trigger.isEnabled
+      conditional: triggerForm.values.triggerCondition,
+      isEnable: triggerForm.values.isEnabled
     }
     const automationData: AutomationData = {
-      ...formValues,
-      fullName: `${formValues.group}/${formValues.name}`,
-      id: `${formValues.group}/${formValues.name}`,
+      ...form.values,
+      fullName: `${form.values.group}/${form.values.name}`,
+      id: `${form.values.group}/${form.values.name}`,
       triggerCondition: paramTriggerCondition,
       taskParameters: paramPayload,
     };
@@ -223,7 +182,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         },
         error: (err) => {
           console.log('Error creating new automation:', err);
-          setLoading(false); 
+          setLoading(false);
         },
       });
     } else {
@@ -245,10 +204,10 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         },
         error: (err) => {
           console.log('Error updating automation:', err);
-          setLoading(false); 
+          setLoading(false);
         },
       });
-    }    
+    }
   };
 
   return (
@@ -262,215 +221,28 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         <Divider />
         <DialogContent>
           <Box className={classes.boxDialog}>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <TextField
-                  error={formErrors.nameError}
-                  helperText={formErrors.nameError ? "Name is required" : ""}
-                  name='name'
-                  label='Name'
-                  variant="outlined"
-                  size='small'
-                  fullWidth
-                  value={formValues.name}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  error={formErrors.groupError}
-                  helperText={formErrors.groupError ? "Group is required" : ""}
-                  name='group'
-                  label='Group'
-                  variant="outlined"
-                  size='small'
-                  fullWidth
-                  value={formValues.group}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  error={formErrors.taskIdError}
-                  helperText={formErrors.taskIdError ? "Task Id is required" : ""}
-                  name='taskId'
-                  label='Task Id'
-                  variant="outlined"
-                  size='small'
-                  fullWidth
-                  value={formValues.taskId}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  error={formErrors.hostGroupError}
-                  helperText={formErrors.hostGroupError ? "Host Group is required" : ""}
-                  name='hostGroup'
-                  label='Host Group'
-                  variant="outlined"
-                  size='small'
-                  fullWidth
-                  value={formValues.hostGroup}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  error={formErrors.tagError}
-                  helperText={formErrors.tagError ? "Tag is required" : ""}
-                  name='tag'
-                  label='Tag'
-                  variant="outlined"
-                  size='small'
-                  fullWidth
-                  value={formValues.tag}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name='priority'
-                  label='Priority'
-                  variant="outlined"
-                  size='small'
-                  fullWidth
-                  value={formValues.priority}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formValues.isEnabled}
-                      onChange={handleChange}
-                      name='isEnabled'
-                      color='primary'
-                    />
-                  }
-                  labelPlacement="start"
-                  label='Enabled'
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Box>
-                  <Button onClick={handleAddField} variant='outlined' className={classes.buttonParam}>Add Task Parameters</Button>
-                  {parameters.map((parameter, i) => (
-                    <DynamicField
-                      key={i}
-                      index={i}
-                      parameter={parameter}
-                      updateField={handleUpdateField}
-                      removeField={handleRemoveField}
-                    />
-                  ))}
-                </Box>
-              </Grid>
-            </Grid>
-            <Accordion className={classes.accordion}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="body1" align="left">Trigger</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <TextField
-                      error={triggerErrors.triggerConditionError}
-                      helperText={triggerErrors.triggerConditionError ? "Trigger Condition is required" : "Ex: (trigger1 AND trigger2) OR trigger3"}
-                      name='triggerCondition'
-                      label='Trigger Condition'
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      style={{
-                        background: inputTriggers.triggers.length === 0 ? '#e0e0e0' : 'inherit',
-                      }}
-                      disabled={inputTriggers.triggers.length === 0}
-                      value={trigger.triggerCondition}
-                      onChange={handleChangeTrigger}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Box mt={2} mb={2}>
-                      <Typography variant="subtitle1" align="left">Add New Trigger</Typography>
-                    </Box>
-                    <Box className={classes.boxAccordion}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={6}>
-                          <Box display="flex" alignItems="center">
-                            <Typography variant="body1" className={classes.typographyAccordion}>
-                              Id
-                            </Typography>
-                            <TextField
-                              error={triggerErrors.triggerIdError}
-                              helperText={triggerErrors.triggerIdError ? "Trigger Id is required" : ""}
-                              name='triggerId'
-                              variant="outlined"
-                              size="small"
-                              fullWidth
-                              value={trigger.triggerId}
-                              onChange={handleChangeTrigger}
-                            />
-                          </Box>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={trigger.isEnabled}
-                                onChange={handleChangeTrigger}
-                                name='isEnabled'
-                                color='primary'
-                              />
-                            }
-                            label={<Typography variant="body1">Enabled</Typography>}
-                            labelPlacement="start"
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Box display="flex" alignItems="center">
-                            <Typography variant="body1" className={classes.typographyAccordion}>
-                              Type
-                            </Typography>
-                            <Select
-                              name='type'
-                              variant="outlined"
-                              fullWidth
-                              className={classes.select}
-                              value={trigger.type}
-                              onChange={handleChangeTrigger}
-                            >
-                              <MenuItem value='DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs'>Scheduled Trigger</MenuItem>
-                            </Select>
-                          </Box>
-                        </Grid>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TriggerParameterForm
-                          triggerType={trigger.type}
-                          setTriggerValues={setTriggerParameters}
-                          triggerValues={triggerParameters}
-                        />
-                      </Grid>
-                      <Grid item xs={12} className={classes.gridAddButton}>
-                        <Button
-                          variant='outlined'
-                          disabled={trigger.triggerId === '' || trigger.type === ''}
-                          className={classes.addButton}
-                          onClick={handleAddTrigger}
-                        >
-                          Add
-                        </Button>
-                      </Grid>
-                    </Box>
-                    <Box className={classes.boxParameter}>
-                      <TriggerList triggerList={inputTriggers.triggers ?? []} handleDelete={handleRemoveTrigger} />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
+            <FormInputAutomation
+              classes={classes}
+              formErrors={form.errors}
+              formValues={form.values}
+              handleChange={form.handleChange}
+              parameters={parameters}
+              handleAddField={handleAddField}
+              handleUpdateField={handleUpdateField}
+              handleRemoveField={handleRemoveField}
+            />
+
+            <FormInputTrigger
+              classes={classes}
+              triggerErrors={triggerForm.errors}
+              inputTriggers={inputTriggers}
+              trigger={triggerForm.values}
+              triggerParameters={triggerParameters}
+              handleChangeTrigger={triggerForm.handleChange}
+              setTriggerParameters={setTriggerParameters}
+              handleAddTrigger={handleAddTrigger}
+              handleRemoveTrigger={handleRemoveTrigger}
+            />
           </Box>
         </DialogContent>
         <DialogActions>

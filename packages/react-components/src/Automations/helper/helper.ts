@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import { fetchJob } from "../../api/Automations/AutomationApi";
 import { AutomationData } from "../type";
 
@@ -56,4 +57,29 @@ export const processScalarStatus = (scalarStatus) => {
     }
 
     return { conditionStatusMap, lastJobIdMap, triggerStatusMap };
+}
+
+export function useForm(initialValues, initialErrors) {
+    const [values, setValues] = useState(initialValues);
+    const [errors, setErrors] = useState(initialErrors);
+
+    const setError = useCallback((object, name, type, value) => {
+        return {
+            ...object,
+            [name]: type === 'checkbox' ? value : !value,
+        };
+    }, []);
+
+    const handleChange = useCallback((event) => {
+        const { name, type, value, checked } = event.target;
+
+        setValues(prevValues => ({
+            ...prevValues,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+
+        setErrors(prevValues => setError(prevValues, `${name}Error`, type, value));
+    }, [setError]);
+
+    return { values, setValues, errors, handleChange, setErrors };
 }
