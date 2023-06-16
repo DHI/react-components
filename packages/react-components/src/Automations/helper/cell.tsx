@@ -1,17 +1,33 @@
 import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { Chip, IconButton } from '@material-ui/core';
+import { Chip, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from '@material-ui/core';
 import {
+    ArrowDropDownCircleOutlined,
     CheckOutlined,
     CloseRounded,
     DeleteOutline,
     Edit,
+    ListOutlined,
+    MenuBook,
+    MenuTwoTone,
+    RadioButtonUnchecked,
     Visibility
 } from '@material-ui/icons';
-import React from 'react'
+import React, { useState } from 'react'
 import { Table } from '@devexpress/dx-react-grid';
 import { AutomationData, ITrigger } from '../type';
 import StatusCell from '../../Jobs/JobList/helpers/StatusCell'
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles({
+    tooltip: {
+        backgroundColor: 'rgba(249, 249, 249, 1)',
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: 'none',
+        maxWidth: 'none',
+        border: '1px solid gray',
+        padding: '10px'
+    }
+});
 interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
     onEditAutomation: (automation: AutomationData) => void;
@@ -82,10 +98,7 @@ const Cell: React.FC<CellProps> = (props) => {
     if (column.name === 'isEnabled') {
         return (
             <td className="MuiTableCell-root">
-                {value ?
-                    <CheckOutlined style={{ color: 'green' }} /> :
-                    <CloseRounded style={{ color: 'red' }} />
-                }
+                {value ? 'Yes' : 'No'}
             </td>
         );
     }
@@ -107,11 +120,50 @@ const Cell: React.FC<CellProps> = (props) => {
     }
 
     if (column.name === 'triggerCondition.conditional') {
+        const classes = useStyles();
+
         const triggers = row.triggerCondition?.triggers || [];
+        const [tooltipOpen, setTooltipOpen] = useState(false);
+
+        const handleTooltipOpen = () => {
+            setTooltipOpen(true);
+        };
+
+        const handleTooltipClose = () => {
+            setTooltipOpen(false);
+        };
         if (!row.isEnabled) {
             return (
-                <td className="MuiTableCell-root">
-                    {row.triggerCondition?.conditional}
+                <td className="MuiTableCell-root" style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {row.triggerCondition?.conditional}
+                        </div>
+                        <Tooltip
+                            open={tooltipOpen}
+                            onClose={handleTooltipClose}
+                            title={
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    flexWrap: 'wrap',
+                                    background: 'white',
+                                    width: '100%',
+                                    fontSize: '14px'
+                                }}
+                                >
+                                    {row.triggerCondition?.conditional}
+                                </div>
+                            }
+                            PopperProps={{
+                                style: { width: '100%' }
+                            }}
+                        >
+                            <IconButton onClick={handleTooltipOpen}>
+                                <ArrowDropDownCircleOutlined />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                 </td>
             )
         }
@@ -129,12 +181,45 @@ const Cell: React.FC<CellProps> = (props) => {
             if (trigger && !trigger.isEnabled) {
                 color = 'black'
             }
-            return <span key={index} style={{ color }}>{conditional}</span>
+            return <span key={index} style={{ color, marginRight: '2px', fontSize: '12px' }}>{conditional}</span>
         });
 
         return (
             <td className="MuiTableCell-root">
-                {value}
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {value}
+                    </div>
+                    <Tooltip
+                        classes={{ tooltip: classes.tooltip }}
+                        open={tooltipOpen}
+                        onClose={handleTooltipClose}
+                        title={
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    flexWrap: 'wrap',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                {value}
+                            </div>
+                        }
+                        PopperProps={{
+                            modifiers: {
+                                offset: {
+                                    enabled: true,
+                                    offset: '-50,10'
+                                }
+                            }
+                        }}
+                    >
+                        <IconButton onClick={handleTooltipOpen}>
+                            <ArrowDropDownCircleOutlined />
+                        </IconButton>
+                    </Tooltip>
+                </div>
             </td>
         )
     }
@@ -150,26 +235,78 @@ const Cell: React.FC<CellProps> = (props) => {
         return (
             <td className="MuiTableCell-root">
                 {row.triggerCondition?.isMet ?
-                    <CheckOutlined style={{ color: 'green' }} /> :
-                    <CloseRounded style={{ color: 'red' }} />}
+                    <Chip
+                        icon={<RadioButtonUnchecked style={{ color: 'green' }} />}
+                        label="True"
+                        variant="outlined"
+                        size='small'
+                    /> :
+                    <Chip
+                        icon={<RadioButtonUnchecked style={{ color: 'red' }} />}
+                        label="False"
+                        size='small'
+                        variant="outlined"
+                    />
+                }
             </td>
-        );
+        )
     }
 
     if (column.name === 'actions') {
-        return (
-            <td className="MuiTableCell-root">
-                <IconButton aria-label="view" disabled={isLoading} onClick={() => onViewAutomation(row)}>
-                    <Visibility />
-                </IconButton>
-                <IconButton aria-label="edit" disabled={isLoading} onClick={() => onEditAutomation(row)}>
-                    <Edit />
-                </IconButton>
-                <IconButton aria-label="delete" disabled={isLoading} onClick={() => onDeleteDialog(row.id)}>
-                    <DeleteOutline />
-                </IconButton>
-            </td>
-        );
+        const [anchorEl, setAnchorEl] = useState(null);
+        const open = Boolean(anchorEl);
+
+        const handleClick = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handleClose = () => {
+            setAnchorEl(null);
+        };
+
+        if (column.name === 'actions') {
+            return (
+                <td className="MuiTableCell-root">
+                    <IconButton aria-label="open-popover" disabled={isLoading} onClick={handleClick}>
+                        <ListOutlined />
+                    </IconButton>
+                    <Popover
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                    >
+                        <List>
+                            <ListItem button onClick={() => onViewAutomation(row)}>
+                                <ListItemIcon>
+                                    <Visibility />
+                                </ListItemIcon>
+                                <ListItemText primary="View" />
+                            </ListItem>
+                            <ListItem button onClick={() => onEditAutomation(row)}>
+                                <ListItemIcon>
+                                    <Edit />
+                                </ListItemIcon>
+                                <ListItemText primary="Edit" />
+                            </ListItem>
+                            <ListItem button onClick={() => onDeleteDialog(row.id)}>
+                                <ListItemIcon>
+                                    <DeleteOutline />
+                                </ListItemIcon>
+                                <ListItemText primary="Delete" />
+                            </ListItem>
+                        </List>
+                    </Popover>
+                </td>
+            );
+        }
     }
 
     if (column.name === 'currentStatus') {
