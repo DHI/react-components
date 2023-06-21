@@ -1,89 +1,86 @@
 import React, { FC } from 'react';
 import {
   Box,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
   Grid,
   IconButton,
   Paper,
+  Popover,
   Typography
 } from '@material-ui/core';
 import { DetailAutomationsDialogProps } from '../type';
-import { CloseOutlined, HighlightOff, RadioButtonUnchecked } from '@material-ui/icons';
+import { CloseOutlined, Delete, MoreVert, RadioButtonUnchecked } from '@material-ui/icons';
 import { DetailAutomationStyle } from '../styles';
 import { TriggerCell } from './cell';
 
 export const TriggerList = ({ triggerList, handleDelete, editMode = true }) => {
   const classes = DetailAutomationStyle();
 
+  const [anchorEl, setAnchorEl] = React.useState({});
+
+  const handleClick = (event, id) => {
+    setAnchorEl(prev => ({ ...prev, [id]: event.currentTarget }));
+  };
+
+  const handleClose = (id) => {
+    setAnchorEl(prev => {
+      const newAnchor = { ...prev };
+      delete newAnchor[id];
+      return newAnchor;
+    });
+  };
+
+  const handleConfirmDelete = (id) => {
+    handleClose(id);
+    handleDelete(id);
+  }
+
   if (!triggerList) return null
 
   return (
     <Box className={classes.triggerListContainer}>
-      {editMode && triggerList?.map((trigger) =>
-        <Box
-          key={trigger.id}
-          className={classes.triggerBox}
-        >
-          {handleDelete &&
-            <IconButton
-              className={classes.iconButton}
-              onClick={() => handleDelete(trigger.id)}
-            >
-              <HighlightOff />
-            </IconButton>
-          }
-          <Typography variant="body1" className={classes.typography}><strong>Id: </strong> {trigger.id}</Typography>
-          <Typography variant="body1" className={classes.typography}><strong>StartTimeUtc:</strong> {trigger.startTimeUtc?.split('.')[0].replace("T", " ")}</Typography>
-          <Typography variant="body1" className={classes.typography}><strong>Interval:</strong> {trigger.interval}</Typography>
-          <Typography variant="body1" className={classes.typography}><strong>Description:</strong> {trigger.description}</Typography>
-          <Typography variant="body1" className={classes.typography}><strong>IsEnabled:</strong> {`${trigger.isEnabled}`}</Typography>
-          <Typography variant="body1" className={classes.typography}><strong>IsMet:</strong> {`${trigger.isMet}`}</Typography>
-          <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
-        </Box>
+      {triggerList.length === 0 && (
+        <Typography align='center' className={classes.disabledTypography}>
+          Not available, please create a new trigger
+        </Typography>
       )}
-      {!editMode && triggerList?.map((trigger) =>
-        <Box
-          key={trigger.id}
-          style={{
-            overflow: 'hidden',
-          }}
-        >
-          <Paper style={{
-            borderRadius: '10px',
-            border: '1px solid rgba(217, 217, 217, 1)',
-            boxShadow: '0 2px 4px rgba(217, 217, 217, 1)',
-            marginTop: '10px',
-          }}>
-            <Box style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderTopRightRadius: '10px',
-              borderTopLeftRadius: '10px',
-              borderBottom: '1px solid rgba(217, 217, 217, 1)',
-              padding: '10px',
-              background: 'rgba(248, 248, 248, 1)',
-
-            }}>
-              <Typography
-                variant='body1'
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: trigger.isMet ? 'green' : 'red'
-                }}>
-                <RadioButtonUnchecked style={{ marginRight: '5px' }} />
+      {triggerList?.map((trigger) =>
+        <Box key={trigger.id} className={classes.triggrerListWrapper}>
+          <Paper className={classes.paperListWrapper}>
+            <Box className={classes.triggerBox}>
+              <Typography variant='body1' className={`${classes.flexBox} ${trigger.isMet ? classes.greenText : classes.redText}`}>
+                <RadioButtonUnchecked className={classes.iconRadio} />
                 {trigger.id}
               </Typography>
-              <Typography variant="body1" className={classes.typography}>{trigger.isEnabled ? 'Enable' : 'Disable'}</Typography>
+              <Box className={classes.flexBox}>
+                <Typography variant="body1" className={classes.typography}>{trigger.isEnabled ? 'Enable' : 'Disable'}</Typography>
+                {handleDelete && (
+                  <IconButton size='small' onClick={(e) => handleClick(e, trigger.id)}>
+                    <MoreVert />
+                  </IconButton>
+                )}
+                <Popover
+                  id={`popover-${trigger.id}`}
+                  open={Boolean(anchorEl[trigger.id])}
+                  anchorEl={anchorEl[trigger.id]}
+                  onClose={() => handleClose(trigger.id)}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                  <Box className={classes.boxPopover}>
+                    <IconButton size='small' onClick={() => handleConfirmDelete(trigger.id)}>
+                      <Delete />
+                    </IconButton>
+                    <Typography className={classes.typography}>Delete</Typography>
+                  </Box>
+                </Popover>
+              </Box>
             </Box>
             <Divider />
-            <Box style={{ padding: '10px' }}>
+            <Box className={classes.paperStyle}>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
                   <Typography variant="body1" className={classes.typography}><strong>Interval:</strong> {trigger.interval}</Typography>
@@ -110,29 +107,14 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth='lg'>
-      <IconButton
-        style={{
-          position: 'absolute',
-          right: '5px',
-          top: '5px'
-        }}
-        size='small'
-        onClick={onClose}
-      >
+      <IconButton size='small' onClick={onClose} className={classes.iconClose} >
         <CloseOutlined />
       </IconButton>
       <Paper elevation={3}>
-        <DialogTitle style={{ padding: '5px 10px' }}>
+        <DialogTitle className={classes.dialogTitle}>
           <Typography variant='h6'>Automation Detail</Typography>
         </DialogTitle>
-        <DialogContent
-          style={{
-            background: 'rgba(248, 248, 248, 1)',
-            overflowX: 'auto',
-            overflowY: 'hidden',
-            borderTop: '2px solid rgba(217, 217, 217, 1)',
-            borderBottom: '2px solid rgba(217, 217, 217, 1)'
-          }}>
+        <DialogContent className={classes.contentTextWrapper}>
           <Grid container spacing={3}>
             <Grid item xs={3}>
               <Typography variant="body1" className={classes.typography}><strong>Task Id:</strong> {automation?.taskId}</Typography>
@@ -165,41 +147,17 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
             </Grid>
           </Grid>
         </DialogContent>
-        <DialogContent style={{ padding: '10px' }}>
-          <Box style={{
-            display: 'flex',
-            flexDirection: 'column'
-          }}>
-            <Box
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '10px',
-                border: '1px solid rgba(217, 217, 217, 1)',
-                borderBottom: 'none',
-                borderTopLeftRadius: '10px',
-                borderTopRightRadius: '10px',
-                background: `${automation?.triggerCondition?.isMet ? 'green' : 'red'}`
-              }}
-            >
-              <Typography style={{ color: 'white' }}>
+        <DialogContent className={classes.paperStyle}>
+          <Box className={classes.flexBoxColumn}>
+            <Box className={`${classes.contentBoxWrapper} ${automation?.triggerCondition?.isMet ? classes.greenBackground : classes.redBackground}`}>
+              <Typography className={classes.whiteText}>
                 Trigger Operation
               </Typography>
-              <Typography style={{ color: 'white', fontSize: '12px' }}>
+              <Typography className={classes.whiteTypography}>
                 Final Condition :<strong>{`${automation?.triggerCondition?.isMet ?? false}`}</strong>
               </Typography>
             </Box>
-            <Box
-              style={{
-                padding: '10px',
-                border: '1px solid rgba(217, 217, 217, 1)',
-                borderTop: 'none',
-                borderBottomLeftRadius: '10px',
-                borderBottomRightRadius: '10px',
-                minHeight: '20px',
-                marginBottom: '10px'
-              }}
-            >
+            <Box className={classes.conditionalBox}>
               <TriggerCell
                 input={automation?.triggerCondition?.conditional}
                 triggerList={automation?.triggerCondition?.triggers}
