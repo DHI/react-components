@@ -1,14 +1,10 @@
 import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { Chip, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from '@material-ui/core';
+import { Box, Chip, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from '@material-ui/core';
 import {
     ArrowDropDownCircleOutlined,
-    CheckOutlined,
-    CloseRounded,
     DeleteOutline,
     Edit,
     ListOutlined,
-    MenuBook,
-    MenuTwoTone,
     RadioButtonUnchecked,
     Visibility
 } from '@material-ui/icons';
@@ -16,18 +12,8 @@ import React, { useState } from 'react'
 import { Table } from '@devexpress/dx-react-grid';
 import { AutomationData, ITrigger } from '../type';
 import StatusCell from '../../Jobs/JobList/helpers/StatusCell'
-import { makeStyles } from '@material-ui/core/styles';
+import { CellStyles } from '../styles';
 
-const useStyles = makeStyles({
-    tooltip: {
-        backgroundColor: 'rgba(249, 249, 249, 1)',
-        color: 'rgba(0, 0, 0, 0.87)',
-        boxShadow: 'none',
-        maxWidth: 'none',
-        border: '1px solid gray',
-        padding: '10px'
-    }
-});
 interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
     onEditAutomation: (automation: AutomationData) => void;
@@ -94,6 +80,7 @@ const Cell: React.FC<CellProps> = (props) => {
         ...rest
     } = props;
     const value = row[column.name];
+    const classes = CellStyles();
 
     if (column.name === 'isEnabled') {
         return (
@@ -120,8 +107,6 @@ const Cell: React.FC<CellProps> = (props) => {
     }
 
     if (column.name === 'triggerCondition.conditional') {
-        const classes = useStyles();
-
         const triggers = row.triggerCondition?.triggers || [];
         const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -135,35 +120,26 @@ const Cell: React.FC<CellProps> = (props) => {
         if (!row.isEnabled) {
             return (
                 <td className="MuiTableCell-root" style={{ display: 'flex', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <Box className={classes.wrapperTooltip}>
+                        <Box className={classes.conditionalElipsis}>
                             {row.triggerCondition?.conditional}
-                        </div>
+                        </Box>
                         <Tooltip
                             open={tooltipOpen}
                             onClose={handleTooltipClose}
                             title={
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
-                                    background: 'white',
-                                    width: '100%',
-                                    fontSize: '14px'
-                                }}
+                                <Box className={classes.titleTooltip}
                                 >
                                     {row.triggerCondition?.conditional}
-                                </div>
+                                </Box>
                             }
-                            PopperProps={{
-                                style: { width: '100%' }
-                            }}
+                            PopperProps={{ style: { width: '100%' } }}
                         >
                             <IconButton onClick={handleTooltipOpen}>
                                 <ArrowDropDownCircleOutlined />
                             </IconButton>
                         </Tooltip>
-                    </div>
+                    </Box>
                 </td>
             )
         }
@@ -186,31 +162,24 @@ const Cell: React.FC<CellProps> = (props) => {
 
         return (
             <td className="MuiTableCell-root">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <Box className={classes.wrapperTooltip}>
+                    <Box className={classes.conditionalElipsis}>
                         {value}
-                    </div>
+                    </Box>
                     <Tooltip
                         classes={{ tooltip: classes.tooltip }}
                         open={tooltipOpen}
                         onClose={handleTooltipClose}
                         title={
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
+                            <Box className={classes.titleColoringTooltip}>
                                 {value}
-                            </div>
+                            </Box>
                         }
                         PopperProps={{
                             modifiers: {
                                 offset: {
                                     enabled: true,
-                                    offset: '-50,10'
+                                    offset: '-50'
                                 }
                             }
                         }}
@@ -219,7 +188,7 @@ const Cell: React.FC<CellProps> = (props) => {
                             <ArrowDropDownCircleOutlined />
                         </IconButton>
                     </Tooltip>
-                </div>
+                </Box>
             </td>
         )
     }
