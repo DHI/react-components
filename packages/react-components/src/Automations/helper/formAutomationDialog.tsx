@@ -5,11 +5,13 @@ import {
   Button,
   CircularProgress,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Paper,
+  Tab,
+  Tabs,
   Typography,
 } from '@material-ui/core';
 import { ITriggerCondition } from '../type'
@@ -19,12 +21,14 @@ import { initialTrigger, fields, initialFormValues, triggerFields, initialFormEr
 import FormInputTrigger from './formInputTrigger'
 import FormInputAutomation from './formInputAutomation'
 import { useForm } from './helper';
+import { ArrowBack } from '@material-ui/icons';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   open, onClose, automation, dataSources, fetchData
 }) => {
   const classes = FormAutomationStyles();
   const [addMode, setAddMode] = useState(true)
+  const [tabValue, setTabValue] = useState(0);
   const [triggerParameters, setTriggerParameters] = useState({});
   const [inputTriggers, setInputTriggers] = useState<ITriggerCondition>({
     triggers: [],
@@ -79,6 +83,10 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       conditional: triggerForm.values.triggerCondition
     }));
   }, [triggerForm.values, triggerParameters]);
+
+  const handleChangeTab = useCallback((event, newValue) => {
+    setTabValue(newValue)
+  }, [tabValue])
 
   const handleAddField = useCallback(() => {
     setParameters(prevParameters => [...prevParameters, { key: "", value: "" }]);
@@ -214,13 +222,40 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     <Dialog open={open} maxWidth='md'>
       <Paper elevation={3} className={classes.paperStyle} >
         <DialogTitle className={classes.dialogTitle}>
-          <Typography variant='body1' align='left'>
-            {!addMode ? 'Update Automation' : 'Add New Automation'}
-          </Typography>
+          <Box className={classes.boxTitleWrapper}>
+            <Box className={classes.boxIconWrapper}>
+              <IconButton onClick={handleClose}>
+                <ArrowBack />
+              </IconButton>
+              <Typography variant='body1' align='left'>
+                {!addMode ? 'Update Automation' : 'Add New Automation'}
+              </Typography>
+            </Box>
+            <Box>
+              <Button
+                onClick={handleSubmitData}
+                disabled={loading || inputTriggers.triggers.length === 0}
+                variant='contained'
+                color="primary"
+              >
+                {loading ? <CircularProgress size={24} /> :
+                  !addMode ? 'Update' : 'Create'}
+              </Button>
+            </Box>
+          </Box>
         </DialogTitle>
         <Divider />
-        <DialogContent>
-          <Box className={classes.boxDialog}>
+        <DialogContent className={classes.dialogContent}>
+          <Box className={classes.boxTab}>
+            <Tabs
+              value={tabValue}
+              onChange={handleChangeTab}
+            >
+              <Tab label="Automation" />
+              <Tab label="Trigger" />
+            </Tabs>
+          </Box>
+          {tabValue === 0 && (
             <FormInputAutomation
               classes={classes}
               formErrors={form.errors}
@@ -231,7 +266,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               handleUpdateField={handleUpdateField}
               handleRemoveField={handleRemoveField}
             />
-
+          )}
+          {tabValue === 1 && (
             <FormInputTrigger
               classes={classes}
               triggerErrors={triggerForm.errors}
@@ -243,20 +279,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               handleAddTrigger={handleAddTrigger}
               handleRemoveTrigger={handleRemoveTrigger}
             />
-          </Box>
+          )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} variant="contained">Close</Button>
-          <Button
-            onClick={handleSubmitData}
-            disabled={loading || inputTriggers.triggers.length === 0}
-            variant='contained'
-            color="primary"
-          >
-            {loading ? <CircularProgress size={24} /> :
-              !addMode ? 'Update' : 'Create'}
-          </Button>
-        </DialogActions>
       </Paper>
     </Dialog>
   )
