@@ -32,7 +32,6 @@ import {
     fetchGroupId,
     fetchListAutomations,
     getScalarStatus,
-    fetchJob
 } from '../../api/Automations/AutomationApi';
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
@@ -81,9 +80,6 @@ function AutomationsList(props: AutomationsListProps) {
         (async () => {
             try {
                 await fetchInitialData();
-                intervalId = setInterval(async () => {
-                    await fetchInitialData(true);
-                }, 25000);
             } catch (error) {
                 console.log('err', error);
             }
