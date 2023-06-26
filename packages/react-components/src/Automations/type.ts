@@ -6,6 +6,8 @@ interface AutomationsListProps {
     dataSources: DataSource;
     /** Hide or show columns */
     disabledColumns?: string[];
+    /** Reffering Job Pages */
+    jobRefferingPage?: string
 }
 
 interface AutomationData {
@@ -13,6 +15,8 @@ interface AutomationData {
     id?: string;
     /** Task Id of Automation */
     taskId: string;
+    /** Jobs Id of Automation */
+    jobId?: string;
     /** Group of the Automation */
     group: string;
     /** Host group of Automations */

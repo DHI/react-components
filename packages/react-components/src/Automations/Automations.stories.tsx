@@ -11,7 +11,7 @@ export default {
 
 
 export const AutomationsStory = () => {
-  const disabledColumns = ['fullName', 'updated', 'taskId', 'hostId']
+  const disabledColumns = ['fullName', 'updated', 'hostId', 'triggerCondition.conditional', 'triggerCondition.isMet', 'currentStatus', 'requested']
 
   const dataSources = (token) =>
     ({
@@ -27,6 +27,7 @@ export const AutomationsStory = () => {
         <AutomationsList
           disabledColumns={disabledColumns}
           dataSources={dataSources(accessToken.token)}
+          jobRefferingPage={'jobs'}
         />
       )}
     </LoginGate>

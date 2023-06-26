@@ -1,12 +1,15 @@
 import { DataSource } from '../../api/types';
 import { LogData } from '../../Logs/LogList/types';
 import { DateProps } from '../../common/types';
+import { Filter } from '@devexpress/dx-react-grid';
 
 interface JobListProps {
   /** Data source to get the logs data */
   dataSources: DataSource[];
   /** Hide or show columns */
   disabledColumns?: string[];
+  /** Hide or show columns */
+  defaultFilter?: Filter[];
   /** Data source to get the logs specific parameters */
   parameters?: Parameters[];
   /** The date time format that the dates shown in */

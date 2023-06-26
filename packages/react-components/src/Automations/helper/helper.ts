@@ -55,7 +55,9 @@ export const processScalarStatus = (scalarStatus) => {
             triggerStatusMap.set(id + '/' + triggerId, scalar.value === "True");
         }
     }
-
+    console.log('condition', conditionStatusMap)
+    console.log('lastJobid', lastJobIdMap)
+    console.log('trigger', triggerStatusMap)
     return { conditionStatusMap, lastJobIdMap, triggerStatusMap };
 }
 

@@ -42,6 +42,7 @@ const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
     { title: 'Name', name: 'name' },
     { title: 'Task Id', name: 'taskId' },
+    { title: 'Job Id', name: 'jobId' },
     { title: 'Enabled', name: 'isEnabled' },
     { title: 'Host Group', name: 'hostGroup' },
     { title: 'Trigger Condition', name: 'triggerCondition.conditional' },
@@ -57,6 +58,7 @@ function AutomationsList(props: AutomationsListProps) {
     const {
         dataSources,
         disabledColumns,
+        jobRefferingPage
     } = props;
     const classes = AutomationsListStyles();
     const [automations, setAutomations] = useState<AutomationData[]>([])
@@ -146,7 +148,7 @@ function AutomationsList(props: AutomationsListProps) {
             showDialog: true,
             title: `Delete Automation`,
             message: `
-                This will delete the selected scenario from the list. After it is
+                This will delete the selected Automtion from the list. After it is
                 deleted you cannot retrieve the data. Are you sure you want to 
                 delete this Automation?`,
             cancelLabel: 'Cancel',
@@ -263,6 +265,7 @@ function AutomationsList(props: AutomationsListProps) {
                             cellComponent={(props) => (
                                 <Cell
                                     {...props}
+                                    pageJob={jobRefferingPage}
                                     onViewAutomation={handleOpenDetailsAutomation}
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}

@@ -13,12 +13,14 @@ import { Table } from '@devexpress/dx-react-grid';
 import { AutomationData, ITrigger } from '../type';
 import StatusCell from '../../Jobs/JobList/helpers/StatusCell'
 import { CellStyles } from '../styles';
+import { useHistory } from 'react-router-dom';
 
 interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
     onEditAutomation: (automation: AutomationData) => void;
     onDeleteDialog: (id: string) => void
     isLoading: boolean
+    pageJob: string
 }
 
 export const FilterCellRow = (props) => {
@@ -77,10 +79,25 @@ const Cell: React.FC<CellProps> = (props) => {
         onEditAutomation,
         onDeleteDialog,
         isLoading,
+        pageJob,
         ...rest
     } = props;
     const value = row[column.name];
     const classes = CellStyles();
+
+    if (column.name === 'taskId') {
+        const handleClick = () => {
+            window.location.assign(`${pageJob}/${value}`);
+        };
+
+        return (
+            <td className="MuiTableCell-root">
+                <div style={{ cursor: 'pointer' }} onClick={handleClick}>
+                    {value}
+                </div>
+            </td>
+        )
+    }
 
     if (column.name === 'isEnabled') {
         return (
