@@ -84,17 +84,28 @@ const Cell: React.FC<CellProps> = (props) => {
     const value = row[column.name];
     const classes = CellStyles();
 
-    if (column.name === 'taskId') {
+    if (column.name === 'jobId') {
         const handleClick = () => {
-            window.location.assign(`${pageJob}/${value}`);
+            window.location.assign(`${pageJob}/${row.taskId}`);
         };
 
         return (
             <td className="MuiTableCell-root">
-                <div style={{ cursor: 'pointer' }} onClick={handleClick}>
-                    {value}
-                </div>
+                <Tooltip title={value}>
+                    <div
+                        style={{
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                        }}
+                        onClick={handleClick}
+                    >
+                        {value}
+                    </div>
+                </Tooltip>
             </td>
+
         )
     }
 
