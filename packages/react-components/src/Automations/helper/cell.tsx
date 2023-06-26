@@ -13,7 +13,6 @@ import { Table } from '@devexpress/dx-react-grid';
 import { AutomationData, ITrigger } from '../type';
 import StatusCell from '../../Jobs/JobList/helpers/StatusCell'
 import { CellStyles } from '../styles';
-import { useHistory } from 'react-router-dom';
 
 interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
