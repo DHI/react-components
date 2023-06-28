@@ -12,7 +12,17 @@ const GeneralDialog = (props: GeneralDialogProps) => {
     showDialog,
     onConfirm,
     onCancel,
-    isLoading
+    isLoading,
+    button = {
+      cancel: {
+        color: 'default',
+        variant: 'outlined'
+      },
+      submit: {
+        color: 'primary',
+        variant: 'contained'
+      },
+    }
   } = props;
 
   const setCancel = () => {
@@ -36,10 +46,10 @@ const GeneralDialog = (props: GeneralDialogProps) => {
         <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
       </DialogContent>
       <DialogActions style={{ padding: '24px', margin: '0px' }}>
-        <Button onClick={setCancel} variant="outlined">
+        <Button onClick={setCancel} color={button.cancel.color} variant={button.cancel.variant}>
           {cancelLabel || 'Cancel'}
         </Button>
-        <Button onClick={setConfirm} color="primary" variant="contained" disabled={isLoading}>
+        <Button onClick={setConfirm} color={button.submit.color} variant={button.submit.variant} disabled={isLoading}>
           {isLoading ? <CircularProgress size={24} /> : confirmLabel || 'Confirm'}
         </Button>
       </DialogActions>
