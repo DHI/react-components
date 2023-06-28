@@ -83,6 +83,9 @@ function AutomationsList(props: AutomationsListProps) {
         (async () => {
             try {
                 await fetchInitialData();
+                intervalId = setInterval(async () => {
+                    await fetchInitialData(true);
+                }, 30000);
             } catch (error) {
                 console.log('err', error);
             }
