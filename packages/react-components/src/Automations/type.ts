@@ -6,6 +6,8 @@ interface AutomationsListProps {
     dataSources: DataSource;
     /** Hide or show columns */
     disabledColumns?: string[];
+    /** Disabled spesific text field */
+    disabledTextField?: Record<string, boolean>
     /** Reffering Job Pages */
     jobRefferingPage?: string
 }
@@ -94,6 +96,7 @@ interface IFormAutomationDialog {
     open: boolean;
     onClose: () => void;
     automation?: AutomationData
+    disabledTextField?: Record<string, boolean>
 }
 
 interface ITriggerParameter {

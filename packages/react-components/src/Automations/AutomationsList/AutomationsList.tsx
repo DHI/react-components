@@ -58,7 +58,8 @@ function AutomationsList(props: AutomationsListProps) {
     const {
         dataSources,
         disabledColumns,
-        jobRefferingPage
+        jobRefferingPage,
+        disabledTextField
     } = props;
     const classes = AutomationsListStyles();
     const [automations, setAutomations] = useState<AutomationData[]>([])
@@ -97,7 +98,7 @@ function AutomationsList(props: AutomationsListProps) {
     const processGroupIds = async (listGroupId, dataSources, conditionStatusMap: Map<string, boolean>, lastJobIdMap: Map<string, any>, triggerStatusMap: Map<string, boolean>, change?: boolean) => {
         const newAutomations: AutomationData[] = [];
         const uniqueGroupSet = new Set();
-    
+
         for (let element of listGroupId) {
             const group = element.split('/');
             const groupId = group[0];
@@ -106,32 +107,32 @@ function AutomationsList(props: AutomationsListProps) {
             }
             uniqueGroupSet.add(groupId);
             const automationsData = await fetchListAutomations(dataSources, groupId).toPromise();
-    
+
             for (let automation of automationsData) {
                 applyConditionStatus(conditionStatusMap, automation);
                 applyLastJobIdStatus(lastJobIdMap, dataSources, automation);
                 applyTriggerStatus(triggerStatusMap, automation);
             }
-    
+
             if (change) {
                 newAutomations.push(...automationsData);
             } else {
                 setAutomations((prevVal) => [...prevVal, ...automationsData]);
             }
         }
-        
+
         return newAutomations;
     }
-    
+
     const fetchInitialData = async (change?: boolean) => {
         setLoading(true);
         try {
             const listGroupId = await fetchGroupId(dataSources).toPromise();
             const scalarStatus = await getScalarStatus(dataSources).toPromise();
-    
-            const {conditionStatusMap, lastJobIdMap, triggerStatusMap} = processScalarStatus(scalarStatus);
+
+            const { conditionStatusMap, lastJobIdMap, triggerStatusMap } = processScalarStatus(scalarStatus);
             const automationsData = await processGroupIds(listGroupId, dataSources, conditionStatusMap, lastJobIdMap, triggerStatusMap, change);
-            
+
             if (change) {
                 setAutomations(automationsData);
             }
@@ -230,6 +231,16 @@ function AutomationsList(props: AutomationsListProps) {
                 showDialog={dialog.showDialog}
                 onConfirm={dialog.onConfirm}
                 onCancel={handleCloseDeleteDialog}
+                button={{
+                    cancel: {
+                        color: 'primary',
+                        variant: 'contained'
+                    },
+                    submit: {
+                        color: 'default',
+                        variant: 'outlined'
+                    },
+                }}
                 isLoading={loading}
             />
             <DetailAutomationsDialog
@@ -238,6 +249,7 @@ function AutomationsList(props: AutomationsListProps) {
                 automation={detailAutomation}
             />
             <FormAutomationDialog
+                disabledTextField={disabledTextField}
                 dataSources={dataSources}
                 setLoading={setLoading}
                 loading={loading}
