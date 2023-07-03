@@ -260,6 +260,7 @@ function AutomationsList(props: AutomationsListProps) {
                 open={openFormAutomations}
                 onClose={handleCloseFormAutomation}
                 automation={detailAutomation}
+                listAutomation={automations}
             />
             <Box>
                 <Paper className={classes.paperStyle}>

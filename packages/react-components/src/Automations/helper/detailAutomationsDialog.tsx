@@ -129,7 +129,11 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
               <Typography variant="body1" className={classes.typography}><strong>Priority:</strong> {automation?.priority}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
+              <Typography variant="body1" className={classes.typography}><strong>Requested Time:</strong> {automation?.requested?.split('.')[0].replace("T", " ")}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Current Status:</strong> {automation?.currentStatus}</Typography>
+            </Grid>
+            <Grid item xs={12}>
               <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
               <Typography variant="body1" className={classes.typography}>
                 <strong>Task Parameters:</strong>
@@ -140,10 +144,6 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
                   </span>
                 ))}
               </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" className={classes.typography}><strong>Requested Time:</strong> {automation?.requested?.split('.')[0].replace("T", " ")}</Typography>
-              <Typography variant="body1" className={classes.typography}><strong>Current Status:</strong> {automation?.currentStatus}</Typography>
             </Grid>
           </Grid>
         </DialogContent>

@@ -97,6 +97,7 @@ interface IFormAutomationDialog {
     onClose: () => void;
     automation?: AutomationData
     disabledTextField?: Record<string, boolean>
+    listAutomation?: AutomationData[]
 }
 
 interface ITriggerParameter {
