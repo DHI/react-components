@@ -205,6 +205,9 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       id: `${form.values.group}/${form.values.name}`,
       triggerCondition: paramTriggerCondition,
       taskParameters: paramPayload,
+      parameters: {
+        utcNow: new Date().toLocaleString().slice(0, 19).replace('T', ' ')
+      }
     };
 
     if (addMode) {
