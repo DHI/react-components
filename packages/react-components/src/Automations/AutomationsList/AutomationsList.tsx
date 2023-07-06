@@ -58,7 +58,7 @@ function AutomationsList(props: AutomationsListProps) {
     const {
         dataSources,
         disabledColumns,
-        jobRefferingPage,
+        jobReferringPage,
         disabledTextField
     } = props;
     const classes = AutomationsListStyles();
@@ -280,7 +280,7 @@ function AutomationsList(props: AutomationsListProps) {
                             cellComponent={(props) => (
                                 <Cell
                                     {...props}
-                                    pageJob={jobRefferingPage}
+                                    pageJob={jobReferringPage}
                                     onViewAutomation={handleOpenDetailsAutomation}
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}

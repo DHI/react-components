@@ -9,7 +9,7 @@ interface AutomationsListProps {
     /** Disabled spesific text field */
     disabledTextField?: Record<string, boolean>
     /** Reffering Job Pages */
-    jobRefferingPage?: string
+    jobReferringPage?: string
 }
 
 interface AutomationData {
