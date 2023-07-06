@@ -1,3 +1,7 @@
+import { PropTypes } from "@material-ui/core";
+
+type Variant = 'text' | 'outlined' | 'contained'
+
 interface GeneralDialogProps {
   /**
    * Value to be set as dialog id
@@ -35,6 +39,19 @@ interface GeneralDialogProps {
    * when state is Loading
    */
   isLoading?: boolean;
+  /**
+   * Color of button dialog
+   */
+  button?: {
+    cancel: {
+      color: PropTypes.Color
+      variant: Variant
+    },
+    submit: {
+      color: PropTypes.Color
+      variant: Variant
+    },
+  };
   
 }
 

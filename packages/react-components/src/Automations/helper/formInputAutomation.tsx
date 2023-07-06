@@ -11,6 +11,8 @@ export default function FormInputAutomation({
     handleAddField,
     handleUpdateField,
     handleRemoveField,
+    disabledTextField,
+    addMode,
 }) {
     return (
         <Grid container spacing={3}>
@@ -25,7 +27,8 @@ export default function FormInputAutomation({
                     fullWidth
                     value={formValues.name}
                     onChange={handleChange}
-                />
+                    disabled={!addMode && disabledTextField?.name}
+                    />
             </Grid>
             <Grid item xs={6}>
                 <TextField
@@ -38,6 +41,7 @@ export default function FormInputAutomation({
                     fullWidth
                     value={formValues.group}
                     onChange={handleChange}
+                    disabled={!addMode && disabledTextField?.group}
                 />
             </Grid>
             <Grid item xs={6}>
@@ -51,6 +55,7 @@ export default function FormInputAutomation({
                     fullWidth
                     value={formValues.taskId}
                     onChange={handleChange}
+                    disabled={!addMode && disabledTextField?.taskId}
                 />
             </Grid>
             <Grid item xs={6}>
@@ -64,6 +69,7 @@ export default function FormInputAutomation({
                     fullWidth
                     value={formValues.hostGroup}
                     onChange={handleChange}
+                    disabled={!addMode && disabledTextField?.hostGroup}
                 />
             </Grid>
             <Grid item xs={6}>
@@ -77,6 +83,7 @@ export default function FormInputAutomation({
                     fullWidth
                     value={formValues.tag}
                     onChange={handleChange}
+                    disabled={!addMode && disabledTextField?.tag}
                 />
             </Grid>
             <Grid item xs={6}>
@@ -88,6 +95,7 @@ export default function FormInputAutomation({
                     fullWidth
                     value={formValues.priority}
                     onChange={handleChange}
+                    disabled={!addMode && disabledTextField?.priority}
                 />
             </Grid>
             <Grid item xs={6}>

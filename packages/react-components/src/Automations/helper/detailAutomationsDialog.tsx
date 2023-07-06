@@ -106,7 +106,7 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
   const classes = DetailAutomationStyle();
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth='lg'>
+    <Dialog open={open} onClose={onClose} maxWidth='md'>
       <IconButton size='small' onClick={onClose} className={classes.iconClose} >
         <CloseOutlined />
       </IconButton>
@@ -129,14 +129,14 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
               <Typography variant="body1" className={classes.typography}><strong>Priority:</strong> {automation?.priority}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
               <Typography variant="body1" className={classes.typography}>
                 <strong>Task Parameters:</strong>
                 {Object.entries(automation?.taskParameters || {}).map(([key, value], index) => (
                   <span key={key}>
                     <br />
-                    {index + 1}. {key}: {value}
+                    {index + 1}. <strong>{key}</strong>: {value}
                   </span>
                 ))}
               </Typography>

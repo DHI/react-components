@@ -24,7 +24,7 @@ import { useForm } from './helper';
 import { ArrowBack } from '@material-ui/icons';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
-  open, onClose, automation, dataSources, fetchData
+  open, onClose, automation, dataSources, fetchData, disabledTextField
 }) => {
   const classes = FormAutomationStyles();
   const [addMode, setAddMode] = useState(true)
@@ -257,6 +257,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
           </Box>
           {tabValue === 0 && (
             <FormInputAutomation
+              addMode={addMode}
               classes={classes}
               formErrors={form.errors}
               formValues={form.values}
@@ -265,6 +266,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               handleAddField={handleAddField}
               handleUpdateField={handleUpdateField}
               handleRemoveField={handleRemoveField}
+              disabledTextField={disabledTextField}
             />
           )}
           {tabValue === 1 && (

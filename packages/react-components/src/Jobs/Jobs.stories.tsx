@@ -25,6 +25,8 @@ export const JobListStory = () => {
 
   const disabledColumns = ['accountId', 'Area'];
 
+  const defaultFilter = [{columnName: 'taskId', operation: 'contains', value: 'workflow'}]
+
   const parameters = [
     {
       parameter: 'Area',
@@ -42,6 +44,7 @@ export const JobListStory = () => {
           dateTimeFormat="yyyy-MM-dd HH:mm:ss"
           startTimeUtc={addDays(new Date(), -2).toISOString()}
           timeZone="Australia/Brisbane"
+          defaultFilter={defaultFilter}
           translations={{
             noEntriesData: 'Tidak ada entri job',
             noEntriesFilter: 'Tidak ada entri job untuk status job yang dipilih',

@@ -19,6 +19,7 @@ interface CellProps extends Table.DataCellProps {
     onEditAutomation: (automation: AutomationData) => void;
     onDeleteDialog: (id: string) => void
     isLoading: boolean
+    pageJob: string
 }
 
 export const FilterCellRow = (props) => {
@@ -77,10 +78,36 @@ const Cell: React.FC<CellProps> = (props) => {
         onEditAutomation,
         onDeleteDialog,
         isLoading,
+        pageJob,
         ...rest
     } = props;
     const value = row[column.name];
     const classes = CellStyles();
+
+    if (column.name === 'jobId') {
+        const handleClick = () => {
+            window.location.assign(`${pageJob}/${row.taskId}`);
+        };
+
+        return (
+            <td className="MuiTableCell-root">
+                <Tooltip title={value}>
+                    <div
+                        style={{
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                        }}
+                        onClick={handleClick}
+                    >
+                        {value}
+                    </div>
+                </Tooltip>
+            </td>
+
+        )
+    }
 
     if (column.name === 'isEnabled') {
         return (

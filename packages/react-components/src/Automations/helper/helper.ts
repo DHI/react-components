@@ -16,6 +16,7 @@ export const applyLastJobIdStatus = async (lastJobIdMap: Map<string, any>, dataS
     if (lastJobIdMap.has(automation.id!)) {
         try {
             const job = await fetchJob(dataSources, lastJobIdMap.get(automation.id!)).toPromise();
+            automation.jobId = job.id
             automation.currentStatus = job.status;
             automation.requested = job.requested;
         } catch (error) {
@@ -55,7 +56,6 @@ export const processScalarStatus = (scalarStatus) => {
             triggerStatusMap.set(id + '/' + triggerId, scalar.value === "True");
         }
     }
-
     return { conditionStatusMap, lastJobIdMap, triggerStatusMap };
 }
 

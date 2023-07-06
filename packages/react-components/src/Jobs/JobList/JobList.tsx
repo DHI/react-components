@@ -47,7 +47,7 @@ const DEFAULT_COLUMNS = [
 const NOTIFICATION_HUB = '/notificationhub';
 
 const JobList = (props: JobListProps) => {
-  const { dataSources, disabledColumns, parameters, startTimeUtc, dateTimeFormat, timeZone } = props;
+  const { dataSources, disabledColumns, parameters, startTimeUtc, dateTimeFormat, timeZone, defaultFilter } = props;
   const initialDateState = {
     from: new Date(startTimeUtc).toISOString(),
     to: new Date().toISOString(),
@@ -451,7 +451,7 @@ const JobList = (props: JobListProps) => {
         {loading && <Loading />}
 
         <Grid rows={jobsData} columns={columns}>
-          <FilteringState defaultFilters={[]} />
+          <FilteringState defaultFilters={defaultFilter} />
           <IntegratedFiltering />
 
           <SortingState defaultSorting={[{ columnName: 'requested', direction: 'desc' }]} />

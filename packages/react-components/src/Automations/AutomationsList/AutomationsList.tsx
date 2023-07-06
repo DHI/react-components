@@ -42,6 +42,7 @@ const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
     { title: 'Name', name: 'name' },
     { title: 'Task Id', name: 'taskId' },
+    { title: 'Job Id', name: 'jobId' },
     { title: 'Enabled', name: 'isEnabled' },
     { title: 'Host Group', name: 'hostGroup' },
     { title: 'Trigger Condition', name: 'triggerCondition.conditional' },
@@ -57,6 +58,8 @@ function AutomationsList(props: AutomationsListProps) {
     const {
         dataSources,
         disabledColumns,
+        jobReferringPage,
+        disabledTextField
     } = props;
     const classes = AutomationsListStyles();
     const [automations, setAutomations] = useState<AutomationData[]>([])
@@ -80,6 +83,9 @@ function AutomationsList(props: AutomationsListProps) {
         (async () => {
             try {
                 await fetchInitialData();
+                intervalId = setInterval(async () => {
+                    await fetchInitialData(true);
+                }, 30000);
             } catch (error) {
                 console.log('err', error);
             }
@@ -95,7 +101,7 @@ function AutomationsList(props: AutomationsListProps) {
     const processGroupIds = async (listGroupId, dataSources, conditionStatusMap: Map<string, boolean>, lastJobIdMap: Map<string, any>, triggerStatusMap: Map<string, boolean>, change?: boolean) => {
         const newAutomations: AutomationData[] = [];
         const uniqueGroupSet = new Set();
-    
+
         for (let element of listGroupId) {
             const group = element.split('/');
             const groupId = group[0];
@@ -104,32 +110,32 @@ function AutomationsList(props: AutomationsListProps) {
             }
             uniqueGroupSet.add(groupId);
             const automationsData = await fetchListAutomations(dataSources, groupId).toPromise();
-    
+
             for (let automation of automationsData) {
                 applyConditionStatus(conditionStatusMap, automation);
                 applyLastJobIdStatus(lastJobIdMap, dataSources, automation);
                 applyTriggerStatus(triggerStatusMap, automation);
             }
-    
+
             if (change) {
                 newAutomations.push(...automationsData);
             } else {
                 setAutomations((prevVal) => [...prevVal, ...automationsData]);
             }
         }
-        
+
         return newAutomations;
     }
-    
+
     const fetchInitialData = async (change?: boolean) => {
         setLoading(true);
         try {
             const listGroupId = await fetchGroupId(dataSources).toPromise();
             const scalarStatus = await getScalarStatus(dataSources).toPromise();
-    
-            const {conditionStatusMap, lastJobIdMap, triggerStatusMap} = processScalarStatus(scalarStatus);
+
+            const { conditionStatusMap, lastJobIdMap, triggerStatusMap } = processScalarStatus(scalarStatus);
             const automationsData = await processGroupIds(listGroupId, dataSources, conditionStatusMap, lastJobIdMap, triggerStatusMap, change);
-            
+
             if (change) {
                 setAutomations(automationsData);
             }
@@ -146,7 +152,7 @@ function AutomationsList(props: AutomationsListProps) {
             showDialog: true,
             title: `Delete Automation`,
             message: `
-                This will delete the selected scenario from the list. After it is
+                This will delete the selected Automtion from the list. After it is
                 deleted you cannot retrieve the data. Are you sure you want to 
                 delete this Automation?`,
             cancelLabel: 'Cancel',
@@ -228,6 +234,16 @@ function AutomationsList(props: AutomationsListProps) {
                 showDialog={dialog.showDialog}
                 onConfirm={dialog.onConfirm}
                 onCancel={handleCloseDeleteDialog}
+                button={{
+                    cancel: {
+                        color: 'primary',
+                        variant: 'contained'
+                    },
+                    submit: {
+                        color: 'default',
+                        variant: 'outlined'
+                    },
+                }}
                 isLoading={loading}
             />
             <DetailAutomationsDialog
@@ -236,6 +252,7 @@ function AutomationsList(props: AutomationsListProps) {
                 automation={detailAutomation}
             />
             <FormAutomationDialog
+                disabledTextField={disabledTextField}
                 dataSources={dataSources}
                 setLoading={setLoading}
                 loading={loading}
@@ -263,6 +280,7 @@ function AutomationsList(props: AutomationsListProps) {
                             cellComponent={(props) => (
                                 <Cell
                                     {...props}
+                                    pageJob={jobReferringPage}
                                     onViewAutomation={handleOpenDetailsAutomation}
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}
