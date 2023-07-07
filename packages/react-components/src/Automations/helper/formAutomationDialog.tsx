@@ -206,7 +206,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       triggerCondition: paramTriggerCondition,
       taskParameters: paramPayload,
       parameters: {
-        utcNow: new Date().toLocaleString().slice(0, 19).replace('T', ' ')
+        utcNow: new Date().toISOString(),
+        triggerNow: false
       }
     };
 
