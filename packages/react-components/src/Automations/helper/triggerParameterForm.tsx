@@ -27,8 +27,10 @@ const CustomDateTime = (props) => {
 }
 
 const CustomTextField = (props) => {
-  const { id, label, required, onChange, value } = props;
+  const { id, label, required, onChange, value, schema } = props;
   const classes = CustomField();
+  const description = schema.description || ''
+  
   return (
     <Grid xs={6}>
       <TextField
@@ -37,6 +39,7 @@ const CustomTextField = (props) => {
         required={required}
         onChange={(event) => onChange(event.target.value)}
         value={value}
+        helperText={description}
         variant="outlined"
         size="small"
         className={classes.textField}

@@ -10,7 +10,6 @@ import {
     TextField,
     Typography,
 } from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
 import { TriggerParameterForm } from './triggerParameterForm'
 import { TriggerList } from './detailAutomationsDialog';
 

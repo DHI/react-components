@@ -49,7 +49,7 @@ export const uiSchema = {
   interval: {
     "ui:widget": "text",
     "ui:options": {
-      label: false
+      label: false,
     }
   },
 };
@@ -68,7 +68,8 @@ export const schema : JSONSchema7 = {
     },
     interval: {
       type: "string",
-      title: "Interval"
+      title: "Interval",
+      description: "Format: d.hh:mm:ss.ff",
     }
   }
 };
