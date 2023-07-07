@@ -145,6 +145,24 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     });
   }, []);
 
+  const handleChangeStatus = useCallback((triggerId) => {
+    setInputTriggers(prevState => {
+      const updatedTriggers = prevState.triggers.map((trigger) => {
+        if (trigger.id === triggerId) {
+          return {
+            ...trigger,
+            isEnabled: !trigger.isEnabled,
+          };
+        }
+        return trigger;
+      });
+      return {
+        ...prevState,
+        triggers: updatedTriggers,
+      };
+    });
+  }, [])
+
   const handleClose = useCallback(() => {
     form.setValues(initialFormValues);
     triggerForm.setValues(initialTrigger);
@@ -339,6 +357,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               handleChangeTrigger={triggerForm.handleChange}
               setTriggerParameters={setTriggerParameters}
               handleAddTrigger={handleAddTrigger}
+              handleChangeStatus={handleChangeStatus}
               handleRemoveTrigger={handleRemoveTrigger}
             />
           )}
