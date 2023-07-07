@@ -60,7 +60,8 @@ function AutomationsList(props: AutomationsListProps) {
         dataSources,
         disabledColumns,
         jobReferringPage,
-        disabledTextField
+        disabledTextField,
+        disabledTriggerNow
     } = props;
     const classes = AutomationsListStyles();
     const [automations, setAutomations] = useState<AutomationData[]>([])
@@ -331,6 +332,7 @@ function AutomationsList(props: AutomationsListProps) {
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}
                                     onTriggerNow={handleTriggerNow}
+                                    disableTriggerNow={disabledTriggerNow}
                                     isLoading={loading}
                                 />
                             )}

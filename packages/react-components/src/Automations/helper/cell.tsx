@@ -20,6 +20,7 @@ interface CellProps extends Table.DataCellProps {
     onEditAutomation: (automation: AutomationData) => void;
     onDeleteDialog: (id: string) => void
     onTriggerNow: (automation: AutomationData) => void;
+    disableTriggerNow: boolean
     isLoading: boolean
     pageJob: string
 }
@@ -80,6 +81,7 @@ const Cell: React.FC<CellProps> = (props) => {
         onEditAutomation,
         onDeleteDialog,
         onTriggerNow,
+        disableTriggerNow,
         isLoading,
         pageJob,
         ...rest
@@ -283,7 +285,7 @@ const Cell: React.FC<CellProps> = (props) => {
                         }}
                     >
                         <List>
-                            <ListItem button onClick={() => onTriggerNow(row)}>
+                            <ListItem button disabled={disableTriggerNow} onClick={() => onTriggerNow(row)}>
                                 <ListItemIcon>
                                     <PlayCircleOutline />
                                 </ListItemIcon>
