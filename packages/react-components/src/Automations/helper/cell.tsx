@@ -90,9 +90,10 @@ const Cell: React.FC<CellProps> = (props) => {
     const classes = CellStyles();
 
     if (column.name === 'jobId') {
-        const handleClick = () => {
-            window.location.assign(`${pageJob}/${row.taskId}`);
-        };
+        // Comment Until Routing Issue Found
+        // const handleClick = () => {
+        //     window.location.assign(`${pageJob}/${row.taskId}`);
+        // };
 
         return (
             <td className="MuiTableCell-root">
@@ -104,7 +105,7 @@ const Cell: React.FC<CellProps> = (props) => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis'
                         }}
-                        onClick={handleClick}
+                        // onClick={handleClick}
                     >
                         {value}
                     </div>
