@@ -30,8 +30,9 @@ export const AutomationsStory = () => {
         <AutomationsList
           disabledColumns={disabledColumns}
           dataSources={dataSources(accessToken.token)}
-          jobRefferingPage={'jobs'}
+          jobReferringPage={'jobs'}
           disabledTextField={disabledTextField}
+          disabledTriggerNow={false}
         />
       )}
     </LoginGate>

@@ -8,6 +8,8 @@ interface AutomationsListProps {
     disabledColumns?: string[];
     /** Disabled spesific text field */
     disabledTextField?: Record<string, boolean>
+    /** Disabled trigger now action field */
+    disabledTriggerNow?: boolean
     /** Reffering Job Pages */
     jobReferringPage?: string
 }
@@ -97,6 +99,7 @@ interface IFormAutomationDialog {
     onClose: () => void;
     automation?: AutomationData
     disabledTextField?: Record<string, boolean>
+    listAutomation?: AutomationData[]
 }
 
 interface ITriggerParameter {

@@ -1,10 +1,11 @@
 import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { Box, Chip, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from '@material-ui/core';
+import { Box, Chip, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from '@material-ui/core';
 import {
     ArrowDropDownCircleOutlined,
     DeleteOutline,
     Edit,
     ListOutlined,
+    PlayCircleOutline,
     RadioButtonUnchecked,
     Visibility
 } from '@material-ui/icons';
@@ -18,6 +19,8 @@ interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
     onEditAutomation: (automation: AutomationData) => void;
     onDeleteDialog: (id: string) => void
+    onTriggerNow: (automation: AutomationData) => void;
+    disableTriggerNow: boolean
     isLoading: boolean
     pageJob: string
 }
@@ -77,6 +80,8 @@ const Cell: React.FC<CellProps> = (props) => {
         onViewAutomation,
         onEditAutomation,
         onDeleteDialog,
+        onTriggerNow,
+        disableTriggerNow,
         isLoading,
         pageJob,
         ...rest
@@ -85,9 +90,10 @@ const Cell: React.FC<CellProps> = (props) => {
     const classes = CellStyles();
 
     if (column.name === 'jobId') {
-        const handleClick = () => {
-            window.location.assign(`${pageJob}/${row.taskId}`);
-        };
+        // Comment Until Routing Issue Found
+        // const handleClick = () => {
+        //     window.location.assign(`${pageJob}/${row.taskId}`);
+        // };
 
         return (
             <td className="MuiTableCell-root">
@@ -99,7 +105,7 @@ const Cell: React.FC<CellProps> = (props) => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis'
                         }}
-                        onClick={handleClick}
+                        // onClick={handleClick}
                     >
                         {value}
                     </div>
@@ -280,6 +286,13 @@ const Cell: React.FC<CellProps> = (props) => {
                         }}
                     >
                         <List>
+                            <ListItem button disabled={disableTriggerNow} onClick={() => onTriggerNow(row)}>
+                                <ListItemIcon>
+                                    <PlayCircleOutline />
+                                </ListItemIcon>
+                                <ListItemText primary="Trigger Now" />
+                            </ListItem>
+                            <Divider />
                             <ListItem button onClick={() => onViewAutomation(row)}>
                                 <ListItemIcon>
                                     <Visibility />

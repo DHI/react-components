@@ -10,7 +10,6 @@ import {
     TextField,
     Typography,
 } from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
 import { TriggerParameterForm } from './triggerParameterForm'
 import { TriggerList } from './detailAutomationsDialog';
 
@@ -24,6 +23,7 @@ export default function FormInputTrigger({
     setTriggerParameters,
     handleAddTrigger,
     handleRemoveTrigger,
+    handleChangeStatus,
 }) {
     return (
         <Box>
@@ -120,7 +120,11 @@ export default function FormInputTrigger({
                         </Grid>
                     </Box>
                     <Box className={inputTriggers?.triggers?.length > 0 ? classes.boxParameter : classes.boxParameterDisabled}>
-                        <TriggerList triggerList={inputTriggers.triggers ?? []} handleDelete={handleRemoveTrigger} />
+                        <TriggerList
+                            triggerList={inputTriggers.triggers ?? []}
+                            handleDelete={handleRemoveTrigger}
+                            handleChangeStatus={handleChangeStatus}
+                        />
                     </Box>
                 </Grid>
             </Grid>

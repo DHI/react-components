@@ -9,14 +9,20 @@ import {
   IconButton,
   Paper,
   Popover,
-  Typography
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  FormControlLabel,
+  Switch,
 } from '@material-ui/core';
 import { DetailAutomationsDialogProps } from '../type';
 import { CloseOutlined, Delete, MoreVert, RadioButtonUnchecked } from '@material-ui/icons';
 import { DetailAutomationStyle } from '../styles';
 import { TriggerCell } from './cell';
 
-export const TriggerList = ({ triggerList, handleDelete, editMode = true }) => {
+export const TriggerList = ({ triggerList, handleDelete, editMode = true, handleChangeStatus }) => {
   const classes = DetailAutomationStyle();
 
   const [anchorEl, setAnchorEl] = React.useState({});
@@ -57,11 +63,9 @@ export const TriggerList = ({ triggerList, handleDelete, editMode = true }) => {
               </Typography>
               <Box className={classes.flexBox}>
                 <Typography variant="body1" className={classes.typography}>{trigger.isEnabled ? 'Enable' : 'Disable'}</Typography>
-                {handleDelete && (
-                  <IconButton size='small' onClick={(e) => handleClick(e, trigger.id)}>
-                    <MoreVert />
-                  </IconButton>
-                )}
+                {handleChangeStatus && handleDelete && <IconButton size='small' onClick={(e) => handleClick(e, trigger.id)}>
+                  <MoreVert />
+                </IconButton>}
                 <Popover
                   id={`popover-${trigger.id}`}
                   open={Boolean(anchorEl[trigger.id])}
@@ -70,12 +74,29 @@ export const TriggerList = ({ triggerList, handleDelete, editMode = true }) => {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                 >
-                  <Box className={classes.boxPopover}>
-                    <IconButton size='small' onClick={() => handleConfirmDelete(trigger.id)}>
-                      <Delete />
-                    </IconButton>
-                    <Typography className={classes.typography}>Delete</Typography>
-                  </Box>
+                  <List>
+                    <ListItem>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={trigger.isEnabled}
+                            onChange={() => handleChangeStatus(trigger.id)}
+                            name='isEnabled'
+                            color='primary'
+                          />
+                        }
+                        label={<Typography variant="body1">Enabled</Typography>}
+                        labelPlacement="start"
+                      />
+                    </ListItem>
+                    <Divider />
+                    <ListItem button onClick={() => handleConfirmDelete(trigger.id)}>
+                      <ListItemIcon>
+                        <Delete />
+                      </ListItemIcon>
+                      <ListItemText primary="Delete" />
+                    </ListItem>
+                  </List>
                 </Popover>
               </Box>
             </Box>
@@ -129,7 +150,11 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
               <Typography variant="body1" className={classes.typography}><strong>Priority:</strong> {automation?.priority}</Typography>
               <Typography variant="body1" className={classes.typography}><strong>Host Group:</strong> {automation?.hostGroup}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
+              <Typography variant="body1" className={classes.typography}><strong>Requested Time:</strong> {automation?.requested?.split('.')[0].replace("T", " ")}</Typography>
+              <Typography variant="body1" className={classes.typography}><strong>Current Status:</strong> {automation?.currentStatus}</Typography>
+            </Grid>
+            <Grid item xs={12}>
               <Typography variant="body1" className={classes.typography}><strong>Tag:</strong> {automation?.tag}</Typography>
               <Typography variant="body1" className={classes.typography}>
                 <strong>Task Parameters:</strong>
@@ -140,10 +165,6 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
                   </span>
                 ))}
               </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" className={classes.typography}><strong>Requested Time:</strong> {automation?.requested?.split('.')[0].replace("T", " ")}</Typography>
-              <Typography variant="body1" className={classes.typography}><strong>Current Status:</strong> {automation?.currentStatus}</Typography>
             </Grid>
           </Grid>
         </DialogContent>
@@ -163,7 +184,7 @@ const DetailAutomationsDialog: FC<DetailAutomationsDialogProps> = ({ open, onClo
                 triggerList={automation?.triggerCondition?.triggers}
               />
             </Box>
-            <TriggerList editMode={false} triggerList={automation?.triggerCondition?.triggers} handleDelete={undefined} />
+            <TriggerList editMode={false} triggerList={automation?.triggerCondition?.triggers} handleDelete={undefined} handleChangeStatus={undefined} />
           </Box>
         </DialogContent>
       </Paper>

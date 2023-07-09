@@ -165,7 +165,9 @@ export const deleteAutomation = (dataSource: DataSource, id: string) => {
  * @param id
  */
 export const getScalarStatus = (dataSource: DataSource) => {
-    return fetchUrl(`${dataSource.host}/api/scalars/${dataSource.connection}?group=Job Automator|${dataSource.host.split("//")[1].split("/")[0].toUpperCase()}`,
+    const group = `Job Automator|${dataSource.host.split("//")[1].split("/")[0].split(':')[0].toUpperCase()}`
+
+    return fetchUrl(`${dataSource.host}/api/scalars/${dataSource.connection}?group=${group}`,
         {
             method: 'GET',
             additionalHeaders: {

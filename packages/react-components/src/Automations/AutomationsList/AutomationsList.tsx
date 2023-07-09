@@ -32,6 +32,7 @@ import {
     fetchGroupId,
     fetchListAutomations,
     getScalarStatus,
+    updateAutomation,
 } from '../../api/Automations/AutomationApi';
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
@@ -59,7 +60,8 @@ function AutomationsList(props: AutomationsListProps) {
         dataSources,
         disabledColumns,
         jobReferringPage,
-        disabledTextField
+        disabledTextField,
+        disabledTriggerNow
     } = props;
     const classes = AutomationsListStyles();
     const [automations, setAutomations] = useState<AutomationData[]>([])
@@ -79,6 +81,7 @@ function AutomationsList(props: AutomationsListProps) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
         let intervalId;
         (async () => {
             try {
@@ -213,6 +216,49 @@ function AutomationsList(props: AutomationsListProps) {
         setOpenFormAutomations(false)
     }
 
+    const handleTriggerNow = (automation) => {
+        setDialog({
+            dialogId: 'triggerNow',
+            showDialog: true,
+            title: `Trigger Now`,
+            message: `
+                This will trigger the selected Automtion. Are you sure you want to 
+                trigger this Automation?`,
+            cancelLabel: 'Cancel',
+            confirmLabel: 'Confirm',
+            onConfirm: () => onTriggerNow(automation),
+        });
+    }
+
+    const onTriggerNow = (automation) => {
+        const payload = {
+            ...automation,
+            id: automation.id,
+            parameters: {
+                utcNow: new Date().toISOString(),
+                triggerNow: true
+            }
+        }
+        updateAutomation(dataSources, payload).subscribe({
+            next: async () => {
+                try {
+                    await fetchInitialData(true);
+                } catch (err) {
+                    console.log(err);
+                } finally {
+                    setDialog({
+                        ...dialog,
+                        showDialog: false,
+                    });
+                }
+            },
+            error: (err) => {
+                console.log('Error run trigger automation:', err);
+                setLoading(false);
+            },
+        });
+    }
+
     useEffect(() => {
         const handleResize = () => {
             setWindowHeight(window.innerHeight);
@@ -260,6 +306,7 @@ function AutomationsList(props: AutomationsListProps) {
                 open={openFormAutomations}
                 onClose={handleCloseFormAutomation}
                 automation={detailAutomation}
+                listAutomation={automations}
             />
             <Box>
                 <Paper className={classes.paperStyle}>
@@ -284,6 +331,8 @@ function AutomationsList(props: AutomationsListProps) {
                                     onViewAutomation={handleOpenDetailsAutomation}
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}
+                                    onTriggerNow={handleTriggerNow}
+                                    disableTriggerNow={disabledTriggerNow}
                                     isLoading={loading}
                                 />
                             )}

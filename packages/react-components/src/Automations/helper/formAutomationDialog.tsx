@@ -8,8 +8,12 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Tab,
   Tabs,
   Typography,
@@ -24,7 +28,7 @@ import { useForm } from './helper';
 import { ArrowBack } from '@material-ui/icons';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
-  open, onClose, automation, dataSources, fetchData, disabledTextField
+  open, onClose, automation, dataSources, fetchData, disabledTextField, listAutomation
 }) => {
   const classes = FormAutomationStyles();
   const [addMode, setAddMode] = useState(true)
@@ -36,6 +40,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   })
   const [parameters, setParameters] = useState<IParameters[]>([]);
   const [loading, setLoading] = useState(false)
+  const [selectedOption, setSelectedOption] = useState('');
 
   const form = useForm(initialFormValues, initialFormErrors);
   const triggerForm = useForm(initialTrigger, initialTriggerError);
@@ -65,6 +70,32 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       setInputTriggers(automation.triggerCondition);
     }
   }, [automation]);
+
+  const handleChangeClone = (event) => {
+    const automationId = event.target.value;
+    const findId = listAutomation.find((item) => item.id === automationId)
+    if (findId) {
+      setSelectedOption(automationId)
+      form.setValues({
+        taskId: findId.taskId,
+        hostGroup: findId.hostGroup,
+        priority: findId.priority,
+        tag: findId.tag,
+        isEnabled: findId.isEnabled
+      });
+
+      setParameters(Object.entries(findId.taskParameters || {}).map(([key, value]) => ({ key, value })));
+
+      triggerForm.setValues({
+        triggerCondition: findId.triggerCondition.conditional,
+        triggerId: '',
+        type: '',
+        isEnabled: findId.isEnabled
+      });
+
+      setInputTriggers(findId.triggerCondition);
+    }
+  }
 
   const handleAddTrigger = useCallback(() => {
     const triggerParam = triggerParameters[triggerForm.values.type]
@@ -114,6 +145,24 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     });
   }, []);
 
+  const handleChangeStatus = useCallback((triggerId) => {
+    setInputTriggers(prevState => {
+      const updatedTriggers = prevState.triggers.map((trigger) => {
+        if (trigger.id === triggerId) {
+          return {
+            ...trigger,
+            isEnabled: !trigger.isEnabled,
+          };
+        }
+        return trigger;
+      });
+      return {
+        ...prevState,
+        triggers: updatedTriggers,
+      };
+    });
+  }, [])
+
   const handleClose = useCallback(() => {
     form.setValues(initialFormValues);
     triggerForm.setValues(initialTrigger);
@@ -125,6 +174,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       conditional: ''
     });
     setAddMode(true);
+    setSelectedOption('')
     onClose();
   }, [initialFormValues, initialTrigger, onClose]);
 
@@ -173,6 +223,10 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       id: `${form.values.group}/${form.values.name}`,
       triggerCondition: paramTriggerCondition,
       taskParameters: paramPayload,
+      parameters: {
+        utcNow: new Date().toISOString(),
+        triggerNow: false
+      }
     };
 
     if (addMode) {
@@ -246,6 +300,30 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
         </DialogTitle>
         <Divider />
         <DialogContent className={classes.dialogContent}>
+          {addMode && (
+            <Box style={{
+              display: 'flex',
+              alignItems: 'center',
+              position: 'absolute',
+              right: '35px',
+              zIndex: 10
+            }}>
+              <InputLabel id="dropdown-label" style={{ marginRight: '10px' }}>Clone an Automation</InputLabel>
+              <Select
+                labelId="dropdown-label"
+                displayEmpty
+                inputProps={{ 'aria-label': 'Select Automation' }}
+                value={selectedOption}
+                onChange={handleChangeClone}
+              >
+                {listAutomation?.map((item) => (
+                  <MenuItem value={item.id}>
+                    {item.fullName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          )}
           <Box className={classes.boxTab}>
             <Tabs
               value={tabValue}
@@ -279,6 +357,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               handleChangeTrigger={triggerForm.handleChange}
               setTriggerParameters={setTriggerParameters}
               handleAddTrigger={handleAddTrigger}
+              handleChangeStatus={handleChangeStatus}
               handleRemoveTrigger={handleRemoveTrigger}
             />
           )}
