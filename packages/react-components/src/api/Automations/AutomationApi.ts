@@ -90,7 +90,7 @@ export const createNewAutomation = (
             (res) => {
                 updateStatusAutomation(dataSources, {
                     id: payload.id,
-                    flag: `${payload.isEnabled}` satisfies 'true' | 'false'
+                    flag: `${payload.isEnabled}`
                 })
             },
             (error) => {
@@ -137,7 +137,7 @@ export const updateAutomation = (
             (res) => {
                 updateStatusAutomation(dataSources, {
                     id: payload.id,
-                    flag: `${payload.isEnabled}` satisfies 'true' | 'false'
+                    flag: `${payload.isEnabled}`
                 })
             },
             (error) => {
@@ -157,7 +157,7 @@ export const updateStatusAutomation = (
     dataSources: DataSource,
     payload: {
         id: string,
-        flag: 'false' | 'true'
+        flag: string
     }
 ) => {
 
