@@ -105,6 +105,8 @@ interface IFormAutomationDialog {
 interface ITriggerParameter {
     triggerType: string,
     triggerValues: any,
+    schema: any
+    uiSchema: any
     setTriggerValues: (value) => void
 }
 

@@ -34,6 +34,18 @@ export const initialTriggerError = {
   typeError: false,
 };
 
+export const initialTriggerParameter = {
+  startTimeUtc: '',
+  descrition: '',
+  interval: ''
+}
+
+export const initialTriggerParameterError = {
+  startTimeUtc: '',
+  descrition: '',
+  interval: ''
+}
+
 export const uiSchema = {
   startTimeUtc: {
     "ui:options": {
@@ -71,5 +83,6 @@ export const schema : JSONSchema7 = {
       title: "Interval",
       description: "Format: d.hh:mm:ss.ff",
     }
-  }
+  },
+  required: ["description"]
 };

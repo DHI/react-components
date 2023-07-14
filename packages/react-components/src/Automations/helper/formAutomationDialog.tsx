@@ -8,7 +8,6 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl,
   IconButton,
   InputLabel,
   MenuItem,
@@ -26,6 +25,8 @@ import FormInputTrigger from './formInputTrigger'
 import FormInputAutomation from './formInputAutomation'
 import { useForm } from './helper';
 import { ArrowBack } from '@material-ui/icons';
+import { schema, uiSchema } from './const';
+import { useErrorContext } from '../store';
 
 const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   open, onClose, automation, dataSources, fetchData, disabledTextField, listAutomation
@@ -34,6 +35,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const [addMode, setAddMode] = useState(true)
   const [tabValue, setTabValue] = useState(0);
   const [triggerParameters, setTriggerParameters] = useState({});
+  const [triggerParametersError, setTriggerParametersError] = useState({})
   const [inputTriggers, setInputTriggers] = useState<ITriggerCondition>({
     triggers: [],
     conditional: ''
@@ -42,6 +44,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const [loading, setLoading] = useState(false)
   const [selectedOption, setSelectedOption] = useState('');
 
+  const { errors, setErrors } = useErrorContext()
   const form = useForm(initialFormValues, initialFormErrors);
   const triggerForm = useForm(initialTrigger, initialTriggerError);
 
@@ -99,6 +102,24 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
 
   const handleAddTrigger = useCallback(() => {
     const triggerParam = triggerParameters[triggerForm.values.type]
+    let isError = false
+    if (schema.required?.length > 0) {
+      schema.required.forEach(elem => {
+        if (!triggerParam[elem]) {
+          setErrors((prevErrors) => ({ ...prevErrors, [`root_${elem}`]: 'Field is required.' }));
+          isError = true
+        }
+      })
+      Object.entries(errors).forEach(([key, value]) => {
+        if (value) {
+          isError = true
+        }
+      })
+      if(isError){
+        return
+      }
+    }
+
     const newTrigger = {
       id: triggerForm.values.triggerId,
       description: triggerParam.description,
@@ -359,6 +380,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
               handleAddTrigger={handleAddTrigger}
               handleChangeStatus={handleChangeStatus}
               handleRemoveTrigger={handleRemoveTrigger}
+              schema={schema}
+              uiSchema={uiSchema}
             />
           )}
         </DialogContent>
@@ -368,3 +391,4 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
 }
 
 export default FormAutomationDialog
+

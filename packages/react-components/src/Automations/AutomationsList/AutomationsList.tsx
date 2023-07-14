@@ -38,6 +38,7 @@ import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
 import { applyConditionStatus, applyLastJobIdStatus, applyTriggerStatus, processScalarStatus } from '../helper/helper';
+import { ErrorProvider } from '../store';
 
 const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
@@ -297,17 +298,19 @@ function AutomationsList(props: AutomationsListProps) {
                 onClose={handleCloseDetailAutomation}
                 automation={detailAutomation}
             />
-            <FormAutomationDialog
-                disabledTextField={disabledTextField}
-                dataSources={dataSources}
-                setLoading={setLoading}
-                loading={loading}
-                fetchData={fetchInitialData}
-                open={openFormAutomations}
-                onClose={handleCloseFormAutomation}
-                automation={detailAutomation}
-                listAutomation={automations}
-            />
+            <ErrorProvider>
+                <FormAutomationDialog
+                    disabledTextField={disabledTextField}
+                    dataSources={dataSources}
+                    setLoading={setLoading}
+                    loading={loading}
+                    fetchData={fetchInitialData}
+                    open={openFormAutomations}
+                    onClose={handleCloseFormAutomation}
+                    automation={detailAutomation}
+                    listAutomation={automations}
+                />
+            </ErrorProvider>
             <Box>
                 <Paper className={classes.paperStyle}>
                     <ToolbarAutomations onClick={() => handleOpenFormAutomation(undefined)} />
@@ -332,6 +335,7 @@ function AutomationsList(props: AutomationsListProps) {
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}
                                     onTriggerNow={handleTriggerNow}
+                                    // updateStatus={() => updateAutomation(dataSources,)}
                                     disableTriggerNow={disabledTriggerNow}
                                     isLoading={loading}
                                 />
