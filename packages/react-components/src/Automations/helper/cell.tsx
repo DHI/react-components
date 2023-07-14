@@ -286,7 +286,7 @@ const Cell: React.FC<CellProps> = (props) => {
                         }}
                     >
                         <List>
-                            <ListItem button disabled={disableTriggerNow} onClick={() => onTriggerNow(row)}>
+                            <ListItem button disabled={disableTriggerNow || !row.isEnabled} onClick={() => onTriggerNow(row)}>
                                 <ListItemIcon>
                                     <PlayCircleOutline />
                                 </ListItemIcon>
