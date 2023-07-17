@@ -78,13 +78,14 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
     const findId = listAutomation.find((item) => item.id === automationId)
     if (findId) {
       setSelectedOption(automationId)
-      form.setValues({
+      form.setValues(prevValues => ({
+        ...prevValues, 
         taskId: findId.taskId,
         hostGroup: findId.hostGroup,
         priority: findId.priority,
         tag: findId.tag,
         isEnabled: findId.isEnabled
-      });
+      }));
 
       setParameters(Object.entries(findId.taskParameters || {}).map(([key, value]) => ({ key, value })));
 
