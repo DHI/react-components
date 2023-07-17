@@ -1,5 +1,5 @@
 import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { Box, Chip, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Tooltip } from '@material-ui/core';
+import { Box, Chip, Divider, FormControlLabel, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Switch, Tooltip, Typography } from '@material-ui/core';
 import {
     ArrowDropDownCircleOutlined,
     DeleteOutline,
@@ -19,6 +19,7 @@ interface CellProps extends Table.DataCellProps {
     onViewAutomation: (automation: AutomationData) => void;
     onEditAutomation: (automation: AutomationData) => void;
     onDeleteDialog: (id: string) => void
+    updateStatus: (id: string, status: boolean) => void
     onTriggerNow: (automation: AutomationData) => void;
     disableTriggerNow: boolean
     isLoading: boolean
@@ -81,6 +82,7 @@ const Cell: React.FC<CellProps> = (props) => {
         onEditAutomation,
         onDeleteDialog,
         onTriggerNow,
+        updateStatus,
         disableTriggerNow,
         isLoading,
         pageJob,
@@ -105,7 +107,7 @@ const Cell: React.FC<CellProps> = (props) => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis'
                         }}
-                        // onClick={handleClick}
+                    // onClick={handleClick}
                     >
                         {value}
                     </div>
@@ -305,11 +307,19 @@ const Cell: React.FC<CellProps> = (props) => {
                                 </ListItemIcon>
                                 <ListItemText primary="Edit" />
                             </ListItem>
-                            <ListItem button onClick={() => onDeleteDialog(row.id)}>
-                                <ListItemIcon>
-                                    <DeleteOutline />
-                                </ListItemIcon>
-                                <ListItemText primary="Delete" />
+                            <ListItem>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={row.isEnabled}
+                                            onChange={() => updateStatus(row.id, row.isEnabled)}
+                                            name='isEnabled'
+                                            color='primary'
+                                        />
+                                    }
+                                    label={<Typography variant="body1">Enabled</Typography>}
+                                    labelPlacement="start"
+                                />
                             </ListItem>
                         </List>
                     </Popover>

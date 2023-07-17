@@ -35,7 +35,6 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const [addMode, setAddMode] = useState(true)
   const [tabValue, setTabValue] = useState(0);
   const [triggerParameters, setTriggerParameters] = useState({});
-  const [triggerParametersError, setTriggerParametersError] = useState({})
   const [inputTriggers, setInputTriggers] = useState<ITriggerCondition>({
     triggers: [],
     conditional: ''

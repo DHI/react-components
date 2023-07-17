@@ -34,18 +34,6 @@ export const initialTriggerError = {
   typeError: false,
 };
 
-export const initialTriggerParameter = {
-  startTimeUtc: '',
-  descrition: '',
-  interval: ''
-}
-
-export const initialTriggerParameterError = {
-  startTimeUtc: '',
-  descrition: '',
-  interval: ''
-}
-
 export const uiSchema = {
   startTimeUtc: {
     "ui:options": {

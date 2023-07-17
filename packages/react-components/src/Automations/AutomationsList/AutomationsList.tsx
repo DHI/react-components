@@ -33,6 +33,7 @@ import {
     fetchListAutomations,
     getScalarStatus,
     updateAutomation,
+    updateStatusAutomation,
 } from '../../api/Automations/AutomationApi';
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
@@ -231,6 +232,25 @@ function AutomationsList(props: AutomationsListProps) {
         });
     }
 
+    const handleChangeStatusAutomation = async (id, status) => {
+        try {
+            await updateStatusAutomation(dataSources, {
+                id: id,
+                flag: `${!status}`,
+            })
+            const updatedAutomations = automations.map((item) => {
+                if (item.id === id) {
+                    return { ...item, isEnabled: !item.isEnabled };
+                }
+                return item;
+            });
+
+            setAutomations(updatedAutomations);
+        } catch (error) {
+            console.log('error update status', error)
+        }
+    }
+
     const onTriggerNow = (automation) => {
         const payload = {
             ...automation,
@@ -335,7 +355,7 @@ function AutomationsList(props: AutomationsListProps) {
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}
                                     onTriggerNow={handleTriggerNow}
-                                    // updateStatus={() => updateAutomation(dataSources,)}
+                                    updateStatus={handleChangeStatusAutomation}
                                     disableTriggerNow={disabledTriggerNow}
                                     isLoading={loading}
                                 />
