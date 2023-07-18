@@ -12,11 +12,18 @@ const CustomDateTime = (props) => {
   const { label, onChange, value } = props;
   const classes = CustomField();
 
+  React.useEffect(() => {
+    if (!value) {
+      onChange(new Date().toISOString()); 
+    }
+  }, [])
+
   return (
     <Grid xs={6} className={classes.dateTime}>
       <DateInput
         label={label}
-        dateFormat={'yyyy-MM-dd'}
+        withTime={true}
+        dateFormat={'yyyy-MM-dd HH:mm:ss'}
         timeZone={'Australia/Brisbane'}
         defaultDate={value || new Date().toISOString()}
         dateSelected={onChange}

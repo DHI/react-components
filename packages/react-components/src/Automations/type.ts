@@ -1,5 +1,4 @@
 import { DataSource } from '../api/types';
-import { DateProps } from '../common/types';
 
 interface AutomationsListProps {
     /** Data source to get the automations data */
