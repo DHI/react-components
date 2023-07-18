@@ -62,7 +62,6 @@ const DateInput = ({
           label={label}
           value={value || null}
           format={dateFormat}
-          maxDate={new Date()}
           ampm={false}
           strictCompareDates
           autoOk
