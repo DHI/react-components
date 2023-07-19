@@ -307,6 +307,12 @@ const Cell: React.FC<CellProps> = (props) => {
                                 </ListItemIcon>
                                 <ListItemText primary="Edit" />
                             </ListItem>
+                            <ListItem button onClick={() => onDeleteDialog(row.id)}>
+                                <ListItemIcon>
+                                    <DeleteOutline />
+                                </ListItemIcon>
+                                <ListItemText primary="Delete" />
+                            </ListItem>
                             <ListItem>
                                 <FormControlLabel
                                     control={
