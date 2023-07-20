@@ -194,6 +194,8 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
   const handleClose = useCallback(() => {
     form.setValues(initialFormValues);
     triggerForm.setValues(initialTrigger);
+    form.setErrors(initialFormErrors)
+    triggerForm.setErrors(initialTriggerError)
     setParameters([])
     setTriggerParameters({});
     setInputTriggers({
