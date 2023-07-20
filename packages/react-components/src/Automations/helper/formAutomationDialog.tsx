@@ -141,7 +141,7 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       triggers: [...prevState.triggers, newTrigger],
       conditional: triggerForm.values.triggerCondition
     }));
-  }, [triggerForm.values, triggerParameters]);
+  }, [triggerForm.values, triggerParameters, inputTriggers.triggers]);
 
   const handleChangeTab = useCallback((event, newValue) => {
     setTabValue(newValue)
