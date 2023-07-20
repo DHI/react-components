@@ -61,7 +61,9 @@ export default function FormInputTrigger({
                                     </Typography>
                                     <TextField
                                         error={triggerErrors.triggerIdError}
-                                        helperText={triggerErrors.triggerIdError ? "Trigger Id is required" : ""}
+                                        helperText={
+                                            triggerErrors.triggerIdError && (typeof triggerErrors.triggerIdError === "string" ?
+                                                triggerErrors.triggerIdError : "Trigger Id is required")}
                                         name='triggerId'
                                         variant="outlined"
                                         size="small"

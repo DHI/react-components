@@ -120,6 +120,13 @@ const FormAutomationDialog: React.FC<IFormAutomationDialog> = ({
       }
     }
 
+    const isDuplicate = inputTriggers.triggers.find((item) => item.id === triggerForm.values.triggerId)
+
+    if(isDuplicate) {
+      triggerForm.setErrors(prevValue => ({...prevValue, triggerIdError: 'Duplicated ID' }));
+      return
+    }
+
     const newTrigger = {
       id: triggerForm.values.triggerId,
       description: triggerParam.description,
