@@ -59,6 +59,25 @@ export const processScalarStatus = (scalarStatus) => {
     return { conditionStatusMap, lastJobIdMap, triggerStatusMap };
 }
 
+export const getFilterExtensions = () => {
+    return [{
+        columnName: 'isEnabled',
+        predicate: (value, filter, row) => {
+            if (filter && filter.value) {
+                let filterValue = filter.value.toLowerCase();
+                if (value && 'yes'.includes(filterValue)) {
+                    return true;
+                }
+                if (!value && 'no'.includes(filterValue)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }];
+};
+
+
 export function useForm(initialValues, initialErrors) {
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState(initialErrors);

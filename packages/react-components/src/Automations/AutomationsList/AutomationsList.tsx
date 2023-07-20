@@ -38,7 +38,13 @@ import {
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { applyConditionStatus, applyLastJobIdStatus, applyTriggerStatus, processScalarStatus } from '../helper/helper';
+import {
+    applyConditionStatus,
+    applyLastJobIdStatus,
+    applyTriggerStatus,
+    getFilterExtensions,
+    processScalarStatus
+} from '../helper/helper';
 import { ErrorProvider } from '../store';
 
 const DEFAULT_COLUMNS = [
@@ -66,7 +72,9 @@ function AutomationsList(props: AutomationsListProps) {
         disabledTriggerNow
     } = props;
     const classes = AutomationsListStyles();
+    const filteringColumnExtensions = getFilterExtensions()
     const [automations, setAutomations] = useState<AutomationData[]>([])
+    const [filters, setFilters] = useState([]);
     const [detailAutomation, setDetailAutomation] = useState<AutomationData>()
     const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
     const [openFormAutomations, setOpenFormAutomations] = useState(false)
@@ -251,6 +259,10 @@ function AutomationsList(props: AutomationsListProps) {
         }
     }
 
+    const handleFiltersChange = (newFilters) => {
+        setFilters(newFilters);
+    };
+
     const onTriggerNow = (automation) => {
         const payload = {
             ...automation,
@@ -336,8 +348,11 @@ function AutomationsList(props: AutomationsListProps) {
                     <ToolbarAutomations onClick={() => handleOpenFormAutomation(undefined)} />
                     {loading && <Loading />}
                     <Grid rows={automations} columns={DEFAULT_COLUMNS} >
-                        <FilteringState defaultFilters={[]} />
-                        <IntegratedFiltering />
+                        <FilteringState
+                            filters={filters}
+                            onFiltersChange={handleFiltersChange}
+                        />
+                        <IntegratedFiltering columnExtensions={filteringColumnExtensions} />
 
                         <SortingState defaultSorting={[{ columnName: 'group', direction: 'asc' }]} />
                         <IntegratedSorting />
