@@ -89,8 +89,6 @@ interface FilterProps {
 
 interface JobDetailProps {
   detail: JobData;
-  /**  Boolean to scroll the Jobdetail textarea down on load. */
-  textareaScrolled: boolean;
   /** Location timezone */
   timeZone: string;
   /** Date format to be converted to */

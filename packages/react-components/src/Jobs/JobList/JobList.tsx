@@ -18,7 +18,7 @@ import {
   Toolbar,
   VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';
-import { FormControlLabel, Grid as MUIGrid, Paper, Switch } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { executeJobQuery, fetchLogs } from '../../api';
@@ -77,7 +77,6 @@ const JobList = (props: JobListProps) => {
   const [jobsData, setJobsData] = useState<JobData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-  const [textareaScrolled, setTextareaScrolled] = useState<boolean>(true);
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
@@ -316,20 +315,6 @@ const JobList = (props: JobListProps) => {
         onSetDate={(date) => setDate(date)}
         onClearDateFilter={clearDateFilter}
       >
-        <MUIGrid item>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={textareaScrolled}
-                onChange={() => setTextareaScrolled(!textareaScrolled)}
-                color="primary"
-                name="textareaView"
-                inputProps={{ 'aria-label': 'textareaView checkbox' }}
-              />
-            }
-            label="Log scrolled down"
-          />
-        </MUIGrid>
       </DateFilter>
     </div>
   ),[]);
@@ -396,39 +381,36 @@ const JobList = (props: JobListProps) => {
     setJobsData(jobs);
   };
 
-  const connectToSignalR = async () => {
-    // Open connections
-    try {
-      await dataSources.forEach((source) => {
-        if (!source.host) {
-          throw new Error('Host not provided.');
-        }
-
-        const connection = new HubConnectionBuilder()
-          .withUrl(source.host + NOTIFICATION_HUB, {
-            accessTokenFactory: () => source.token,
-          })
-          .configureLogging(LogLevel.Information)
-          .withAutomaticReconnect()
-          .build();
-
-        connection
-          .start()
-          .then(() => {
-            connection.on('JobUpdated', jobUpdated);
-            connection.on('JobAdded', jobAdded);
-
-            connection.invoke(
-              'AddJobFilter',
-              source.connection,
-              [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: '-1' }], // ability to change condition?
-            );
-          })
-          .catch((e) => console.log('Connection failed: ', e));
-      });
-    } catch (err) {
-      console.log('SignalR connection failed: ', err);
+  const connectToSignalR = () => {
+    // No support for multiple connections. Not used anyway
+    const dataSource = dataSources[0];
+    if (!dataSource.host) {
+      throw new Error('Host not provided.');
     }
+
+    const connection = new HubConnectionBuilder()
+      .withUrl(dataSource.host + NOTIFICATION_HUB, {
+        accessTokenFactory: () => dataSource.token,
+      })
+      .configureLogging(LogLevel.Information)
+      .withAutomaticReconnect([1, 2, 3, 5, 7, 8, 10, 30, 60])
+      .build();
+
+    connection
+      .start()
+      .then(() => {
+        connection.on('JobUpdated', jobUpdated);
+        connection.on('JobAdded', jobAdded);
+
+        connection.invoke(
+          'AddJobFilter',
+          dataSource.connection,
+          [{ Item: 'Priority', QueryOperator: 'GreaterThan', Value: '-1' }], // ability to change condition?
+        );
+      })
+      .catch((e) => console.log('Connection failed: ', e));
+    
+    return connection;
   };
 
   useEffect(() => {
@@ -438,10 +420,12 @@ const JobList = (props: JobListProps) => {
 
     window.addEventListener('resize', handleResize);
 
-    connectToSignalR();
+    const connection = connectToSignalR();
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      console.log('Unmounting SignalR connection');
+      connection.stop();
     };
   }, []);
 
@@ -484,7 +468,6 @@ const JobList = (props: JobListProps) => {
       <div className={classes.jobPanel}>
         <JobDetail
           detail={job}
-          textareaScrolled={textareaScrolled}
           timeZone={timeZone}
           dateTimeFormat={dateTimeFormat}
           onClose={closeTab}

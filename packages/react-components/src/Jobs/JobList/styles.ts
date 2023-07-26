@@ -15,6 +15,14 @@ export const JobDetailStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     alignItems: 'center',
   },
+  top: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    textAlign: 'center',
+    width: '100%',
+  },  
   item: {
     display: 'flex',
     flexDirection: 'column',
