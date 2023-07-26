@@ -1,6 +1,6 @@
-import { Grid, Paper, Tooltip, Typography } from '@material-ui/core';
+import { Button, Grid, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
-import { CancelOutlined, Error } from '@material-ui/icons';
+import { CancelOutlined, Close, Error } from '@material-ui/icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { failJob } from '../../../api/Jobs/JobsApi';
 import GeneralDialog from '../../../common/GeneralDialog/GeneralDialog';
@@ -9,10 +9,9 @@ import { zonedTimeFromUTC } from '../../../utils/Utils';
 import { JobDetailStyles } from '../styles';
 import { JobDetailProps } from '../types';
 
-const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose }: JobDetailProps) => {
+const JobDetail = ({ detail, timeZone, dateTimeFormat, onClose }: JobDetailProps) => {
   const classes = JobDetailStyles();
   const [structuredLogs, setStructuredLogs] = useState('');
-  const [scrollHeight, setScrollHeight] = useState(null);
   const [dialog, setDialog] = useState<GeneralDialogProps>({
     showDialog: false,
     cancelLabel: 'No',
@@ -43,7 +42,7 @@ const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose
           ) {
             return (
               <span key={i} className={classes.item}>
-                {key}: <strong>{value}</strong>
+                {key[0].toUpperCase() + key.slice(1)}: <strong>{value}</strong>
               </span>
             );
           } else {
@@ -67,20 +66,6 @@ const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose
   useEffect(() => {
     formatLog();
   }, [detail.logs]);
-
-  const textareaInputRef = useCallback(
-    (node) => {
-      if (node !== null) {
-        if (textareaScrolled) {
-          setScrollHeight(node.scrollHeight);
-          node.scrollTop = scrollHeight;
-        } else {
-          node.scrollTop = 0;
-        }
-      }
-    },
-    [textareaScrolled, scrollHeight],
-  );
 
   const openFailJobDialog = () => {
     setDialog({
@@ -110,25 +95,30 @@ const JobDetail = ({ detail, textareaScrolled, timeZone, dateTimeFormat, onClose
   return (
     <div className={classes.root}>
       <Grid item xs={12}>
-        <Paper className={classes.paper}>
+      <div className={ classes.top }>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
           {detail.status === 'InProgress' ? (
-            <Tooltip title="Fail the job" onClick={openFailJobDialog}>
-              <Error style={{ color: red[300] }} />
-            </Tooltip>
-          ) : null}
-          <Typography variant="subtitle1">Timezone: {timeZone}</Typography>
-          <Typography variant="h5">Job Detail: {detail.taskId}</Typography>
-          <Typography variant="caption">id: {detail.id}</Typography>
-          <button className={classes.button} onClick={onClose}>
-            <CancelOutlined />
-          </button>
-        </Paper>
+            <Button variant="contained" color="secondary" onClick={() => openFailJobDialog()}>
+            Fail Job
+            </Button>
+            ) : null}
+          <div style={{ flex: 1, display: 'flex-wrap' }}>
+            <Typography>Task Id: {detail.taskId}</Typography>
+            <Typography>Job Id: {detail.id}</Typography>
+          </div>
+        </div>
+        <IconButton
+          color="inherit"
+          onClick={() => onClose()}
+        >
+          <Close fontSize="small" />
+        </IconButton>
+      </div>
       </Grid>
       {displayBlock(detail)}
       <textarea
         name={detail.id}
         placeholder=""
-        ref={(node) => textareaInputRef(node)}
         className={classes.textarea}
         defaultValue={structuredLogs}
       />
