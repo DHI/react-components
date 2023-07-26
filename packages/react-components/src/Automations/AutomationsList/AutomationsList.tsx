@@ -33,11 +33,19 @@ import {
     fetchListAutomations,
     getScalarStatus,
     updateAutomation,
+    updateStatusAutomation,
 } from '../../api/Automations/AutomationApi';
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import { applyConditionStatus, applyLastJobIdStatus, applyTriggerStatus, processScalarStatus } from '../helper/helper';
+import {
+    applyConditionStatus,
+    applyLastJobIdStatus,
+    applyTriggerStatus,
+    getFilterExtensions,
+    processScalarStatus
+} from '../helper/helper';
+import { ErrorProvider } from '../store';
 
 const DEFAULT_COLUMNS = [
     { title: 'Group', name: 'group' },
@@ -64,7 +72,9 @@ function AutomationsList(props: AutomationsListProps) {
         disabledTriggerNow
     } = props;
     const classes = AutomationsListStyles();
+    const filteringColumnExtensions = getFilterExtensions()
     const [automations, setAutomations] = useState<AutomationData[]>([])
+    const [filters, setFilters] = useState([]);
     const [detailAutomation, setDetailAutomation] = useState<AutomationData>()
     const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
     const [openFormAutomations, setOpenFormAutomations] = useState(false)
@@ -230,6 +240,29 @@ function AutomationsList(props: AutomationsListProps) {
         });
     }
 
+    const handleChangeStatusAutomation = async (id, status) => {
+        try {
+            await updateStatusAutomation(dataSources, {
+                id: id,
+                flag: `${!status}`,
+            })
+            const updatedAutomations = automations.map((item) => {
+                if (item.id === id) {
+                    return { ...item, isEnabled: !item.isEnabled };
+                }
+                return item;
+            });
+
+            setAutomations(updatedAutomations);
+        } catch (error) {
+            console.log('error update status', error)
+        }
+    }
+
+    const handleFiltersChange = (newFilters) => {
+        setFilters(newFilters);
+    };
+
     const onTriggerNow = (automation) => {
         const payload = {
             ...automation,
@@ -297,24 +330,29 @@ function AutomationsList(props: AutomationsListProps) {
                 onClose={handleCloseDetailAutomation}
                 automation={detailAutomation}
             />
-            <FormAutomationDialog
-                disabledTextField={disabledTextField}
-                dataSources={dataSources}
-                setLoading={setLoading}
-                loading={loading}
-                fetchData={fetchInitialData}
-                open={openFormAutomations}
-                onClose={handleCloseFormAutomation}
-                automation={detailAutomation}
-                listAutomation={automations}
-            />
+            <ErrorProvider>
+                <FormAutomationDialog
+                    disabledTextField={disabledTextField}
+                    dataSources={dataSources}
+                    setLoading={setLoading}
+                    loading={loading}
+                    fetchData={fetchInitialData}
+                    open={openFormAutomations}
+                    onClose={handleCloseFormAutomation}
+                    automation={detailAutomation}
+                    listAutomation={automations}
+                />
+            </ErrorProvider>
             <Box>
                 <Paper className={classes.paperStyle}>
                     <ToolbarAutomations onClick={() => handleOpenFormAutomation(undefined)} />
                     {loading && <Loading />}
                     <Grid rows={automations} columns={DEFAULT_COLUMNS} >
-                        <FilteringState defaultFilters={[]} />
-                        <IntegratedFiltering />
+                        <FilteringState
+                            filters={filters}
+                            onFiltersChange={handleFiltersChange}
+                        />
+                        <IntegratedFiltering columnExtensions={filteringColumnExtensions} />
 
                         <SortingState defaultSorting={[{ columnName: 'group', direction: 'asc' }]} />
                         <IntegratedSorting />
@@ -332,6 +370,7 @@ function AutomationsList(props: AutomationsListProps) {
                                     onEditAutomation={handleOpenFormAutomation}
                                     onDeleteDialog={handleOpenDeleteDialog}
                                     onTriggerNow={handleTriggerNow}
+                                    updateStatus={handleChangeStatusAutomation}
                                     disableTriggerNow={disabledTriggerNow}
                                     isLoading={loading}
                                 />

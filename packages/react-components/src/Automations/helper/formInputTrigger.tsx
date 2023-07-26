@@ -22,6 +22,8 @@ export default function FormInputTrigger({
     handleChangeTrigger,
     setTriggerParameters,
     handleAddTrigger,
+    schema,
+    uiSchema,
     handleRemoveTrigger,
     handleChangeStatus,
 }) {
@@ -59,7 +61,9 @@ export default function FormInputTrigger({
                                     </Typography>
                                     <TextField
                                         error={triggerErrors.triggerIdError}
-                                        helperText={triggerErrors.triggerIdError ? "Trigger Id is required" : ""}
+                                        helperText={
+                                            triggerErrors.triggerIdError && (typeof triggerErrors.triggerIdError === "string" ?
+                                                triggerErrors.triggerIdError : "Trigger Id is required")}
                                         name='triggerId'
                                         variant="outlined"
                                         size="small"
@@ -106,6 +110,8 @@ export default function FormInputTrigger({
                                 triggerType={trigger.type}
                                 setTriggerValues={setTriggerParameters}
                                 triggerValues={triggerParameters}
+                                schema={schema}
+                                uiSchema={uiSchema}
                             />
                         </Grid>
                         <Grid item xs={12} className={classes.gridAddButton}>

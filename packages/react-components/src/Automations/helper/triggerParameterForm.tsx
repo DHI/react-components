@@ -6,18 +6,24 @@ import DateInput from "../../common/DateInput/DateInput";
 import { DeleteOutline } from "@material-ui/icons";
 import Form from "@rjsf/core";
 import validator from '@rjsf/validator-ajv8';
-import { RegistryWidgetsType } from "@rjsf/utils";
-import { uiSchema, schema } from "../helper/const";
+import { useErrorContext } from '../store'
 
 const CustomDateTime = (props) => {
   const { label, onChange, value } = props;
   const classes = CustomField();
 
+  React.useEffect(() => {
+    if (!value) {
+      onChange(new Date().toISOString()); 
+    }
+  }, [])
+
   return (
     <Grid xs={6} className={classes.dateTime}>
       <DateInput
         label={label}
-        dateFormat={'yyyy-MM-dd'}
+        withTime={true}
+        dateFormat={'yyyy-MM-dd HH:mm:ss'}
         timeZone={'Australia/Brisbane'}
         defaultDate={value || new Date().toISOString()}
         dateSelected={onChange}
@@ -25,29 +31,6 @@ const CustomDateTime = (props) => {
     </Grid>
   );
 }
-
-const CustomTextField = (props) => {
-  const { id, label, required, onChange, value, schema } = props;
-  const classes = CustomField();
-  const description = schema.description || ''
-  
-  return (
-    <Grid xs={6}>
-      <TextField
-        id={id}
-        label={label}
-        required={required}
-        onChange={(event) => onChange(event.target.value)}
-        value={value}
-        helperText={description}
-        variant="outlined"
-        size="small"
-        className={classes.textField}
-        fullWidth
-      />
-    </Grid>
-  );
-};
 
 export const DynamicField: React.FC<DynamicFieldProps> = ({ index, parameter, updateField, removeField }) => {
   const handleChangeKey = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,14 +74,56 @@ export const DynamicField: React.FC<DynamicFieldProps> = ({ index, parameter, up
   );
 };
 
-export const TriggerParameterForm: React.FC<ITriggerParameter> = ({ triggerType, triggerValues, setTriggerValues }) => {
-  const classes = FormAutomationStyles()
-  const widget: RegistryWidgetsType = {
-    TextWidget: CustomTextField,
-    DateTimeWidget: CustomDateTime
-  };
+const CustomTextField = (props) => {
+  const { id, label, required, onChange, value, schema } = props;
+  const classes = CustomField();
+  const description = schema.description || '';
+  const { errors, setErrors } = useErrorContext()
 
   const handleChange = (event) => {
+    const newValue = event.target.value;
+    const isValid = (value) => {
+      if (!required) return true;
+      return value != null && value !== '';
+    };
+
+    if (isValid(newValue)) {
+      setErrors((prevErrors) => ({ ...prevErrors, [id]: null }));
+      onChange(newValue);
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [id]: 'Field is required.' }));
+      onChange('');
+    }
+  }
+
+  return (
+    <Grid xs={6}>
+      <TextField
+        id={id}
+        label={label}
+        required={required}
+        error={!!errors[id]}
+        helperText={errors[id] ?? description}
+        onChange={handleChange}
+        value={value}
+        variant="outlined"
+        size="small"
+        className={classes.textField}
+        fullWidth
+      />
+    </Grid>
+  );
+};
+
+export const TriggerParameterForm: React.FC<ITriggerParameter> = ({
+  triggerType, triggerValues, schema, uiSchema, setTriggerValues }) => {
+  const classes = FormAutomationStyles()
+  const widget = {
+    TextWidget: CustomTextField,
+    DateTimeWidget: CustomDateTime,
+  };
+
+  const handleChange = React.useCallback((event) => {
     setTriggerValues({
       ...triggerValues,
       [triggerType]: {
@@ -106,8 +131,7 @@ export const TriggerParameterForm: React.FC<ITriggerParameter> = ({ triggerType,
         ...event.formData
       },
     });
-  };
-
+  }, [setTriggerValues, triggerValues, triggerType]);
 
   switch (triggerType) {
     case 'DHI.Services.Jobs.Automations.Triggers.ScheduledTrigger, DHI.Services.Jobs':
@@ -117,13 +141,12 @@ export const TriggerParameterForm: React.FC<ITriggerParameter> = ({ triggerType,
           <Grid container>
             <Form
               className={classes.form}
-              schema={schema}
+              widgets={widget}
               formData={triggerValues[triggerType]}
               onChange={handleChange}
               validator={validator}
               uiSchema={uiSchema}
-              widgets={widget}
-              onSubmit={() => null}
+              schema={schema}
             />
           </Grid>
         </Box>

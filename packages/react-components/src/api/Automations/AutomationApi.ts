@@ -88,7 +88,10 @@ export const createNewAutomation = (
     }).pipe(
         tap(
             (res) => {
-                console.log('create automation', res);
+                updateStatusAutomation(dataSources, {
+                    id: payload.id,
+                    flag: `${payload.isEnabled}`
+                })
             },
             (error) => {
                 console.log(error);
@@ -132,7 +135,41 @@ export const updateAutomation = (
     }).pipe(
         tap(
             (res) => {
-                console.log('update automation', res);
+                updateStatusAutomation(dataSources, {
+                    id: payload.id,
+                    flag: `${payload.isEnabled}`
+                })
+            },
+            (error) => {
+                console.log(error);
+            },
+        ),
+    );
+};
+
+/**
+ * /api/automations/enables
+ * updates status automation.
+ * @param dataSources
+ * @param object
+ */
+export const updateStatusAutomation = (
+    dataSources: DataSource,
+    payload: {
+        id: string,
+        flag: string
+    }
+) => {
+
+    return fetchUrl(`${dataSources.host}/api/automations/enable?id=${payload.id}&flag=${payload.flag}`, {
+        method: 'POST',
+        additionalHeaders: {
+            Authorization: `Bearer ${dataSources.token}`,
+        },
+    }).pipe(
+        tap(
+            (res) => {
+                console.log('update status automation', res);
             },
             (error) => {
                 console.log(error);
@@ -193,9 +230,9 @@ export const getScalarStatus = (dataSource: DataSource) => {
  * @param id
  */
 export const fetchJob = (dataSource: DataSource, id: string) =>
-  fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connectionJobLog}/${id}`, {
-    method: 'GET',
-    additionalHeaders: {
-      Authorization: `Bearer ${dataSource.token}`,
-    },
-  }).pipe(tap((res) => console.log('job fetched executed', res)));
+    fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connectionJobLog}/${id}`, {
+        method: 'GET',
+        additionalHeaders: {
+            Authorization: `Bearer ${dataSource.token}`,
+        },
+    }).pipe(tap((res) => console.log('job fetched executed', res)));

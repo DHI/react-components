@@ -1,5 +1,4 @@
 import { DataSource } from '../api/types';
-import { DateProps } from '../common/types';
 
 interface AutomationsListProps {
     /** Data source to get the automations data */
@@ -105,6 +104,8 @@ interface IFormAutomationDialog {
 interface ITriggerParameter {
     triggerType: string,
     triggerValues: any,
+    schema: any
+    uiSchema: any
     setTriggerValues: (value) => void
 }
 

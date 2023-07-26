@@ -71,5 +71,6 @@ export const schema : JSONSchema7 = {
       title: "Interval",
       description: "Format: d.hh:mm:ss.ff",
     }
-  }
+  },
+  required: ["description"]
 };
