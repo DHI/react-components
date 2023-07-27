@@ -60,7 +60,7 @@ export const schema : JSONSchema7 = {
     startTimeUtc: {
       type: "string",
       format: "date-time",
-      title: "Start Date Time"
+      title: "Start Date Time in UTC"
     },
     description: {
       type: "string",
