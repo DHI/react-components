@@ -27,6 +27,7 @@ const CustomDateTime = (props) => {
         timeZone={'Australia/Brisbane'}
         defaultDate={value || new Date().toISOString()}
         dateSelected={onChange}
+        isUtcTime
       />
     </Grid>
   );
