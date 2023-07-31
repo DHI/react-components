@@ -42,7 +42,7 @@ const StatusCell = ({ row }: { row: any }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Typography variant="caption" component="div" style={{ fontSize: 10 }}>{progress !== null ? `${progress}%` : ''}</Typography>
+                <Typography variant="caption" component="div" style={{ fontSize: 10 }}>{progress ? `${progress}%` : ''}</Typography>
               </Box>
             </Box>
           </Tooltip>

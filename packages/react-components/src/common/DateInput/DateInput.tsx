@@ -12,6 +12,7 @@ const DateInput = ({
   dateSelected,
   defaultDate,
   withTime = false,
+  isUtcTime = false
 }: {
   label: string;
   dateFormat: string;
@@ -19,6 +20,7 @@ const DateInput = ({
   dateSelected: (value) => void;
   defaultDate?: string;
   withTime?: boolean;
+  isUtcTime?: boolean
 }) => {
   const [value, setValue] = useState<Date | string>(defaultDate || '');
 
@@ -29,7 +31,11 @@ const DateInput = ({
   };
 
   useEffect(() => {
-    setValue(format(new Date(defaultDate), dateFormat));
+    if (isUtcTime) {
+      setValue(tzToUtc(defaultDate, timeZone));
+    } else {
+      setValue(format(new Date(defaultDate), dateFormat));
+    }
   }, []);
 
   return (
