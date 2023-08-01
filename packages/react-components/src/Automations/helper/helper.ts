@@ -12,53 +12,6 @@ export const applyConditionStatus = (conditionStatusMap: Map<string, boolean>, a
     }
 }
 
-export const applyLastJobIdStatus = async (lastJobIdMap: Map<string, any>, dataSources: any, automation: AutomationData) => {
-    if (lastJobIdMap.has(automation.id!)) {
-        try {
-            const job = await fetchJob(dataSources, lastJobIdMap.get(automation.id!)).toPromise();
-            automation.jobId = job.id
-            automation.currentStatus = job.status;
-            automation.requested = job.requested;
-        } catch (error) {
-            automation.currentStatus = 'Error';
-            automation.requested = 'Not Found';
-        }
-    } else {
-        automation.currentStatus = 'Not Running';
-        automation.requested = 'Not Running';
-    }
-}
-
-export const applyTriggerStatus = (triggerStatusMap: Map<string, boolean>, automation: AutomationData) => {
-    for (let trigger of automation.triggerCondition.triggers) {
-        const triggerKey = automation.id + '/' + trigger.id;
-        if (triggerStatusMap.has(triggerKey)) {
-            trigger.isMet = triggerStatusMap.get(triggerKey)!
-        }
-    }
-}
-
-export const processScalarStatus = (scalarStatus) => {
-    const triggerStatusMap = new Map();
-    const conditionStatusMap = new Map();
-    const lastJobIdMap = new Map();
-
-    for (let scalar of scalarStatus) {
-        const parts = scalar.fullName.split('/');
-        const id = parts[2] + '/' + parts[3];
-
-        if (parts[4] === "Is Met") {
-            conditionStatusMap.set(id, scalar.value === "True");
-        } else if (parts[4] === "Last Job Id") {
-            lastJobIdMap.set(id, scalar.value)
-        } else {
-            const triggerId = parts[4];
-            triggerStatusMap.set(id + '/' + triggerId, scalar.value === "True");
-        }
-    }
-    return { conditionStatusMap, lastJobIdMap, triggerStatusMap };
-}
-
 export const getFilterExtensions = () => {
     return [{
         columnName: 'isEnabled',

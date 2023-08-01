@@ -113,7 +113,7 @@ export const TriggerList = ({ triggerList, handleDelete, editMode = true, handle
                   <Typography variant="body1" className={classes.typography}><strong>Description:</strong> {trigger.description}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
+                  <Typography variant="body1" className={classes.typography}><strong>Type:</strong> {trigger.type?.match(/DHI\.Services\.Jobs\.Automations\.Triggers\.(\w+),/)[1]}</Typography>
                 </Grid>
               </Grid>
             </Box>

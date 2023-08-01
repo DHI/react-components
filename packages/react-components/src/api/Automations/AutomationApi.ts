@@ -4,6 +4,31 @@ import { fetchUrl } from '../helpers';
 import { AutomationData } from '../../Automations/type';
 
 /**
+ * /api/rtnautomations
+ * Gets a list of Automation.
+ * @param dataSources
+ */
+export const fetchAllAutomation = (dataSources: DataSource) => {
+    const group = `Job Automator|${dataSources.host.split("//")[1].split("/")[0].split(':')[0].toUpperCase()}`
+
+    return fetchUrl(`${dataSources.host}/api/rtnautomations?scalarGroup=${group}`, {
+        method: 'GET',
+        additionalHeaders: {
+            Authorization: `Bearer ${dataSources.token}`,
+        },
+    }).pipe(
+        tap(
+            (res) => {
+                console.log('fetchAll Automation', res);
+            },
+            (error) => {
+                console.log(error);
+            },
+        ),
+    );
+};
+
+/**
  * /api/automations/ids
  * Gets a list of group ids entries.
  * @param dataSources
