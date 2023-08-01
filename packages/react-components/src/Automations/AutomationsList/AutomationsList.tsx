@@ -116,15 +116,9 @@ function AutomationsList(props: AutomationsListProps) {
                 const fullName = `${item.group}/${item.name}`
                 let currentStatus = "Not Running"
                 let requested = "Not Running"
-                if (item.isEnabled) {
-                    if (!jobId) {
-                        currentStatus = "Error"
-                        requested = "Not Found"
-                    } else {
-                        currentStatus = item.currentStatus
-                        requested = item.lastRequestedTime
-
-                    }
+                if (jobId) {
+                    currentStatus = item.currentStatus
+                    requested = item.lastRequestedTime
                 }
                 return { ...item, id, jobId, requested, currentStatus, fullName }
             })
