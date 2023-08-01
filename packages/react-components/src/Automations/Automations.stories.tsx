@@ -11,7 +11,7 @@ export default {
 
 
 export const AutomationsStory = () => {
-  const disabledColumns = ['fullName', 'updated', 'hostId', 'triggerCondition.conditional', 'triggerCondition.isMet', 'currentStatus', 'requested']
+  const disabledColumns = ['fullName', 'updated', 'hostId', 'triggerCondition.conditional', 'triggerCondition.isMet',]
   const disabledTextField = {
     name: true,
     group: true
