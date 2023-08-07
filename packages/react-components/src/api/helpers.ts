@@ -90,9 +90,9 @@ const refreshToken = async (authHost: string) => {
     }
     return item
   });
-  console.log('accesTOken,', newAccessTokenList)
   localStorage.setItem('refreshToken', data.refreshToken.token)
   localStorage.setItem('accessToken', data.accessToken.token);
+  localStorage.setItem('expiration', data.accessToken.expiration)
   localStorage.setItem('accessTokenList', JSON.stringify(newAccessTokenList));
   return data.accessToken.token;
 };
