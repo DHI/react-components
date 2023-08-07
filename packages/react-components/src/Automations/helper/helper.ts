@@ -1,16 +1,4 @@
 import { useCallback, useState } from "react";
-import { fetchJob } from "../../api/Automations/AutomationApi";
-import { AutomationData } from "../type";
-
-export const applyConditionStatus = (conditionStatusMap: Map<string, boolean>, automation: AutomationData) => {
-    if (conditionStatusMap.has(automation.id!)) {
-        automation.triggerCondition.isMet = conditionStatusMap.get(automation.id!);
-    }
-    if (automation.isEnabled === false) {
-        automation.currentStatus = 'Not Running';
-        automation.requested = 'Not Running';
-    }
-}
 
 export const getFilterExtensions = () => {
     return [{
