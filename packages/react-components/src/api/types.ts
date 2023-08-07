@@ -12,6 +12,7 @@ interface DataSource {
    * Host url, normally set on .env
    */
   token?: string;
+  authHost?: string;
   host: string;
   connection: string;
   /**

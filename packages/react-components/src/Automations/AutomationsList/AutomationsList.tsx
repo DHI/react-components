@@ -30,9 +30,6 @@ import { AutomationsListStyles } from '../styles';
 import {
     deleteAutomation,
     fetchAllAutomation,
-    fetchGroupId,
-    fetchListAutomations,
-    getScalarStatus,
     updateAutomation,
     updateStatusAutomation,
 } from '../../api/Automations/AutomationApi';
@@ -86,7 +83,6 @@ function AutomationsList(props: AutomationsListProps) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
         let intervalId;
         (async () => {
             try {
