@@ -86,7 +86,12 @@ const refreshToken = async (authHost: string) => {
   const accessTokenList = JSON.parse(localStorage.getItem('accessTokenList'))
   const newAccessTokenList = accessTokenList.map(item => {
     if(item.host === authHost){
-      return data
+      return {
+        ...item,
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        tokenType: data.tokenType
+      }
     }
     return item
   });
