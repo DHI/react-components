@@ -11,7 +11,7 @@ export default {
 
 
 export const AutomationsStory = () => {
-  const disabledColumns = ['fullName', 'updated', 'hostId', 'triggerCondition.conditional', 'triggerCondition.isMet', 'currentStatus', 'requested']
+  const disabledColumns = ['fullName', 'updated', 'hostId', 'triggerCondition.conditional', 'triggerCondition.isMet',]
   const disabledTextField = {
     name: true,
     group: true
@@ -19,13 +19,14 @@ export const AutomationsStory = () => {
   const dataSources = (token) =>
     ({
       token,
+      authHost: 'http://my-kl18/Auth',
       host: 'http://my-kl18/DSWebAPI',
       connection: 'wf-scalars',
       connectionJobLog: 'wf-jobs',
     }) as DataSource
 
   return (
-    <LoginGate host={process.env.ENDPOINT_URL!} showRememberMe={true} textFieldVariant={'outlined'}>
+    <LoginGate host={`http://my-kl18/Auth`} showRememberMe={true} textFieldVariant={'outlined'}>
       {({ token: { accessToken } }) => (
         <AutomationsList
           disabledColumns={disabledColumns}

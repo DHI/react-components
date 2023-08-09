@@ -4,6 +4,32 @@ import { fetchUrl } from '../helpers';
 import { AutomationData } from '../../Automations/type';
 
 /**
+ * /api/rtnautomations
+ * Gets a list of Automation.
+ * @param dataSources
+ */
+export const fetchAllAutomation = (dataSources: DataSource) => {
+    const group = `Job Automator|${dataSources.host.split("//")[1].split("/")[0].split(':')[0].toUpperCase()}`
+    const getListToken = localStorage.getItem('accessToken')
+    const updatedToken = dataSources.token === getListToken ? dataSources.token : getListToken
+    return fetchUrl(`${dataSources.host}/api/rtnautomations?scalarGroup=${group}`, {
+        method: 'GET',
+        additionalHeaders: {
+            Authorization: `Bearer ${updatedToken}`,
+        },
+    }, dataSources.authHost).pipe(
+        tap(
+            (res) => {
+                console.log('fetchAll Automation', res);
+            },
+            (error) => {
+                console.log(error);
+            },
+        ),
+    );
+};
+
+/**
  * /api/automations/ids
  * Gets a list of group ids entries.
  * @param dataSources
@@ -64,7 +90,8 @@ export const createNewAutomation = (
     payload: AutomationData
 ) => {
     const type = "DHI.Services.Jobs.Automations.Automation, DHI.Services.Jobs";
-
+    const getListToken = localStorage.getItem('accessToken')
+    const updatedToken = dataSources.token === getListToken ? dataSources.token : getListToken
     if (payload.triggerCondition && payload.triggerCondition.triggers) {
         payload.triggerCondition.triggers = payload.triggerCondition.triggers.map((trigger) => {
             return {
@@ -82,7 +109,7 @@ export const createNewAutomation = (
     return fetchUrl(`${dataSources.host}/api/automations`, {
         method: 'POST',
         additionalHeaders: {
-            Authorization: `Bearer ${dataSources.token}`,
+            Authorization: `Bearer ${updatedToken}`,
         },
         body: JSON.stringify(body)
     }).pipe(
@@ -111,6 +138,8 @@ export const updateAutomation = (
     payload: AutomationData
 ) => {
     const type = "DHI.Services.Jobs.Automations.Automation, DHI.Services.Jobs";
+    const getListToken = localStorage.getItem('accessToken')
+    const updatedToken = dataSources.token === getListToken ? dataSources.token : getListToken
 
     if (payload.triggerCondition && payload.triggerCondition.triggers) {
         payload.triggerCondition.triggers = payload.triggerCondition.triggers.map((trigger) => {
@@ -129,7 +158,7 @@ export const updateAutomation = (
     return fetchUrl(`${dataSources.host}/api/automations`, {
         method: 'PUT',
         additionalHeaders: {
-            Authorization: `Bearer ${dataSources.token}`,
+            Authorization: `Bearer ${updatedToken}`,
         },
         body: JSON.stringify(body)
     }).pipe(
@@ -160,11 +189,13 @@ export const updateStatusAutomation = (
         flag: string
     }
 ) => {
+    const getListToken = localStorage.getItem('accessToken')
+    const updatedToken = dataSources.token === getListToken ? dataSources.token : getListToken
 
     return fetchUrl(`${dataSources.host}/api/automations/enable?id=${payload.id}&flag=${payload.flag}`, {
         method: 'POST',
         additionalHeaders: {
-            Authorization: `Bearer ${dataSources.token}`,
+            Authorization: `Bearer ${updatedToken}`,
         },
     }).pipe(
         tap(
@@ -187,52 +218,12 @@ export const updateStatusAutomation = (
  */
 export const deleteAutomation = (dataSource: DataSource, id: string) => {
     const splitedId = id.split('/')
+    const getListToken = localStorage.getItem('accessToken')
+    const updatedToken = dataSource.token === getListToken ? dataSource.token : getListToken
     return fetchUrl(`${dataSource.host}/api/automations/${splitedId[0]}|${splitedId[1]}`, {
         method: 'DELETE',
         additionalHeaders: {
-            Authorization: `Bearer ${dataSource.token}`,
+            Authorization: `Bearer ${updatedToken}`,
         },
     })
 }
-
-/**
- * /api/scalars/wf-scalars/{query}
- * Get the scalar with the specified group.
- * @param dataSource
- * @param id
- */
-export const getScalarStatus = (dataSource: DataSource) => {
-    const group = `Job Automator|${dataSource.host.split("//")[1].split("/")[0].split(':')[0].toUpperCase()}`
-
-    return fetchUrl(`${dataSource.host}/api/scalars/${dataSource.connection}?group=${group}`,
-        {
-            method: 'GET',
-            additionalHeaders: {
-                Authorization: `Bearer ${dataSource.token}`,
-            },
-        }).pipe(
-            tap(
-                (res) => {
-                    console.log('get scalar', res);
-                },
-                (error) => {
-                    console.log(error);
-                },
-            ),
-        );
-}
-
-/**
- * /api/jobs/{connectionId}/{id}
- * Gets the job with the specified identifier.
- * @param dataSource
- * @param token
- * @param id
- */
-export const fetchJob = (dataSource: DataSource, id: string) =>
-    fetchUrl(`${dataSource.host}/api/jobs/${dataSource.connectionJobLog}/${id}`, {
-        method: 'GET',
-        additionalHeaders: {
-            Authorization: `Bearer ${dataSource.token}`,
-        },
-    }).pipe(tap((res) => console.log('job fetched executed', res)));

@@ -1,5 +1,5 @@
 import { from, of, throwError } from 'rxjs';
-import { catchError, flatMap, map, tap } from 'rxjs/operators';
+import { catchError, flatMap, map, mergeMap } from 'rxjs/operators';
 import { Options } from '../api/types';
 
 const DEFAULT_OPTIONS = {
@@ -18,7 +18,7 @@ const checkStatus = (response: Response) => {
   });
 };
 
-const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
+const fetchUrl = (endPoint: RequestInfo, options?: Options, authHost?: string) => {
   const mergedOptions = {
     ...DEFAULT_OPTIONS,
     ...options,
@@ -27,7 +27,32 @@ const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
       ...options?.additionalHeaders,
     },
   };
-
+  if(authHost){
+    return from(fetch(endPoint, mergedOptions as any)).pipe(
+      mergeMap((response) => {
+        if (response.status === 401) { 
+          return from(refreshToken(authHost)).pipe(
+            mergeMap((newToken) => {
+              mergedOptions.headers['Authorization'] = `Bearer ${newToken}`;
+              return fetch(endPoint, mergedOptions as any);
+            })
+          );
+        } else {
+          return of(response);
+        }
+      }),
+      map((response) => {
+        if (response.status >= 400) {
+          throw new Error(`Error: ${response.status}, reason: ${response.statusText}`);
+        } else {
+          return response;
+        }
+      }),
+      flatMap((response) => checkStatus(response)),
+      catchError((error) => throwError(error)),
+    );
+  }
+  
   return from(fetch(endPoint, mergedOptions as any)).pipe(
     // tap((response) => console.log(`Response status: ${response.status}`)),
     map((response) => {
@@ -41,5 +66,41 @@ const fetchUrl = (endPoint: RequestInfo, options?: Options) => {
     catchError((error) => throwError(error)),
   );
 };
+
+const refreshToken = async (authHost: string) => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const response = await fetch(`${authHost}/api/tokens/refresh`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: `"${refreshToken}"`,
+  });
+
+  if (response.status !== 200) {
+    window.location.assign(`login`);
+  }
+
+  const data = await response.json();
+
+  const accessTokenList = JSON.parse(localStorage.getItem('accessTokenList'))
+  const newAccessTokenList = accessTokenList.map(item => {
+    if(item.host === authHost){
+      return {
+        ...item,
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        tokenType: data.tokenType
+      }
+    }
+    return item
+  });
+  localStorage.setItem('refreshToken', data.refreshToken.token)
+  localStorage.setItem('accessToken', data.accessToken.token);
+  localStorage.setItem('expiration', data.accessToken.expiration)
+  localStorage.setItem('accessTokenList', JSON.stringify(newAccessTokenList));
+  return data.accessToken.token;
+};
+
 
 export { DEFAULT_OPTIONS, fetchUrl };

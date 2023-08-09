@@ -29,22 +29,14 @@ import FormAutomationDialog from '../helper/formAutomationDialog';
 import { AutomationsListStyles } from '../styles';
 import {
     deleteAutomation,
-    fetchGroupId,
-    fetchListAutomations,
-    getScalarStatus,
+    fetchAllAutomation,
     updateAutomation,
     updateStatusAutomation,
 } from '../../api/Automations/AutomationApi';
 import Loading from '../../common/Loading/Loading';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
-import {
-    applyConditionStatus,
-    applyLastJobIdStatus,
-    applyTriggerStatus,
-    getFilterExtensions,
-    processScalarStatus
-} from '../helper/helper';
+import { getFilterExtensions } from '../helper/helper';
 import { ErrorProvider } from '../store';
 
 const DEFAULT_COLUMNS = [
@@ -91,13 +83,12 @@ function AutomationsList(props: AutomationsListProps) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
         let intervalId;
         (async () => {
             try {
                 await fetchInitialData();
                 intervalId = setInterval(async () => {
-                    await fetchInitialData(true);
+                    await fetchInitialData();
                 }, 30000);
             } catch (error) {
                 console.log('err', error);
@@ -111,47 +102,25 @@ function AutomationsList(props: AutomationsListProps) {
         };
     }, []);
 
-    const processGroupIds = async (listGroupId, dataSources, conditionStatusMap: Map<string, boolean>, lastJobIdMap: Map<string, any>, triggerStatusMap: Map<string, boolean>, change?: boolean) => {
-        const newAutomations: AutomationData[] = [];
-        const uniqueGroupSet = new Set();
-
-        for (let element of listGroupId) {
-            const group = element.split('/');
-            const groupId = group[0];
-            if (uniqueGroupSet.has(groupId)) {
-                continue;
-            }
-            uniqueGroupSet.add(groupId);
-            const automationsData = await fetchListAutomations(dataSources, groupId).toPromise();
-
-            for (let automation of automationsData) {
-                applyConditionStatus(conditionStatusMap, automation);
-                applyLastJobIdStatus(lastJobIdMap, dataSources, automation);
-                applyTriggerStatus(triggerStatusMap, automation);
-            }
-
-            if (change) {
-                newAutomations.push(...automationsData);
-            } else {
-                setAutomations((prevVal) => [...prevVal, ...automationsData]);
-            }
-        }
-
-        return newAutomations;
-    }
-
-    const fetchInitialData = async (change?: boolean) => {
+    const fetchInitialData = async () => {
         setLoading(true);
         try {
-            const listGroupId = await fetchGroupId(dataSources).toPromise();
-            const scalarStatus = await getScalarStatus(dataSources).toPromise();
+            const fetchAllAutomationData = await fetchAllAutomation(dataSources).toPromise()
+            const automationsData = fetchAllAutomationData.map((item) => {
+                const id = `${item.group}/${item.name}`
+                const jobId = item.lastJobId
+                const fullName = `${item.group}/${item.name}`
+                let currentStatus = "Not Running"
+                let requested = "Not Running"
+                if (jobId) {
+                    currentStatus = item.currentStatus
+                    requested = item.lastRequestedTime
+                }
+                return { ...item, id, jobId, requested, currentStatus, fullName }
+            })
 
-            const { conditionStatusMap, lastJobIdMap, triggerStatusMap } = processScalarStatus(scalarStatus);
-            const automationsData = await processGroupIds(listGroupId, dataSources, conditionStatusMap, lastJobIdMap, triggerStatusMap, change);
+            setAutomations(automationsData);
 
-            if (change) {
-                setAutomations(automationsData);
-            }
         } catch (error) {
             console.error(error);
         } finally {
@@ -180,7 +149,7 @@ function AutomationsList(props: AutomationsListProps) {
             next: async (res) => {
                 try {
                     if (res.status === 204) {
-                        await fetchInitialData(true);
+                        await fetchInitialData();
                     } else {
                         console.log('Failed delete automation');
                     }
@@ -275,7 +244,7 @@ function AutomationsList(props: AutomationsListProps) {
         updateAutomation(dataSources, payload).subscribe({
             next: async () => {
                 try {
-                    await fetchInitialData(true);
+                    await fetchInitialData();
                 } catch (err) {
                     console.log(err);
                 } finally {
