@@ -89,15 +89,15 @@ export const TimeseriesExplorerEChart = () => {
   const [token, setToken] = useState('');
 
   const dataSource = {
-    host: 'https://domainservices.dhigroup.com',
-    connection: 'mclite-timeseries',
+    host: 'https://api-dev.seaportopx.com',
+    connection: 'MarineAid-Data',
     token,
   };
 
   useEffect(() => {
-    fetchToken(host, {
-      id: process.env.USERUSER,
-      password: process.env.USERPASSWORD,
+    fetchToken('https://auth-dev.seaportopx.com/', {
+      id: 'finz@dhigroup.com',
+      password: 'mzWnMQxbQtJFzij',
     }).subscribe(
       (res) => {
         setToken(res.accessToken.token);
