@@ -5,6 +5,8 @@ import {
     IntegratedGrouping,
     IntegratedSorting,
     SortingState,
+    SelectionState,
+    IntegratedSelection
 } from '@devexpress/dx-react-grid';
 import {
     ColumnChooser,
@@ -17,11 +19,12 @@ import {
     TableHeaderRow,
     Toolbar,
     VirtualTable,
+    TableSelection
 } from '@devexpress/dx-react-grid-material-ui';
 import React, { useEffect, useState } from 'react';
 import { DefaultColumnsTypeProvider } from '../../common/Table';
 import { Box, Paper } from '@material-ui/core';
-import Cell, { FilterCellRow } from '../helper/cell';
+import Cell, { CustomToolbar, FilterCellRow } from '../helper/cell';
 import ToolbarAutomations from '../helper/toolbarAutomations';
 import AutomationsListProps, { AutomationData } from '../type';
 import DetailAutomationsDialog from '../helper/detailAutomationsDialog';
@@ -71,6 +74,7 @@ function AutomationsList(props: AutomationsListProps) {
     const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
     const [openFormAutomations, setOpenFormAutomations] = useState(false)
     const [openDetailsAutomation, setOpenDetailAutomation] = useState(false)
+    const [selectionsRow, setSelectionsRow] = useState<(string | number)[]>([])
     const [dialog, setDialog] = useState<GeneralDialogProps>({
         dialogId: '',
         showDialog: false,
@@ -228,6 +232,29 @@ function AutomationsList(props: AutomationsListProps) {
         }
     }
 
+    const handleChangeStatusSelectedAutomation = async (selectedIds: (string | number)[], status: boolean) => {
+        try {
+            await Promise.all(selectedIds.map(id =>
+                updateStatusAutomation(dataSources, {
+                    id: id.toString(),
+                    flag: `${status}`,
+                })
+            ));
+
+            const updatedAutomations = automations.map(item => {
+                if (selectedIds.includes(item.id)) {
+                    return { ...item, isEnabled: status };
+                }
+                return item;
+            });
+
+            setAutomations(updatedAutomations);
+        } catch (error) {
+            console.log('error update all selected automation status', error)
+        }
+    }
+
+
     const handleFiltersChange = (newFilters) => {
         setFilters(newFilters);
     };
@@ -316,7 +343,12 @@ function AutomationsList(props: AutomationsListProps) {
                 <Paper className={classes.paperStyle}>
                     <ToolbarAutomations onClick={() => handleOpenFormAutomation(undefined)} />
                     {loading && <Loading />}
-                    <Grid rows={automations} columns={DEFAULT_COLUMNS} >
+                    <Grid rows={automations} columns={DEFAULT_COLUMNS} getRowId={row => row.id}>
+                        <SelectionState
+                            defaultSelection={[]}
+                            onSelectionChange={(selected) => setSelectionsRow(selected)}
+                        />
+                        <IntegratedSelection />
                         <FilteringState
                             filters={filters}
                             onFiltersChange={handleFiltersChange}
@@ -350,9 +382,17 @@ function AutomationsList(props: AutomationsListProps) {
                         <DefaultColumnsTypeProvider for={defaultColumnsNameArray} />
                         <TableHeaderRow showSortingControls />
                         <TableFilterRow cellComponent={FilterCellRow} />
-
+                        <TableSelection showSelectAll />
                         <TableGroupRow />
-                        <Toolbar />
+                        <Toolbar rootComponent={(toolbarProps) => (
+                            <CustomToolbar
+                                {...toolbarProps}
+                                automations={automations}
+                                selectionRow={selectionsRow}
+                                handleChangeStatusSelectedAutomation={handleChangeStatusSelectedAutomation}
+                            />
+                        )}
+                        />
                         <GroupingPanel showGroupingControls />
                         <TableColumnVisibility defaultHiddenColumnNames={disabledColumns} />
                         <ColumnChooser />

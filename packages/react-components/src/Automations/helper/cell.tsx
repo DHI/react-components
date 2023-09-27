@@ -1,5 +1,19 @@
-import { TableFilterRow, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
-import { Box, Chip, Divider, FormControlLabel, IconButton, List, ListItem, ListItemIcon, ListItemText, Popover, Switch, Tooltip, Typography } from '@material-ui/core';
+import { TableFilterRow, Toolbar, VirtualTable } from '@devexpress/dx-react-grid-material-ui';
+import {
+    Box,
+    Chip,
+    Divider,
+    FormControlLabel,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Popover,
+    Switch,
+    Tooltip,
+    Typography
+} from '@material-ui/core';
 import {
     ArrowDropDownCircleOutlined,
     DeleteOutline,
@@ -9,7 +23,7 @@ import {
     RadioButtonUnchecked,
     Visibility
 } from '@material-ui/icons';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table } from '@devexpress/dx-react-grid';
 import { AutomationData, ITrigger } from '../type';
 import StatusCell from '../../Jobs/JobList/helpers/StatusCell'
@@ -71,6 +85,87 @@ export const TriggerCell: React.FC<{ input: string, triggerList: ITrigger[] }> =
 
     return <>{value}</>
 }
+
+export const CustomToolbar: React.FC<{
+    selectionRow: (string | number)[]
+    handleChangeStatusSelectedAutomation: (selectedIds: (string | number)[], status: boolean) => Promise<void>
+    automations: AutomationData[]
+}> = ({ selectionRow, handleChangeStatusSelectedAutomation, automations, ...props }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isEnabled, setIsEnabled] = useState(false)
+
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const isAnySelectedAutomationDisabled = () => {
+        return selectionRow.some(id => {
+            const selectedAutomation = automations.find(automation => automation.id === id);
+            return selectedAutomation && !selectedAutomation.isEnabled;
+        });
+    };
+    
+    useEffect(() => {
+        if (isAnySelectedAutomationDisabled()) {
+            setIsEnabled(false);
+        } else {
+            setIsEnabled(true);
+        }
+    }, [selectionRow, automations]);
+    
+    return (
+        <Toolbar.Root {...props}>
+            {props.children}
+            {selectionRow.length > 0 && (
+                <>
+                    <IconButton aria-label="open-popover" onClick={handleClick}>
+                        <ListOutlined />
+                    </IconButton>
+                    <Popover
+                        open={open}
+                        anchorEl={anchorEl}
+                        onBlur={handleClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                    >
+                        <List>
+                            <ListItem>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={isEnabled}
+                                            onChange={(e) => {
+                                                const newStatus = e.target.checked;
+                                                setIsEnabled(newStatus);
+                                                handleChangeStatusSelectedAutomation(selectionRow, newStatus);
+                                            }}
+                                            name='isEnabled'
+                                            color='primary'
+                                        />
+                                    }
+                                    label={<Typography variant="body1">Enabled Selected Automation</Typography>}
+                                    labelPlacement="start"
+                                />
+                            </ListItem>
+                        </List>
+                    </Popover>
+                </>
+            )}
+        </Toolbar.Root>
+    );
+};
 
 const Cell: React.FC<CellProps> = (props) => {
     const {
