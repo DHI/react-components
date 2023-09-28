@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StandardChartProps } from './types';
 
 const BaseChart = (props: StandardChartProps) => {
-  const { className, options, chartHeightFunc, getRefFunc, debug } = props;
+  const { className, options, chartHeightFunc, getRefFunc, debug, onEvents } = props;
   const [chartSize, setChartSize] = useState({ width: '100%', height: chartHeightFunc() });
 
   useEffect(() => {
@@ -33,6 +33,7 @@ const BaseChart = (props: StandardChartProps) => {
           }}
           style={{ width: chartSize.width, height: chartSize.height }}
           option={options}
+          onEvents={onEvents}
           {...props}
         />
       </div>

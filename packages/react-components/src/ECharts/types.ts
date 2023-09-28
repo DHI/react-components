@@ -54,4 +54,11 @@ export interface StandardChartProps {
    * Display loading on data change
    */
   showLoading?: boolean;
+  /**
+   * Trigger Event on ReactEChart
+   */
+  onEvents?: {
+    click: (params: any) => void;
+    mousemove?: (params: any) => void;
+  };
 }

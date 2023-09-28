@@ -12,6 +12,7 @@ import { DateFilter } from '../../common/DateFilter/DateFilter';
 import { DateProps } from '../../common/types';
 import { useWindowSize } from '@react-hook/window-size';
 import mikeColors from '../../ThemeProvider/mikeColors';
+import copy from 'copy-to-clipboard';
 
 const NAME_TEXT_STYLE = {
   padding: 12,
@@ -22,12 +23,6 @@ const NAME_TEXT_STYLE = {
 const DATA_ZOOM = [
   {
     type: 'inside',
-  },
-  {
-    type: 'slider',
-    height: 40,
-    bottom: 10,
-    labelFormatter: (value) => (value ? format(value, 'dd MMM yyyy') : ''),
   },
 ];
 
@@ -52,10 +47,13 @@ const AXIS_LABEL = {
 
 const X_AXIS = {
   name: 'Time',
+  type: 'time',
   nameLocation: 'center',
   nameTextStyle: NAME_TEXT_STYLE,
   min: 'dataMin',
+  max: 'dataMax',
   axisLabel: AXIS_LABEL,
+  triggerEvent: true
 };
 
 const Y_AXIS = {
@@ -65,21 +63,9 @@ const Y_AXIS = {
   axisLabel: AXIS_LABEL,
 };
 
-const LEGEND_STYLE = {
-  backgroundColor: 'rgba(255,255,255,1)',
-  padding: 8,
-  borderRadius: 5,
-  shadowColor: 'rgba(0, 0, 0, 0.25)',
-  shadowBlur: 5,
-  shadowOffsetX: 3,
-  shadowOffsetY: 3,
-};
-
 const TimeseriesExplorer = ({
   dataSource,
   title,
-  legendPosition = 'right',
-  legendPositionOffset,
   startTimeUtc,
   dateTimeFormat,
   timeZone,
@@ -97,23 +83,33 @@ const TimeseriesExplorer = ({
   const [ids, setIds] = useState<string[]>([]);
 
   const [options, setOptions] = useState({
-    title: {
-      text: title,
-      left: 'center',
-      textStyle: TEXT_STYLE,
+    toolbox: {
+      feature: {
+        dataZoom: {
+        },
+        restore: {},
+        saveAsImage: {}
+      }
     },
     grid: GRID,
     dataZoom: DATA_ZOOM,
     legend: {
-      ...LEGEND_STYLE,
-      top: legendPosition === 'left' ? 90 : 35,
-      left: legendPosition === 'left' ? legendPositionOffset ?? 150 : undefined,
-      right: legendPosition === 'right' ? legendPositionOffset ?? 60 : undefined,
-      align: legendPosition,
+      orient: 'vertical',
+      bottom: 0
     },
     xAxis: X_AXIS,
     yAxis: Y_AXIS,
-    tooltip: {},
+    tooltip: {
+      trigger: 'axis',
+      formatter: function (params) {
+        let result = '';
+        params.forEach((param) => {
+          result += `Date: ${new Date(param.data.value[0]).toISOString()} <br/>`;
+          result += `Value: ${param.data.value[1]} <br/><br/>`;
+        });
+        return result;
+      }
+    },
     series: [],
   });
 
@@ -178,12 +174,19 @@ const TimeseriesExplorer = ({
 
     fetchTimeseriesValues([dataSource], dataSource.token).subscribe((res) => {
       const series = res
-        .map((item) => {
+        .map((item, index) => {
           return {
             name: item.id,
-            data: item.data.map((d) => [new Date(d[0]).getTime(), d[1]]),
+            data: item.data.map((d, idx) => {
+              return {
+                value: [new Date(d[0]).getTime(), d[1]],
+                name: `Point ${index * item.data.length + idx + 1}`
+              };
+            }),
+            symbolSize: 3,
             type: 'line',
             symbol: 'diamond',
+            triggerLineEvent: true,
           };
         })
         .filter((item) => item);
@@ -194,7 +197,16 @@ const TimeseriesExplorer = ({
           ...options.xAxis,
           axisLabel: {
             ...options.xAxis.axisLabel,
-            formatter: (value) => format(value, 'dd MMM yyyy'),
+            formatter: {
+              year: '{yyyy}',
+              month: '{MMM}',
+              day: '{d}',
+              hour: '{HH}:{mm}',
+              minute: '{HH}:{mm}',
+              second: '{HH}:{mm}:{ss}',
+              millisecond: '{hh}:{mm}:{ss} {SSS}',
+              none: '{yyyy}-{MM}-{dd} {hh}:{mm}:{ss} {SSS}'
+            },
           },
         },
         yAxis: {
@@ -239,7 +251,20 @@ const TimeseriesExplorer = ({
               onSetDate={(date) => setDate(date)}
               onClearDateFilter={clearDateFilter}
             >
-              <BaseChart className="standard_chat" chartHeightFunc={() => height - 100} options={options} notMerge />
+              <BaseChart
+                className="standard_chat"
+                chartHeightFunc={() => height - 100}
+                options={options}
+                onEvents={{
+                  click: (params) => {
+                    const { seriesName } = params
+                    if (seriesName) {
+                      copy(seriesName);
+                    }
+                  },
+                }}
+                notMerge
+              />
             </DateFilter>
           ) : (
             <>
