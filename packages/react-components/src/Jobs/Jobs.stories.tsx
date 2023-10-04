@@ -23,7 +23,7 @@ export const JobListStory = () => {
     } as DataSource,
   ];
 
-  const disabledColumns = ['accountId', 'Area'];
+  const disabledColumns = ['accountId'];
 
   const defaultFilter = [{columnName: 'taskId', operation: 'contains', value: 'workflow'}]
 
@@ -33,6 +33,8 @@ export const JobListStory = () => {
       label: 'Area',
     },
   ];
+
+  const positionToInsert = 1
 
   return (
     <LoginGate host={process.env.ENDPOINT_URL!} showRememberMe={true} textFieldVariant={'outlined'}>
@@ -49,6 +51,7 @@ export const JobListStory = () => {
             noEntriesData: 'Tidak ada entri job',
             noEntriesFilter: 'Tidak ada entri job untuk status job yang dipilih',
           }}
+          positionToInsert={positionToInsert}
           onReceived={(data) => {
             console.log(data);
           }}

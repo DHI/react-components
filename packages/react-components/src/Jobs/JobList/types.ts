@@ -12,6 +12,8 @@ interface JobListProps {
   defaultFilter?: Filter[];
   /** Data source to get the logs specific parameters */
   parameters?: Parameters[];
+  /** Spesific paremeters position */
+  positionToInsert?: number;
   /** The date time format that the dates shown in */
   dateTimeFormat: string;
   /** Selected date for log entries from */
