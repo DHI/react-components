@@ -11,7 +11,9 @@ export const GroupCellContent = (props: any) => (
 );
 
 export const Cell = (props: any) => {
-  if (props.column.name === 'status') {
+  const { column, row, hideWorkflowPrefix } = props;
+
+  if (column.name === 'status') {
     return (
       <td className="MuiTableCell-root">
         <StatusCell {...props} />
@@ -19,14 +21,14 @@ export const Cell = (props: any) => {
     );
   }
 
-  if (props.column.name === 'delay') {
-    const { requested, started } = props.row;
+  if (column.name === 'delay') {
+    const { requested, started } = row;
 
     if (!requested && !started) {
       return <td className="MuiTableCell-root"></td>;
     }
 
-    const differenceMinutes = differenceInMinutes(new Date(props.row.started), new Date(props.row.requested));
+    const differenceMinutes = differenceInMinutes(new Date(row.started), new Date(row.requested));
 
     let delayColor = '';
 
@@ -45,6 +47,22 @@ export const Cell = (props: any) => {
             </Typography>
           </Tooltip>
         )}
+      </td>
+    );
+  }
+
+  if (column.name === 'taskId' && hideWorkflowPrefix && props.value.startsWith('workflow')) {
+    const adjustedValue = props.value.replace('workflow', ' ');
+
+    return (
+      <td className="MuiTableCell-root">
+        <div style={{
+          padding: '8px',
+          textOverflow: 'ellipsis',
+          overflow: 'hidden'
+        }}>
+          {adjustedValue}
+        </div>
       </td>
     );
   }

@@ -28,6 +28,9 @@ interface JobListProps {
   };
   /** Emit event to client when jobs received from the server */
   onReceived?: (data: any) => void;
+  /** Hide Prefix Workflow Task Id */
+  showHidePrefixButton?: boolean
+
 }
 
 interface Parameters {

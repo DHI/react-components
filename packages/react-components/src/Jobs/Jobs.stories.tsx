@@ -55,6 +55,7 @@ export const JobListStory = () => {
           onReceived={(data) => {
             console.log(data);
           }}
+          showHidePrefixButton={true}
         />
       )}
     </LoginGate>

@@ -18,7 +18,7 @@ import {
   Toolbar,
   VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';
-import { Paper } from '@material-ui/core';
+import { Paper, Switch, Typography } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { executeJobQuery, fetchLogs } from '../../api';
@@ -55,7 +55,8 @@ const JobList = (props: JobListProps) => {
     dateTimeFormat,
     timeZone,
     defaultFilter,
-    positionToInsert
+    positionToInsert,
+    showHidePrefixButton,
   } = props;
 
   const initialDateState = {
@@ -90,6 +91,7 @@ const JobList = (props: JobListProps) => {
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
   const [sorting, setSorting] = useState<Sorting[]>([{ columnName: 'requested', direction: 'desc' }]);
+  const [hideWorkflowPrefix, setHideWorkflowPrefix] = useState(true);
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
   const latestJobs = useRef(null);
 
@@ -326,17 +328,39 @@ const JobList = (props: JobListProps) => {
   const ToolbarRootComponent = useCallback((props: any) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
       <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>{props.children}</div>
-      <DateFilter
-        dateTimeFormat={dateTimeFormat}
-        startTimeUtc={startTimeUtc}
-        timeZone={timeZone}
-        date={date}
-        onSetDate={(date) => setDate(date)}
-        onClearDateFilter={clearDateFilter}
-      >
-      </DateFilter>
+      {showHidePrefixButton && (
+        <div style={{ display: 'flex' }}>
+          <div style={{ marginLeft: 20, display: 'flex', alignItems: 'center', width: '200px' }}>
+            <Typography style={{ fontSize: '15px' }}>Hide Workflow Prefix</Typography>
+            <Switch
+              checked={hideWorkflowPrefix}
+              onChange={(event) => setHideWorkflowPrefix(event.target.checked)}
+            />
+          </div>
+          <DateFilter
+            dateTimeFormat={dateTimeFormat}
+            startTimeUtc={startTimeUtc}
+            timeZone={timeZone}
+            date={date}
+            onSetDate={(date) => setDate(date)}
+            onClearDateFilter={clearDateFilter}
+          >
+          </DateFilter>
+        </div>
+      )}
+      {!showHidePrefixButton && (
+        <DateFilter
+          dateTimeFormat={dateTimeFormat}
+          startTimeUtc={startTimeUtc}
+          timeZone={timeZone}
+          date={date}
+          onSetDate={(date) => setDate(date)}
+          onClearDateFilter={clearDateFilter}
+        >
+        </DateFilter>
+      )}
     </div>
-  ), []);
+  ), [hideWorkflowPrefix]);
 
   const jobUpdated = (job) => {
     const dataUpdated = JSON.parse(job.data);
@@ -433,11 +457,12 @@ const JobList = (props: JobListProps) => {
   };
 
   const handleGroupingChange = (grouping) => {
+    console.log('grouping', grouping)
     if (grouping.length > 0) {
       const lastGroupedColumn = grouping[grouping.length - 1].columnName;
       setSorting([{ columnName: lastGroupedColumn, direction: 'asc' }]);
     }
-  };  
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -474,7 +499,7 @@ const JobList = (props: JobListProps) => {
           <VirtualTable
             height={windowHeight - 230}
             rowComponent={TableRow}
-            cellComponent={Cell}
+            cellComponent={(cellProps) => <Cell {...cellProps} hideWorkflowPrefix={hideWorkflowPrefix} />}
             columnExtensions={tableColumnExtensions}
           />
 
