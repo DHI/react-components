@@ -29,7 +29,7 @@ import { DateFilter } from '../../common/DateFilter/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
 import JobDetail from './helpers/JobDetail';
 import { JobPanelStyles } from './styles';
-import JobListProps, { JobData } from './types';
+import JobListProps, { JobData, Sorting } from './types';
 import { DateProps } from '../../common/types';
 
 const DEFAULT_COLUMNS = [
@@ -89,6 +89,7 @@ const JobList = (props: JobListProps) => {
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
+  const [sorting, setSorting] = useState<Sorting[]>([{ columnName: 'requested', direction: 'desc' }]);
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
   const latestJobs = useRef(null);
 
@@ -431,6 +432,13 @@ const JobList = (props: JobListProps) => {
     return connection;
   };
 
+  const handleGroupingChange = (grouping) => {
+    if (grouping.length > 0) {
+      const lastGroupedColumn = grouping[grouping.length - 1].columnName;
+      setSorting([{ columnName: lastGroupedColumn, direction: 'asc' }]);
+    }
+  };  
+
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
@@ -456,11 +464,11 @@ const JobList = (props: JobListProps) => {
           <FilteringState defaultFilters={defaultFilter} />
           <IntegratedFiltering />
 
-          <SortingState defaultSorting={[{ columnName: 'requested', direction: 'desc' }]} />
+          <SortingState sorting={sorting} onSortingChange={setSorting} />
           <IntegratedSorting columnExtensions={integratedSortingColumnExtensions} />
 
           <DragDropProvider />
-          <GroupingState />
+          <GroupingState onGroupingChange={handleGroupingChange} />
           <IntegratedGrouping columnExtensions={integratedGroupingColumnExtensions} />
 
           <VirtualTable

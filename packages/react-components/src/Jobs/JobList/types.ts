@@ -108,5 +108,8 @@ interface DateFilterProps {
   onClearDateFilter: () => void;
 }
 
+type SortingDirection = 'asc' | 'desc';
+type Sorting = { columnName: string; direction: SortingDirection; };
+
 export default JobListProps;
-export { JobData, FilterProps, JobDetailProps, DateFilterProps, Parameters };
+export { JobData, FilterProps, JobDetailProps, DateFilterProps, Parameters, Sorting };
