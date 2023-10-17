@@ -18,7 +18,7 @@ import {
   Toolbar,
   VirtualTable,
 } from '@devexpress/dx-react-grid-material-ui';
-import { Paper } from '@material-ui/core';
+import { Paper, Switch, Typography } from '@material-ui/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { executeJobQuery, fetchLogs } from '../../api';
@@ -29,7 +29,7 @@ import { DateFilter } from '../../common/DateFilter/DateFilter';
 import { Cell, dateGroupCriteria, GroupCellContent } from './helpers/helpers';
 import JobDetail from './helpers/JobDetail';
 import { JobPanelStyles } from './styles';
-import JobListProps, { JobData } from './types';
+import JobListProps, { JobData, Sorting } from './types';
 import { DateProps } from '../../common/types';
 
 const DEFAULT_COLUMNS = [
@@ -47,7 +47,18 @@ const DEFAULT_COLUMNS = [
 const NOTIFICATION_HUB = '/notificationhub';
 
 const JobList = (props: JobListProps) => {
-  const { dataSources, disabledColumns, parameters, startTimeUtc, dateTimeFormat, timeZone, defaultFilter } = props;
+  const {
+    dataSources,
+    disabledColumns,
+    parameters,
+    startTimeUtc,
+    dateTimeFormat,
+    timeZone,
+    defaultFilter,
+    positionToInsert,
+    showHidePrefixButton,
+  } = props;
+
   const initialDateState = {
     from: new Date(startTimeUtc).toISOString(),
     to: new Date().toISOString(),
@@ -79,6 +90,8 @@ const JobList = (props: JobListProps) => {
   const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
+  const [sorting, setSorting] = useState<Sorting[]>([{ columnName: 'requested', direction: 'desc' }]);
+  const [hideWorkflowPrefix, setHideWorkflowPrefix] = useState(false);
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
   const latestJobs = useRef(null);
 
@@ -99,7 +112,7 @@ const JobList = (props: JobListProps) => {
   ]);
 
   const durationToSeconds = (duration: string | null): number => {
-    if (duration === '' || duration === null ) {
+    if (duration === '' || duration === null) {
       return 0;
     }
 
@@ -109,7 +122,7 @@ const JobList = (props: JobListProps) => {
       if (parts[index].includes('h')) {
         seconds += Number(parts[index].slice(0, -1)) * 3600;;
       }
-      
+
       if (parts[index].includes('m')) {
         seconds += Number(parts[index].slice(0, -1)) * 60;
       }
@@ -135,7 +148,7 @@ const JobList = (props: JobListProps) => {
     { columnName: 'duration', compare: compareDurations },
     { columnName: 'delay', compare: compareDurations },
   ]);
-  
+
   const fetchJobList = () => {
     setLoading(true);
 
@@ -193,18 +206,26 @@ const JobList = (props: JobListProps) => {
 
   const parameterHeader = parameters
     ? parameters.reduce(
-        (acc, cur) => [
-          ...acc,
-          {
-            title: cur.label,
-            name: cur.parameter,
-          },
-        ],
-        [],
-      )
+      (acc, cur) => [
+        ...acc,
+        {
+          title: cur.label,
+          name: cur.parameter,
+        },
+      ],
+      [],
+    )
     : [];
 
-  const [columns] = useState(DEFAULT_COLUMNS.concat(parameterHeader));
+  const combinedColumns = typeof positionToInsert === "undefined"
+    ? [...DEFAULT_COLUMNS, ...parameterHeader]
+    : [
+      ...DEFAULT_COLUMNS.slice(0, positionToInsert),
+      ...parameterHeader,
+      ...DEFAULT_COLUMNS.slice(positionToInsert)
+    ];
+
+  const [columns] = useState(combinedColumns);
 
   const expandWithData = (row) => {
     const {
@@ -307,17 +328,39 @@ const JobList = (props: JobListProps) => {
   const ToolbarRootComponent = useCallback((props: any) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
       <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>{props.children}</div>
-      <DateFilter
-        dateTimeFormat={dateTimeFormat}
-        startTimeUtc={startTimeUtc}
-        timeZone={timeZone}
-        date={date}
-        onSetDate={(date) => setDate(date)}
-        onClearDateFilter={clearDateFilter}
-      >
-      </DateFilter>
+      {showHidePrefixButton && (
+        <div style={{ display: 'flex' }}>
+          <div style={{ marginLeft: 20, display: 'flex', alignItems: 'center', width: '200px' }}>
+            <Typography style={{ fontSize: '15px' }}>Hide Workflow Prefix</Typography>
+            <Switch
+              checked={hideWorkflowPrefix}
+              onChange={(event) => setHideWorkflowPrefix(event.target.checked)}
+            />
+          </div>
+          <DateFilter
+            dateTimeFormat={dateTimeFormat}
+            startTimeUtc={startTimeUtc}
+            timeZone={timeZone}
+            date={date}
+            onSetDate={(date) => setDate(date)}
+            onClearDateFilter={clearDateFilter}
+          >
+          </DateFilter>
+        </div>
+      )}
+      {!showHidePrefixButton && (
+        <DateFilter
+          dateTimeFormat={dateTimeFormat}
+          startTimeUtc={startTimeUtc}
+          timeZone={timeZone}
+          date={date}
+          onSetDate={(date) => setDate(date)}
+          onClearDateFilter={clearDateFilter}
+        >
+        </DateFilter>
+      )}
     </div>
-  ),[]);
+  ), [hideWorkflowPrefix]);
 
   const jobUpdated = (job) => {
     const dataUpdated = JSON.parse(job.data);
@@ -327,29 +370,29 @@ const JobList = (props: JobListProps) => {
     const updatedJob = jobs.map((job) =>
       job.id === dataUpdated.Id
         ? {
-            ...job,
-            started:
-              job.started || dataUpdated.Started ? zonedTimeFromUTC(dataUpdated.Started, timeZone, dateTimeFormat) : '',
-            finished:
-              job.finished || dataUpdated.Finished
-                ? zonedTimeFromUTC(dataUpdated.Finished, timeZone, dateTimeFormat)
-                : '',
-            hostId: dataUpdated.HostId,
-            status: dataUpdated.Status,
-            duration:
-              job.duration ||
-              (dataUpdated.Started &&
-                dataUpdated.Finished &&
-                calcTimeDifference(dataUpdated.Started.split('.')[0], dataUpdated.Finished.split('.')[0])),
-            delay:
-              job.delay ||
-              (dataUpdated.Started &&
-                calcTimeDifference(dataUpdated.Requested.split('.')[0], dataUpdated.Started.split('.')[0])),
-            progress: dataUpdated.Progress || 0,
-            tokenJobLog: dataSources[0].tokenJobLog || '', // So wrong ... it doesn't necessarily sit on the first one. Should be fixed later
-            hostJobLog: dataSources[0].hostJobLog || '',
-            connectionJobLog: dataSources[0].connectionJobLog || '',
-          }
+          ...job,
+          started:
+            job.started || dataUpdated.Started ? zonedTimeFromUTC(dataUpdated.Started, timeZone, dateTimeFormat) : '',
+          finished:
+            job.finished || dataUpdated.Finished
+              ? zonedTimeFromUTC(dataUpdated.Finished, timeZone, dateTimeFormat)
+              : '',
+          hostId: dataUpdated.HostId,
+          status: dataUpdated.Status,
+          duration:
+            job.duration ||
+            (dataUpdated.Started &&
+              dataUpdated.Finished &&
+              calcTimeDifference(dataUpdated.Started.split('.')[0], dataUpdated.Finished.split('.')[0])),
+          delay:
+            job.delay ||
+            (dataUpdated.Started &&
+              calcTimeDifference(dataUpdated.Requested.split('.')[0], dataUpdated.Started.split('.')[0])),
+          progress: dataUpdated.Progress || 0,
+          tokenJobLog: dataSources[0].tokenJobLog || '', // So wrong ... it doesn't necessarily sit on the first one. Should be fixed later
+          hostJobLog: dataSources[0].hostJobLog || '',
+          connectionJobLog: dataSources[0].connectionJobLog || '',
+        }
         : job,
     );
 
@@ -360,7 +403,7 @@ const JobList = (props: JobListProps) => {
     const dataAdded = JSON.parse(job.data);
     const jobs = [...latestJobs.current];
     console.log({ dataAdded });
-    
+
     const addedJob = {
       taskId: dataAdded.TaskId,
       id: dataAdded.Id,
@@ -409,8 +452,16 @@ const JobList = (props: JobListProps) => {
         );
       })
       .catch((e) => console.log('Connection failed: ', e));
-    
+
     return connection;
+  };
+
+  const handleGroupingChange = (grouping) => {
+    console.log('grouping', grouping)
+    if (grouping.length > 0) {
+      const lastGroupedColumn = grouping[grouping.length - 1].columnName;
+      setSorting([{ columnName: lastGroupedColumn, direction: 'asc' }]);
+    }
   };
 
   useEffect(() => {
@@ -438,17 +489,17 @@ const JobList = (props: JobListProps) => {
           <FilteringState defaultFilters={defaultFilter} />
           <IntegratedFiltering />
 
-          <SortingState defaultSorting={[{ columnName: 'requested', direction: 'desc' }]} />
+          <SortingState sorting={sorting} onSortingChange={setSorting} />
           <IntegratedSorting columnExtensions={integratedSortingColumnExtensions} />
 
           <DragDropProvider />
-          <GroupingState />
+          <GroupingState onGroupingChange={handleGroupingChange} />
           <IntegratedGrouping columnExtensions={integratedGroupingColumnExtensions} />
 
           <VirtualTable
             height={windowHeight - 230}
             rowComponent={TableRow}
-            cellComponent={Cell}
+            cellComponent={(cellProps) => <Cell {...cellProps} hideWorkflowPrefix={hideWorkflowPrefix} />}
             columnExtensions={tableColumnExtensions}
           />
 
