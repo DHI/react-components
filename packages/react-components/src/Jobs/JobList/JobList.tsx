@@ -91,7 +91,7 @@ const JobList = (props: JobListProps) => {
   const [date, setDate] = useState<DateProps>(initialDateState);
   const [selectedRow, setSelectedRow] = useState<string>('');
   const [sorting, setSorting] = useState<Sorting[]>([{ columnName: 'requested', direction: 'desc' }]);
-  const [hideWorkflowPrefix, setHideWorkflowPrefix] = useState(true);
+  const [hideWorkflowPrefix, setHideWorkflowPrefix] = useState(false);
   const [tableColumnExtensions] = useState([{ columnName: 'status', width: 120 }]);
   const latestJobs = useRef(null);
 

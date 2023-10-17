@@ -61,7 +61,11 @@ export const Cell = (props: any) => {
           textOverflow: 'ellipsis',
           overflow: 'hidden'
         }}>
-          {adjustedValue}
+          <Typography variant='body2' style={{
+            paddingLeft: 10
+          }}>
+            {adjustedValue}
+          </Typography>
         </div>
       </td>
     );
