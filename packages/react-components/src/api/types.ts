@@ -25,6 +25,10 @@ interface DataSource {
    * Format: new Date();
    */
   to?: string;
+  /**
+   * Query filters to apply to the request.
+   */
+  queryFilter?: QueryFilter[];
   sheetName?: string;
   tokenJobLog?: string;
   hostJobLog?: string;
@@ -71,4 +75,12 @@ interface JobParameters {
   [key: string]: string | string[];
 }
 
-export { Options, DataSource, Header, JobQuery, JobParameters, User };
+
+interface QueryFilter {
+  item: string;
+  queryOperator: string;
+  value: string;
+  negation?: boolean;
+}
+
+export { Options, DataSource, Header, JobQuery, JobParameters, User, QueryFilter };

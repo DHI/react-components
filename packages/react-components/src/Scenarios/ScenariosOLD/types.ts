@@ -1,4 +1,4 @@
-import { JobParameters } from '../../api/types';
+import { JobParameters, QueryFilter } from '../../api/types';
 import { DescriptionField, MenuItem, QueryDates, Scenario, Status, StatusOverride } from '../types';
 
 interface ScenariosOLDProps {
@@ -72,6 +72,10 @@ interface ScenariosOLDProps {
    * Value range to fetch scenario by date
    */
   queryDates?: QueryDates;
+  /**
+   * Query filters to use when fetching the scenarios data.
+   */
+  queryFilter?: QueryFilter[];
   /**
    * Customising translation dialog
    */
