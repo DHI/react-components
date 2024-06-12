@@ -1,6 +1,5 @@
 import { tap } from 'rxjs/operators';
 import { DataSource } from '../../api/types';
-import { ScenarioItem } from '../../Scenarios/ScenarioItem/ScenarioItem';
 import { fetchUrl } from '../helpers';
 
 /**
@@ -37,6 +36,30 @@ const fetchScenarios = (dataSource: DataSource, token: string) => {
     additionalHeaders: {
       Authorization: `Bearer ${token}`,
     },
+  });
+};
+
+/**
+ * /api/scenarios/{connectionId}/query
+ * Gets all scenarios that match the given filtering criteria:
+ * @param dataSource
+ * @param filtering
+ * @param token
+ */
+const fetchScenariosPost = (dataSource: DataSource, token: string) => {
+  const dataSelectors =
+    dataSource.dataSelectors && dataSource.dataSelectors.length > 0
+      ? `?dataSelectors=[${dataSource.dataSelectors
+          .map((dataSelector) => dataSelector.replace('data.', ''))
+          .join(',')}]`
+      : '';
+
+  return fetchUrl(`${dataSource.host}/api/scenarios/${dataSource.connection}/query${dataSelectors}`, {
+    method: 'Post',
+    additionalHeaders: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dataSource?.queryFilter),
   });
 };
 
@@ -126,4 +149,4 @@ const updateScenario = (dataSource: DataSource, token: string, scenario: any) =>
     body: JSON.stringify(scenario),
   });
 
-export { fetchScenario, fetchScenarios, fetchScenariosByDate, deleteScenario, postScenario, updateScenario };
+export { fetchScenario, fetchScenarios, fetchScenariosPost, fetchScenariosByDate, deleteScenario, postScenario, updateScenario };

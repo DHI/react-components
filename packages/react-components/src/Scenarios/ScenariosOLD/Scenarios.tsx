@@ -10,7 +10,7 @@ import {
   postScenario,
   updateScenario,
 } from '../../api';
-import { JobParameters } from '../../api/types';
+import { JobParameters, QueryFilter } from '../../api/types';
 import GeneralDialog from '../../common/GeneralDialog/GeneralDialog';
 import GeneralDialogProps from '../../common/GeneralDialog/types';
 import { checkConditions, getObjectProperty, setObjectProperty } from '../../utils/Utils';
@@ -18,6 +18,7 @@ import { ScenarioListOLD } from '../ScenarioListOLD/ScenarioList';
 import { MenuItem, QueryDates, ScenarioOLD } from '../types';
 import ScenariosOLDProps from './types';
 import useStyles from './useStyles';
+import { fetchScenariosPost } from '../../api/Scenarios/ScenariosApi';
 
 const ScenariosOLD = (props: ScenariosOLDProps) => {
   const {
@@ -41,6 +42,7 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
     showStatus,
     status,
     queryDates,
+    queryFilter,
     frequency = 10,
     onContextMenuClick,
     onScenarioSelected,
@@ -62,10 +64,10 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
   useEffect(() => {
     let interval: ReturnType<typeof setTimeout>;
 
-    if (queryDates) {
-      fetchScenariosByDateList(queryDates);
+    if (queryDates || queryFilter) {
+      fetchScenariosByQuery(queryDates, queryFilter);
 
-      interval = setInterval(() => fetchScenariosByDateList(queryDates), frequency * 1000);
+      interval = setInterval(() => fetchScenariosByQuery(queryDates, queryFilter), frequency * 1000);
     } else {
       fetchScenariosList();
 
@@ -99,18 +101,58 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
     }
   }, [addScenario]);
 
-  const fetchScenariosByDateList = (queryDates: QueryDates) => {
+  const fetchScenariosByQuery = (queryDates: QueryDates, queryFilter?: QueryFilter[]) => {
+    const dataSelectors = [
+      nameField,
+      ...descriptionFields!.map((descriptionField) => descriptionField.field),
+      ...extraFields!.map((descriptionField) => descriptionField.field),
+    ];
+    if (queryFilter) {
+      fetchScenariosByQueryFilter(queryFilter, dataSelectors);    
+    } else {
+      fetchScenariosByDateList(queryDates, dataSelectors);    
+    }
+  }
+
+  const fetchScenariosByQueryFilter = (queryFilter: QueryFilter[], dataSelectors: any[]) => {
+    fetchScenariosPost(
+      {
+        host,
+        connection: scenarioConnection,
+        dataSelectors,
+        queryFilter,
+      },
+      token,
+    ).subscribe(
+      (res) => {
+        const rawScenarios = res.map((s: { data: string }) => {
+          s.data = s.data ? JSON.parse(s.data) : s.data;
+
+          return s;
+        });
+
+        const newScenarios = rawScenarios.filter((scenario) => checkConditions(scenario, dataFilterbyProperty));
+
+        setScenarios(newScenarios);
+
+        if (onScenariosReceived) {
+          onScenariosReceived(newScenarios);
+        }
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
+
+  const fetchScenariosByDateList = (queryDates: QueryDates, dataSelectors: any[]) => {        
     fetchScenariosByDate(
       {
         host,
         connection: scenarioConnection,
         from: queryDates.from,
         to: queryDates.to,
-        dataSelectors: [
-          nameField,
-          ...descriptionFields!.map((descriptionField) => descriptionField.field),
-          ...extraFields!.map((descriptionField) => descriptionField.field),
-        ],
+        dataSelectors,
       },
       token,
     ).subscribe(
