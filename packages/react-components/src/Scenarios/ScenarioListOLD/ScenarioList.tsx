@@ -25,6 +25,7 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
     nameField,
     timeZone,
     statusOverrideFunction,
+    groupByItemFunction,
   } = props;
   const [groupedScenarios, setGroupedScenarios] = useState<Dictionary<ScenarioOLD[]>>();
   const [selectedId, setSelectedId] = useState(selectedScenarioId);
@@ -42,9 +43,11 @@ const ScenarioListOLD = (props: ScenarioListOLDProps) => {
     setGroupedScenarios(
       showHour || showDate
         ? groupBy(scenarios, (scenario) => {
-            return scenario.dateTime && timeZone
-              ? format(utcToTz(scenario.dateTime, timeZone), 'yyyy-MM-dd')
-              : format(parseISO(scenario.dateTime), 'yyyy-MM-dd') || '';
+          return groupByItemFunction ?
+          groupByItemFunction(scenario, timeZone) : 
+          scenario.dateTime && timeZone
+            ? format(utcToTz(scenario.dateTime, timeZone), 'yyyy-MM-dd')
+            : format(parseISO(scenario.dateTime), 'yyyy-MM-dd') || '';
           })
         : groupBy(scenarios, (scenario) => scenario.dateTime),
     );
