@@ -52,6 +52,7 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
     translations,
     timeZone,
     statusOverrideFunction,
+    groupByItemFunction,
   } = props;
 
   const [dialog, setDialog] = useState<GeneralDialogProps>();
@@ -461,6 +462,7 @@ const ScenariosOLD = (props: ScenariosOLDProps) => {
         status={status}
         timeZone={timeZone}
         statusOverrideFunction={statusOverrideFunction}
+        groupByItemFunction={groupByItemFunction}
       />
     );
   }

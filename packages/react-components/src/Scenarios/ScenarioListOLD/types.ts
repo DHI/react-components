@@ -65,6 +65,10 @@ interface ScenarioListOLDProps {
    * The function that returns the new status to override
    */
   statusOverrideFunction?: (scenario: Scenario) => StatusOverride;
+  /**
+   * The function that returns the item to be used for grouping by:
+   */
+  groupByItemFunction?: (scenario: Scenario, timeZone?: string) => string;
 }
 
 export default ScenarioListOLDProps;
