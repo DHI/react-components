@@ -12,6 +12,8 @@ interface JobListProps {
   defaultFilter?: Filter[];
   /** Data source to get the logs specific parameters */
   parameters?: Parameters[];
+  /** Spesific paremeters position */
+  positionToInsert?: number;
   /** The date time format that the dates shown in */
   dateTimeFormat: string;
   /** Selected date for log entries from */
@@ -26,6 +28,9 @@ interface JobListProps {
   };
   /** Emit event to client when jobs received from the server */
   onReceived?: (data: any) => void;
+  /** Hide Prefix Workflow Task Id */
+  showHidePrefixButton?: boolean
+
 }
 
 interface Parameters {
@@ -106,5 +111,8 @@ interface DateFilterProps {
   onClearDateFilter: () => void;
 }
 
+type SortingDirection = 'asc' | 'desc';
+type Sorting = { columnName: string; direction: SortingDirection; };
+
 export default JobListProps;
-export { JobData, FilterProps, JobDetailProps, DateFilterProps, Parameters };
+export { JobData, FilterProps, JobDetailProps, DateFilterProps, Parameters, Sorting };
