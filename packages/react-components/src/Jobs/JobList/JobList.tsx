@@ -317,7 +317,7 @@ const JobList = (props: JobListProps) => {
       >
       </DateFilter>
     </div>
-  ),[]);
+  ),[date]);
 
   const jobUpdated = (job) => {
     const dataUpdated = JSON.parse(job.data);
