@@ -54,18 +54,23 @@ const fetchUrl = (endPoint: RequestInfo, options?: Options, authHost?: string) =
   }
   
   return from(fetch(endPoint, mergedOptions as any)).pipe(
-    // tap((response) => console.log(`Response status: ${response.status}`)),
-    map((response) => {
+    flatMap((response) => {
       if (response.status >= 400) {
-        throw new Error(`Error: ${response.status}, reason: ${response.statusText}`);
+        return response.text().then((errorText) => {
+          throw new Error(errorText);
+        });
       } else {
-        return response;
+        return of(response);
       }
     }),
     flatMap((response) => checkStatus(response)),
-    catchError((error) => throwError(error)),
+    catchError((error) => {
+      console.error('An error occurred:', error);
+      return throwError(error);
+    })
   );
 };
+
 
 const refreshToken = async (authHost: string) => {
   const refreshToken = localStorage.getItem('refreshToken');

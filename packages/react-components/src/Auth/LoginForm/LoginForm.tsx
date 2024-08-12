@@ -10,8 +10,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import React, { useEffect, useState } from 'react';
+import { Alert } from '@material-ui/lab';
+import { useEffect, useState } from 'react';
 import AuthService from '../AuthService';
 import LoginFormProps from './types';
 import useStyles from './useStyles';
@@ -37,6 +37,7 @@ const LoginForm = (props: LoginFormProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [twoFA, setTwoFA] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [otpAuthenticatorIds, setOtpAuthenticatorIds] = useState([]);
   const [form, setForm] = useState({
     id: '',
@@ -77,22 +78,22 @@ const LoginForm = (props: LoginFormProps) => {
         setLoading(false);
       },
       (user, token) => {
-        console.log('login success');
         setLoading(false);
 
         if (onSuccess != null) {
           onSuccess(user, token);
         }
       },
-      (error) => {
-        console.log('login error');
+      (error: Error | string) => {
+        const errorMsg = typeof error === 'string' ? error : error.message;
+        setErrorMessage(errorMsg);
         setLoading(false);
         setError(true);
 
         if (onError != null) {
-          onError(error);
+          onError(errorMsg);
         }
-      },
+      }
     );
   };
 
@@ -121,9 +122,7 @@ const LoginForm = (props: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit}>
       {error && (
-        <Alert severity="error">{`Username ${
-          twoFA ? 'or One Time Password is invalid' : 'and/or password is invalid'
-        }`}</Alert>
+        <Alert severity="error"> {errorMessage}</Alert>
       )}
 
       {twoFA ? (
