@@ -44,6 +44,8 @@ const Popup: React.FC<PopupProps> = ({
   metadata,
   hasPassword,
   userGroupsDefaultSelected,
+  errorMessage,
+  errorAccount,
 }) => {
   const [error, setError] = useState<boolean>(false);
   const [passwordStrengthColor, setPasswordStrengthColor] = useState('red');
@@ -141,7 +143,8 @@ const Popup: React.FC<PopupProps> = ({
                     variant="standard"
                     required={isNew}
                     value={row.password || ''}
-                    error={!passwordValid}
+                    error={!passwordValid || errorAccount}
+                    helperText={errorMessage}
                     InputProps={{ endAdornment }}
                     onChange={onChange}
                     autoComplete="new-password"
@@ -156,9 +159,12 @@ const Popup: React.FC<PopupProps> = ({
                     required={isNew}
                     label="Repeat Password"
                     value={row.repeatPassword || ''}
-                    error={!passwordValid}
+                    error={!passwordValid || errorAccount}
                     onChange={onChange}
-                    helperText={!passwordValid && 'Passwords do not match'}
+                    helperText={
+                      (!passwordValid && 'Passwords do not match') ||
+                      errorMessage
+                    }                    
                     autoComplete="new-password"
                   />
                 </>
