@@ -12,7 +12,6 @@ const PopupEditing = React.memo(
     onSave,
     hasPassword,
     userGroupsDefaultSelected,
-    errorAccount,
     errorMessage,
   }: PopupEditingProps) => (
     <Plugin>
@@ -143,7 +142,7 @@ const PopupEditing = React.memo(
               }
             };
 
-            const open = editingRowIds.length > 0 || isNew || errorAccount;
+            const open = editingRowIds.length > 0 || isNew || errorMessage!=='';
 
             return (
               <Popup
@@ -163,7 +162,6 @@ const PopupEditing = React.memo(
                 hasPassword={hasPassword}
                 userGroupsDefaultSelected={userGroupsDefaultSelected}
                 errorMessage={errorMessage}
-                errorAccount={errorAccount}
               />
             );
           }}

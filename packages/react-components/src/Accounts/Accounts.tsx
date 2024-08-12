@@ -56,7 +56,6 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
   const [deletedDialog, setDeletedDialog] = useState(false);
   const [deleteRow, setDeleteRow] = useState({});
   const [filteringColumnExtensions, setFilteringColumnExtensions] = useState([]);
-  const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const getRowId = (row) => row.id;
 
@@ -145,7 +144,6 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
           fetchData();
         },
         (error) => {
-          setError(true);
           setErrorMessage('Passwords must be at least 7 characters');
           console.log('Update Account: ', error);
         }
@@ -206,7 +204,6 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
           onSave={handleSubmit}
           hasPassword
           userGroupsDefaultSelected={userGroupsDefaultSelected}
-          errorAccount={error}
           errorMessage={errorMessage}
         />
         <Toolbar />
