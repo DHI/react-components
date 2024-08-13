@@ -56,6 +56,7 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
   const [deletedDialog, setDeletedDialog] = useState(false);
   const [deleteRow, setDeleteRow] = useState({});
   const [filteringColumnExtensions, setFilteringColumnExtensions] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const getRowId = (row) => row.id;
 
   const metadataHeader = metadata
@@ -129,21 +130,22 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
 
   const handleSubmit = (row, isNew = false) => {
     if (isNew) {
-      return (
-        createAccount(host, token, { ...row }).subscribe(() => {
+      return createAccount(host, token, { ...row }).subscribe(
+        () => {
           fetchData();
-        }),
+        },
         (error) => {
           console.log('Create Account: ', error);
         }
       );
     } else {
-      return (
-        updateAccount(host, token, { ...row }).subscribe(() => {
+      return updateAccount(host, token, { ...row }).subscribe(
+        () => {
           fetchData();
-        }),
+        },
         (error) => {
-          console.log('Update Accounts: ', error);
+          setErrorMessage('Passwords must be at least 7 characters');
+          console.log('Update Account: ', error);
         }
       );
     }
@@ -202,6 +204,7 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
           onSave={handleSubmit}
           hasPassword
           userGroupsDefaultSelected={userGroupsDefaultSelected}
+          errorMessage={errorMessage}
         />
         <Toolbar />
         <TableColumnVisibility />

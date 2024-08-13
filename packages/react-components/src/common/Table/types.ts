@@ -79,6 +79,7 @@ export interface PopupEditingProps {
    * Set User Groups default list when creating a new Account
    */
   userGroupsDefaultSelected?: string[];
+  errorMessage?: string;
 }
 
 export interface PopupProps {
@@ -142,6 +143,7 @@ export interface PopupProps {
    * Set User Groups default list when creating a new Account
    */
   userGroupsDefaultSelected?: string[];
+  errorMessage?: string;
 }
 
 export interface MetadataEditorProps {
