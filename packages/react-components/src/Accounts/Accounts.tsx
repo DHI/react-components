@@ -128,45 +128,37 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
     setRows(changedRows);
   };
 
-  const handleSubmit = (row, isNew = false) => {
-    const handleError = (error, action) => {
-      try {
-        if (error instanceof Error) {
-          const errorMessage = error.message;
-
-          const parsedError = JSON.parse(errorMessage);
-          const firstErrorMessage = parsedError.errors[0]?.description;
-          setErrorMessage(firstErrorMessage);
-        } else {
-          console.log(`${action}: Received non-Error object:`, error);
-        }
-      } catch (e) {
-        console.log(`${action}: Failed to parse error response.`, e);
+  const handleError = (error, action) => {
+    try {
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        const parsedError = JSON.parse(errorMessage);
+        const firstErrorMessage = parsedError.errors[0]?.description;
+        setErrorMessage(firstErrorMessage);
+      } else {
+        console.log(`${action}: Received non-Error object:`, error);
       }
-    };
-
-    if (isNew) {
-      return createAccount(host, token, { ...row }).subscribe(
-        () => {
-          setErrorMessage('');
-          fetchData();
-        },
-        (error) => {
-          handleError(error, 'Create Account');
-        }
-      );
-    } else {
-      return updateAccount(host, token, { ...row }).subscribe(
-        () => {
-          setErrorMessage('');
-          fetchData();
-        },
-        (error) => {
-          handleError(error, 'Update Account');
-        }
-      );
+    } catch (e) {
+      console.log(`${action}: Failed to parse error response.`, e);
     }
   };
+  
+  const handleSubmit = (row, isNew = false) => {
+    const onSuccess = () => {
+      setErrorMessage('');
+      fetchData();
+    };
+  
+    const onError = (error) => {
+      handleError(error, isNew ? 'Create Account' : 'Update Account');
+    };
+  
+    if (isNew) {
+      return createAccount(host, token, { ...row }).subscribe(onSuccess, onError);
+    } else {
+      return updateAccount(host, token, { ...row }).subscribe(onSuccess, onError);
+    }
+  };  
 
   const handleDelete = (row) => {
     deleteAccount(host, token, row.id).subscribe(

@@ -129,17 +129,15 @@ const PopupEditing = React.memo(
 
                 if (isNew) {
                   commitAddedRows({ rowIds });
-                  onSave(editedRow, isNew);
-                } else {
-                  onSave(editedRow);
-                  if (errorMessage !== '') {
-                    onSave(editedRow);
-                    stopEditRows({ rowIds });
-                    commitChangedRows({ rowIds });
-                  } else {
-                    onSave(editedRow);
-                  }
-                }
+              } 
+              
+              if (errorMessage !== '') {
+                  stopEditRows({ rowIds });
+                  commitChangedRows({ rowIds });
+              }
+              
+              onSave(editedRow, isNew);
+              
               } catch (error) {
                 console.error('Error applying changes:', error);
                 cancelChanges();
