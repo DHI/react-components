@@ -114,22 +114,35 @@ const PopupEditing = React.memo(
             const rowIds = isNew ? [0] : editingRowIds;
 
             const applyChanges = () => {
-              metadata?.forEach((item, index) => {
-                if (editedRow.metadata === undefined || editedRow.metadata[metadata[index].key] === undefined) {
-                  editedRow.metadata = {
-                    ...editedRow.metadata,
-                    [metadata[index].key]: metadata[index].default,
-                  };
-                }
-              });
+              try {
+                metadata?.forEach((item, index) => {
+                  if (
+                    editedRow.metadata === undefined ||
+                    editedRow.metadata[metadata[index].key] === undefined
+                  ) {
+                    editedRow.metadata = {
+                      ...editedRow.metadata,
+                      [metadata[index].key]: metadata[index].default,
+                    };
+                  }
+                });
 
-              if (isNew) {
-                commitAddedRows({ rowIds });
-                onSave(editedRow, isNew);
-              } else {
-                stopEditRows({ rowIds });
-                commitChangedRows({ rowIds });
-                onSave(editedRow);
+                if (isNew) {
+                  commitAddedRows({ rowIds });
+                  onSave(editedRow, isNew);
+                } else {
+                  onSave(editedRow);
+                  if (errorMessage !== '') {
+                    onSave(editedRow);
+                    stopEditRows({ rowIds });
+                    commitChangedRows({ rowIds });
+                  } else {
+                    onSave(editedRow);
+                  }
+                }
+              } catch (error) {
+                console.error('Error applying changes:', error);
+                cancelChanges();
               }
             };
 
@@ -162,6 +175,7 @@ const PopupEditing = React.memo(
                 hasPassword={hasPassword}
                 userGroupsDefaultSelected={userGroupsDefaultSelected}
                 errorMessage={errorMessage}
+                passwordRequired={editedRow?.password?.length < 6}
               />
             );
           }}

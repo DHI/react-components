@@ -129,23 +129,40 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
   };
 
   const handleSubmit = (row, isNew = false) => {
+    const handleError = (error, action) => {
+      try {
+        if (error instanceof Error) {
+          const errorMessage = error.message;
+
+          const parsedError = JSON.parse(errorMessage);
+          const firstErrorMessage = parsedError.errors[0]?.description;
+          setErrorMessage(firstErrorMessage);
+        } else {
+          console.log(`${action}: Received non-Error object:`, error);
+        }
+      } catch (e) {
+        console.log(`${action}: Failed to parse error response.`, e);
+      }
+    };
+
     if (isNew) {
       return createAccount(host, token, { ...row }).subscribe(
         () => {
+          setErrorMessage('');
           fetchData();
         },
         (error) => {
-          console.log('Create Account: ', error);
+          handleError(error, 'Create Account');
         }
       );
     } else {
       return updateAccount(host, token, { ...row }).subscribe(
         () => {
+          setErrorMessage('');
           fetchData();
         },
         (error) => {
-          setErrorMessage('Passwords must be at least 7 characters');
-          console.log('Update Account: ', error);
+          handleError(error, 'Update Account');
         }
       );
     }
