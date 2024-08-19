@@ -128,28 +128,37 @@ const Accounts: React.FC<UserGroupProps> = ({ host, token, userGroupsDefaultSele
     setRows(changedRows);
   };
 
-  const handleSubmit = (row, isNew = false) => {
-    if (isNew) {
-      return createAccount(host, token, { ...row }).subscribe(
-        () => {
-          fetchData();
-        },
-        (error) => {
-          console.log('Create Account: ', error);
-        }
-      );
-    } else {
-      return updateAccount(host, token, { ...row }).subscribe(
-        () => {
-          fetchData();
-        },
-        (error) => {
-          setErrorMessage('Passwords must be at least 7 characters');
-          console.log('Update Account: ', error);
-        }
-      );
+  const handleError = (error, action) => {
+    try {
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        const parsedError = JSON.parse(errorMessage);
+        const firstErrorMessage = parsedError.errors[0]?.description;
+        setErrorMessage(firstErrorMessage);
+      } else {
+        console.log(`${action}: Received non-Error object:`, error);
+      }
+    } catch (e) {
+      console.log(`${action}: Failed to parse error response.`, e);
     }
   };
+  
+  const handleSubmit = (row, isNew = false) => {
+    const onSuccess = () => {
+      setErrorMessage('');
+      fetchData();
+    };
+  
+    const onError = (error) => {
+      handleError(error, isNew ? 'Create Account' : 'Update Account');
+    };
+  
+    if (isNew) {
+      return createAccount(host, token, { ...row }).subscribe(onSuccess, onError);
+    } else {
+      return updateAccount(host, token, { ...row }).subscribe(onSuccess, onError);
+    }
+  };  
 
   const handleDelete = (row) => {
     deleteAccount(host, token, row.id).subscribe(

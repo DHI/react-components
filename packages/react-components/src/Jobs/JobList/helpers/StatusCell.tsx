@@ -1,17 +1,14 @@
-import {
-  Box,
-  CircularProgress,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
+import { Box, CircularProgress, Tooltip, Typography } from '@material-ui/core';
 import { blue, green, red, yellow } from '@material-ui/core/colors';
 import {
+  AccessTimeOutlined,
   Cancel,
   CancelScheduleSend,
   CheckCircle,
   Error,
   HelpOutline,
   HourglassEmpty,
+  PlayCircleFilled,
   TimerOffOutlined,
 } from '@material-ui/icons';
 import React, { useMemo } from 'react';
@@ -31,7 +28,12 @@ const StatusCell = ({ row }: { row: any }) => {
         return (
           <Tooltip title={status}>
             <Box position="relative" display="inline-flex">
-              <CircularProgress style={{ color: blue[900] }} variant={'indeterminate'} size={28} thickness={4} />
+              <CircularProgress
+                style={{ color: blue[900] }}
+                variant={'indeterminate'}
+                size={28}
+                thickness={4}
+              />
               <Box
                 top={0}
                 left={0}
@@ -42,7 +44,13 @@ const StatusCell = ({ row }: { row: any }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Typography variant="caption" component="div" style={{ fontSize: 10 }}>{progress ? `${progress}%` : ''}</Typography>
+                <Typography
+                  variant="caption"
+                  component="div"
+                  style={{ fontSize: 10 }}
+                >
+                  {progress ? `${progress}%` : ''}
+                </Typography>
               </Box>
             </Box>
           </Tooltip>
@@ -76,6 +84,24 @@ const StatusCell = ({ row }: { row: any }) => {
         return (
           <Tooltip title={status}>
             <TimerOffOutlined style={{ color: yellow[900] }} />
+          </Tooltip>
+        );
+      case 'Starting':
+        return (
+          <Tooltip title={status}>
+            <PlayCircleFilled style={{ color: green[900] }} />
+          </Tooltip>
+        );
+      case 'TimedOut':
+        return (
+          <Tooltip title={status}>
+            <AccessTimeOutlined style={{ color: red[900] }} />
+          </Tooltip>
+        );
+      case 'Rejected':
+        return (
+          <Tooltip title={status}>
+            <Cancel style={{ color: red[900] }} />
           </Tooltip>
         );
       default:

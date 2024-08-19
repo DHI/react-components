@@ -144,6 +144,7 @@ export interface PopupProps {
    */
   userGroupsDefaultSelected?: string[];
   errorMessage?: string;
+  passwordRequired?: boolean;
 }
 
 export interface MetadataEditorProps {
