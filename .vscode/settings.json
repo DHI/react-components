@@ -1,8 +1,8 @@
 {
     "editor.codeActionsOnSave": {
-        "source.organizeImports": false,
-        "source.fixAll.eslint": true,
-    },
+		"source.organizeImports": "always",
+		"source.fixAll.eslint": "always"
+	},
     "editor.formatOnSave": false,
     "eslint.format.enable": false,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
