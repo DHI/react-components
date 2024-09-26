@@ -38,6 +38,10 @@ export { default as GapBox } from './components/GapBox/GapBox';
 export { default as GapBoxStyled } from './components/GapBox/GapBox.styled';
 export * from './components/GapBox/types';
 
+// InputFile
+export { default as InputFile } from './components/InputFile/InputFile';
+export { InputFileProps } from './components/InputFile/types';
+
 // LegendBase
 export { default as LegendBase } from './components/LegendBase/LegendBase';
 export * from './components/LegendBase/types';
